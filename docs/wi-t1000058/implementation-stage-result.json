@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "message": "implementation 阶段按批准计划（plan:7524069c-03c8-42b2-9161-ad796c36170b）完成两个并行任务。T01 服务端：九表迁移、六个领域模块、14 个 /api/* 端点、服务端强制状态机、创建时同事务自动分配、提交人邮箱归并、统一错误形状，平台中性契约类型落地 src/shared/contract.ts。T02 前端：应用壳 + 工单工作台/新建工单/业务组管理/自动分配规则/用户目录五个页面，经 api-client 单一请求边界消费 /api/*。AC-01..AC-08 的服务端行为证据由 test/api.test.mjs 11 项真实 HTTP 测试（隔离 DB_PATH）覆盖并通过；前端 runtime-render/interaction/session-persistence 证据按约定留待 QA 阶段。已知事项：src/shared/contract.ts（服务端 wire 类型）与 src/client/platform/contracts.ts（客户端 camelCase 归一化镜像）为同一契约两层表示，编译期重复、运行时无冲突，两端 typecheck 均通过；cancel 的 note 按基线 schema 未持久化；T01 实际写入 src/server/ 与 migrations 系 objective 明确要求且与 T02 无写冲突，计划 additionalWritePaths 未显式列出该范围。",
+  "verification": [
+    { "command": "npm run typecheck:server", "workdir": "app/ticket-system", "exitCode": 0, "result": "passed", "task": "T01" },
+    { "command": "npm run typecheck:client", "workdir": "app/ticket-system", "exitCode": 0, "result": "passed", "task": "T01" },
+    { "command": "npm test", "workdir": "app/ticket-system", "exitCode": 0, "result": "passed", "task": "T01", "detail": "14/14 通过；test/api.test.mjs 11 项经 withHttpServer 真实 HTTP + 隔离 DB_PATH 覆盖 AC-01..AC-08 服务端行为；既有 platform/dbkit 测试未回归" },
+    { "command": "npm run typecheck:client", "workdir": "app/ticket-system", "exitCode": 0, "result": "passed", "task": "T02" },
+    { "command": "npm run build:client", "workdir": "app/ticket-system", "exitCode": 0, "result": "passed", "task": "T02", "detail": "43 模块转换，产物 dist/assets/index-9u6Xa-wW.js（196.04 kB）/ index-5kACE_28.css（10.99 kB）" }
+  ],
+  "evidence": [
+    { "id": "AC-01", "status": "passed", "scope": "server", "note": "创建读回全部字段（工单ID/主题/描述/分类/提交人姓名邮箱/创建时间/P0-P4）经真实 HTTP 验证；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-02", "status": "passed", "scope": "server", "note": "创建→待分配/待处理、assign、complete（处理人/处理时间）、cancel 流转与非法流转 409 无副作用；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-03", "status": "passed", "scope": "server", "note": "多轮回复记录回复人与回复时间并按时间正序可读；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-04", "status": "passed", "scope": "server", "note": "同公司多业务组与成员维护可读回、跨公司拒绝；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-05", "status": "passed", "scope": "server", "note": "分类→业务组规则命中后新工单自动归属并进入待处理；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-06", "status": "passed", "scope": "server", "note": "转派归属变更、状态保持待处理、转派记录可查；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-07", "status": "passed", "scope": "server", "note": "详情返回提交人姓名/公司/部门与历史工单列表；前端界面证据留待 QA（not-run）" },
+    { "id": "AC-08", "status": "passed", "scope": "server", "note": "完成后评价提交并可读回、每工单一条可覆盖更新；前端界面证据留待 QA（not-run）" }
+  ],
+  "artifacts": []
+}

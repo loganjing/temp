@@ -2,17 +2,18 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "design_ready",
-  "revision": 2,
+  "state": "implementation_ready",
+  "revision": 5,
   "completedActions": [
     "requirements",
-    "design"
+    "design",
+    "implementation"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-17T15:26:11.640Z",
+  "updatedAt": "2026-10-17T15:49:12.828Z",
   "applicationProfile": {
     "schemaVersion": 1,
     "applicationType": "fullstack-complex",
@@ -36,5 +37,23 @@
     },
     "decidedAt": "2026-10-17T15:20:07.589Z",
     "sha256": "sha256:50b305ed462d8cefcc697a65cc7d2ef9fb9f457169c90a51b6435cb7c7047d39"
-  }
+  },
+  "approvals": [
+    {
+      "receiptId": "approval:general-application-development-spec:approve_plan:implementation:3",
+      "receiptType": "approval",
+      "operation": "approve_plan",
+      "actionId": "implementation",
+      "actor": "user",
+      "requestId": "general-application-development-spec:approve_plan:implementation:3",
+      "decision": "approved",
+      "approvedAt": "2026-10-17T15:29:53.249Z",
+      "planId": "plan:7524069c-03c8-42b2-9161-ad796c36170b",
+      "source": {
+        "requirementsSha256": "sha256:4d4a9896a321795833cc26259f0420621c72b1218013fc80e7fcce830269e3a9",
+        "designSha256": "sha256:763db846f03eaf20d2a0a78fb0837b8d1153ae89e21ad9cfa799919a26afd864"
+      },
+      "expectedRevision": 3
+    }
+  ]
 }

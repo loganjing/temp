@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:5",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 4,
+  "stateVersion": 5,
+  "outcome": "passed",
+  "contentHash": "sha256:6306b2f14f11acc31455984ccf6f177ddf3110a698430b39b8af02ed06aaefae",
+  "createdAt": "2026-10-17T15:49:12.828Z",
+  "timing": {
+    "startedAt": "2026-10-17T15:27:49.569Z",
+    "completedAt": "2026-10-17T15:49:12.828Z",
+    "durationMs": 1283259
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000058/implementation-report.md",
+      "bytes": 4992,
+      "sha256": "sha256:49a3daad32870cb1d9162ec00c473bd1c7be0f5c1c57c3503245edf394c6a662",
+      "title": "实现报告（ticket-1 工单管理系统）"
+    }
+  ],
+  "verification": [
+    {
+      "command": "npm run typecheck:server",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "result": "passed",
+      "task": "T01"
+    },
+    {
+      "command": "npm run typecheck:client",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "result": "passed",
+      "task": "T01"
+    },
+    {
+      "command": "npm test",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "result": "passed",
+      "task": "T01",
+      "detail": "14/14 通过；test/api.test.mjs 11 项经 withHttpServer 真实 HTTP + 隔离 DB_PATH 覆盖 AC-01..AC-08 服务端行为；既有 platform/dbkit 测试未回归"
+    },
+    {
+      "command": "npm run typecheck:client",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "result": "passed",
+      "task": "T02"
+    },
+    {
+      "command": "npm run build:client",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "result": "passed",
+      "task": "T02",
+      "detail": "43 模块转换，产物 dist/assets/index-9u6Xa-wW.js（196.04 kB）/ index-5kACE_28.css（10.99 kB）"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:50b305ed462d8cefcc697a65cc7d2ef9fb9f457169c90a51b6435cb7c7047d39",
+        "path": ".expert-team/work-items/wi-t1000058/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
