@@ -1,0 +1,7 @@
+{
+  "status": "completed",
+  "artifacts": [
+    { "path": "docs/wi-t1000058/architecture-baseline.md" },
+    { "path": "docs/wi-t1000058/technical-contract.md" }
+  ]
+}

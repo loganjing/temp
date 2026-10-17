@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "mode": "design",
+  "decision": "ready",
+  "artifacts": [
+    { "path": "docs/wi-t1000058/architecture-baseline.md" },
+    { "path": "docs/wi-t1000058/technical-contract.md" }
+  ],
+  "internalArtifacts": ["workspace-bootstrap.json"],
+  "deliverables": [
+    "docs/wi-t1000058/architecture-baseline.md",
+    "docs/wi-t1000058/technical-contract.md"
+  ],
+  "residualRisks": [
+    "服务端信任请求声明的 operatorId，未实现认证与权限（AD-1）；对外部署前需补充身份与权限设计",
+    "SQLite 单文件库为单机写入边界，不承诺多实例并发与跨设备同步"
+  ],
+  "openQuestions": [
+    "工单ID生成规则与问题分类预定义值列表（需求开放项，设计取最小可读方案）",
+    "满意度评价量表形式（设计取 1-5 分 + 可选评论）与评价是否可修改（设计允许覆盖更新）"
+  ]
+}
