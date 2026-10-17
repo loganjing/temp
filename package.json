@@ -1,0 +1,32 @@
+{
+  "name": "ticket-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "工单系统（121-full）：Hono + better-sqlite3 服务端，React/Vite 前端（前端由 T02 交付）",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "concurrently \"node src/server.js\" \"vite\"",
+    "build": "vite build",
+    "test": "node --test \"tests/*.test.js\""
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.0",
+    "better-sqlite3": "^12.2.0",
+    "hono": "^4.7.0",
+    "lucide-react": "^0.451.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "concurrently": "^9.1.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:5",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 4,
+  "stateVersion": 5,
+  "outcome": "passed",
+  "contentHash": "sha256:ecb75f1af81cbc1f87fcd8f1fd510d29bb2adf7971b03ce5fbac24065efbb145",
+  "createdAt": "2026-10-17T10:10:03.946Z",
+  "timing": {
+    "startedAt": "2026-10-17T09:30:32.902Z",
+    "completedAt": "2026-10-17T10:10:03.946Z",
+    "durationMs": 2371044
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000293/implementation-report.md",
+      "bytes": 8480,
+      "sha256": "sha256:363d4ef00d796144cbffa34bfe6c5f27455016866b561404969a4a378732184d",
+      "title": "实现阶段结算报告（WorkItem wi-t1000293 · 业务任务 121-full）"
+    }
+  ],
+  "url": "http://localhost:3000",
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:c70584e98807d4406b1c3bdf929f57cf23f8c212380cb08583b19857c79240c9",
+        "path": ".expert-team/work-items/wi-t1000293/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
