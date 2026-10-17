@@ -2,14 +2,37 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-17T08:44:33.070Z"
+  "updatedAt": "2026-10-17T09:28:05.820Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000293/requirements.md",
+      "sha256": "sha256:2ade540d5bf938a4404895bfe2f1f702c24c8c0946d6f16c4ee0d6ea8839dbf7"
+    },
+    "reason": "需求为多公司工单系统，核心行为均要求跨用户共享与服务端权威数据：提交人创建的工单由业务组处理人回复、转派并完成（AC-02/AC-06/AC-08），公司级业务组、成员与分类自动分配规则是驱动新工单分配的权威配置（AC-04/AC-05），处理人需读取提交人姓名、公司、部门与历史工单（AC-07）。浏览器 localStorage 无法承载跨用户共享、公司级权威配置与权威状态机，必须走完整系统设计路线。",
+    "evidence": {
+      "supporting": [
+        "AC-02 要求提交人与处理方两个不同用户在同一工单上多轮回复，数据必须跨用户共享",
+        "AC-04/AC-05 要求公司级业务组、成员与分类分配规则作为权威配置，使该公司新工单按分类自动进入对应业务组，需要服务端权威数据",
+        "AC-06/AC-08 转派与完成处理要求处理方变更服务端权威生命周期状态",
+        "AC-07 要求处理人读取提交人姓名、公司、部门及历史工单等跨用户权威数据",
+        "需求第 2/3 节定义公司、业务组、分配规则等组织级对象及管理操作，超出单浏览器边界"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-17T09:15:45.607Z",
+    "sha256": "sha256:c70584e98807d4406b1c3bdf929f57cf23f8c212380cb08583b19857c79240c9"
+  }
 }
