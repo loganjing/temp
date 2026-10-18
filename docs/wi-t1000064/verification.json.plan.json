@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "acceptance": [
+    {
+      "id": "AC-01",
+      "source": "requirements.md#AC-01",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "runtime-render",
+        "session-persistence"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    },
+    {
+      "id": "AC-02",
+      "source": "requirements.md#AC-02",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "error-feedback"
+      ],
+      "checkIds": [
+        "QA-02"
+      ]
+    },
+    {
+      "id": "AC-03",
+      "source": "requirements.md#AC-03",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-03"
+      ]
+    },
+    {
+      "id": "AC-04",
+      "source": "requirements.md#AC-04",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "visual-style"
+      ],
+      "checkIds": [
+        "QA-04"
+      ]
+    },
+    {
+      "id": "AC-05",
+      "source": "requirements.md#AC-05",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction"
+      ],
+      "checkIds": [
+        "QA-05"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "在资产领用单界面填写领用日期、领用人、领用部门、组织等主表必填字段，在明细分录中录入至少一条资产信息（含资产名称、数量），执行保存；随后重新打开该单据查看数据。",
+          "expected": "保存成功；重新打开后主表与分录字段数据与录入内容一致、完整无丢失；保存操作在 2 秒内完成响应。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "在资产领用单界面填写领用日期、领用人、领用部门、组织等主表必填字段，在明细分录中录入至少一条资产信息（含资产名称、数量），执行保存；随后重新打开该单据查看数据。",
+          "expected": "保存成功；重新打开后主表与分录字段数据与录入内容一致、完整无丢失；保存操作在 2 秒内完成响应。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "error-feedback",
+          "action": "1. 主表必填字段（如领用人、领用部门、领用日期）留空，录入有效分录，执行保存；",
+          "expected": "三种情况均保存失败且不生成单据数据；分别给出明确提示：主表必填字段为空的必填提示、「明细分录不能为空」、「资产名称不能为空」。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "连续保存两张内容有效的资产领用单，查看系统生成的领用单号。",
+          "expected": "每张单据自动生成领用单号，格式符合 `LYyyyyMMdd` + 4 位流水号（如 `LY202505050001`）；两张单据的单号互不相同；单号在单据上可见，并可用于追溯查询。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "打开一张已保存的资产领用单，通过打印模板执行打印。",
+          "expected": "打印输出包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，以及每行的资产名称、资产编码、规格型号、数量、单位、存放位置等分录信息，并包含领用人签字、部门负责人签字、资产管理员签字、日期的签章区域。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "visual-style",
+          "action": "打开一张已保存的资产领用单，通过打印模板执行打印。",
+          "expected": "打印输出包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，以及每行的资产名称、资产编码、规格型号、数量、单位、存放位置等分录信息，并包含领用人签字、部门负责人签字、资产管理员签字、日期的签章区域。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "保存资产领用单后，分别按领用单号、领用人、领用日期条件执行查询。",
+          "expected": "查询结果包含目标领用单，且单据数据与保存内容一致；不满足条件的单据不出现在查询结果中。"
+        }
+      ]
+    }
+  ]
+}

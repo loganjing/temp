@@ -1,0 +1,279 @@
+{
+  "decision": "pass-with-risk",
+  "summary": {
+    "objective": "验证资产领用单（wi-t1000064）五项冻结验收：创建保存与读回（AC-01）、无效数据阻止保存（AC-02）、自动单号生成（AC-03）、打印模板输出（AC-04）、条件查询（AC-05）",
+    "changedBehavior": "新建应用首个交付：资产领用单主从单据的录入、校验、自动编号、持久化、条件查询与打印模板全流程（React SPA + Hono API + SQLite）",
+    "nonGoals": [
+      "需求 §4 明确不启用：权限、工作流、导入导出、消息通知、操作日志",
+      "移动端专项适配（需求仅要求桌面主流浏览器）",
+      "已保存单据的编辑旅程（需求未定义，设计不提供）"
+    ],
+    "riskLabels": [
+      "print-paper-output-unverified",
+      "single-browser-coverage"
+    ]
+  },
+  "environment": {
+    "name": "Chrome 桌面预览浏览器（agent_browser，视口 1280×800）访问 Hono 生产模式服务（npm start 托管 dist 静态产物与 API）",
+    "version": "工作区实现提交 fd9f238（kteam: implementation sealed）；前端构建产物 index-BaMXrZYf.js；Chromium 114 引擎；Node v24.14.1",
+    "dataProfile": "隔离 SQLite 库（DB_PATH=/tmp/wi-t1000064-qa/application.db），QA 会话自建 2 张测试单据（领用人：测试领用人A / 测试领用人B），无真实用户数据"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "在资产领用单界面填写领用日期、领用人、领用部门、组织等主表必填字段，在明细分录中录入至少一条资产信息（含资产名称、数量），执行保存；随后重新打开该单据查看数据。",
+          "expected": "保存成功；重新打开后主表与分录字段数据与录入内容一致、完整无丢失；保存操作在 2 秒内完成响应。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "在资产领用单界面填写领用日期、领用人、领用部门、组织等主表必填字段，在明细分录中录入至少一条资产信息（含资产名称、数量），执行保存；随后重新打开该单据查看数据。",
+          "expected": "保存成功；重新打开后主表与分录字段数据与录入内容一致、完整无丢失；保存操作在 2 秒内完成响应。"
+        }
+      ],
+      "evidence": "浏览器记录 #1：表单填写主表必填（领用日期 2026-10-18、领用人 测试领用人A、领用部门 测试部门甲、组织 测试组织）与 1 条分录（测试笔记本电脑/AST-QA-0001/ThinkPad T14 Gen5/2 台/北京一号仓/主力测试机）后提交保存，约 0.3 秒内成功并跳转详情页 /bills/1，主表与分录全部字段与录入一致，系统字段由服务端生成（创建人/修改人=系统用户）；浏览器记录 #2：重新加载 /bills/1 后数据完整读回。保存响应远小于 2 秒。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #1（保存跳转）与 #2（重新打开读回）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "在资产领用单界面填写领用日期、领用人、领用部门、组织等主表必填字段，在明细分录中录入至少一条资产信息（含资产名称、数量），执行保存；随后重新打开该单据查看数据。",
+          "expected": "保存成功；重新打开后主表与分录字段数据与录入内容一致、完整无丢失；保存操作在 2 秒内完成响应。",
+          "actual": "提交保存后约 0.3 秒内跳转 /bills/1；详情页主表（领用单号/日期/领用人/部门/组织/用途说明/备注/单据状态 创建/创建人与时间、修改人与时间）与分录（行号 1：测试笔记本电脑 AST-QA-0001 ThinkPad T14 Gen5 数量2 单位台 北京一号仓 主力测试机）全部与录入一致；审核人/审核日期为空（非必填）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "在资产领用单界面填写领用日期、领用人、领用部门、组织等主表必填字段，在明细分录中录入至少一条资产信息（含资产名称、数量），执行保存；随后重新打开该单据查看数据。",
+          "expected": "保存成功；重新打开后主表与分录字段数据与录入内容一致、完整无丢失；保存操作在 2 秒内完成响应。",
+          "actual": "保存成功后重新打开（重新加载 /bills/1），主表与分录字段数据完整保留、与录入内容一致无丢失",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "error-feedback",
+          "action": "1. 主表必填字段（如领用人、领用部门、领用日期）留空，录入有效分录，执行保存；",
+          "expected": "三种情况均保存失败且不生成单据数据；分别给出明确提示：主表必填字段为空的必填提示、「明细分录不能为空」、「资产名称不能为空」。"
+        }
+      ],
+      "evidence": "浏览器记录 #3-#5：三种无效提交均被阻止在 /bills/new（未跳转、未生成单据，API 查询 total=0 确认未落库），并分别给出明确提示：①主表必填留空→四个字段级提示（领用日期/领用人/领用部门/组织 不能为空）+汇总提示「保存校验未通过，请修正后再提交。」；②空分录→「明细分录不能为空」；③某行资产名称空→「资产名称不能为空」。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #3-#5（三类无效提交的提示与阻断）+ API total=0 未落库确认"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-02",
+          "kind": "error-feedback",
+          "action": "1. 主表必填字段（如领用人、领用部门、领用日期）留空，录入有效分录，执行保存；",
+          "expected": "三种情况均保存失败且不生成单据数据；分别给出明确提示：主表必填字段为空的必填提示、「明细分录不能为空」、「资产名称不能为空」。",
+          "actual": "三种情况均保存失败且未生成单据数据（API total=0）；提示分别为：主表必填字段级提示（领用日期不能为空、领用人不能为空、领用部门不能为空、组织不能为空）、「明细分录不能为空」、「资产名称不能为空」，文案与需求一致",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "连续保存两张内容有效的资产领用单，查看系统生成的领用单号。",
+          "expected": "每张单据自动生成领用单号，格式符合 `LYyyyyMMdd` + 4 位流水号（如 `LY202505050001`）；两张单据的单号互不相同；单号在单据上可见，并可用于追溯查询。"
+        }
+      ],
+      "evidence": "浏览器记录 #1/#6：连续保存两张有效单据，单号分别为 LY202610180001 与 LY202610180002：格式均为 LY+yyyyMMdd（20261018）+4 位流水号，流水 0001→0002 递增、互不相同；单号在详情页标题与主表字段可见，且按单号查询可追溯命中目标单据（见 QA-05）。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #1（A 单 LY202610180001）与 #6（B 单 LY202610180002）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "连续保存两张内容有效的资产领用单，查看系统生成的领用单号。",
+          "expected": "每张单据自动生成领用单号，格式符合 `LYyyyyMMdd` + 4 位流水号（如 `LY202505050001`）；两张单据的单号互不相同；单号在单据上可见，并可用于追溯查询。",
+          "actual": "两张单据自动生成单号 LY202610180001、LY202610180002：格式符合 LYyyyyMMdd+4 位流水号（同日前缀流水递增），互不相同；单号在单据详情页可见，按单号查询可追溯（QA-05 场景① 命中）",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "打开一张已保存的资产领用单，通过打印模板执行打印。",
+          "expected": "打印输出包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，以及每行的资产名称、资产编码、规格型号、数量、单位、存放位置等分录信息，并包含领用人签字、部门负责人签字、资产管理员签字、日期的签章区域。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "visual-style",
+          "action": "打开一张已保存的资产领用单，通过打印模板执行打印。",
+          "expected": "打印输出包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，以及每行的资产名称、资产编码、规格型号、数量、单位、存放位置等分录信息，并包含领用人签字、部门负责人签字、资产管理员签字、日期的签章区域。"
+        }
+      ],
+      "evidence": "浏览器记录 #7：打印视图 /bills/1/print 完整渲染主表信息（领用单号 LY202610180001、领用日期 2026-10-18、领用人 测试领用人A、领用部门 测试部门甲、用途说明、备注）、分录表格（资产名称/资产编码/规格型号/数量/单位/存放位置）与三方签章区（领用人/部门负责人/资产管理员签字+日期）；浏览器记录 #8：A4 打印样式确认（@page size a4 portrait margin 12mm；@media print 隐藏应用壳 .app-header/.page-toolbar/.no-print；.print-page/.print-sheet 宽 794px≈210mm）；浏览器记录 #9（第一轮实测）：点击「打印」按钮真实触发 window.print()，浏览器随即进入系统打印流程并弹出 macOS 系统打印对话框（本轮按环境约束未重复点击，纸质输出确认见剩余风险）。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #7（打印视图内容）/ #8（打印样式 computed 读取）/ #9（第一轮点击打印按钮触发系统打印流程）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "打开一张已保存的资产领用单，通过打印模板执行打印。",
+          "expected": "打印输出包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，以及每行的资产名称、资产编码、规格型号、数量、单位、存放位置等分录信息，并包含领用人签字、部门负责人签字、资产管理员签字、日期的签章区域。",
+          "actual": "从已保存单据打开打印模板视图，内容包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，每行分录的资产名称/资产编码/规格型号/数量/单位/存放位置，以及领用人签字、部门负责人签字、资产管理员签字、日期签章区；页面提供打印按钮且第一轮实测点击真实触发 window.print() 进入系统打印流程",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "visual-style",
+          "action": "打开一张已保存的资产领用单，通过打印模板执行打印。",
+          "expected": "打印输出包含领用单号、领用日期、领用人、领用部门、用途说明、备注等主表信息，以及每行的资产名称、资产编码、规格型号、数量、单位、存放位置等分录信息，并包含领用人签字、部门负责人签字、资产管理员签字、日期的签章区域。",
+          "actual": "打印样式确认：@page { size: a4 portrait; margin: 12mm }，A4 纵向；@media print 下隐藏应用壳（.app-header/.page-toolbar/.no-print → display:none）并取消纸张边框阴影；屏幕预览 .print-page/.print-sheet 宽 794px≈A4 210mm，白底、细边框、内边距约 16mm×14mm",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "保存资产领用单后，分别按领用单号、领用人、领用日期条件执行查询。",
+          "expected": "查询结果包含目标领用单，且单据数据与保存内容一致；不满足条件的单据不出现在查询结果中。"
+        }
+      ],
+      "evidence": "浏览器记录 #10-#13：四个查询场景均以实际发出的请求参数与页面结果双重验证：①billno=LY202610180001→列表仅 1 行 A 单（B 单排除）；②picker=测试领用人B→仅 1 行 B 单（A 单排除）；③pick_date=2026-10-18→仅 1 行 A 单（B 单 2026-11-08 排除）；④picker=QA不存在人员→空结果并显示「暂无领用单」空态（A/B 均不出现）。浏览器记录 #14：从列表点击单号链接打开 /bills/1，详情数据与保存内容完全一致。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #10-#13（查询请求参数与列表结果，performance/network 记录）与 #14（从查询结果打开详情核对）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "保存资产领用单后，分别按领用单号、领用人、领用日期条件执行查询。",
+          "expected": "查询结果包含目标领用单，且单据数据与保存内容一致；不满足条件的单据不出现在查询结果中。",
+          "actual": "按领用单号、领用人、领用日期三种条件分别查询均命中目标领用单且排除不满足条件的单据（B 单/A 单互为排除验证）；不命中条件（QA不存在人员）返回空结果并显示空态引导；查询结果中的单据数据与保存内容一致（从列表打开详情核对）",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 填写主表必填信息和至少一条分录后保存成功，主表与分录数据完整保存并可读回，保存响应时间不超过 2 秒。; AC-02: 主表必填字段为空、明细分录为空或分录资产名称为空时，保存被阻止，并给出对应的明确提示。; AC-03: 保存成功后系统自动生成领用单号，格式为 `LY` + `yyyyMMdd` + 4 位流水号，且单号唯一。; AC-04: 打印输出包含主表信息和分录信息并带签章区域的领用单。; AC-05: 可按领用单号、领用人、领用日期等条件查询到已保存的资产领用单。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "QA-01：保存成功约 0.3 秒内响应并跳转详情，主表与分录数据完整一致；重新打开后数据完整读回（浏览器记录 #1/#2）"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "error-feedback"
+        ],
+        "evidence": "QA-02：三类无效输入均阻止保存且未落库（API total=0），分别给出与需求一致的明确提示（浏览器记录 #3-#5）"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-03：连续两张单单号 LY202610180001/LY202610180002，格式正确、唯一、流水递增且可见可追溯（浏览器记录 #1/#6）"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "visual-style"
+        ],
+        "evidence": "QA-04：打印视图包含主表信息、分录信息与三方签章区；A4 纵向打印样式与打印时隐藏应用壳确认；打印按钮真实触发 window.print()（第一轮实测，浏览器记录 #7/#8/#9）"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "interaction"
+        ],
+        "evidence": "QA-05：按单号/领用人/日期查询命中目标单据并排除不满足条件单据，不命中返回空态；查询结果单据数据与保存内容一致（浏览器记录 #10-#14）"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [
+    "纸质打印输出未在自动化环境实际确认：打印视图内容、A4 打印样式与 window.print() 触发路径均已验证，但无打印设备，纸张输出效果需人工抽查一次",
+    "仅在单一桌面浏览器（Chromium 114 预览浏览器，1280×800 视口）验证：需求非功能要求「支持主流浏览器访问」，其他主流浏览器未逐一覆盖"
+  ],
+  "baselineUpdates": []
+}
