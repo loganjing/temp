@@ -1,22 +1,25 @@
-import { Hono, type Env, type MiddlewareHandler } from 'hono'
+import { Hono, type MiddlewareHandler } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { localeMiddleware } from './platform/locale'
+import { ApiError, toErrorResponse } from './core/errors'
+import type { AppEnv } from './core/session'
 
 // 业务路由由实现阶段注册。平台边界在初始化后即可运行和验证。
-export function createApp<E extends Env = Env>(options: {
-  registerPublicRoutes?: (app: Hono<E>) => void
-  registerProtectedRoutes?: (app: Hono<E>) => void
-  protect?: MiddlewareHandler<E>
+export function createApp(options: {
+  registerPublicRoutes?: (app: Hono<AppEnv>) => void
+  registerProtectedRoutes?: (app: Hono<AppEnv>) => void
+  protect?: MiddlewareHandler<AppEnv>
 } = {}) {
-  const app = new Hono<E>()
+  const app = new Hono<AppEnv>()
 
   app.onError((error, c) => {
+    if (error instanceof ApiError) return toErrorResponse(error, c)
     if (error instanceof HTTPException) {
       return c.json({ error: { code: 'HTTP_ERROR', message: error.message } }, error.status)
     }
     console.error('[server] unhandled request error', error)
-    return c.json({ error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } }, 500)
+    return c.json({ error: { code: 'INTERNAL', message: 'Internal server error' } }, 500)
   })
 
   app.use('/api/*', localeMiddleware)

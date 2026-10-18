@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:5",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 4,
+  "stateVersion": 5,
+  "outcome": "passed",
+  "contentHash": "sha256:2eab6a660596665caffb4eda6bce3371e830dc444a6db9ce1966722e886605cf",
+  "createdAt": "2026-10-18T07:29:47.464Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:52:44.648Z",
+    "completedAt": "2026-10-18T07:29:47.464Z",
+    "durationMs": 20222816
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000063/implementation-report.md",
+      "bytes": 7150,
+      "sha256": "sha256:50528776de596da951d814f295392e78813225774de1aeba51bf848021f030ed",
+      "title": "Implementation Report — Helpdesk 企业工单系统（wi-t1000063）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:87362af780348718940f9410e06b2ff8ca2512a12ec4d2707e5c7277a6a39889",
+        "path": ".expert-team/work-items/wi-t1000063/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

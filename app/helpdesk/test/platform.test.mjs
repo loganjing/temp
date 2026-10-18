@@ -22,6 +22,6 @@ test('unexpected server errors do not expose their details', async () => {
   await withHttpServer(app, async (url) => {
     const response = await fetch(`${url}/api/fail`)
     assert.equal(response.status, 500)
-    assert.deepEqual(await response.json(), { error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } })
+    assert.deepEqual(await response.json(), { error: { code: 'INTERNAL', message: 'Internal server error' } })
   })
 })
