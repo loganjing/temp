@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:b5e9058f8fd1a59a41f37034cd81b80c57132619511aceb53ba792050b443184",
+  "createdAt": "2026-10-18T01:33:37.761Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:31:53.347Z",
+    "completedAt": "2026-10-18T01:33:37.761Z",
+    "durationMs": 104414
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000064/requirements.md",
+      "bytes": 8490,
+      "sha256": "sha256:22358339c9e71d66e84149edd21c8e0ea32b11ad03374177c4258d14e7182e0b",
+      "title": "资产领用单需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
