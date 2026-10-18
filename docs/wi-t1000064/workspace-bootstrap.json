@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "asset-apply",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "none",
+  "packageManager": "npm",
+  "modules": ["dbkit"]
+}

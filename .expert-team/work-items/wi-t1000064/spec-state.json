@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 4,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-18T01:33:37.761Z"
+  "updatedAt": "2026-10-18T01:53:23.298Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000064/requirements.md",
+      "sha256": "sha256:22358339c9e71d66e84149edd21c8e0ea32b11ad03374177c4258d14e7182e0b"
+    },
+    "reason": "需求明确要求单据自动编号以 LY+yyyyMMdd+4位递增流水号生成且全局唯一、可追溯（§1/§3.3/AC-03），递增流水号防重号必须由权威服务端数据源统一分配；§3.6/AC-05 要求按领用单号、领用人、领用日期条件查询已保存单据，属于持久化权威数据条件查询；系统为组织内多角色共享的企业级主从结构业务单据。当前设计变更请求（数据层改为复用 @commonapp/dbkit）仅改变数据访问层的技术承载方式，不改变服务端权威数据与数据库要求，维持完整全栈路线。",
+    "evidence": {
+      "supporting": [
+        "requirements.md §3.3 单据自动编号：LY+yyyyMMdd+4位递增流水号全局唯一，需权威数据源统一分配",
+        "requirements.md §1 目标：单号唯一性与可追溯性",
+        "requirements.md §3.6/AC-05 数据查询：按条件查询已保存领用单，需服务端持久化与条件查询",
+        "requirements.md §AC-03：连续保存单号互不相同且可追溯",
+        "requirements.md §3.1 主表含组织、单据状态、审核人等企业级字段，组织内共享业务单据",
+        "designChangeRequest：复用 dbkit 仅为数据层实现变更，dbkit 支持能力为 SQLite 配置/查询/事务/迁移，不引入跨应用共享或外部服务边界变化"
+      ],
+      "excluding": [
+        "浏览器 localStorage 无法保证递增流水号跨浏览器、跨设备、跨用户唯一，无法支撑 AC-03",
+        "本地浏览器存储数据仅限当前设备，不满足 §3.6 可追溯查询语义"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-18T01:47:58.766Z",
+    "sha256": "sha256:62bc392fc238587bc5928b6cf4c90291981feb069a93ff36376095ab5943e374"
+  }
 }

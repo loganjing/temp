@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "operation": "reopen-design",
+  "transactionId": "design-reopen-3",
+  "expectedRevision": 2,
+  "expectedStateHash": "sha256:f500641e18efdc247f22fabd077fb68ae4889e5a33fac7fcda61844cc73a85b8",
+  "expectedReceiptHash": "sha256:add1e72c7bcb3b48f8ded8a6674b9ac7f78d69618f16124c75de788b78844e24",
+  "receiptRelativePath": "receipts/design.json",
+  "nextState": {
+    "schemaVersion": 2,
+    "specId": "general-application-development-spec",
+    "specRevision": 14,
+    "state": "requirements_ready",
+    "revision": 3,
+    "completedActions": [
+      "requirements"
+    ],
+    "blockers": [],
+    "deliveryProfile": "standard",
+    "graphRevision": 5,
+    "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
+    "updatedAt": "2026-10-18T01:47:40.511Z",
+    "designChangeRequest": "数据层选型变更（用户确认）：数据访问层从 Node 内置 node:sqlite 自研实现改为复用 CommonApp 通用模块 dbkit（@commonapp/dbkit 0.2.0，状态 ready，manifest 校验通过，SHA-256 f343ad1fc6ceae6843b0c43efc72f6c59c568f826619570f0808c017ec06eec6）。dbkit 的 SQLite 配置、查询、事务与版本化迁移四项能力覆盖本设计数据层全部需求，其 DB_PATH 路径覆盖与 migrations/sqlite/ 迁移目录约定与已冻结运行约定吻合；项目本就依赖 npm 安装（React、Vite、Hono、tsx），引入 better-sqlite3 原生驱动边际成本低，复用成熟实现可减少自研迁移运行器与事务封装的实现与测试面。要求：架构基线与技术契约的数据访问层改为复用 @commonapp/dbkit——createDb/createDbConfig 初始化（sqlitePath 由 DB_PATH 覆盖，默认路径保持 data/asset-apply.db）、db.queryOne/queryAll/run 执行查询与写入、db.transaction 承载保存事务（单号序列原子取号）、runMigrations 应用 migrations/sqlite/ 下的版本化迁移；移除自研迁移运行器与 node:sqlite 驱动论述；记录已选模块 ID、包/版本、需求匹配情况、集成边界、限制与 manifest SHA-256。范围仅技术承载方式变更：数据库仍为 SQLite 文件库，表结构、字段、接口契约、校验规则、单号规则、UI 基线与需求基线均不变。"
+  },
+  "nextStateHash": "sha256:f2af5d625c35e113cda2a3ab86ceb3f41acca900a4c2a0384205f2bfa585c8cd",
+  "createdAt": "2026-10-18T01:47:40.512Z",
+  "committedAt": "2026-10-18T01:47:40.522Z"
+}

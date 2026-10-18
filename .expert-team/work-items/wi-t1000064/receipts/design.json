@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:4",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 3,
+  "stateVersion": 4,
+  "outcome": "passed",
+  "contentHash": "sha256:79959a8ed414e469cc78886f83d130b92c9bb20e3046aea671a46b2c5f9fe826",
+  "createdAt": "2026-10-18T01:53:23.298Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:34:59.509Z",
+    "completedAt": "2026-10-18T01:53:23.298Z",
+    "durationMs": 1103789
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000064/architecture-baseline.md",
+      "bytes": 12809,
+      "sha256": "sha256:4d08a725a6c301c695e6ab888a5e0f18371f78e0140925911ecdf83f37461f0e",
+      "role": "primary",
+      "title": "系统设计：资产领用单（wi-t1000064）"
+    },
+    {
+      "path": "docs/wi-t1000064/technical-contract.md",
+      "bytes": 7701,
+      "sha256": "sha256:49c834c76be7f9b3bc63c5a0017f426f984f3b1a9026d81341e460be09d18f4b",
+      "role": "supporting",
+      "title": "技术契约：资产领用单 API（wi-t1000064）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "path": "docs/wi-t1000064/workspace-bootstrap.json",
+      "sha256": "sha256:5fd0d535ff5538402acdd2472706c8d5de17e949dd9f3317fb5140c61014e292",
+      "result": "initialized",
+      "packageRoot": "app/asset-apply",
+      "planDigest": "sha256:9f68038b397c6b829d00f3b0bd61199ce719c2a46d6b467f509b6f261e7bae16",
+      "scaffoldDigest": "sha256:18a75e5100c232777d1ed7a538768433101129b9003cc60efe939ac4120d25af",
+      "planSha256": "sha256:5fd0d535ff5538402acdd2472706c8d5de17e949dd9f3317fb5140c61014e292"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:62bc392fc238587bc5928b6cf4c90291981feb069a93ff36376095ab5943e374",
+        "path": ".expert-team/work-items/wi-t1000064/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
