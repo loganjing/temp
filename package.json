@@ -1,0 +1,14 @@
+{
+  "name": "kwms-billing-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "dev": "node ./scripts/dev.mjs",
+    "build": "npm run build -w kwms-billing",
+    "start": "npm run start -w kwms-billing",
+    "test": "npm run test -w kwms-billing --if-present"
+  }
+}
