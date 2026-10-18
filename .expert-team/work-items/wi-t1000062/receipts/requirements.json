@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:9aa7b85a3d08344df88fbbb34dba821bf7a5cac495460fea58c47141cd5b943c",
+  "createdAt": "2026-10-18T01:26:01.875Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:19:19.486Z",
+    "completedAt": "2026-10-18T01:26:01.875Z",
+    "durationMs": 402389
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000062/requirements.md",
+      "bytes": 61264,
+      "sha256": "sha256:2b3c43cd74e089f467363da27a36807017364a25956bc59e110205d30791016d",
+      "title": "Land 地产投资测算与拿地决策平台 · 产品需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
