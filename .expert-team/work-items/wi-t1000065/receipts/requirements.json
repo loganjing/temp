@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:f4a9ec5f3063ba996d2854aeaa4dc4232cd856164ecca9d4b6c34b7e408dcc2a",
+  "createdAt": "2026-10-18T01:36:30.174Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:32:45.414Z",
+    "completedAt": "2026-10-18T01:36:30.174Z",
+    "durationMs": 224760
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000065/requirements.md",
+      "bytes": 28850,
+      "sha256": "sha256:987f223e05dcdc9440f172a15d24283e498580f64e2975c34ed84e0066a463f5",
+      "title": "KWMS 仓储费用管理模块（报价计费）需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
