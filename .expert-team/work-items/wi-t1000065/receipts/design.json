@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:c18a9002c74eea97f4f8a1a7c8abd768c3808d85eb3283a87eab4c307476291a",
+  "createdAt": "2026-10-18T01:52:32.844Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:39:00.784Z",
+    "completedAt": "2026-10-18T01:52:32.844Z",
+    "durationMs": 812060
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000065/architecture-baseline.md",
+      "bytes": 18554,
+      "sha256": "sha256:61dba105eae1787d112bdeeae2586171019d066f415895b78a21cb2c47be3440",
+      "title": "系统设计 — KWMS 仓储费用管理模块"
+    },
+    {
+      "path": "docs/wi-t1000065/technical-contract.md",
+      "bytes": 15954,
+      "sha256": "sha256:3af39d37aee108d86ac8ace0385aa10098d52648d87622dc354683d062f9389f",
+      "title": "技术契约 — KWMS 仓储费用管理模块（API）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "path": "docs/wi-t1000065/workspace-bootstrap.json",
+      "sha256": "sha256:40db6da8a72b9012359ccd4dcddfdb208874d05d2857ce6d1e15c56079ac405c",
+      "result": "initialized",
+      "packageRoot": "app/kwms-billing",
+      "planDigest": "sha256:ce981efb56b85a34b60720e7fc1d83bc6504c49e978dd2c233362ddfbfe04217",
+      "scaffoldDigest": "sha256:6798082e21be93f61f4fe9086dfc06f06126ffb160e141ca82a64147a50cb51d",
+      "planSha256": "sha256:40db6da8a72b9012359ccd4dcddfdb208874d05d2857ce6d1e15c56079ac405c"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:4e62257561d8f61fe15d46b3e46d584436571cc866ed49f1b52b0478369be365",
+        "path": ".expert-team/work-items/wi-t1000065/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

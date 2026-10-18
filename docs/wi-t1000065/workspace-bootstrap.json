@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "kwms-billing",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "tailwind",
+  "packageManager": "npm",
+  "modules": ["dbkit", "authkit", "userkit", "permissionkit", "auditkit"],
+  "identityMode": "local-password"
+}

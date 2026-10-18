@@ -717,7 +717,7 @@
     }
   ],
   "executionStageIds": [
-    "requirements"
+    "design"
   ],
   "failureMappings": [
     {
