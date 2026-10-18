@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react'
-import { apiRequest } from './platform/api-client'
-import { usePlatformText } from './platform/i18n'
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import BillDetailPage from './pages/BillDetailPage'
+import BillListPage from './pages/BillListPage'
+import BillNewPage from './pages/BillNewPage'
+import BillPrintPage from './pages/BillPrintPage'
 
 export default function App() {
-  const t = usePlatformText()
-  const [health, setHealth] = useState<'checking' | 'ok' | 'down'>('checking')
-
-  useEffect(() => {
-    apiRequest<{ ok: boolean }>('/api/health')
-      .then((d) => setHealth(d.ok ? 'ok' : 'down'))
-      .catch(() => setHealth('down'))
-  }, [])
-
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', padding: '4rem', maxWidth: 640, margin: '0 auto' }}>
-      <h1>asset-apply</h1>
-      <p>{t('intro')}</p>
-      <p>
-        {t('health')}:
-        {health === 'checking' && t('checking')}
-        {health === 'ok' && t('ok')}
-        {health === 'down' && t('down')}
-      </p>
-    </main>
+    <BrowserRouter>
+      <div className="app-shell">
+        <header className="app-header no-print">
+          <div className="app-title">资产领用单</div>
+          <Link to="/bills/new" className="btn btn-primary">新建领用单</Link>
+        </header>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<BillListPage />} />
+            <Route path="/bills/new" element={<BillNewPage />} />
+            <Route path="/bills/:id" element={<BillDetailPage />} />
+            <Route path="/bills/:id/print" element={<BillPrintPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   )
 }

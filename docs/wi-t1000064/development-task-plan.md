@@ -1,0 +1,138 @@
+# 开发任务编排
+
+<!-- sourcePlanId: plan:c49be505-b660-4330-80d3-bf57034236c9 | rendererVersion: 4 -->
+
+## 任务
+
+| 任务 | 一句话目标 | 执行模式 | 依赖 | 能力 |
+| --- | --- | --- | --- | --- |
+| T01 | 实现资产领用单后端：SQLite 三表迁移、保存权威校验、事务内取号、查询与详情 API 及行为测试 | spawn_task | - | engineering.implementation |
+| T02 | 实现资产领用单前端：列表筛选、新建表单与分录编辑、详情回读、A4 打印视图 | spawn_task | - | engineering.implementation |
+
+## 依赖执行图
+
+```mermaid
+flowchart LR
+  start(["开始"])
+  task0["T01<br/>实现资产领用单后端：SQLite 三表迁移、保存权威校验、事务内取号、查询与详情 API 及行为测试<br/>spawn_task"]
+  task1["T02<br/>实现资产领用单前端：列表筛选、新建表单与分录编辑、详情回读、A4 打印视图<br/>spawn_task"]
+  finish(["完成"])
+  start --> task0
+  start --> task1
+  task0 --> finish
+  task1 --> finish
+```
+
+## 任务契约
+
+### T01
+
+**目标**
+
+## 目标
+
+按已批准的架构基线与技术契约，在 `app/asset-apply/` 服务端实现资产领用单后端业务闭环：
+
+- 数据层：在 `src/server/migrations/sqlite/` 新增初始迁移，创建 `asset_apply_bill`、`asset_apply_bill_entry`、`billno_seq` 三表与索引（billno 唯一索引、分录 bill_id 索引），启动时经现有 dbkit 绑定自动应用（`DB_PATH` 可覆盖）。
+- 单据模块：在 `src/server/routes.ts` 注册三个业务端点——`POST /api/asset-apply-bills`（权威校验 → 事务取号 → 主表与分录原子落库，返回完整单据）、`GET /api/asset-apply-bills`（billno/picker 包含匹配、pick_date 精确、分页）、`GET /api/asset-apply-bills/:id`（主表全字段 + 分录按 seq 升序）。实现统一错误结构（VALIDATION_FAILED 含 details 字段级定位、BILL_NOT_FOUND、BILLNO_CONFLICT 兜底）、单号规则（`LYyyyyMMdd` + 4 位流水，事务内原子取号，超 9999 自动扩位）、系统字段全部由服务端在保存事务内生成。
+- 共享契约：作为 `src/shared/` 唯一写入 owner，按技术契约定义平台中立的单据类型与错误码常量，供服务端实现消费。
+- 测试：在 `test/` 新增领用单 API 行为测试（保存成功回读、三类校验失败提示、连续取号唯一且格式正确、条件查询、详情 404），复用 `with-http-server.mjs` 隔离真实 HTTP 服务验证。
+
+## 验证
+
+- `npm run typecheck:server`（于 `app/asset-apply/`）
+- `npm test`（于 `app/asset-apply/`，node --import tsx --test）
+
+## 边界与 AC 贡献
+
+- 不修改 `src/client/`、`index.html`、`vite.config.ts`、`package.json`；不启用权限/工作流/导入导出/消息；请求中出现的系统字段一律忽略。
+- AC 贡献：AC-01 保存与回读 API；AC-02 服务端权威校验与错误文案；AC-03 单号生成；AC-04 详情回读 API（打印数据源）；AC-05 条件查询 API。跨层端到端验收由后续验证阶段负责。
+
+**角色:** general-app-development-expert  \  **失败策略:** block
+
+**需求**
+
+- AC-01
+- AC-02
+- AC-03
+- AC-04
+- AC-05
+
+**输入**
+
+- docs/wi-t1000064/requirements.md
+- docs/wi-t1000064/architecture-baseline.md
+- docs/wi-t1000064/technical-contract.md
+
+**产物**
+
+- app/asset-apply/src/server/
+- app/asset-apply/src/shared/
+- app/asset-apply/test/
+
+**可写范围**
+
+- app/asset-apply/src/server/
+- app/asset-apply/src/shared/
+- app/asset-apply/test/
+
+**阻塞码**
+
+- （无）
+
+### T02
+
+**目标**
+
+## 目标
+
+按已批准的架构基线（UI 基线：split-master-detail、Modern SaaS、顶部应用壳）与技术契约，在 `app/asset-apply/` 前端实现资产领用单用户界面：
+
+- API 边界：基于现有 `src/client/platform/api-client.ts` 请求边界（注意其响应 wire 规范化行为）按技术契约定义客户端消费类型；不依赖 `src/server/` 与 `src/shared/` 实现，不发明 API 行为。
+- 路由与视图：
+  - `/`：单据列表（billno、picker、pick_date 三项筛选与查询参数一一对应，分页），按 createtime 降序，主操作「新建领用单」，含加载指示、空态引导、查询失败可重试；
+  - `/bills/new`：新建表单（主表必填字段 + 分录行编辑，数量默认 1，行增删），提交前执行与服务端一致的本地预检，提示文案一致（「明细分录不能为空」「资产名称不能为空」等）；服务端校验错误按统一错误结构的 details 渲染字段级提示；保存成功提示并展示生成的领用单号后跳转详情；
+  - `/bills/:id`：单据详情回读（主表 + 分录按 seq 排序展示）；
+  - `/bills/:id/print`：A4 纵向打印视图（`@media print` 隐藏应用壳），含主表信息、分录表格（资产名称/编码/规格型号/数量/单位/存放位置）与签章区（领用人、部门负责人、资产管理员签字及日期），不发起写操作。
+
+## 验证
+
+- `npm run typecheck:client`（于 `app/asset-apply/`）
+- `npm run build:client`（于 `app/asset-apply/`，vite build）
+
+## 边界与 AC 贡献
+
+- 不修改 `src/server/`、`src/shared/`、`test/`、`package.json`；不实现更新/删除旅程；分录为空时显示引导行。
+- AC 贡献：AC-01 表单录入与数据回显；AC-02 本地预检与用户可见提示；AC-03 成功提示展示单号；AC-04 打印模板输出；AC-05 列表条件查询。跨层端到端验收由后续验证阶段负责。
+
+**角色:** general-app-development-expert  \  **失败策略:** block
+
+**需求**
+
+- AC-01
+- AC-02
+- AC-03
+- AC-04
+- AC-05
+
+**输入**
+
+- docs/wi-t1000064/requirements.md
+- docs/wi-t1000064/architecture-baseline.md
+- docs/wi-t1000064/technical-contract.md
+
+**产物**
+
+- app/asset-apply/src/client/
+- app/asset-apply/index.html
+- app/asset-apply/vite.config.ts
+
+**可写范围**
+
+- app/asset-apply/src/client/
+- app/asset-apply/index.html
+- app/asset-apply/vite.config.ts
+
+**阻塞码**
+
+- （无）

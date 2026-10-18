@@ -2,17 +2,18 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "design_ready",
-  "revision": 4,
+  "state": "implementation_ready",
+  "revision": 7,
   "completedActions": [
     "requirements",
-    "design"
+    "design",
+    "implementation"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-18T01:53:23.298Z",
+  "updatedAt": "2026-10-18T02:45:17.256Z",
   "applicationProfile": {
     "schemaVersion": 1,
     "applicationType": "fullstack-complex",
@@ -38,5 +39,23 @@
     },
     "decidedAt": "2026-10-18T01:47:58.766Z",
     "sha256": "sha256:62bc392fc238587bc5928b6cf4c90291981feb069a93ff36376095ab5943e374"
-  }
+  },
+  "approvals": [
+    {
+      "receiptId": "approval:general-application-development-spec:approve_plan:implementation:5",
+      "receiptType": "approval",
+      "operation": "approve_plan",
+      "actionId": "implementation",
+      "actor": "loganjing",
+      "requestId": "general-application-development-spec:approve_plan:implementation:5",
+      "decision": "approved",
+      "approvedAt": "2026-10-18T02:31:36.178Z",
+      "planId": "plan:c49be505-b660-4330-80d3-bf57034236c9",
+      "source": {
+        "requirementsSha256": "sha256:22358339c9e71d66e84149edd21c8e0ea32b11ad03374177c4258d14e7182e0b",
+        "designSha256": "sha256:4d08a725a6c301c695e6ab888a5e0f18371f78e0140925911ecdf83f37461f0e"
+      },
+      "expectedRevision": 5
+    }
+  ]
 }

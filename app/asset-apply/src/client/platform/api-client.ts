@@ -1,12 +1,31 @@
+export interface ApiErrorDetail {
+  path: string
+  message: string
+}
+
 export class ApiRequestError extends Error {
   constructor(
     message: string,
     readonly status: number,
     readonly code?: string,
+    readonly details?: ApiErrorDetail[],
   ) {
     super(message)
     this.name = 'ApiRequestError'
   }
+}
+
+function parseErrorDetails(value: unknown): ApiErrorDetail[] | undefined {
+  if (!Array.isArray(value)) return undefined
+  const details: ApiErrorDetail[] = []
+  for (const item of value) {
+    if (!item || typeof item !== 'object') continue
+    const record = item as Record<string, unknown>
+    if (typeof record.path === 'string' && typeof record.message === 'string') {
+      details.push({ path: record.path, message: record.message })
+    }
+  }
+  return details.length > 0 ? details : undefined
 }
 
 function camelCaseResponse(value: unknown): unknown {
@@ -30,5 +49,6 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
     typeof detail?.message === 'string' ? detail.message : typeof error === 'string' ? error : `HTTP ${response.status}`,
     response.status,
     typeof detail?.code === 'string' ? detail.code : undefined,
+    parseErrorDetails(detail?.details),
   )
 }
