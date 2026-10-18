@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:4277ed9dc0af1f28bab77813ba17ffeeadcf541469a2793854657dcf85bb9fe0",
+  "createdAt": "2026-10-18T01:40:08.272Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:29:43.866Z",
+    "completedAt": "2026-10-18T01:40:08.272Z",
+    "durationMs": 624406
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000062/architecture-baseline.md",
+      "bytes": 17858,
+      "sha256": "sha256:c1c4c9873543a651f8c50d01d8dce11b9af98e356135dc4355d2454d544d966f",
+      "title": "Land 地产投资测算与拿地决策平台 · 架构基线"
+    },
+    {
+      "path": "docs/wi-t1000062/technical-contract.md",
+      "bytes": 30385,
+      "sha256": "sha256:2a7a19fa2f13862650002bc98a39bfac69de6215b254cfaf42e545f91685f9f1",
+      "title": "Land 地产投资测算与拿地决策平台 · 前后端技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:1b65e4740b5390059cb688c1ade8ae6dec423380f793a416eab602408fa10bb4",
+        "path": ".expert-team/work-items/wi-t1000062/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

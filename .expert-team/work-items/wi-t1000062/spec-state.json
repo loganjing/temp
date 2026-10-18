@@ -2,14 +2,47 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-18T01:26:01.875Z"
+  "updatedAt": "2026-10-18T01:40:08.272Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000062/requirements.md",
+      "sha256": "sha256:2b3c43cd74e089f467363da27a36807017364a25956bc59e110205d30791016d"
+    },
+    "reason": "需求基线明确要求多角色权限体系（第2章7类角色）、审批与权限隔离（M15、AC-06/AC-08/AC-10 的 authorization 证据）、公司资产跨用户共享（横切规则4：地块/资料/账号归属公司，不依附个人账号）、采用方案与决策记录永久保留和审计留痕（横切规则3、M15 审计要求）、参数版本化与历史方案按原口径复现（AC-14）、AI 与外部地图/未来财务系统集成（M03/M16/M17）。浏览器 localStorage 无法提供跨用户权限控制和权威数据存储，因此走 fullstack-complex 完整路线。",
+    "evidence": {
+      "supporting": [
+        "第2章用户角色：投资/土地业务人员、方案负责人、市场/研究人员、财务/成本人员、管理层/审批人、下游部门、系统管理员共7类角色，M18（P0）要求用户与权限维护，需要服务端认证与权限",
+        "M15 审批、冻结与决策留痕（P0）：审批人选择采用/退回、权限原则（默认只读、复制调整）、审计记录提交人/审批人/时间/意见/退回次数，需服务端权威数据",
+        "AC-06/AC-08/AC-10 证据类型含 authorization：方案版本隔离、审批闭环、下游只读交接均要求跨用户权限控制",
+        "横切规则3：采用方案与决策记录永久保留、历史正式方案永久保留、变更留痕，需要权威持久化存储",
+        "横切规则4：地块所有权、地图标记、项目资料和账号归属公司，不依附单一员工个人账号，要求跨用户/跨设备共享",
+        "AC-14：参数修改记录生效时间/修改人/适用范围，历史正式方案按原口径复现，需服务端版本化参数管理",
+        "M03 地图外部服务、M17 AI 助手、M16 未来财务系统衔接涉及外部集成；M01 审批中/已完成地块禁止无痕删除等业务规则需服务端校验"
+      ],
+      "excluding": [
+        "simple-frontend 不满足：localStorage 无法实现7类角色的服务端权限隔离与审计（AC-06/AC-08/AC-10 的 authorization 证据）",
+        "simple-frontend 不满足：跨用户共享与公司资产归属（横切规则4）",
+        "simple-frontend 不满足：采用方案永久冻结只读与决策记录长期审计（横切规则3、M15）"
+      ],
+      "unresolved": [
+        "地图服务商业授权与账号归属方式（第8章第16条）影响 M03 实现细节，不影响整体路线",
+        "AI 公开资料来源与抓取频率（第8章第15条）影响 M17 实现细节",
+        "现金流/IRR/NPV 财务规则（第8章第12条）待财务确认，属后续阶段范围"
+      ]
+    },
+    "decidedAt": "2026-10-18T01:30:20.964Z",
+    "sha256": "sha256:1b65e4740b5390059cb688c1ade8ae6dec423380f793a416eab602408fa10bb4"
+  }
 }

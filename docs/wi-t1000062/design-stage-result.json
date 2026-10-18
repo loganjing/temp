@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "artifacts": [
+    { "path": "docs/wi-t1000062/architecture-baseline.md" },
+    { "path": "docs/wi-t1000062/technical-contract.md" }
+  ],
+  "openQuestions": [
+    "地图服务商业授权与公司账号归属方式（需求第 8 章第 16 条），影响 MapProvider 是否切换付费地图",
+    "土地成本占比分母采用 GDV 还是净 GDV（需求第 8 章第 18 条），影响看板与报告该指标口径",
+    "敏感性分析正式目标利润率、颜色区间与默认范围（需求第 8 章第 13 条），作为 colorRule 默认值",
+    "多审批人是全部通过还是任一人通过（需求第 8 章第 1 条），本期按单人先到先生效实现",
+    "AI provider 接入方式与公开资料来源/抓取规则（需求第 8 章第 15 条），影响 ai 模块实施边界"
+  ],
+  "residualRisks": [
+    "workspace-init 批准初始化未在本阶段执行（本 execution 源码写入范围限定为 docs/wi-t1000062 与 .expert-team/work-items/wi-t1000062）；CommonApp 模块发行文件存在性已由 manifest 核查确认，脚手架创建留待实施阶段按架构基线 1.2 节冻结配置一次性执行",
+    "开放地图瓦片服务的可用性与使用条款依赖外部服务，MapProvider 抽象层已预留替换边界",
+    "现金流/IRR/NPV 与 PAT 税务口径依赖财务确认（需求第 8 章第 12/17 条），属后续阶段实施范围"
+  ]
+}
