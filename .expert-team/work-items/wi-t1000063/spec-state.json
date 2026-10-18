@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-18T01:37:02.823Z"
+  "updatedAt": "2026-10-18T01:50:40.151Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000063/requirements.md",
+      "sha256": "sha256:55441ef7b5aeac1ba70a7617e5f7f844494d1cdf414a71808d1174216844762f"
+    },
+    "reason": "需求基线明确要求服务端权威数据与后端强制权限校验、登录认证与固定四角色、后台定时任务（待确认超时自动关闭）、异步 SMTP 邮件通知、MCP 协议外部集成，以及跨用户/跨设备的工单流转与服务重启不丢失的持久化状态（自动分配轮询游标）；simple-frontend 的全部前提（数据仅存当前浏览器、无服务端、无认证、无后台任务）均不成立，无模糊项。",
+    "evidence": {
+      "supporting": [
+        "§2.3/§8/AC-17：所有写操作必须由后端强制校验（角色 + 对象关系 + 工单状态），前端隐藏入口仅为体验层——要求服务端权威校验能力",
+        "§2/AC-16：固定 4 种角色（提交人/专员/部门经理/管理员）登录后不可切换，数据范围按本人/本组/本部门/全局分级——要求登录认证与跨用户权限体系",
+        "§6.4/AC-07：待确认工单超 24 小时由系统定期自动扫描并关闭、生成系统默认好评——要求后台定时任务",
+        "§6.5/AC-20：工单提交与回复触发异步 SMTP 邮件（失败仅记日志、未配置 SMTP 静默跳过）——要求外部服务集成",
+        "§7.3/AC-22：灵基智能体经 MCP 协议调用工单创建/提交接口并携带附件下载链接由系统下载挂接——要求外部 API 集成",
+        "§6.2/AC-03：自动分配轮询游标必须持久化、服务重启不重置——要求服务端持久化，浏览器 localStorage 不满足",
+        "§6.12/AC-18：工单活动日志与配置审计日志全量留痕，配置审计仅管理员可见——要求服务端权威数据存储",
+        "AC-01/AC-21：提交人、处理人、部门经理在不同设备上操作同一工单的完整生命周期——要求跨用户/跨设备共享数据"
+      ],
+      "excluding": [
+        "simple-frontend 前提不成立：需求明确多用户流转、服务端权威数据、后台定时任务、SMTP 与 MCP 外部集成，数据不可能只保存在单一浏览器 localStorage"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-18T01:40:06.106Z",
+    "sha256": "sha256:87362af780348718940f9410e06b2ff8ca2512a12ec4d2707e5c7277a6a39889"
+  }
 }

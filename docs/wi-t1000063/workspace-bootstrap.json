@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "helpdesk",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "tailwind",
+  "packageManager": "npm",
+  "modules": ["dbkit", "authkit", "userkit", "attachment", "auditkit", "i18n"],
+  "identityMode": "local-password"
+}

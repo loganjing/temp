@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:ee6c8b61fbc66cdcfd40504306e609786d0d09999d32a4211a48819b484b03aa",
+  "createdAt": "2026-10-18T01:50:40.151Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:38:57.450Z",
+    "completedAt": "2026-10-18T01:50:40.151Z",
+    "durationMs": 702701
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000063/architecture-baseline.md",
+      "bytes": 20655,
+      "sha256": "sha256:fcaa225d14984f8be5c24c0911c49863b4d70e096386f0273b41d9c2f9ee57bc",
+      "title": "系统设计 · Helpdesk 企业工单系统（WorkItem: wi-t1000063）"
+    },
+    {
+      "path": "docs/wi-t1000063/technical-contract.md",
+      "bytes": 25769,
+      "sha256": "sha256:d7ec134387a93d53dac154a4f0cadaf247ca974571a53f5e17effa4e877b3d79",
+      "title": "技术契约 · API 字段级定义（WorkItem: wi-t1000063）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:87362af780348718940f9410e06b2ff8ca2512a12ec4d2707e5c7277a6a39889",
+        "path": ".expert-team/work-items/wi-t1000063/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
