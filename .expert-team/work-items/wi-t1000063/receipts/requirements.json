@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:4d248b6d62432bbabd93737468a151ef16e92f8a5580017a16a4e5383b9b83fc",
+  "createdAt": "2026-10-18T01:37:02.823Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:29:40.855Z",
+    "completedAt": "2026-10-18T01:37:02.822Z",
+    "durationMs": 441967
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000063/requirements.md",
+      "bytes": 56573,
+      "sha256": "sha256:55441ef7b5aeac1ba70a7617e5f7f844494d1cdf414a71808d1174216844762f",
+      "title": "Helpdesk 企业工单系统需求（WorkItem: wi-t1000063 / 业务任务: ticket-full-1）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}

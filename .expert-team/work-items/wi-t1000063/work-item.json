@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000063",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "请在当前 Session 中完成这个 IssueTask，按指定的连续阶段范围执行：requirements。\n业务任务：ticket-full-1\n\n/Users/loganjing/work/generalapp/helpdesk/docs/spec/requirements.md\n阶段进度和回执只作为本地执行事实保存。只有全部阶段成功后，才发布一组最终产物和一个最终 WorkItem 快照。不得执行此范围之外的阶段；完成 requirements 后停止。",
+  "request": "请在当前 Session 中完成这个 IssueTask，按指定的连续阶段范围执行：requirements。\n业务任务：ticket-full-1\n\n/Users/loganjing/work/generalapp/helpdesk/docs/spec/requirements.md\n阶段进度和回执只作为本地执行事实保存。只有全部阶段成功后，才发布一组最终产物和一个最终 WorkItem 快照。不得执行此范围之外的阶段；完成 requirements 后停止。",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-18T01:29:40.693Z"
+}
