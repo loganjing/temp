@@ -33,14 +33,24 @@ export function createApplicationAuth(db: DbClient, permissionKit: ReturnType<ty
     }),
   })
   const requireAnyAuth: MiddlewareHandler = async (context, next) => {
-    await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
+    // 必须 return vendor 中间件的 Response：丢弃返回值会导致 Hono compose 无法确定响应（fetch 泄漏 Context）
+    let callbackResponse: Response | undefined
+    const response = await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
       const user = (context as unknown as { get(key: string): { passwordChangeRequired?: boolean } }).get('currentUser')
       if (user.passwordChangeRequired && !['/api/auth/me', '/api/auth/password'].includes(context.req.path)) {
-        context.json({ error: { code: 'PASSWORD_CHANGE_REQUIRED', message: 'Change your temporary password before continuing' } }, 403)
+        callbackResponse = context.json({ error: { code: 'PASSWORD_CHANGE_REQUIRED', message: 'Change your temporary password before continuing' } }, 403)
         return
       }
       await next()
     })
+    if (callbackResponse) return callbackResponse
+    // vendor 未认证响应体为 { error: string }（非契约结构）；统一转换为技术契约第 13 节错误结构
+    if (response instanceof Response && response.status === 401) {
+      const body = (await response.json().catch(() => null)) as { error?: unknown } | null
+      const message = body && typeof body.error === 'string' ? body.error : '用户名或密码错误'
+      return context.json({ error: { code: 'UNAUTHENTICATED', message } }, 401)
+    }
+    return response
   }
   return { ...auth, requireAnyAuth, userStore, userResolver, loginRoute }
 }

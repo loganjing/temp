@@ -2,6 +2,7 @@ import { Hono, type Env, type MiddlewareHandler } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { localeMiddleware } from './platform/locale'
+import { BusinessError } from './common/errors'
 
 // 业务路由由实现阶段注册。平台边界在初始化后即可运行和验证。
 export function createApp<E extends Env = Env>(options: {
@@ -14,6 +15,12 @@ export function createApp<E extends Env = Env>(options: {
   app.onError((error, c) => {
     if (error instanceof HTTPException) {
       return c.json({ error: { code: 'HTTP_ERROR', message: error.message } }, error.status)
+    }
+    // 中间件层抛出的业务错误（如权限拒绝、组织越权）同样按技术契约第 13 节结构转换
+    if (error instanceof BusinessError) {
+      const body: { code: string; message: string; field?: string } = { code: error.code, message: error.message }
+      if (error.field) body.field = error.field
+      return c.json({ error: body }, error.status as 400)
     }
     console.error('[server] unhandled request error', error)
     return c.json({ error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } }, 500)

@@ -6,6 +6,7 @@ import { createPermissionKit } from '@commonapp/permissionkit'
 import { createApplicationAudit } from './audit'
 import { authorizationRegistry } from './authorization'
 import { createApplicationAuth } from './auth'
+import { runSeed } from './seed'
 
 export async function initializePlatform() {
   const sqlitePath = process.env.DB_PATH ?? './data/application.db'
@@ -16,6 +17,7 @@ export async function initializePlatform() {
     const permissionKit = createPermissionKit(db)
     const auditKit = createApplicationAudit(db)
     await permissionKit.syncRegistry(authorizationRegistry)
+    await runSeed(db, permissionKit)
     const auth = createApplicationAuth(db, permissionKit, auditKit)
     return { db, permissionKit, auditKit, auth, close: () => db.close() }
   } catch (error) {

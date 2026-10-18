@@ -1,109 +1,83 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
-import UsersPage from './admin/UsersPage'
+import { type ReactNode } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { useSession } from './platform/session'
+import AppShell from './AppShell'
+import { ForbiddenNotice } from './components/ui'
+import LoginPage from './pages/LoginPage'
+import QuotesList from './pages/quotes/QuotesList'
+import QuoteForm from './pages/quotes/QuoteForm'
+import QuoteDetail from './pages/quotes/QuoteDetail'
+import ReceivablesPage from './pages/receivables/ReceivablesPage'
+import AdjustmentsList from './pages/adjustments/AdjustmentsList'
+import AdjustmentCreate from './pages/adjustments/AdjustmentCreate'
+import AdjustmentDetail from './pages/adjustments/AdjustmentDetail'
+import ReconList from './pages/recon/ReconList'
+import ReconDetail from './pages/recon/ReconDetail'
+import SettlementsList from './pages/settlements/SettlementsList'
+import SettlementDetail from './pages/settlements/SettlementDetail'
+import ReportsPage from './pages/reports/ReportsPage'
+import MasterdataPage from './pages/masterdata/MasterdataPage'
+import UsersPage from './pages/admin/UsersPage'
+import JobsPage from './pages/system/JobsPage'
+import AuditPage from './pages/system/AuditPage'
 
-type CurrentUser = { id: string; name: string; email: string; roles: string[]; passwordChangeRequired?: boolean }
-type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+// 路由权限守卫：按会话 permissions 控制页面入口，越权直达给出 403 中文提示。
+function Guard({ permission, children }: { permission: string; children: ReactNode }) {
+  const { can } = useSession()
+  if (!can(permission)) return <ForbiddenNotice />
+  return <>{children}</>
+}
 
 export default function App() {
-  const [state, setState] = useState<BootstrapState>('checking')
-  const [user, setUser] = useState<CurrentUser | null>(null)
-  const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
+  const { status, can } = useSession()
 
-  const refresh = async () => {
-    const token = localStorage.getItem('platform-token')
-    if (token) {
-      try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
-        setState('authenticated')
-        return
-      } catch {
-        localStorage.removeItem('platform-token')
-      }
-    }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
-  }
+  if (status === 'checking') return <div className="boot-screen">加载中…</div>
+  if (status === 'anonymous') return <LoginPage />
 
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
-
-  const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap-admin', { method: 'POST', body: JSON.stringify(body) })
-        setState('login')
-        setError('管理员已创建，请登录 / Admin created. Please sign in.')
-      } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
-        localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
-        setState('authenticated')
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  const changePassword = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
-  if (state === 'required' || state === 'login') return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>{state === 'required' ? '创建首位管理员 / Set up the first admin' : '登录 / Sign in'}</h1>
-        <p>{state === 'required' ? '仅在没有用户时可执行一次。/ Available once while no users exist.' : '使用本地账户登录。/ Sign in with your local account.'}</p>
-        <form onSubmit={(event) => void submitIdentity(event)} className="stack">
-          {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
-          <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-          <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建管理员 / Create admin' : '登录 / Sign in'}</button>
-        </form>
-      </section>
-    </main>
-  )
-  if (!user) return null
-  if (user.passwordChangeRequired) return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>更改临时密码 / Change temporary password</h1>
-        <p>继续使用前请设置新密码。/ Set a new password before continuing.</p>
-        <form onSubmit={(event) => void changePassword(event)} className="stack">
-          <label>新密码 / New password<input name="password" type="password" autoComplete="new-password" minLength={12} required /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>更新密码 / Update password</button>
-        </form>
-      </section>
-    </main>
-  )
+  const defaultPath =
+    can('quote:view') ? '/quotes'
+      : can('receivable:view') ? '/receivables'
+        : can('adjustment:view') ? '/adjustments'
+          : can('recon:view') ? '/recon-statements'
+            : can('settlement:view') ? '/settlements'
+              : can('job:view') ? '/system/jobs'
+                : can('audit:view') ? '/system/audit'
+                  : can('user:manage') ? '/system/users'
+                    : '/no-access'
 
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <AppShell>
+      <Routes>
+        <Route path="/" element={<Navigate to={defaultPath} replace />} />
+        <Route path="/login" element={<Navigate to={defaultPath} replace />} />
+        <Route path="/no-access" element={<ForbiddenNotice />} />
+
+        <Route path="/quotes" element={<Guard permission="quote:view"><QuotesList /></Guard>} />
+        <Route path="/quotes/new" element={<Guard permission="quote:create"><QuoteForm mode="create" /></Guard>} />
+        <Route path="/quotes/:id" element={<Guard permission="quote:view"><QuoteDetail /></Guard>} />
+        <Route path="/quotes/:id/edit" element={<Guard permission="quote:edit"><QuoteForm mode="edit" /></Guard>} />
+
+        <Route path="/receivables" element={<Guard permission="receivable:view"><ReceivablesPage /></Guard>} />
+
+        <Route path="/adjustments" element={<Guard permission="adjustment:view"><AdjustmentsList /></Guard>} />
+        <Route path="/adjustments/new" element={<Guard permission="adjustment:create"><AdjustmentCreate /></Guard>} />
+        <Route path="/adjustments/:id" element={<Guard permission="adjustment:view"><AdjustmentDetail /></Guard>} />
+
+        <Route path="/recon-statements" element={<Guard permission="recon:view"><ReconList /></Guard>} />
+        <Route path="/recon-statements/:id" element={<Guard permission="recon:view"><ReconDetail /></Guard>} />
+
+        <Route path="/settlements" element={<Guard permission="settlement:view"><SettlementsList /></Guard>} />
+        <Route path="/settlements/:id" element={<Guard permission="settlement:view"><SettlementDetail /></Guard>} />
+
+        <Route path="/reports" element={<Guard permission="report:export"><ReportsPage /></Guard>} />
+        <Route path="/masterdata" element={<Guard permission="masterdata:maintain"><MasterdataPage /></Guard>} />
+
+        <Route path="/system/users" element={<Guard permission="user:manage"><UsersPage /></Guard>} />
+        <Route path="/system/jobs" element={<Guard permission="job:view"><JobsPage /></Guard>} />
+        <Route path="/system/audit" element={<Guard permission="audit:view"><AuditPage /></Guard>} />
+
+        <Route path="*" element={<Navigate to={defaultPath} replace />} />
+      </Routes>
+    </AppShell>
   )
 }

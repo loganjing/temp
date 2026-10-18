@@ -1,10 +1,105 @@
+// 权限点与角色注册表（permissionkit 同步源）。
+// 业务权限点全集与四类角色默认绑定按技术契约 1.1 节；
+// quote:audit / adjustment:audit 默认不绑定四类角色（需求未决事项 3），
+// 由系统管理员经角色配置（PUT /api/users/{id} roles）授予 auditor 角色后流程贯通。
 export const authorizationRegistry = {
   permissions: {
+    // 平台既有权限（/api/admin/* 用户管理路由使用）
     usersRead: { key: 'platform.users.read', description: 'View and search users' },
     usersManage: { key: 'platform.users.manage', description: 'Create and update users' },
     rolesAssign: { key: 'platform.roles.assign', description: 'Assign registered roles to users' },
+    // 业务权限点（技术契约 1.1）
+    quoteView: { key: 'quote:view', description: '查看仓储合同报价单' },
+    quoteCreate: { key: 'quote:create', description: '新增仓储合同报价单' },
+    quoteEdit: { key: 'quote:edit', description: '编辑仓储合同报价单' },
+    quoteTerminate: { key: 'quote:terminate', description: '终止仓储合同报价单' },
+    quoteAudit: { key: 'quote:audit', description: '审核仓储合同报价单' },
+    discountEdit: { key: 'discount:edit', description: '维护分段优惠' },
+    receivableView: { key: 'receivable:view', description: '查询应收费用明细' },
+    receivableRecalc: { key: 'receivable:recalc', description: '费用重算' },
+    adjustmentView: { key: 'adjustment:view', description: '查询应收费用调整单' },
+    adjustmentCreate: { key: 'adjustment:create', description: '新增应收费用调整单' },
+    adjustmentEdit: { key: 'adjustment:edit', description: '编辑应收费用调整单' },
+    adjustmentAudit: { key: 'adjustment:audit', description: '审核应收费用调整单' },
+    reconView: { key: 'recon:view', description: '查询应收对账单' },
+    reconGenerate: { key: 'recon:generate', description: '生成应收对账单' },
+    reconAudit: { key: 'recon:audit', description: '审核应收对账单' },
+    settlementView: { key: 'settlement:view', description: '查询应收结算单' },
+    settlementAdjust: { key: 'settlement:adjust', description: '结算金额微调' },
+    invoiceIssue: { key: 'invoice:issue', description: '结算单开票' },
+    writeoffRecord: { key: 'writeoff:record', description: '收款核销' },
+    jobRun: { key: 'job:run', description: '手动触发定时任务' },
+    jobView: { key: 'job:view', description: '查看任务执行记录' },
+    reportExport: { key: 'report:export', description: '导出财务报表' },
+    masterdataMaintain: { key: 'masterdata:maintain', description: '维护基础档案' },
+    userManage: { key: 'user:manage', description: '用户管理' },
+    roleConfig: { key: 'role:config', description: '角色与数据权限配置' },
+    auditView: { key: 'audit:view', description: '查看审计与变更日志' },
   },
   roles: {
-    admin: ['platform.users.read', 'platform.users.manage', 'platform.roles.assign'],
+    // 系统管理员：跨组织访问、基础档案与角色配置、全单据 view
+    admin: [
+      'platform.users.read',
+      'platform.users.manage',
+      'platform.roles.assign',
+      'masterdata:maintain',
+      'user:manage',
+      'role:config',
+      'job:run',
+      'job:view',
+      'audit:view',
+      'quote:view',
+      'receivable:view',
+      'adjustment:view',
+      'recon:view',
+      'settlement:view',
+    ],
+    // 仓储运营：报价维护、分段优惠、查询应收明细、发起调整单
+    warehouse_ops: [
+      'quote:view',
+      'quote:create',
+      'quote:edit',
+      'quote:terminate',
+      'discount:edit',
+      'receivable:view',
+      'adjustment:view',
+      'adjustment:create',
+      'adjustment:edit',
+      'job:view',
+    ],
+    // 财务：重算、对账生成审核、结算开票核销、报表导出、审计查询
+    finance: [
+      'quote:view',
+      'receivable:view',
+      'receivable:recalc',
+      'adjustment:view',
+      'recon:view',
+      'recon:generate',
+      'recon:audit',
+      'settlement:view',
+      'settlement:adjust',
+      'invoice:issue',
+      'writeoff:record',
+      'job:run',
+      'job:view',
+      'report:export',
+      'audit:view',
+    ],
+    // 客户经理（只读）：查询所有单据
+    account_manager: [
+      'quote:view',
+      'receivable:view',
+      'adjustment:view',
+      'recon:view',
+      'settlement:view',
+      'job:view',
+    ],
+    // 审核角色（默认不分配给任何用户）：承载 quote:audit / adjustment:audit 授予路径
+    auditor: [
+      'quote:view',
+      'quote:audit',
+      'adjustment:view',
+      'adjustment:audit',
+    ],
   },
 } as const

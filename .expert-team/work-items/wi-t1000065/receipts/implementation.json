@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:5",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 4,
+  "stateVersion": 5,
+  "outcome": "passed",
+  "contentHash": "sha256:052af68854551e19b81c122299f59b1b46152b0646a0956717ef8e888cf934b2",
+  "createdAt": "2026-10-18T05:02:59.835Z",
+  "timing": {
+    "startedAt": "2026-10-18T02:23:31.254Z",
+    "completedAt": "2026-10-18T05:02:59.834Z",
+    "durationMs": 9568580
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000065/implementation-report.md",
+      "bytes": 11637,
+      "sha256": "sha256:5b757e330c2e417001d8800e284157fb820a42d25b598ed3fe1e56711851092a",
+      "title": "实现报告 — KWMS 仓储费用管理模块（cangchu-1）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:4e62257561d8f61fe15d46b3e46d584436571cc866ed49f1b52b0478369be365",
+        "path": ".expert-team/work-items/wi-t1000065/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -3,6 +3,17 @@ import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
 import { authorizationRegistry } from './platform/authorization'
+import { registerPublicAuthRoutes, registerProtectedAuthRoutes } from './api/auth-routes'
+import { registerMasterdataRoutes } from './api/masterdata-routes'
+import { registerQuoteRoutes } from './api/quote-routes'
+import { registerReceivableRoutes } from './api/receivable-routes'
+import { registerAdjustmentRoutes } from './api/adjustment-routes'
+import { registerReconRoutes } from './api/recon-routes'
+import { registerSettlementRoutes } from './api/settlement-routes'
+import { registerJobRoutes } from './api/job-routes'
+import { registerReportRoutes } from './api/report-routes'
+import { registerAuditRoutes } from './api/audit-routes'
+import { registerUserRoutes } from './api/user-routes'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -69,14 +80,14 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     await platform.auditKit.record({ type: 'platform.admin.bootstrap', actorUserId: id, metadata: { email } })
     return context.json({ ok: true }, 201)
   })
-  app.post('/api/auth/login', platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
+  registerPublicAuthRoutes(app, platform)
   app.get('/api/auth/sso/start', (context) => platform.auth.sso.start(context as never))
   app.get('/api/auth/sso/callback', (context) => platform.auth.sso.callback(context as never))
   app.post('/api/auth/sso/exchange', (context) => platform.auth.sso.exchange(context as never))
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  registerProtectedAuthRoutes(app, platform)
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -211,4 +222,16 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
       return context.json(errorBody('INVALID_ROLE', error instanceof Error ? error.message : 'Invalid role'), 409)
     }
   })
+
+  // 业务域路由（技术契约第 2 节 API 全集）
+  registerMasterdataRoutes(app, platform)
+  registerQuoteRoutes(app, platform)
+  registerReceivableRoutes(app, platform)
+  registerAdjustmentRoutes(app, platform)
+  registerReconRoutes(app, platform)
+  registerSettlementRoutes(app, platform)
+  registerJobRoutes(app, platform)
+  registerReportRoutes(app, platform)
+  registerAuditRoutes(app, platform)
+  registerUserRoutes(app, platform)
 }
