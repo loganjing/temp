@@ -1,0 +1,155 @@
+# 开发任务编排
+
+<!-- sourcePlanId: plan:250b7a0a-0f28-49ac-a76e-f96c2924f7c0 | rendererVersion: 4 -->
+
+## 任务
+
+| 任务 | 一句话目标 | 执行模式 | 依赖 | 能力 |
+| --- | --- | --- | --- | --- |
+| T01 | 执行冻结初始化创建 land 全栈项目骨架，并实现服务端全部业务域、计算引擎与 SQLite 迁移 | spawn_task | - | engineering.implementation |
+| T02 | 基于就绪骨架与可运行服务端实现 React/Vite SPA 全部业务界面，并完成整包构建验证 | spawn_task | T01 | engineering.implementation |
+
+## 依赖执行图
+
+```mermaid
+flowchart LR
+  start(["开始"])
+  task0["T01<br/>执行冻结初始化创建 land 全栈项目骨架，并实现服务端全部业务域、计算引擎与 SQLite 迁移<br/>spawn_task"]
+  task1["T02<br/>基于就绪骨架与可运行服务端实现 React/Vite SPA 全部业务界面，并完成整包构建验证<br/>spawn_task"]
+  finish(["完成"])
+  start --> task0
+  task0 --> task1
+  task1 --> finish
+```
+
+## 任务契约
+
+### T01
+
+**目标**
+
+## 目标
+
+冷启动创建 Land 应用项目，并完成服务端全部业务实现，使《技术契约》定义的 REST API 可真实运行、可独立验证。
+
+### 初始化（一次性执行）
+- 按架构基线 1.2 节冻结的 workspace-bootstrap 配置初始化项目：projectType=new、appName=land、framework=hono、frontendFramework=react-vite、uiFramework=tailwind、packageManager=npm，安装 dbkit/attachment/authkit/userkit/permissionkit/auditkit 六个 CommonApp 模块（vendor/@commonapp），identityMode=local-password。
+- 服务端入口收敛为 src/server.js（Hono 提供 API 并托管前端构建产物）；版本化迁移置于 migrations/sqlite/（runMigrations，禁止 ORM 自动同步或手工改 schema）；DB_PATH 默认 ./data/land.db（服务启动自动建父目录），PORT 默认 3000。
+- 前端源码目录统一约定为 src/client/：本任务只配置 vite.config、index.html、tsconfig 的入口与构建指向（标题、挂载点一次到位），不写入 src/client/ 内容；Tailwind 走 Vite 插件方式，样式配置收敛在 src/client/ 内，不新增根级样式配置文件；服务端层检查不得依赖尚不存在的前端源码。
+
+### 服务端实现
+- 按技术契约（docs/wi-t1000062/technical-contract.md）实现全部 12 个服务端域：identity、parcel（状态机+留痕）、parcel-profile（地价双向录入 D4）、map（GeoJSON 与视图快照）、market（土地参考与竞品分表）、assessment（快速评估+组合视图）、plan（期次/产品/车位/九类成本/公共分摊/复制/正式化/锁定 D2）、analysis（比较/敏感性/反算）、approval（提交/采用冻结/退回/决策记录）、report（看板/报告/交接）、parameters（版本化口径 D3）、ai 建议流转（P1 预留：建议→确认→候选方案管道，provider 适配层配置化，调用失败返回 502 且无部分写入）。
+- 计算引擎全部在服务端实现（契约第 14 节）：面积口径换算、收入链、九类成本归集与分摊、TDC/PBT/PM 与单位指标、敏感性矩阵与反算；金额以 decimal 字符串全精度存储，显示舍入不回写。
+- SQLite 迁移覆盖契约全部数据表；提供初始种子：7 类角色与权限码映射（契约 0.1 节）、两套州属面积口径参数版本（AC-14 验证前提）、可登录的业务与管理账号。
+
+### 验证
+- 从项目实际配置选择并运行服务端层 focused checks（如类型检查、服务端构建、核心链路 API 测试），运行时使用独立 DB_PATH 与空闲端口，不占用共享端口；报告真实执行结果。
+- 本任务贡献 AC-01 至 AC-15 的服务端部分（API、计算、状态机、权限、审计、持久化与冻结）。
+
+**角色:** general-app-development-expert  \  **失败策略:** block
+
+**需求**
+
+- AC-01
+- AC-02
+- AC-03
+- AC-04
+- AC-05
+- AC-06
+- AC-07
+- AC-08
+- AC-09
+- AC-10
+- AC-11
+- AC-12
+- AC-13
+- AC-14
+- AC-15
+
+**输入**
+
+- docs/wi-t1000062/requirements.md
+- docs/wi-t1000062/architecture-baseline.md
+- docs/wi-t1000062/technical-contract.md
+
+**产物**
+
+- package.json
+- src/server.js
+
+**可写范围**
+
+- package.json
+- src/server.js
+- index.html
+- vite.config.js
+- tsconfig.json
+- README.md
+- package-lock.json
+- src/server/
+- migrations/sqlite/
+- tests/server/
+- vendor/@commonapp/
+
+**阻塞码**
+
+- （无）
+
+### T02
+
+**目标**
+
+## 目标
+
+在 T01 交付的项目骨架与可运行服务端 API 之上，实现 Land 桌面 Web 前端全部业务界面，完成整包构建，交付拿地判断闭环的两层使用体验。
+
+### 界面实现（按架构基线 1.3 节 UI 基线）
+- 应用壳：左侧导航（机会池、市场、测算与方案、决策、交接、管理后台）+ 顶部上下文栏（当前地块/方案与关键状态徽标）+ 主工作区；Modern SaaS 视觉预设；split-master-detail 展示模板（地块台账列表→当前地块详情工作区，详情区按业务对象切换子区：档案、地图、市场、快速评估、方案与测算、审批、看板）。
+- 专用工作区：正式测算输入区与结果区并列（实时联动、约束校验内联提示）；方案比较多列差异表（列头可下钻单方案明细）；管理层看板结论优先（结论/核心指标/推荐方案/风险/下一步在前，明细与历史在后）；敏感性维度范围输入+结果矩阵（目标利润率颜色规则可配置，不写死页面）；地图用 Leaflet+开放瓦片（按 MapProvider 抽象），支持保存视图快照。
+- 覆盖 AC-01 至 AC-15 的前端交互：登录与会话持久化、台账搜索/筛选/摘要列、档案与核查清单、附件上传下载、市场两类资料分列展示（未确认资料打待确认标记）、快速评估输入与多机会横向组合比较、正式测算联动与地价双向录入交互（最后编辑字段为计算输入）、方案复制与版本链操作、锁定/无权限受限提示、审批提交/采用/退回操作流、看板核心数字跳转追溯、交接只读视图与受控导出、参数口径切换并填写原因、多期多业态编辑与分摊前后展示、车位政府要求与内部目标两组并列、AI 建议确认界面。
+- 前端不实现任何业务公式（契约第 14 节：计算/状态机/精度/权限判定/审计全部以服务端为准），按服务端响应与错误码渲染状态、受限与校验提示；空态/加载/错误/无权限/成功反馈等全局状态齐备；表格截断文本提供悬停全文。
+
+### 验证
+- 运行前端层 focused checks（如类型检查、前端构建）并执行整包 npm run build；构建产物由 src/server.js 托管；报告真实执行结果。不做浏览器验收（属后续阶段）。
+- 本任务贡献 AC-01 至 AC-15 的用户界面部分。
+
+**角色:** general-app-development-expert  \  **失败策略:** block
+
+**需求**
+
+- AC-01
+- AC-02
+- AC-03
+- AC-04
+- AC-05
+- AC-06
+- AC-07
+- AC-08
+- AC-09
+- AC-10
+- AC-11
+- AC-12
+- AC-13
+- AC-14
+- AC-15
+
+**输入**
+
+- docs/wi-t1000062/requirements.md
+- docs/wi-t1000062/architecture-baseline.md
+- docs/wi-t1000062/technical-contract.md
+- package.json (来自 T01)
+- src/server.js (来自 T01)
+
+**产物**
+
+- （无）
+
+**可写范围**
+
+- src/client/
+- tests/client/
+
+**阻塞码**
+
+- （无）

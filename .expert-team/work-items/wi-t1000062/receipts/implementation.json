@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:5",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 4,
+  "stateVersion": 5,
+  "outcome": "passed",
+  "contentHash": "sha256:a976f9e99743eabd93941ecf73a273976d1b923188a3c2da5f52175115d831fa",
+  "createdAt": "2026-10-18T06:13:14.155Z",
+  "timing": {
+    "startedAt": "2026-10-18T01:41:38.869Z",
+    "completedAt": "2026-10-18T06:13:14.155Z",
+    "durationMs": 16295286
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000062/implementation-report.md",
+      "bytes": 4440,
+      "sha256": "sha256:a5d2350c52c373ade9cc95e7c10f487c75d60556f8d155f14421da0e339e61f2",
+      "title": "Implementation 阶段结算报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "T01:typecheck:server",
+      "status": "passed",
+      "command": "npx tsc --noEmit -p tsconfig.json (app/land)",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T01:server-tests",
+      "status": "passed",
+      "command": "node --import tsx --test test/*.test.mjs (app/land)",
+      "exitCode": 0,
+      "detail": "13/13 通过：engine、dbkit、platform、api-flow（真实 HTTP + 临时库全链路：登录→地块→D4 地价→方案→formalize→提交→退回→复制→approve→handoff；403/422/AI 502/参数版本化）"
+    },
+    {
+      "checkId": "T01:root-entry-boot",
+      "status": "passed",
+      "command": "PORT=4123 DB_PATH=/tmp/land-root-verify.db node --import tsx src/server.js",
+      "detail": "/api/health 200；SPA 根路径 200；未认证 /api/parcels 401；验证后端口关闭"
+    },
+    {
+      "checkId": "T02:typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client (app/land)",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T02:full-build",
+      "status": "passed",
+      "command": "npm run build (app/land)",
+      "exitCode": 0,
+      "detail": "typecheck:server + typecheck:client + vite build 全通过；dist/assets/index-BPOydgVg.js (300.16 kB)、index-C35MACFm.css (15.42 kB)"
+    },
+    {
+      "checkId": "T02:server-tests-recheck",
+      "status": "passed",
+      "command": "node --import tsx --test test/*.test.mjs (app/land)",
+      "exitCode": 0,
+      "detail": "13/13 通过，前端改动未破坏服务端"
+    },
+    {
+      "checkId": "T02:client-tests",
+      "status": "passed",
+      "command": "node --import tsx --test tests/client/*.test.mjs (app/land)",
+      "exitCode": 0,
+      "detail": "12/12 通过：format 显示口径 8 项 + 地图解析/降级 4 项"
+    },
+    {
+      "checkId": "T02:root-entry-spa",
+      "status": "passed",
+      "command": "node --import tsx src/server/index.ts (PORT=4731, mktemp 临时库)",
+      "detail": "/api/health 200；/ 返回 SPA 且引用新构建产物（hash 与 build 输出一致）；/parcels/1 深路由回退 200；验证后清理"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:1b65e4740b5390059cb688c1ade8ae6dec423380f793a416eab602408fa10bb4",
+        "path": ".expert-team/work-items/wi-t1000062/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

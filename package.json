@@ -1,0 +1,14 @@
+{
+  "name": "land-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "dev": "node ./scripts/dev.mjs",
+    "build": "npm run build -w land",
+    "start": "node --import tsx src/server.js",
+    "test": "npm run test -w land --if-present"
+  }
+}
