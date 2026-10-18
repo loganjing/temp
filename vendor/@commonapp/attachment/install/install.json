@@ -1,0 +1,105 @@
+{
+  "moduleName": "attachment",
+  "package": "@commonapp/attachment",
+  "minVersion": "0.1.0",
+  "description": "通用附件模块：上传/下载/删除/临时分享链接/公开下载",
+
+  "configSchema": {
+    "properties": {
+      "tableName": {
+        "type": "string",
+        "default": "attachments",
+        "description": "附件表名"
+      },
+      "entityColumn": {
+        "type": "string",
+        "required": true,
+        "description": "关联实体字段名，如 ticket_id"
+      },
+      "maxFileSize": {
+        "type": "number",
+        "default": 10485760,
+        "description": "文件大小限制（字节），默认 10MB"
+      },
+      "tokenTtlMs": {
+        "type": "number",
+        "default": 3600000,
+        "description": "分享 Token 有效期（毫秒），默认 1 小时"
+      },
+      "uploadDir": {
+        "type": "string",
+        "default": "./data/uploads",
+        "description": "文件上传存储目录"
+      },
+      "APP_URL": {
+        "type": "string",
+        "required": true,
+        "description": "应用公网基础 URL（共享 env，跨模块复用）。如 http://localhost:3001（开发）或生产域名。宿主 .env 已配置 APP_URL 时直接复用，无需单独配置"
+      },
+      "JWT_SECRET": {
+        "type": "string",
+        "required": true,
+        "description": "Token 签名密钥（共享 env，跨模块复用，authkit 也用此变量）。宿主 .env 已配置 JWT_SECRET 时直接复用，无需单独配置"
+      }
+    }
+  },
+
+  "touchpoints": [
+    {
+      "id": "schema",
+      "description": "用 getAttachmentDdl 取得 DDL 并写入版本化 SQLite migration，删除重复的附件表定义",
+      "anchor": "宿主的 src/server/migrations/sqlite/（或等效迁移目录）",
+      "snippet": "snippets/schema.ts"
+    },
+    {
+      "id": "repository",
+      "description": "用 dbkit DbClient 注入 AttachmentRepository，详情方法中 await listByEntity 加载附件",
+      "anchor": "class Repository / getTicketById（或等效的详情方法）",
+      "snippet": "snippets/repository.ts"
+    },
+    {
+      "id": "routes",
+      "description": "将 createAttachmentRoutes 挂到业务集合前缀，通过 hooks 注入权限和日志逻辑",
+      "anchor": "受保护业务路由入口（如 /api/tickets）",
+      "snippet": "snippets/routes.ts",
+      "requiresHooks": ["canAccess", "resolveUser", "onLog"]
+    },
+    {
+      "id": "public-route",
+      "description": "在认证边界前挂载公开下载路由；全局认证中间件场景再合并公开白名单",
+      "anchor": "公开路由入口（如 registerPublicRoutes）",
+      "snippet": "snippets/index.ts"
+    },
+    {
+      "id": "frontend",
+      "description": "用 AttachmentList + AttachmentUploader 替换内联附件 UI，创建 API 客户端",
+      "anchor": "工单详情组件 / 工单表单组件 / 嵌入式面板",
+      "snippet": "snippets/frontend.tsx"
+    }
+  ],
+
+  "hooks": {
+    "canAccess": {
+      "required": true,
+      "description": "校验用户是否有权限在指定实体上操作附件。upload/delete 通常需要编辑权限，download 需要查看权限",
+      "signature": "(user: unknown, entityId: string, action: 'upload' | 'download' | 'delete') => Promise<boolean>"
+    },
+    "resolveUser": {
+      "required": true,
+      "description": "从用户对象中提取 id 和 name，用于记录附件上传者",
+      "signature": "(user: unknown) => { id: string; name: string }"
+    },
+    "onLog": {
+      "required": false,
+      "description": "记录操作日志到宿主的审计表",
+      "signature": "(entityId: string, action: string, user: unknown, detail: string) => void"
+    }
+  },
+
+  "cleanup": [
+    "删除 src/lib/token.ts（通用模块自带 token 服务）",
+    "删除路由中原有的 5 个附件路由（上传/下载/删除/分享/公开下载）",
+    "删除 src/services/api.ts 中 4 个附件方法",
+    "删除前端组件中的内联附件操作逻辑（handleDownload/handleShareLink/handleDeleteAttachment 等）"
+  ]
+}

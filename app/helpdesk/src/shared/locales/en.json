@@ -1,0 +1,7 @@
+{
+  "intro": "Workspace ready",
+  "health": "Server status",
+  "checking": "Checking",
+  "ok": "Online",
+  "down": "Offline"
+}

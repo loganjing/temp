@@ -1,0 +1,56 @@
+{
+  "name": "@commonapp/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./server": {
+      "import": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.js"
+      },
+      "require": {
+        "types": "./dist/server.d.cts",
+        "default": "./dist/server.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "i18next": "^23.0.0",
+    "react": "^18.0.0",
+    "react-i18next": "^14.0.0",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "hono": "^4.6.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-i18next": {
+      "optional": true
+    },
+    "i18next-browser-languagedetector": {
+      "optional": true
+    },
+    "hono": {
+      "optional": true
+    }
+  }
+}
