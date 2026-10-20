@@ -1,108 +1,158 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
-import UsersPage from './admin/UsersPage'
+// 应用入口：会话引导（Token → /api/auth/me）、登录页与登录后的路由壳。
+// 路由：工作台（handler/ops）、我的工单（全部角色）、统计/审计（handler/ops）、管理（ops）。
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
-type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+import { useEffect, useState, type ReactNode } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { fetchCurrentUser, logout as apiLogout } from './api'
+import { setUnauthorizedHandler } from './platform/api-client'
+import type { CurrentUser, Role } from './contracts'
+import AppShell from './components/AppShell'
+import LoginScreen from './components/LoginScreen'
+import { EmptyBlock } from './components/ui'
+import AdminPage from './pages/AdminPage'
+import AuditPage from './pages/AuditPage'
+import MyTicketsPage from './pages/MyTicketsPage'
+import StatsPage from './pages/StatsPage'
+import WorkbenchPage from './pages/WorkbenchPage'
+import { AuthProvider, useAuth } from './state/auth'
+import { CompanyDirectoryProvider } from './state/company-directory'
+
+type Phase = 'checking' | 'login' | 'ready'
 
 export default function App() {
-  const [state, setState] = useState<BootstrapState>('checking')
+  const [phase, setPhase] = useState<Phase>('checking')
   const [user, setUser] = useState<CurrentUser | null>(null)
-  const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
 
-  const refresh = async () => {
+  // 已有 Token 时校验会话；失效则清理并回到登录页
+  useEffect(() => {
     const token = localStorage.getItem('platform-token')
-    if (token) {
-      try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
-        setState('authenticated')
-        return
-      } catch {
+    if (!token) {
+      setPhase('login')
+      return
+    }
+    let cancelled = false
+    fetchCurrentUser()
+      .then((currentUser) => {
+        if (cancelled) return
+        setUser(currentUser)
+        setPhase('ready')
+      })
+      .catch(() => {
+        if (cancelled) return
         localStorage.removeItem('platform-token')
-      }
+        setPhase('login')
+      })
+    return () => {
+      cancelled = true
     }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
+  }, [])
+
+  // 携带 Token 的请求返回 401 时统一回到登录页
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      localStorage.removeItem('platform-token')
+      setUser(null)
+      setPhase('login')
+    })
+    return () => setUnauthorizedHandler(null)
+  }, [])
+
+  const handleLogout = () => {
+    void apiLogout().catch(() => undefined)
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setPhase('login')
   }
 
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
-
-  const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
-        setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
-      } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
-        localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
-        setState('authenticated')
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
-    } finally {
-      setBusy(false)
-    }
+  if (phase === 'checking') {
+    return (
+      <main className="flex min-h-screen items-center justify-center">
+        <p className="text-sm text-slate-500">加载中…</p>
+      </main>
+    )
   }
 
-  const changePassword = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
-    } finally {
-      setBusy(false)
-    }
+  if (phase === 'login' || !user) {
+    return (
+      <LoginScreen
+        onSuccess={(currentUser) => {
+          setUser(currentUser)
+          setPhase('ready')
+        }}
+      />
+    )
   }
 
-  if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
-  if (state === 'required' || state === 'login') return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>{state === 'required' ? '创建首个账户 / Set up the first account' : '登录 / Sign in'}</h1>
-        <p>{state === 'required' ? '仅在没有用户时可执行一次。/ Available once while no users exist.' : '使用本地账户登录。/ Sign in with your local account.'}</p>
-        <form onSubmit={(event) => void submitIdentity(event)} className="stack">
-          {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
-          <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-          <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建账户 / Create account' : '登录 / Sign in'}</button>
-        </form>
-      </section>
-    </main>
-  )
-  if (!user) return null
-  if (user.passwordChangeRequired) return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>更改临时密码 / Change temporary password</h1>
-        <p>继续使用前请设置新密码。/ Set a new password before continuing.</p>
-        <form onSubmit={(event) => void changePassword(event)} className="stack">
-          <label>新密码 / New password<input name="password" type="password" autoComplete="new-password" minLength={12} required /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>更新密码 / Update password</button>
-        </form>
-      </section>
-    </main>
-  )
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <AuthProvider user={user} logout={handleLogout}>
+      <CompanyDirectoryProvider user={user}>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppShell />}>
+              <Route path="/" element={<HomeRedirect />} />
+              <Route
+                path="/workbench"
+                element={
+                  <RequireRole allow={['handler', 'ops']}>
+                    <WorkbenchPage />
+                  </RequireRole>
+                }
+              />
+              <Route path="/my-tickets" element={<MyTicketsPage />} />
+              <Route
+                path="/stats"
+                element={
+                  <RequireRole allow={['handler', 'ops']}>
+                    <StatsPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path="/audit"
+                element={
+                  <RequireRole allow={['handler', 'ops']}>
+                    <AuditPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <RequireRole allow={['ops']}>
+                    <AdminPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <section className="card">
+                    <EmptyBlock title="页面不存在" hint="请从左侧导航选择目标页面" />
+                  </section>
+                }
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </CompanyDirectoryProvider>
+    </AuthProvider>
   )
+}
+
+// 角色路由守卫：仅控制入口可见性；数据域与操作权限仍由服务端强制校验。
+function RequireRole({ allow, children }: { allow: Role[]; children: ReactNode }) {
+  const { user } = useAuth()
+  if (!allow.includes(user.role)) {
+    return (
+      <section className="card">
+        <EmptyBlock title="当前角色无权访问此页面" hint="如需访问请联系运营管理员调整角色" />
+      </section>
+    )
+  }
+  return <>{children}</>
+}
+
+function HomeRedirect() {
+  const { user } = useAuth()
+  return <Navigate to={user.role === 'submitter' ? '/my-tickets' : '/workbench'} replace />
 }
