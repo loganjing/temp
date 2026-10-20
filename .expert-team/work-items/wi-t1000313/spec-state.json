@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "specId": "general-application-development-spec",
+  "specRevision": 14,
+  "state": "requirements_ready",
+  "revision": 1,
+  "completedActions": [
+    "requirements"
+  ],
+  "blockers": [],
+  "deliveryProfile": "standard",
+  "graphRevision": 5,
+  "graphHash": "sha256:9fddb0b98cc7526e474df559e852fdafac81ad69cd21c0a83b1b8569d41357ee",
+  "updatedAt": "2026-10-20T07:37:01.643Z"
+}
