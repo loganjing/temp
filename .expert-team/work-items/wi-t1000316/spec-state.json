@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-20T11:10:51.571Z"
+  "updatedAt": "2026-10-20T11:25:18.208Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000316/requirements.md",
+      "sha256": "sha256:bb9726c9c595ce75e74083443618a96a49ef81677187e86d041e0513363e6316"
+    },
+    "reason": "需求基线明确要求跨用户/跨公司的共享权威数据与权限边界：工单按公司隔离（AC-03），提交人与处理人多轮协作（AC-02），按分类自动分配与转派（AC-05/AC-06），完成邮件通知（AC-08，外部集成），服务端聚合统计与仪表盘（AC-10），操作日志持久化（AC-12）。这些能力无法由单浏览器 localStorage 满足，且无任何证据表明服务器、权威数据库、认证、后台任务与外部集成不必要。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单按公司隔离：列表/详情/统计/工作台仅同公司用户可见，需要服务端授权与权威数据边界",
+        "AC-02/AC-06 多轮回复与转派要求提交人与处理人跨用户共享同一工单数据",
+        "AC-08 工单完成后向提交人邮箱发送通知邮件，属于外部集成/后台通知能力",
+        "AC-10 统计分析与仪表盘需要服务端按公司/部门聚合工单量、平均响应时间、满意度、热点问题",
+        "AC-12 操作日志（创建/分配/回复/转派/完成/取消/评价）需要服务端持久化与查询",
+        "AC-04 五状态生命周期由提交人/系统/处理人多方共同推动，需要权威状态"
+      ],
+      "excluding": [
+        "无证据表明数据仅需在单一浏览器本地保存；需求要求跨用户可见与公司级配置（业务组、分配规则）共享",
+        "localStorage 路线无法满足公司隔离授权、邮件通知与服务端统计聚合"
+      ],
+      "unresolved": [
+        "邮件发送实现方式（真实 SMTP 或可观察的模拟发信）需求未规定，不改变 fullstack 路线选择",
+        "权限体系与角色命名未规定，设计中以最小角色模型闭合"
+      ]
+    },
+    "decidedAt": "2026-10-20T11:12:53.635Z",
+    "sha256": "sha256:79589de6facf1bdbab444c2a58055908fdff76ccf101375b6af303a8fcf6c575"
+  }
 }
