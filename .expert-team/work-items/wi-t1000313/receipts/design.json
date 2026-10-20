@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:b2e67e2952b52483ce3a53a0749396d02dbfb29ef6fbf292fabe3522388d2207",
+  "createdAt": "2026-10-20T09:16:53.405Z",
+  "timing": {
+    "startedAt": "2026-10-20T08:27:42.905Z",
+    "completedAt": "2026-10-20T09:16:53.405Z",
+    "durationMs": 2950500
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000313/architecture-baseline.md",
+      "bytes": 14794,
+      "sha256": "sha256:f0b02233105f8e3ce8201fdb12782dca14bf27deff26fcb207dffd4495361763",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000313/technical-contract.md",
+      "bytes": 18453,
+      "sha256": "sha256:89e9e8b32aa8d85fbb1d0bd41f6cc0f190d915b93e2ba2b6e6cd06bf2a120ead",
+      "title": "技术契约（127-ticket 工单系统）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:01ae177f53a8e55c1c2f86f064690843a48961a27269be6cf89c3ae372ba62e4",
+        "path": ".expert-team/work-items/wi-t1000313/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

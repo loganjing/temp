@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9fddb0b98cc7526e474df559e852fdafac81ad69cd21c0a83b1b8569d41357ee",
-  "updatedAt": "2026-10-20T07:37:01.643Z"
+  "updatedAt": "2026-10-20T09:16:53.405Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000313/requirements.md",
+      "sha256": "sha256:5f1a8b296231c0b9f62977c7e3819fec441dc6b13886db79e74ef71498bf643f"
+    },
+    "reason": "需求要求多公司、多用户共享的服务端权威工单数据：公司隔离需要服务端授权与访问拒绝（AC-03），完成通知需服务端向提交人邮箱发送邮件（AC-09），跨公司统计与公司维度筛选需要服务端聚合与数据权限（AC-11/12/13），分类自动分配与生命周期流转需要服务端规则与状态权威（AC-04/AC-06）。不满足 simple-frontend 的排除条件，走完整路线。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单按公司隔离：B公司用户访问A公司工单必须被拒绝且不泄露内容，要求服务端授权与权威数据边界",
+        "多角色跨用户协作：提交人、业务组处理人、跨公司视角使用者共享同一工单数据（第2节、AC-02/AC-07/AC-08）",
+        "AC-09 工单完成时向提交人邮箱发送通知邮件，要求服务端外部集成（邮件发送）能力",
+        "AC-11/AC-12/AC-13 按公司/部门统计、运营仪表盘与工作台公司维度筛选需要服务端聚合查询与跨公司数据权限",
+        "AC-06 分类→业务组自动分配与 AC-04 生命周期状态流转需要服务端规则引擎与状态权威"
+      ],
+      "excluding": [
+        "无证据表明数据可仅存于单一浏览器：工单需跨用户、跨公司共享并按公司隔离，localStorage 无法满足",
+        "邮件通知无法在纯前端完成，必须由服务端发送"
+      ],
+      "unresolved": [
+        "邮件发送通道（SMTP 配置或服务提供方）需求未规定，不阻塞设计，将在技术契约中作为集成边界记录",
+        "跨公司视角使用者的具体角色与授权模型需求未规定，设计采用运营角色占位并在技术契约中记录"
+      ]
+    },
+    "decidedAt": "2026-10-20T08:28:49.834Z",
+    "sha256": "sha256:01ae177f53a8e55c1c2f86f064690843a48961a27269be6cf89c3ae372ba62e4"
+  }
 }
