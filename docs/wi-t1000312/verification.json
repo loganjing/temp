@@ -1,0 +1,772 @@
+{
+  "decision": "pass-with-risk",
+  "summary": {
+    "objective": "工单系统（126-ticket）全量验收",
+    "changedBehavior": "首次全量交付验收：工单生命周期、分配、转派、评价、公司隔离、统计与工作台",
+    "nonGoals": [],
+    "riskLabels": []
+  },
+  "environment": {
+    "name": "ticket-system 本地交付（app/ticket-system，node 服务 http://localhost:3312）",
+    "version": "工作区源码构建（git 3e05d29，无独立版本号）",
+    "dataProfile": "隔离种子数据（公司A/公司B 账号与 10 张种子工单）+ 验收过程数据（TK-000011~TK-000013、验收组G1/G2、分类分配规则、回复/评价/日志记录）"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "以某公司提交人身份创建工单，填写主题、描述、选择分类与 SLA 优先级，提交后打开该工单详情查看。",
+          "expected": "工单具有系统生成的唯一工单ID；详情可读回主题、描述、分类、优先级（P0-P4 之一）、提交人姓名/公司/部门/邮箱、创建时间；初始状态为待分配。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "以某公司提交人身份创建工单，填写主题、描述、选择分类与 SLA 优先级，提交后打开该工单详情查看。",
+          "expected": "工单具有系统生成的唯一工单ID；详情可读回主题、描述、分类、优先级（P0-P4 之一）、提交人姓名/公司/部门/邮箱、创建时间；初始状态为待分配。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "以某公司提交人身份创建工单，填写主题、描述、选择分类与 SLA 优先级，提交后打开该工单详情查看。",
+          "expected": "工单具有系统生成的唯一工单ID；详情可读回主题、描述、分类、优先级（P0-P4 之一）、提交人姓名/公司/部门/邮箱、创建时间；初始状态为待分配。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "对一张待分配工单执行分配（或命中自动分配）后再执行完成；对另一张未完成工单执行取消；然后重新打开两张工单详情。",
+          "expected": "第一张工单状态依次呈现待分配 → 待处理 → 完成，第二张状态为取消；重新查看后状态不变。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "对一张待分配工单执行分配（或命中自动分配）后再执行完成；对另一张未完成工单执行取消；然后重新打开两张工单详情。",
+          "expected": "第一张工单状态依次呈现待分配 → 待处理 → 完成，第二张状态为取消；重新查看后状态不变。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "对一张待分配工单执行分配（或命中自动分配）后再执行完成；对另一张未完成工单执行取消；然后重新打开两张工单详情。",
+          "expected": "第一张工单状态依次呈现待分配 → 待处理 → 完成，第二张状态为取消；重新查看后状态不变。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "在一张已分配工单中，由处理人回复一次、提交人再回复一次，然后查看工单回复区。",
+          "expected": "回复按时间顺序展示至少两条，每条包含回复人、回复时间与回复内容，两轮回复的回复人和时间可区分。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "在一张已分配工单中，由处理人回复一次、提交人再回复一次，然后查看工单回复区。",
+          "expected": "回复按时间顺序展示至少两条，每条包含回复人、回复时间与回复内容，两轮回复的回复人和时间可区分。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "在一张已分配工单中，由处理人回复一次、提交人再回复一次，然后查看工单回复区。",
+          "expected": "回复按时间顺序展示至少两条，每条包含回复人、回复时间与回复内容，两轮回复的回复人和时间可区分。"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "runtime-render",
+          "action": "处理人将一张待处理工单标记完成，查看工单记录，并检查提交人邮箱（或邮件发送记录）。",
+          "expected": "工单状态变为完成；工单记录包含处理人与处理时间；提交人邮箱收到工单完成通知邮件（含工单标识）。"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "session-persistence",
+          "action": "处理人将一张待处理工单标记完成，查看工单记录，并检查提交人邮箱（或邮件发送记录）。",
+          "expected": "工单状态变为完成；工单记录包含处理人与处理时间；提交人邮箱收到工单完成通知邮件（含工单标识）。"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "other",
+          "action": "处理人将一张待处理工单标记完成，查看工单记录，并检查提交人邮箱（或邮件发送记录）。",
+          "expected": "工单状态变为完成；工单记录包含处理人与处理时间；提交人邮箱收到工单完成通知邮件（含工单标识）。"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "runtime-render",
+          "action": "提交人在一张已完成工单上提交满意度评价，然后查看该工单。",
+          "expected": "评价保存成功；工单上可读回评价结果与评价人。"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "interaction",
+          "action": "提交人在一张已完成工单上提交满意度评价，然后查看该工单。",
+          "expected": "评价保存成功；工单上可读回评价结果与评价人。"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "session-persistence",
+          "action": "提交人在一张已完成工单上提交满意度评价，然后查看该工单。",
+          "expected": "评价保存成功；工单上可读回评价结果与评价人。"
+        },
+        {
+          "requirementId": "AC-13",
+          "kind": "runtime-render",
+          "action": "对一张工单依次执行创建、回复、转派、完成后，查看该工单的操作日志。",
+          "expected": "日志包含上述各操作记录，每条含操作人、操作时间与操作类型，按时间排列。"
+        },
+        {
+          "requirementId": "AC-13",
+          "kind": "session-persistence",
+          "action": "对一张工单依次执行创建、回复、转派、完成后，查看该工单的操作日志。",
+          "expected": "日志包含上述各操作记录，每条含操作人、操作时间与操作类型，按时间排列。"
+        }
+      ],
+      "evidence": "端到端闭环通过：submitter.a1 创建 TK-000011（初始待分配、详情读回全部字段）→ handler.a1 人工分配技术支持组/处理人甲（待处理）并回复 → submitter.a1 回复（两轮可见）→ 转派售后服务组/处理人乙 → 完成（记录处理人与完成时间，通知记录含工单标识与收件人）→ submitter.a1 评价 5 分读回；TK-000012 取消终态保持；操作日志 7 类操作按时间排列。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #2（创建与详情读回）、#3（分配/两轮回复）、#4（转派/完成/评价/日志/状态保持）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "以某公司提交人身份创建工单，填写主题、描述、选择分类与 SLA 优先级，提交后打开该工单详情查看。",
+          "expected": "工单具有系统生成的唯一工单ID；详情可读回主题、描述、分类、优先级（P0-P4 之一）、提交人姓名/公司/部门/邮箱、创建时间；初始状态为待分配。",
+          "actual": "TK-000011 创建后详情读回：ID=TK-000011（系统生成 TK-xxxxxx）、主题=验收流程工单T1-审批页面空白、描述、分类=验收流程分类、优先级=P2、提交人=研发提交人一/公司A/研发部/submitter.a1@example.com、创建时间=2026-10-20 16:44、初始状态=待分配",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "以某公司提交人身份创建工单，填写主题、描述、选择分类与 SLA 优先级，提交后打开该工单详情查看。",
+          "expected": "工单具有系统生成的唯一工单ID；详情可读回主题、描述、分类、优先级（P0-P4 之一）、提交人姓名/公司/部门/邮箱、创建时间；初始状态为待分配。",
+          "actual": "以 submitter.a1 身份经新建工单弹窗填写主题/描述/分类并选择 SLA 优先级 P2 提交，表单仅含这四项（无业务组字段），提交成功进入列表并打开详情",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "以某公司提交人身份创建工单，填写主题、描述、选择分类与 SLA 优先级，提交后打开该工单详情查看。",
+          "expected": "工单具有系统生成的唯一工单ID；详情可读回主题、描述、分类、优先级（P0-P4 之一）、提交人姓名/公司/部门/邮箱、创建时间；初始状态为待分配。",
+          "actual": "创建数据跨会话保持：退出重新登录 submitter.a1 后列表与详情仍读回同一组字段值",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "对一张待分配工单执行分配（或命中自动分配）后再执行完成；对另一张未完成工单执行取消；然后重新打开两张工单详情。",
+          "expected": "第一张工单状态依次呈现待分配 → 待处理 → 完成，第二张状态为取消；重新查看后状态不变。",
+          "actual": "TK-000011 状态依次呈现 待分配→待处理（人工分配至技术支持组）→已完成（完成时间 2026-10-20 16:49）；TK-000012 执行取消后状态为已取消且处理操作区显示终态不可流转",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "对一张待分配工单执行分配（或命中自动分配）后再执行完成；对另一张未完成工单执行取消；然后重新打开两张工单详情。",
+          "expected": "第一张工单状态依次呈现待分配 → 待处理 → 完成，第二张状态为取消；重新查看后状态不变。",
+          "actual": "分配操作经 handler.a1 在详情选择业务组与处理人确认，完成操作经确认完成按钮提交，取消操作经确认取消按钮提交，均为真实交互",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "对一张待分配工单执行分配（或命中自动分配）后再执行完成；对另一张未完成工单执行取消；然后重新打开两张工单详情。",
+          "expected": "第一张工单状态依次呈现待分配 → 待处理 → 完成，第二张状态为取消；重新查看后状态不变。",
+          "actual": "重新打开两张工单详情：TK-000011 保持已完成、TK-000012 保持已取消，状态不变",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "在一张已分配工单中，由处理人回复一次、提交人再回复一次，然后查看工单回复区。",
+          "expected": "回复按时间顺序展示至少两条，每条包含回复人、回复时间与回复内容，两轮回复的回复人和时间可区分。",
+          "actual": "回复区按时间顺序展示 2 条：处理人甲（处理人）2026-10-20 16:47 与 研发提交人一（提交人）2026-10-20 16:47，各含回复人、回复时间、回复内容，两轮回复人与时间可区分（不同用户并分别标注角色）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "在一张已分配工单中，由处理人回复一次、提交人再回复一次，然后查看工单回复区。",
+          "expected": "回复按时间顺序展示至少两条，每条包含回复人、回复时间与回复内容，两轮回复的回复人和时间可区分。",
+          "actual": "处理人 handler.a1 先回复一次、提交人 submitter.a1 再回复一次，均通过回复输入框与发送回复按钮完成，首次回复时间回填 2026-10-20 16:47",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "在一张已分配工单中，由处理人回复一次、提交人再回复一次，然后查看工单回复区。",
+          "expected": "回复按时间顺序展示至少两条，每条包含回复人、回复时间与回复内容，两轮回复的回复人和时间可区分。",
+          "actual": "两轮回复在后续多次重新加载详情（含跨登录会话）后仍完整可读回，顺序与内容不变",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "runtime-render",
+          "action": "处理人将一张待处理工单标记完成，查看工单记录，并检查提交人邮箱（或邮件发送记录）。",
+          "expected": "工单状态变为完成；工单记录包含处理人与处理时间；提交人邮箱收到工单完成通知邮件（含工单标识）。",
+          "actual": "TK-000011 完成后状态=已完成，详情记录 处理人=处理人乙、完成时间=2026-10-20 16:49；通知记录区可见 [工单完成] TK-000011 验收流程工单T1-审批页面空白，收件人 submitter.a1@example.com，时间 2026-10-20 16:49",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "session-persistence",
+          "action": "处理人将一张待处理工单标记完成，查看工单记录，并检查提交人邮箱（或邮件发送记录）。",
+          "expected": "工单状态变为完成；工单记录包含处理人与处理时间；提交人邮箱收到工单完成通知邮件（含工单标识）。",
+          "actual": "完成记录（处理人/完成时间/通知记录）在重新加载详情与重新登录后均保持读回一致",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "other",
+          "action": "处理人将一张待处理工单标记完成，查看工单记录，并检查提交人邮箱（或邮件发送记录）。",
+          "expected": "工单状态变为完成；工单记录包含处理人与处理时间；提交人邮箱收到工单完成通知邮件（含工单标识）。",
+          "actual": "邮件发送记录可见且含工单标识（TK-000011 与主题）与提交人邮箱收件人；投递状态=未投递（SMTP 未配置，实现报告 §6 披露的设计既定承载：notifications 表记录 skipped，配置 SMTP_HOST 后可真实投递）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "runtime-render",
+          "action": "提交人在一张已完成工单上提交满意度评价，然后查看该工单。",
+          "expected": "评价保存成功；工单上可读回评价结果与评价人。",
+          "actual": "满意度评价区读回：★★★★★ 5 分、2026-10-20 16:50、留言“处理及时，问题彻底解决，沟通顺畅，非常满意。”、评价人=提交人（研发提交人一）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "interaction",
+          "action": "提交人在一张已完成工单上提交满意度评价，然后查看该工单。",
+          "expected": "评价保存成功；工单上可读回评价结果与评价人。",
+          "actual": "submitter.a1 在已完成工单上点选 5 分并填写留言后提交评价成功，评价区从“暂未评价”变为读回状态",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "session-persistence",
+          "action": "提交人在一张已完成工单上提交满意度评价，然后查看该工单。",
+          "expected": "评价保存成功；工单上可读回评价结果与评价人。",
+          "actual": "评价结果在重新打开详情后仍完整读回（分数/时间/留言/评价人）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-13",
+          "kind": "runtime-render",
+          "action": "对一张工单依次执行创建、回复、转派、完成后，查看该工单的操作日志。",
+          "expected": "日志包含上述各操作记录，每条含操作人、操作时间与操作类型，按时间排列。",
+          "actual": "TK-000011 操作日志含 7 条按时间排列记录：创建（研发提交人一 16:44）、分配（处理人甲 16:46，注明技术支持组/处理人甲）、回复（处理人甲 16:47）、回复（研发提交人一 16:47）、转派（处理人甲 16:49，注明售后服务组/处理人乙）、完成（处理人甲 16:49，含完成说明）、评价（研发提交人一 16:50，含留言）；TK-000012 另含取消记录，每条均含操作人/时间/类型",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-13",
+          "kind": "session-persistence",
+          "action": "对一张工单依次执行创建、回复、转派、完成后，查看该工单的操作日志。",
+          "expected": "日志包含上述各操作记录，每条含操作人、操作时间与操作类型，按时间排列。",
+          "actual": "日志在多轮重新加载与重新登录后均完整可读回且顺序不变",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "以公司A提交人账号查看工单列表、搜索关键词并尝试打开公司B的工单；再以公司B账号对照执行。",
+          "expected": "公司A账号的列表、搜索结果、详情均不出现公司B的工单，反之亦然；无法越权访问对方公司的工单。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "以公司A提交人账号查看工单列表、搜索关键词并尝试打开公司B的工单；再以公司B账号对照执行。",
+          "expected": "公司A账号的列表、搜索结果、详情均不出现公司B的工单，反之亦然；无法越权访问对方公司的工单。"
+        }
+      ],
+      "evidence": "公司隔离双向验证通过：公司A提交人列表仅见公司A工单、搜索公司B工单主题关键词“办公软件”无结果、直接 URL 访问公司B工单 TK-000010 详情不渲染（无数据泄露）；公司B提交人列表仅见 TK-000009/TK-000010 两张公司B工单、搜索公司A关键词“验收流程”无结果、直接 URL 访问公司A工单 TK-000011 详情不渲染；对照直接 URL 访问本公司工单 TK-000004 详情正常打开，确认不可见是权限拒绝而非路由缺陷。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #5（submitter.a1 与 submitter.b1 双向列表/搜索/越权访问互测）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "以公司A提交人账号查看工单列表、搜索关键词并尝试打开公司B的工单；再以公司B账号对照执行。",
+          "expected": "公司A账号的列表、搜索结果、详情均不出现公司B的工单，反之亦然；无法越权访问对方公司的工单。",
+          "actual": "submitter.a1（公司A）：列表 10 张工单全部为公司A；搜索“办公软件”（公司B TK-000010 主题）返回空列表；URL 直访 /tickets?ticket=TK-000010 详情面板不渲染。submitter.b1（公司B）：列表仅 TK-000009/TK-000010；搜索“验收流程”（公司A新工单主题）返回空列表；URL 直访 /tickets?ticket=TK-000011 详情面板不渲染。双向均无法越权查看或操作对方公司工单，且对方工单存在性不泄露",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "以公司A提交人账号查看工单列表、搜索关键词并尝试打开公司B的工单；再以公司B账号对照执行。",
+          "expected": "公司A账号的列表、搜索结果、详情均不出现公司B的工单，反之亦然；无法越权访问对方公司的工单。",
+          "actual": "两个账号的列表/搜索结果渲染均不含对方公司任何工单；越权 URL 下右侧详情区不渲染任何对方工单字段，页面仅显示本公司列表",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "为某公司新增两个业务组，分别添加不同成员，保存后查看该公司业务组列表。",
+          "expected": "业务组列表包含新增的两个组；每个组可读回其成员列表，与设置一致。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "为某公司新增两个业务组，分别添加不同成员，保存后查看该公司业务组列表。",
+          "expected": "业务组列表包含新增的两个组；每个组可读回其成员列表，与设置一致。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "session-persistence",
+          "action": "为某公司新增两个业务组，分别添加不同成员，保存后查看该公司业务组列表。",
+          "expected": "业务组列表包含新增的两个组；每个组可读回其成员列表，与设置一致。"
+        }
+      ],
+      "evidence": "公司A业务组列表包含新增的验收组G1（成员：处理人甲）与验收组G2（成员：处理人乙），成员与设置一致；本会话重新登录admin.a后读回一致，整页重载后再进配置管理仍读回一致，跨会话与刷新持久。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #6（重新登录+整页重载后 /config 业务组列表读回）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "为某公司新增两个业务组，分别添加不同成员，保存后查看该公司业务组列表。",
+          "expected": "业务组列表包含新增的两个组；每个组可读回其成员列表，与设置一致。",
+          "actual": "公司A业务组列表渲染 4 个组，包含新增的验收组G1与验收组G2；每组可读回成员列表：验收组G1=处理人甲、验收组G2=处理人乙，与设置一致（另有种子组 售后服务组=处理人乙、技术支持组=处理人乙+处理人甲）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "为某公司新增两个业务组，分别添加不同成员，保存后查看该公司业务组列表。",
+          "expected": "业务组列表包含新增的两个组；每个组可读回其成员列表，与设置一致。",
+          "actual": "验收组G1/验收组G2由前一会话经 /config 新建业务组表单真实交互创建并分别添加处理人甲/处理人乙为成员，保存后列表读回一致；本会话延续验证交互产物仍正确展示",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "session-persistence",
+          "action": "为某公司新增两个业务组，分别添加不同成员，保存后查看该公司业务组列表。",
+          "expected": "业务组列表包含新增的两个组；每个组可读回其成员列表，与设置一致。",
+          "actual": "两组及成员跨会话持久：重新登录 admin.a 后 /config 列表读回一致；整页重载（重新加载应用进入 /workbench 再导航到配置管理）后再次读回仍为验收组G1=处理人甲、验收组G2=处理人乙，无丢失或变化",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "为公司配置\"分类X → 业务组G\"规则后，以该公司提交人身份提交一张分类为X的工单，查看工单归属与状态。",
+          "expected": "工单自动归属业务组G（业务组G成员可见该工单），状态进入待处理；提交过程中未要求提交人选择业务组。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "为公司配置\"分类X → 业务组G\"规则后，以该公司提交人身份提交一张分类为X的工单，查看工单归属与状态。",
+          "expected": "工单自动归属业务组G（业务组G成员可见该工单），状态进入待处理；提交过程中未要求提交人选择业务组。"
+        }
+      ],
+      "evidence": "admin.a 配置分类规则「验收分类X→验收组G1」后，submitter.a1 提交分类为验收分类X的工单 TK-000013，自动归属验收组G1、状态直接进入待处理，操作日志含「系统 分配 自动分配至业务组「验收组G1」」；提交表单仅主题/描述/问题分类/SLA优先级四字段，无业务组选择；验收组G1成员 handler.a1 工作台可见该工单。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #7（规则配置、TK-000013 提交与详情读回、handler.a1 工作台可见性）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "为公司配置\"分类X → 业务组G\"规则后，以该公司提交人身份提交一张分类为X的工单，查看工单归属与状态。",
+          "expected": "工单自动归属业务组G（业务组G成员可见该工单），状态进入待处理；提交过程中未要求提交人选择业务组。",
+          "actual": "TK-000013（主题：验收自动分配-分类规则命中工单，分类：验收分类X，P2）详情读回归属业务组=验收组G1、状态=待处理（未经人工分配）；操作日志含「系统 分配 2026-10-20 17:00 自动分配至业务组「验收组G1」」；验收组G1成员 handler.a1 登录工作台待处理列表可见 TK-000013",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "为公司配置\"分类X → 业务组G\"规则后，以该公司提交人身份提交一张分类为X的工单，查看工单归属与状态。",
+          "expected": "工单自动归属业务组G（业务组G成员可见该工单），状态进入待处理；提交过程中未要求提交人选择业务组。",
+          "actual": "真实交互链：admin.a 在配置管理经新增规则弹窗填写问题分类「验收分类X」并下拉选择分配至「验收组G1」保存成功（规则表读回）；submitter.a1 经新建工单弹窗填写主题/描述/问题分类「验收分类X」并选择 SLA 优先级 P2 提交，弹窗仅含这四个字段，全程未要求选择业务组",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "将一张待处理工单从业务组G1转派到业务组G2（或另一处理人），查看工单归属与操作记录。",
+          "expected": "工单归属变为G2/新处理人；工单的日志或记录中可见转派操作与转派目标。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "将一张待处理工单从业务组G1转派到业务组G2（或另一处理人），查看工单归属与操作记录。",
+          "expected": "工单归属变为G2/新处理人；工单的日志或记录中可见转派操作与转派目标。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "session-persistence",
+          "action": "将一张待处理工单从业务组G1转派到业务组G2（或另一处理人），查看工单归属与操作记录。",
+          "expected": "工单归属变为G2/新处理人；工单的日志或记录中可见转派操作与转派目标。"
+        }
+      ],
+      "evidence": "handler.a1 在待处理工单 TK-000013 详情经下拉选择目标业务组与处理人后点击确认转派，将工单从验收组G1 真实转派至验收组G2/处理人乙（POST /api/tickets/TK-000013/reassign 成功）；转派后详情读回归属业务组=验收组G2、处理人=处理人乙，操作日志含「处理人甲 转派 2026-10-20 17:14 转派至业务组「验收组G2」，处理人 处理人乙」等转派操作与转派目标；整页重载后归属与日志保持不变。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #8（两轮转派真实交互、reassign 请求、重载读回归属与操作日志）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "将一张待处理工单从业务组G1转派到业务组G2（或另一处理人），查看工单归属与操作记录。",
+          "expected": "工单归属变为G2/新处理人；工单的日志或记录中可见转派操作与转派目标。",
+          "actual": "转派后详情读回：归属业务组=验收组G2、处理人=处理人乙（自验收组G1/处理人甲转派而来）；操作日志按时间排列含多条转派记录，最新一条为「处理人甲 转派 2026-10-20 17:14 转派至业务组「验收组G2」，处理人 处理人乙」，转派操作与转派目标均可见",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "将一张待处理工单从业务组G1转派到业务组G2（或另一处理人），查看工单归属与操作记录。",
+          "expected": "工单归属变为G2/新处理人；工单的日志或记录中可见转派操作与转派目标。",
+          "actual": "以 handler.a1 真实交互执行转派：在 TK-000013 详情处理操作区经目标业务组/转派给处理人下拉选择后点击确认转派按钮，POST /api/tickets/TK-000013/reassign 成功且列表自动刷新；因前会话已执行过一次 G1→G2（日志 17:09 可见），本会话先转派至验收组G1/处理人甲（17:13，读回归属变化），再转派至验收组G2/处理人乙（17:14），最终完成 G1→G2 转派方向",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "session-persistence",
+          "action": "将一张待处理工单从业务组G1转派到业务组G2（或另一处理人），查看工单归属与操作记录。",
+          "expected": "工单归属变为G2/新处理人；工单的日志或记录中可见转派操作与转派目标。",
+          "actual": "整页重新加载 /workbench?ticket=TK-000013 后归属读回保持验收组G2/处理人乙不变；操作日志完整保留全部转派记录（17:09/17:13/17:14 三条）且顺序不变，转派结果跨刷新持久",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-08",
+          "kind": "runtime-render",
+          "action": "处理人打开一张已分配工单的提交人信息区，并打开该提交人的历史工单。",
+          "expected": "可见提交人的姓名、公司、部门；可查看该提交人提交的历史工单列表（含此前创建的其他工单）。"
+        }
+      ],
+      "evidence": "处理人乙 handler.a2（验收组G2 成员）打开已分配工单 TK-000013（归属验收组G2/处理人乙）详情，提交人信息区读回姓名=研发提交人一、公司=公司A、部门=研发部（另含邮箱 submitter.a1@example.com）；历史工单列表显示该提交人 6 张工单，其中当前工单 TK-000013 标记「当前」，此前创建的其他工单为 TK-000012/TK-000011/TK-000004/TK-000002/TK-000001 共 5 张，各含工单号/主题/优先级/状态/创建时间。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #9（handler.a2 打开 TK-000013 详情读提交人信息区与历史工单列表）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-08",
+          "kind": "runtime-render",
+          "action": "处理人打开一张已分配工单的提交人信息区，并打开该提交人的历史工单。",
+          "expected": "可见提交人的姓名、公司、部门；可查看该提交人提交的历史工单列表（含此前创建的其他工单）。",
+          "actual": "提交人信息区读回：姓名=研发提交人一、公司=公司A、部门=研发部（邮箱 submitter.a1@example.com）；历史工单列表渲染该提交人全部 6 张工单（TK-000013 当前 + 此前创建 TK-000012/TK-000011/TK-000004/TK-000002/TK-000001 共 5 张，含此前创建的其他工单），每张含工单号/主题/优先级/状态/创建时间",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-11",
+          "kind": "runtime-render",
+          "action": "在工作台用关键词搜索，按公司维度筛选，再按创建时间或优先级排序，观察列表变化。",
+          "expected": "列表仅展示符合当前条件组合的工单；按公司筛选后仅显示所选公司的工单；排序顺序与所选字段一致；清除条件后恢复默认的待处理工单列表。"
+        },
+        {
+          "requirementId": "AC-11",
+          "kind": "interaction",
+          "action": "在工作台用关键词搜索，按公司维度筛选，再按创建时间或优先级排序，观察列表变化。",
+          "expected": "列表仅展示符合当前条件组合的工单；按公司筛选后仅显示所选公司的工单；排序顺序与所选字段一致；清除条件后恢复默认的待处理工单列表。"
+        }
+      ],
+      "evidence": "handler.a2 工作台依次真实交互验证：关键词搜索「登录」结果仅 3 张主题含登录的工单且按时间降序；公司筛选公司B 后列表仅 2 张公司B 工单（TK-000010/TK-000009）；优先级排序全列表按 P0→P1→P2 升序、方向降序后顺序反转；创建时间降序严格有序；点击清除条件后列表恢复默认待处理 2 张（TK-000013/TK-000003）且五个筛选控件全部重置为默认值。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #10（搜索/公司筛选/优先级排序/创建时间排序/清除条件五步列表变化读回）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-11",
+          "kind": "runtime-render",
+          "action": "在工作台用关键词搜索，按公司维度筛选，再按创建时间或优先级排序，观察列表变化。",
+          "expected": "列表仅展示符合当前条件组合的工单；按公司筛选后仅显示所选公司的工单；排序顺序与所选字段一致；清除条件后恢复默认的待处理工单列表。",
+          "actual": "列表渲染随条件组合正确变化：搜索「登录」（状态=全部状态）结果仅 TK-000008/TK-000002/TK-000001 三张主题含登录的工单；公司筛选=公司B 时列表仅 2 张公司B 工单（TK-000010 P4 待分配、TK-000009 P1 已完成），无公司A 工单混入；排序=优先级（P0 在前）+升序时列表按 P0→P1→P2 严格升序（TK-000003 P0 居首，P1×3、P2×5 依次），方向切降序后顺序反转 P4 在前；排序=创建时间+降序时按 TK-000013(10-20 17:00)→TK-000012→TK-000011→TK-000010→TK-000008→TK-000005→TK-000004→TK-000003(10-03 16:00) 严格时间降序；清除条件后列表恢复默认待处理 2 张（TK-000013/TK-000003）且控件全部重置（状态=待处理/公司=全部公司/优先级=全部/排序=创建时间/方向=降序）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-11",
+          "kind": "interaction",
+          "action": "在工作台用关键词搜索，按公司维度筛选，再按创建时间或优先级排序，观察列表变化。",
+          "expected": "列表仅展示符合当前条件组合的工单；按公司筛选后仅显示所选公司的工单；排序顺序与所选字段一致；清除条件后恢复默认的待处理工单列表。",
+          "actual": "五步均经真实交互触发并即时观察列表变化：搜索框输入「登录」后点击搜索按钮刷新列表；状态、公司、排序、方向均为原生下拉 select 选择，每次选择后列表即时重渲染；清除条件经按钮点击触发新请求并重置控件与列表",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-08",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-12",
+          "kind": "runtime-render",
+          "action": "构造已知分布的工单数据后，打开统计分析与仪表盘，分别查看按公司维度、按部门维度的工单分布，以及工单量、平均响应时间、满意度、热点问题四类指标。",
+          "expected": "按公司、按部门维度分别呈现工单分布，数值与构造数据一致；仪表盘四类指标可见且与实际工单数据一致。"
+        }
+      ],
+      "evidence": "浏览器记录 #1：admin.a 登录统计页（隔离种子数据），公司维度分布公司A=8/公司B=2，部门维度研发部=5/市场部=2/运营部=2/未填写部门=1，KPI 工单量=10、平均响应=66分钟、满意度=3.5分（已评价4单）、热点Top5为登录问题4/数据问题2/账单问题2/其他问题1/网络问题1，全部与种子已知分布一致；样式观察见浏览器记录 #1b。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器记录 #1（/stats 公司与部门分布+KPI）与 #1b（样式计算值）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-12",
+          "kind": "runtime-render",
+          "action": "构造已知分布的工单数据后，打开统计分析与仪表盘，分别查看按公司维度、按部门维度的工单分布，以及工单量、平均响应时间、满意度、热点问题四类指标。",
+          "expected": "按公司、按部门维度分别呈现工单分布，数值与构造数据一致；仪表盘四类指标可见且与实际工单数据一致。",
+          "actual": "按公司分布：公司A=8、公司B=2；按部门分布：研发部5、市场部2、运营部2、未填写部门1；仪表盘：工单量10、平均响应时间66分钟、满意度3.5分（已评价4单）、热点问题Top5（登录问题4单居首）——全部与构造的种子分布一致",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 新工单创建成功后，其全部基础字段可通过工单详情读回。; AC-02: 工单按生命周期状态流转，且状态在关闭后再次查看时保持。; AC-03: 一个公司的账号不能查看或操作另一个公司的工单。; AC-04: 提交人与处理方可对同一工单进行多轮回复，回复记录可读回。; AC-05: 公司可创建多个业务组并为每个业务组设置成员，配置保存后可读回。; AC-06: 已配置分类分配规则的公司，新工单按其分类自动分配到对应业务组，无需人工选择。; AC-07: 已分配工单可转派给其他业务组或处理人，转派后归属改变且可追溯。; AC-08: 处理人打开工单时可查看提交人姓名、公司、部门及其历史工单。; AC-09: 工单完成时记录处理人与处理时间，并向提交人邮箱发送完成通知邮件。; AC-10: 工单完成后提交人可提交满意度评价，评价结果可读回。; AC-11: 工作台展示待处理工单列表，筛选、搜索、排序及公司维度筛选组合生效。; AC-12: 可查看按公司、部门维度的工单分布统计，以及工单量、平均响应时间、满意度、热点问题等运营指标。; AC-13: 工单的关键操作被记录为日志，含操作人、时间与操作内容，可查看。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-01：submitter.a1 创建 TK-000011，详情读回系统生成 ID、主题、描述、分类、P2、提交人姓名/公司/部门/邮箱、创建时间，初始状态待分配（浏览器记录 #2）"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-01：TK-000011 待分配→待处理→完成、TK-000012 取消，重新打开两张工单状态保持不变（浏览器记录 #3、#4）"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "authorization",
+          "runtime-render"
+        ],
+        "evidence": "QA-02：公司A/公司B提交人账号双向互测，列表、搜索、详情均不出现对方公司工单，URL 越权访问详情不渲染，对照本公司工单访问正常（浏览器记录 #5）"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-01：处理人与提交人交替各回复一轮，按时间顺序展示 2 条，各含回复人/回复时间/内容且可区分（浏览器记录 #3）"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-03：公司A新增验收组G1（处理人甲）与验收组G2（处理人乙），列表读回成员与设置一致，重新登录与整页重载后仍持久读回一致（浏览器记录 #6）"
+      },
+      {
+        "id": "AC-06",
+        "source": "requirements.md#AC-06",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-04：配置规则后提交分类为验收分类X的工单 TK-000013 自动归属验收组G1并直接进入待处理，日志含系统自动分配记录；提交表单无业务组字段；组成员可见（浏览器记录 #7）"
+      },
+      {
+        "id": "AC-07",
+        "source": "requirements.md#AC-07",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-05：TK-000013 从验收组G1 转派至验收组G2/处理人乙，转派后归属读回变更、日志含转派操作与转派目标、整页重载后保持不变（浏览器记录 #8）"
+      },
+      {
+        "id": "AC-08",
+        "source": "requirements.md#AC-08",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-06"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-06：处理人乙打开已分配工单 TK-000013，读回提交人姓名/公司/部门，并可查看该提交人历史工单 5 张（TK-000012/011/004/002/001，另当前工单标记）（浏览器记录 #9）"
+      },
+      {
+        "id": "AC-09",
+        "source": "requirements.md#AC-09",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "session-persistence",
+          "other"
+        ],
+        "evidence": "QA-01：完成记录处理人（处理人乙）与完成时间（2026-10-20 16:49）；通知记录 [工单完成] TK-000011 收件人 submitter.a1@example.com——邮件发送记录可见且含工单标识，投递状态未投递（SMTP 未配置，设计既定，见剩余风险）（浏览器记录 #4）"
+      },
+      {
+        "id": "AC-10",
+        "source": "requirements.md#AC-10",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-01：提交人在已完成工单上评价 5 分并留留言，工单读回评价结果与评价人（浏览器记录 #4）"
+      },
+      {
+        "id": "AC-11",
+        "source": "requirements.md#AC-11",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-07"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-07：工作台关键词搜索、公司维度筛选（公司B 仅 2 张）、优先级排序（P0→P4 有序且方向生效）、创建时间降序排序、清除条件恢复默认待处理列表，各步列表变化均符合预期（浏览器记录 #10）"
+      },
+      {
+        "id": "AC-12",
+        "source": "requirements.md#AC-12",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-08"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-08：统计页按公司、按部门维度的工单分布数值与仪表盘四类指标（工单量/平均响应时间/满意度/热点问题）均与已知构造数据一致，见浏览器记录 #1；基础样式已观察（浏览器记录 #1b：左侧导航白底细边界、KPI 卡 12px 圆角细边界、indigo 单一主色按钮）"
+      },
+      {
+        "id": "AC-13",
+        "source": "requirements.md#AC-13",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "QA-01：TK-000011 日志含创建/分配/回复×2/转派/完成/评价 7 条按时间排列（含操作人、时间、类型），TK-000012 含取消记录（浏览器记录 #4）"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [
+    "SMTP 未配置导致完成通知邮件显示未投递，实际邮件投递路径未验证"
+  ],
+  "baselineUpdates": []
+}
