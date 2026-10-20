@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:f3c5d7536f6fb3b63cb991188f689e9748f360a443955a70fe96d3f2cc9cabd0",
-  "updatedAt": "2026-10-20T06:39:44.560Z"
+  "updatedAt": "2026-10-20T06:55:43.979Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000312/requirements.md",
+      "sha256": "sha256:b3014c61a5b2d7689275926a26f46d353a3ffe32d17806e997ea51eaf321290b"
+    },
+    "reason": "工单系统是多公司共用环境下的多角色协作闭环：提交人、处理人、配置管理员共享同一份权威工单数据；工单按公司隔离要求基于账号的服务端授权（AC-03 为 authorization 证据）；工单完成后需向提交人邮箱发送通知邮件（AC-09）属于外部服务集成；统计分析需跨公司、部门聚合服务端数据（AC-12）。这些能力均超出单用户浏览器本地存储边界，路由到 fullstack-complex。",
+    "evidence": {
+      "supporting": [
+        "需求基线 §2/AC-03：工单数据按公司隔离，公司A账号不能查看或操作公司B工单，列表/搜索/详情均不可见——需要基于账号的服务端授权边界，localStorage 无法实现跨用户数据隔离。",
+        "需求基线 §5.8/AC-09：工单完成且发送邮件通知提交人邮箱（含工单标识）——明确的外部服务集成要求。",
+        "需求基线 §1/§2：提交人、处理人、配置管理员三类角色在旅程A中操作同一批工单数据（创建→分配→回复→转派→完成→评价）——跨用户共享的服务端权威数据。",
+        "需求基线 §5.11/AC-12：按公司、部门维度统计工单分布及工单量/平均响应时间/满意度/热点问题指标——需要服务端聚合计算。",
+        "需求基线 §5.12/AC-13：工单关键操作日志含操作人与时间并可在工单上追溯——服务端审计记录。"
+      ],
+      "excluding": [
+        "simple-frontend 不适用：其仅承诺单用户浏览器 localStorage 持久化，本需求的处理人与提交人是不同用户、不同设备，数据必须跨用户共享。",
+        "simple-frontend 不适用：邮件通知无法在浏览器本地完成。",
+        "simple-frontend 不适用：公司隔离要求服务端持有全部公司数据才能做授权判定，客户端本地存储无权威边界。"
+      ],
+      "unresolved": [
+        "邮件发送的具体机制与 SMTP 配置未规定（需求基线 §5.8 标注'发送机制与内容模板未规定'），不影响路线分类，设计阶段给出可实现的承载方式。",
+        "跨公司视角（工作台按公司筛选、按公司统计）的账号体系与权限范围未规定，设计阶段给出最小实现并保持需求基线推荐口径。"
+      ]
+    },
+    "decidedAt": "2026-10-20T06:44:12.995Z",
+    "sha256": "sha256:498dbd803dbb563ca58b2d721c44f4faa6c164d826c17cc41a052907669ade55"
+  }
 }
