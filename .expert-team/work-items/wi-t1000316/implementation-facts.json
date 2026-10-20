@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "revision": 6,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:062643dc-d48d-48c0-9bef-a567e9537dbd",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:2185aeb0-1e22-45f2-8f38-37b436ad18d4",
+      "createdAt": "2026-10-20T11:31:22.481Z",
+      "executionId": "ses_ea6eb3c48ffeqsXAKbrDp36AJt",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:062643dc-d48d-48c0-9bef-a567e9537dbd",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:060d0d32-afa6-4424-b8df-375733e13b59",
+      "createdAt": "2026-10-20T11:31:24.448Z",
+      "executionId": "ses_ea6eb318fffe2NABR4hdcjQ5dn",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:062643dc-d48d-48c0-9bef-a567e9537dbd",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_ea6eb318fffe2NABR4hdcjQ5dn",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/",
+            "bytes": 114931,
+            "sha256": "sha256:c8a63dcbd288ed96ea9c662ef2b47775dd39fa41e11e8cbfb89840581ef3362b"
+          }
+        ]
+      },
+      "createdAt": "2026-10-20T11:58:44.270Z"
+    },
+    {
+      "planId": "plan:062643dc-d48d-48c0-9bef-a567e9537dbd",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_ea6eb3c48ffeqsXAKbrDp36AJt",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/",
+            "bytes": 88232,
+            "sha256": "sha256:ec4e3118e3f3798ed5d2de7d35a316a4dde35880da990e7b73b03c04ac72601c"
+          }
+        ]
+      },
+      "createdAt": "2026-10-20T12:11:52.648Z"
+    }
+  ],
+  "repairs": [],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:2185aeb0-1e22-45f2-8f38-37b436ad18d4",
+      "actorId": "general-app-development-expert",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000316",
+          "planId": "plan:062643dc-d48d-48c0-9bef-a567e9537dbd",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "实现工单系统服务端：数据迁移、全部 REST API、状态机、邮件通知、统计与种子脚本",
+          "objective": "## 目标\n\n按已批准技术契约（docs/wi-t1000316/technical-contract.md）在 `app/ticket-system` 实现服务端全部行为；前端任务并行推进，双方仅以该契约为协作界面。\n\n- 依据契约 §2 数据模型在 `src/server/migrations/sqlite/` 新增版本化 SQL 迁移（companies、user_profiles、groups、group_members、company_categories、category_rules、tickets、ticket_replies、ratings、ticket_activity、notification_log），启动时经 dbkit 执行，不改 starter 既有迁移。\n- 实现契约 §4 全部服务端接口：认证与当前用户、工单创建/列表（筛选/搜索/排序/分页）/详情（含提交人完整信息与历史工单）、多轮回复、dispatch/transfer/complete/cancel/rating 状态推进、活动日志查询、业务组/成员/分类/规则配置、统计仪表盘与分布，并按架构基线固定约束对 userkit starter 用户管理路由叠加 company_admin 角色守卫。\n- 公司隔离为第一边界：全部工单域查询强制 company_id 过滤，跨公司访问统一 404；角色守卫失败 403；状态推进冲突 409。\n- 工单完成时经 emailkit 向提交人快照邮箱发送通知邮件并写 notification_log（空 SMTP_HOST 降级 skipped；发送失败不回滚完成）。\n- 新增幂等种子脚本并以 `npm run seed` 暴露（契约 §6：两家演示公司、各角色用户、业务组、分类与规则；不预置工单）。\n\n## AC 贡献\n\n- AC-01/02/04/06/07/08/09/11/12：对应服务端数据落库、状态机、通知与日志行为。\n- AC-03：服务端强制公司隔离（列表、详情、统计、配置全链路）。\n- AC-05：业务组/成员/规则存储与按分类自动分配逻辑。\n- AC-10：工单量、平均响应时间、满意度、热点问题与公司/部门分布聚合接口。\n\n## 验证\n\n由实现专家按项目实际配置选择并运行聚焦检查（如 server 侧类型检查、现有 node --test 测试套件、真实启动后关键路径 HTTP 冒烟），并报告真实结果；不执行浏览器验收。跨端集成与端到端验收由后续验证阶段负责。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000316/requirements.md",
+              "sha256": "sha256:bb9726c9c595ce75e74083443618a96a49ef81677187e86d041e0513363e6316"
+            },
+            {
+              "path": "docs/wi-t1000316/architecture-baseline.md",
+              "sha256": "sha256:ac37f2a5516fd35127f9078f12b4d62a09780be6cc579c58f7d875deb05bacd7"
+            },
+            {
+              "path": "docs/wi-t1000316/technical-contract.md",
+              "sha256": "sha256:5809a47375b836d53086cce3d9a28e55d14cbd4aab78cab3693406a3824c7878"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/package.json",
+            "app/ticket-system/test/",
+            "app/ticket-system/scripts/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/data/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-20T11:31:22.481Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:060d0d32-afa6-4424-b8df-375733e13b59",
+      "actorId": "general-app-development-expert",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000316",
+          "planId": "plan:062643dc-d48d-48c0-9bef-a567e9537dbd",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "实现工单系统前端 SPA：登录、工作台、详情、统计与配置界面",
+          "objective": "## 目标\n\n按已批准技术契约与 UI 全局基线在 `app/ticket-system` 实现 React + Vite + Tailwind 前端 SPA（split-master-detail 展示模板、Modern SaaS 视觉）；与服务端任务并行，仅以契约为协作界面。\n\n- 依据 docs/wi-t1000316/technical-contract.md §4 实现浏览器 API 客户端与全部页面：登录、工单创建（问题分类与 P0–P4 优先级）、工单工作台（master 列表筛选/搜索/排序 + detail 详情协同）、我的工单、工单详情（提交人信息面板与历史工单、多轮回复流、转派/完成/取消操作、满意度评价入口、操作日志与通知记录展示）、统计分析（仪表盘指标与公司/部门分布视图）、业务组与规则配置、用户管理。\n- 不发明 API 行为：请求/响应结构、错误码与状态语义完全以契约为准；所需类型在客户端侧按契约定义，不依赖服务端任务进行时状态，不写入 src/shared/、src/server/。\n- 应用壳按设计基线：左侧导航（工单工作台、我的工单、统计分析、业务组配置、用户管理）+ 顶部上下文栏（当前用户、公司、退出）；全局加载、空态、错误（401 跳登录、404 显示资源不存在或无权访问）与操作后反馈；P0–P4 与五状态使用约定的强调色/语义色。\n\n## AC 贡献\n\n- AC-01/02/04/06/07/09/11：对应用户界面承载（创建表单、回复流、状态展示、转派/完成/取消与筛选搜索排序交互）。\n- AC-03：列表与详情按登录用户公司视角呈现，不提供跨公司入口。\n- AC-05：业务组/成员/分类/规则配置界面。\n- AC-08：完成操作触达契约通知链路（界面侧完成动作）。\n- AC-10：仪表盘与分布视图。\n- AC-12：工单详情内展示操作日志。\n\n## 验证\n\n由实现专家按项目实际配置选择并运行聚焦检查（如 client 侧类型检查、前端构建），并报告真实结果；不执行浏览器端到端验收。跨端集成与端到端验收由后续验证阶段负责。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000316/requirements.md",
+              "sha256": "sha256:bb9726c9c595ce75e74083443618a96a49ef81677187e86d041e0513363e6316"
+            },
+            {
+              "path": "docs/wi-t1000316/architecture-baseline.md",
+              "sha256": "sha256:ac37f2a5516fd35127f9078f12b4d62a09780be6cc579c58f7d875deb05bacd7"
+            },
+            {
+              "path": "docs/wi-t1000316/technical-contract.md",
+              "sha256": "sha256:5809a47375b836d53086cce3d9a28e55d14cbd4aab78cab3693406a3824c7878"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/",
+            "app/ticket-system/index.html",
+            "app/ticket-system/vite.config.ts",
+            "app/ticket-system/tailwind.config.js",
+            "app/ticket-system/postcss.config.js",
+            "app/ticket-system/dist/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-20T11:31:24.448Z"
+    },
+    {
+      "requestId": "cli:submit:T01:9417cb33-ccea-41bd-af78-90041513872f",
+      "actorId": "general-app-development-expert",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-20T11:31:48.751Z"
+    },
+    {
+      "requestId": "cli:submit:T02:c280792e-6a44-40a5-9221-f1a622847cc3",
+      "actorId": "general-app-development-expert",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-20T11:31:51.022Z"
+    },
+    {
+      "requestId": "cli:complete:T02:d7677fdc-7328-411d-98bb-593d5ffd786a",
+      "actorId": "general-app-development-expert",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/",
+              "bytes": 114931,
+              "sha256": "sha256:c8a63dcbd288ed96ea9c662ef2b47775dd39fa41e11e8cbfb89840581ef3362b"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-20T11:58:44.270Z"
+    },
+    {
+      "requestId": "cli:complete:T01:1bcc3eee-3a2a-43c6-8584-446b67ab9148",
+      "actorId": "general-app-development-expert",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/",
+              "bytes": 88232,
+              "sha256": "sha256:ec4e3118e3f3798ed5d2de7d35a316a4dde35880da990e7b73b03c04ac72601c"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-20T12:11:52.648Z"
+    }
+  ]
+}
