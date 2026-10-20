@@ -3,7 +3,7 @@
   "receiptId": "requirements:1",
   "receiptType": "requirements-baseline",
   "specId": "general-application-development-spec",
-  "graphRevision": 5,
+  "graphRevision": 6,
   "actionId": "requirements",
   "inputRevision": 0,
   "stateVersion": 1,

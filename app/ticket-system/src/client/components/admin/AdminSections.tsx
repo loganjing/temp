@@ -522,7 +522,7 @@ export function GroupsSection({ companyId }: { companyId: number }) {
     setBusy(true)
     setNotice(null)
     try {
-      await addGroupMember(addMember.groupId, { user_id: Number(addMember.userId) })
+      await addGroupMember(addMember.groupId, { user_id: addMember.userId })
       setAddMember(null)
       setNotice({ kind: 'success', text: '成员已添加' })
       await load()

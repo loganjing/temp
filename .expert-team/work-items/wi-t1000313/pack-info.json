@@ -13,8 +13,8 @@
   ],
   "initialState": "requirements_pending",
   "deliveryProfile": "standard",
-  "graphRevision": 5,
-  "graphHash": "sha256:9fddb0b98cc7526e474df559e852fdafac81ad69cd21c0a83b1b8569d41357ee",
+  "graphRevision": 6,
+  "graphHash": "sha256:f4d85f5f26e0e9b4548c6c32e8f6cf100a20c091e44cadf73ff77c96599dc01d",
   "stages": [
     {
       "actionId": "requirements",
@@ -512,13 +512,13 @@
       "fromState": "implementation_ready",
       "toState": "completed",
       "receiptType": "verification-report",
-      "artifactPath": "docs/wi-t1000313/verification.json",
+      "artifactPath": "docs/wi-t1000313/verification.md",
       "requiredArtifacts": [],
       "writableScopes": [
         "tests",
         "docs/wi-t1000313"
       ],
-      "executionMode": "spawn_task",
+      "executionMode": "inline-light",
       "dependsOn": [
         "implementation"
       ],
@@ -538,10 +538,10 @@
           "executionMode": "inline-light"
         },
         "fullstack-complex": {
-          "routeId": "spawn-qa",
+          "routeId": "inline-qa",
           "expertId": "general-app-qa-expert",
           "capabilityId": "quality.verification",
-          "executionMode": "spawn_task"
+          "executionMode": "inline-light"
         }
       },
       "inlineContext": {
@@ -656,7 +656,7 @@
           ]
         },
         "artifactGuidance": {
-          "primaryArtifact": "verification.json",
+          "primaryArtifact": "verification.md",
           "format": "outputs/quality-report.schema.json",
           "required": true
         }
@@ -669,10 +669,29 @@
       "capabilityContract": {
         "artifacts": [
           {
+            "path": "verification.md",
+            "kind": "user-deliverable",
+            "format": "markdown",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "validator": "tools/quality-report-validator.mjs",
+            "completion": {
+              "script": "tools/complete-quality-report.mjs",
+              "generatesArtifact": true,
+              "inputArtifact": "verification.json",
+              "inputFlag": "--verification-json",
+              "inputDescription": "the completed internal verification.json report, after the final QA writer update has passed validation",
+              "defaultResult": {
+                "status": "completed"
+              }
+            }
+          },
+          {
             "path": "verification.json",
+            "kind": "internal-execution-input",
             "format": "json",
             "schema": "outputs/quality-report.schema.json",
-            "required": true,
+            "required": false,
             "hashAlgorithm": "sha256",
             "validator": "tools/quality-report-validator.mjs"
           }
@@ -688,7 +707,7 @@
       "semanticEvaluator": {
         "id": "quality.verification",
         "version": 1,
-        "artifactPath": "verification.json",
+        "artifactPath": "verification.md",
         "expertValidator": true,
         "validatorContext": {
           "deliveryKind": "application"
@@ -697,7 +716,8 @@
     }
   ],
   "executionStageIds": [
-    "implementation"
+    "implementation",
+    "verification"
   ],
   "failureMappings": [
     {

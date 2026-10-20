@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "acceptance": [
+    {
+      "id": "AC-01",
+      "source": "requirements.md#AC-01",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    },
+    {
+      "id": "AC-02",
+      "source": "requirements.md#AC-02",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-02"
+      ]
+    },
+    {
+      "id": "AC-03",
+      "source": "requirements.md#AC-03",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "authorization",
+        "error-feedback"
+      ],
+      "checkIds": [
+        "QA-03"
+      ]
+    },
+    {
+      "id": "AC-04",
+      "source": "requirements.md#AC-04",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "session-persistence"
+      ],
+      "checkIds": [
+        "QA-04"
+      ]
+    },
+    {
+      "id": "AC-05",
+      "source": "requirements.md#AC-05",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-05"
+      ]
+    },
+    {
+      "id": "AC-06",
+      "source": "requirements.md#AC-06",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-06"
+      ]
+    },
+    {
+      "id": "AC-07",
+      "source": "requirements.md#AC-07",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-07"
+      ]
+    },
+    {
+      "id": "AC-08",
+      "source": "requirements.md#AC-08",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-08"
+      ]
+    },
+    {
+      "id": "AC-09",
+      "source": "requirements.md#AC-09",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "other"
+      ],
+      "checkIds": [
+        "QA-09"
+      ]
+    },
+    {
+      "id": "AC-10",
+      "source": "requirements.md#AC-10",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-10"
+      ]
+    },
+    {
+      "id": "AC-11",
+      "source": "requirements.md#AC-11",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-11"
+      ]
+    },
+    {
+      "id": "AC-12",
+      "source": "requirements.md#AC-12",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-12"
+      ]
+    },
+    {
+      "id": "AC-13",
+      "source": "requirements.md#AC-13",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ],
+      "checkIds": [
+        "QA-13"
+      ]
+    },
+    {
+      "id": "AC-14",
+      "source": "requirements.md#AC-14",
+      "surface": "internal",
+      "checkIds": [
+        "QA-14"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "以某公司用户身份提交一张工单（填写主题、描述、分类，选择优先级 P2），随后打开该工单详情。",
+          "expected": "工单生成唯一ID；详情页完整展示主题、描述、分类、优先级、提交人姓名/公司/部门/邮箱与创建时间。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "以某公司用户身份提交一张工单（填写主题、描述、分类，选择优先级 P2），随后打开该工单详情。",
+          "expected": "工单生成唯一ID；详情页完整展示主题、描述、分类、优先级、提交人姓名/公司/部门/邮箱与创建时间。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "对同一工单由不同人员先后回复两次，查看回复记录。",
+          "expected": "两轮回复均存在，各自显示回复人与回复时间，先后顺序正确。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "对同一工单由不同人员先后回复两次，查看回复记录。",
+          "expected": "两轮回复均存在，各自显示回复人与回复时间，先后顺序正确。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "A公司用户提交工单后，以B公司用户身份尝试通过列表、详情及操作入口访问该工单。",
+          "expected": "B公司用户无法看到或打开A公司工单，访问被拒绝且不泄露工单内容。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "error-feedback",
+          "action": "A公司用户提交工单后，以B公司用户身份尝试通过列表、详情及操作入口访问该工单。",
+          "expected": "B公司用户无法看到或打开A公司工单，访问被拒绝且不泄露工单内容。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "创建一张工单，依次执行分配与处理完成，观察状态变化；另取一张待处理工单执行取消。",
+          "expected": "工单分配后进入待处理，处理完成后为完成；完成后状态不可再变更；取消后为取消且不再进入处理流程。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "创建一张工单，依次执行分配与处理完成，观察状态变化；另取一张待处理工单执行取消。",
+          "expected": "工单分配后进入待处理，处理完成后为完成；完成后状态不可再变更；取消后为取消且不再进入处理流程。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "为某公司新增两个业务组，分别添加不同成员。",
+          "expected": "两个业务组独立存在，各自成员列表保存正确。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "为某公司新增两个业务组，分别添加不同成员。",
+          "expected": "两个业务组独立存在，各自成员列表保存正确。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "为公司C配置规则“分类X→业务组G1”，提交一张分类为X的工单；再提交一张无规则匹配分类的工单并手动分配。",
+          "expected": "第一张工单自动归属G1且状态为待处理；第二张保持待分配，手动分配后进入待处理。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "为公司C配置规则“分类X→业务组G1”，提交一张分类为X的工单；再提交一张无规则匹配分类的工单并手动分配。",
+          "expected": "第一张工单自动归属G1且状态为待处理；第二张保持待分配，手动分配后进入待处理。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "将一张已分配到业务组G1的工单转派给G2（或另一处理人）。",
+          "expected": "工单当前归属变为G2/该处理人，状态保持待处理，转派记录可查。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "将一张已分配到业务组G1的工单转派给G2（或另一处理人）。",
+          "expected": "工单当前归属变为G2/该处理人，状态保持待处理，转派记录可查。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-08",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-08",
+          "kind": "interaction",
+          "action": "处理人打开一张待处理工单，查看提交人信息与历史工单，并执行处理操作。",
+          "expected": "信息面板显示提交人姓名、公司、部门及其历史工单；处理后工单记录显示处理人与处理时间。"
+        },
+        {
+          "requirementId": "AC-08",
+          "kind": "runtime-render",
+          "action": "处理人打开一张待处理工单，查看提交人信息与历史工单，并执行处理操作。",
+          "expected": "信息面板显示提交人姓名、公司、部门及其历史工单；处理后工单记录显示处理人与处理时间。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-09",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-09",
+          "kind": "other",
+          "action": "完成一张提交人邮箱为已知可达地址的工单，随后检查该邮箱。",
+          "expected": "提交人收到工单完成通知邮件，邮件内容可识别对应工单。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-10",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-10",
+          "kind": "interaction",
+          "action": "工单完成后，提交人提交满意度评分，随后查看该工单。",
+          "expected": "评价保存成功并在工单上可见。"
+        },
+        {
+          "requirementId": "AC-10",
+          "kind": "runtime-render",
+          "action": "工单完成后，提交人提交满意度评分，随后查看该工单。",
+          "expected": "评价保存成功并在工单上可见。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-11",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-11",
+          "kind": "runtime-render",
+          "action": "准备多公司、多部门的工单数据，打开统计页面并分别切换公司、部门维度。",
+          "expected": "各维度分布数据与实际工单数据一致，维度可切换。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-12",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-12",
+          "kind": "runtime-render",
+          "action": "在已知数据集下打开仪表盘，逐项核对各指标。",
+          "expected": "工单量、平均响应时间、满意度、热点问题正确展示，数据变化后指标随之更新。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-13",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-13",
+          "kind": "interaction",
+          "action": "以具备多公司查看权限的账号进入工作台，依次使用公司筛选、关键词搜索与排序操作。",
+          "expected": "列表仅包含待处理工单；筛选、搜索结果与排序顺序符合所选条件。"
+        },
+        {
+          "requirementId": "AC-13",
+          "kind": "runtime-render",
+          "action": "以具备多公司查看权限的账号进入工作台，依次使用公司筛选、关键词搜索与排序操作。",
+          "expected": "列表仅包含待处理工单；筛选、搜索结果与排序顺序符合所选条件。"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-14",
+      "type": "E2E/API",
+      "plan": [
+        {
+          "requirementId": "AC-14",
+          "action": "依次执行上述关键操作后检索系统日志。",
+          "expected": "每个操作均有对应日志条目，包含操作者、时间与动作，顺序与实际操作一致。"
+        }
+      ]
+    }
+  ]
+}

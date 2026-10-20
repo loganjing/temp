@@ -1,0 +1,10 @@
+[
+  {
+    "receivedAt": "2026-10-20T10:34:12.230Z",
+    "from": "<qa-noreply@ticket-qa.test>",
+    "to": [
+      "<zhangsan@yunfan.test>"
+    ],
+    "raw": "From: qa-noreply@ticket-qa.test\nTo: zhangsan@yunfan.test\nSubject: =?UTF-8?B?W+W3peWNleWujOaIkF0gVEtULTAwMDAwMyDml6A=?=\n =?UTF-8?B?5rOV55m75b2V5LyB5Lia6YKu566x57O757uf?=\nMessage-ID: <869f1c73-b493-6b38-5d63-dd465675e002@ticket-qa.test>\nContent-Transfer-Encoding: base64\nDate: Tue, 20 Oct 2026 10:34:12 +0000\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\n5oKo5aW977yM5oKo55qE5bel5Y2V5bey5aSE55CG5a6M5oiQ44CCCgrlt6XljZXlj7fvvJpUS1Qt\nMDAwMDAzCuS4u+mimO+8muaXoOazleeZu+W9leS8geS4mumCrueuseezu+e7nwrliIbnsbvvvJro\ntKbmiLfkuI7mnYPpmZAK5LyY5YWI57qn77yaUDIK5aSE55CG5Lq677ya5p2O5ZubCuWujOaIkOaX\ntumXtO+8mjIwMjYtMTAtMjBUMTA6MzQ6MTIuMjE0WgrlpITnkIbor7TmmI7vvJrlt7Lnoa7orqTk\nuLrotKbmiLfov57nu63ovpPplJnlr4bnoIHop6blj5Hkv53miqTplIHlrprvvIznjrDlt7Lop6Pp\nlIHlubbph43nva7nmbvlvZXlh63mja7vvIzor7fkvb/nlKjmlrDlr4bnoIHnmbvlvZXjgIIKCuiv\nt+eZu+W9leW3peWNleezu+e7n+WvueacrOasoeacjeWKoei/m+ihjOa7oeaEj+W6puivhOS7t+OA\ngg=="
+  }
+]

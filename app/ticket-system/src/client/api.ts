@@ -105,7 +105,7 @@ export function deleteBusinessGroup(groupId: number): Promise<void> {
   return apiRequest<void>(`/api/business-groups/${groupId}`, { method: 'DELETE' })
 }
 
-export function addGroupMember(groupId: number, body: { user_id: number }): Promise<GroupMember> {
+export function addGroupMember(groupId: number, body: { user_id: string }): Promise<GroupMember> {
   return apiRequest<GroupMember>(`/api/business-groups/${groupId}/members`, { method: 'POST', body: JSON.stringify(body) })
 }
 

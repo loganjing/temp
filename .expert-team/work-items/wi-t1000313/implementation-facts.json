@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 10,
   "attempts": [
     {
       "attempt": 1,
@@ -20,6 +20,16 @@
       "requestId": "cli:prepare:T02:4c71e575-3ab3-4f36-a284-d3d1d7ad4bb0",
       "createdAt": "2026-10-20T09:26:18.655Z",
       "executionId": "ses_ea75d944cffevbwd46SIlSBJVm",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 2,
+      "planId": "plan:29df2af3-c0aa-441b-aca5-27611e05f76d",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:100cc256-dcfa-489a-8ac9-db33ec3b127a",
+      "createdAt": "2026-10-20T11:06:50.350Z",
+      "executionId": "ses_ea701c7a1ffeJlpi76jbRQaUGs",
       "outcome": "completed"
     }
   ],
@@ -69,9 +79,66 @@
         ]
       },
       "createdAt": "2026-10-20T10:02:15.805Z"
+    },
+    {
+      "planId": "plan:29df2af3-c0aa-441b-aca5-27611e05f76d",
+      "taskId": "T02",
+      "attempt": 2,
+      "executionId": "ses_ea701c7a1ffeJlpi76jbRQaUGs",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/",
+            "bytes": 152244,
+            "sha256": "sha256:6db324b3c1be06d080f24011c5254ea851d943dd389330fd2e5659887b1b37c4"
+          }
+        ],
+        "fixedFindingIds": [
+          "DEFECT-01"
+        ]
+      },
+      "createdAt": "2026-10-20T11:11:06.038Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:5:repair:T02:T02:2",
+      "planId": "plan:29df2af3-c0aa-441b-aca5-27611e05f76d",
+      "taskId": "T02",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:5",
+      "findingIds": [
+        "DEFECT-01"
+      ],
+      "findings": [
+        {
+          "id": "DEFECT-01",
+          "severity": "blocking",
+          "taskId": "T02",
+          "environment": "macOS Chrome 146（Vite dev 前端 http://localhost:5176 + Hono 后端 :3000，隔离 SQLite 测试库）",
+          "steps": [
+            "以 ops 账号登录前端，进入“管理”页并将当前公司切换到云帆科技",
+            "进入“业务组与成员”区，点击任一业务组的“添加成员”",
+            "在“选择该公司用户”下拉中选择任一用户（如“李四（lisi@yunfan.test）”）",
+            "点击“添加”按钮"
+          ],
+          "expected": "成员成功加入该业务组，组内成员列表显示新成员；服务端契约 user_id 为非空字符串 UUID",
+          "actual": "两次提交均返回 400 VALIDATION_FAILED（“user_id 必填字段”），页面提示“提交内容校验未通过，请检查输入”，成员未添加；用相同 token 与 user_id 字符串直接 POST /api/business-groups/:id/members 成功，证明服务端正常",
+          "location": "app/ticket-system/src/client/components/admin/AdminSections.tsx:525",
+          "problem": "submitAddMember 中 addGroupMember(addMember.groupId, { user_id: Number(addMember.userId) }) 把 UUID 字符串转换为 NaN（JSON 序列化为 null），而服务端要求 user_id 为非空字符串，校验失败",
+          "requiredChange": "前端移除 Number() 转换，按契约直接提交字符串 user_id；由原开发 owner（前端任务 T02）修复",
+          "acceptanceEvidence": "修复后通过 UI 为业务组添加成员应成功，成员列表读回正确（重跑 QA-05）"
+        }
+      ],
+      "status": "resolved",
+      "createdAt": "2026-10-20T10:44:40.330Z",
+      "resolvedAt": "2026-10-20T11:11:06.038Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -301,6 +368,190 @@
         }
       },
       "createdAt": "2026-10-20T10:02:15.805Z"
+    },
+    {
+      "requestId": "verification:5:repair:T02",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:5:repair:T02:T02:2",
+          "planId": "plan:29df2af3-c0aa-441b-aca5-27611e05f76d",
+          "taskId": "T02",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:5",
+          "findingIds": [
+            "DEFECT-01"
+          ],
+          "findings": [
+            {
+              "id": "DEFECT-01",
+              "severity": "blocking",
+              "taskId": "T02",
+              "environment": "macOS Chrome 146（Vite dev 前端 http://localhost:5176 + Hono 后端 :3000，隔离 SQLite 测试库）",
+              "steps": [
+                "以 ops 账号登录前端，进入“管理”页并将当前公司切换到云帆科技",
+                "进入“业务组与成员”区，点击任一业务组的“添加成员”",
+                "在“选择该公司用户”下拉中选择任一用户（如“李四（lisi@yunfan.test）”）",
+                "点击“添加”按钮"
+              ],
+              "expected": "成员成功加入该业务组，组内成员列表显示新成员；服务端契约 user_id 为非空字符串 UUID",
+              "actual": "两次提交均返回 400 VALIDATION_FAILED（“user_id 必填字段”），页面提示“提交内容校验未通过，请检查输入”，成员未添加；用相同 token 与 user_id 字符串直接 POST /api/business-groups/:id/members 成功，证明服务端正常",
+              "location": "app/ticket-system/src/client/components/admin/AdminSections.tsx:525",
+              "problem": "submitAddMember 中 addGroupMember(addMember.groupId, { user_id: Number(addMember.userId) }) 把 UUID 字符串转换为 NaN（JSON 序列化为 null），而服务端要求 user_id 为非空字符串，校验失败",
+              "requiredChange": "前端移除 Number() 转换，按契约直接提交字符串 user_id；由原开发 owner（前端任务 T02）修复",
+              "acceptanceEvidence": "修复后通过 UI 为业务组添加成员应成功，成员列表读回正确（重跑 QA-05）"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-20T10:44:40.330Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-20T10:44:40.330Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:100cc256-dcfa-489a-8ac9-db33ec3b127a",
+      "actorId": "general-app-development-expert",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000313",
+          "planId": "plan:29df2af3-c0aa-441b-aca5-27611e05f76d",
+          "taskId": "T02",
+          "attempt": 2,
+          "summary": "实现工单系统前端：登录、工作台、工单详情、我的工单、统计仪表盘、审计与管理页面",
+          "objective": "## 目标\n\n在 `app/ticket-system/src/client/` 实现 `ticket-system` 的 React/Vite SPA 界面，按架构基线第 3 节 UI 全局基线（split-master-detail、Modern SaaS、Tailwind）呈现工单系统全部用户旅程。\n\n## 范围\n\n- 登录与全局壳：本地密码登录、当前用户上下文（姓名、公司、角色）、左侧导航（工作台、我的工单、统计、审计、管理）。\n- 工单工作台：待处理工单列表（默认 in_progress），支持公司筛选（仅 ops 可见）、状态/分类/优先级筛选、工单号/主题/提交人搜索、创建时间与优先级排序、分页。\n- 工单详情：完整工单字段、提交人信息面板（处理视角含姓名、公司、部门与历史工单）、回复时间线（多轮）、操作区（分配、转派、完成、取消、满意度评价）。\n- 我的工单：提交人视角的工单列表与详情入口；完成后提交 1–5 分满意度评价。\n- 统计与仪表盘：公司/部门维度分布切换，KPI 卡（工单量、平均响应时间、满意度）与热点分类列表。\n- 审计页：按工单/公司/动作检索审计事件（ops/handler 可见）。\n- 管理页：公司、用户档案、业务组与成员、分配规则的维护（仅 ops）。\n- API 集成：所有请求经 `src/client/platform/api-client.ts` 单一边界；请求/响应字段、错误码与状态语义严格以 `docs/wi-t1000313/technical-contract.md` 为准，在客户端内定义契约推导类型，不发明 API 行为；越域 404 与越权 403 给出明确文案，不暴露越域内容。\n\n## 验证\n\n- 在 packageRoot 下运行 `npm run typecheck:client` 与 `npm run build:client`，如实报告结果；可按需在 `app/ticket-system/package.json` 增加纯前端依赖（如图标库 lucide-react，唯一 owner）；不修改 `src/server/`、`src/shared/`、`test/` 与 `vendor/`。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13",
+            "AC-14"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000313/requirements.md",
+              "sha256": "sha256:5f1a8b296231c0b9f62977c7e3819fec441dc6b13886db79e74ef71498bf643f"
+            },
+            {
+              "path": "docs/wi-t1000313/architecture-baseline.md",
+              "sha256": "sha256:f0b02233105f8e3ce8201fdb12782dca14bf27deff26fcb207dffd4495361763"
+            },
+            {
+              "path": "docs/wi-t1000313/technical-contract.md",
+              "sha256": "sha256:89e9e8b32aa8d85fbb1d0bd41f6cc0f190d915b93e2ba2b6e6cd06bf2a120ead"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/",
+            "app/ticket-system/package.json",
+            "app/ticket-system/package-lock.json",
+            "app/ticket-system/index.html",
+            "app/ticket-system/tailwind.config.js"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": [],
+          "retry": {
+            "kind": "qa-repair",
+            "repairId": "verification:5:repair:T02:T02:2",
+            "priorAttempt": 1,
+            "findingIds": [
+              "DEFECT-01"
+            ],
+            "findings": [
+              {
+                "id": "DEFECT-01",
+                "severity": "blocking",
+                "taskId": "T02",
+                "environment": "macOS Chrome 146（Vite dev 前端 http://localhost:5176 + Hono 后端 :3000，隔离 SQLite 测试库）",
+                "steps": [
+                  "以 ops 账号登录前端，进入“管理”页并将当前公司切换到云帆科技",
+                  "进入“业务组与成员”区，点击任一业务组的“添加成员”",
+                  "在“选择该公司用户”下拉中选择任一用户（如“李四（lisi@yunfan.test）”）",
+                  "点击“添加”按钮"
+                ],
+                "expected": "成员成功加入该业务组，组内成员列表显示新成员；服务端契约 user_id 为非空字符串 UUID",
+                "actual": "两次提交均返回 400 VALIDATION_FAILED（“user_id 必填字段”），页面提示“提交内容校验未通过，请检查输入”，成员未添加；用相同 token 与 user_id 字符串直接 POST /api/business-groups/:id/members 成功，证明服务端正常",
+                "location": "app/ticket-system/src/client/components/admin/AdminSections.tsx:525",
+                "problem": "submitAddMember 中 addGroupMember(addMember.groupId, { user_id: Number(addMember.userId) }) 把 UUID 字符串转换为 NaN（JSON 序列化为 null），而服务端要求 user_id 为非空字符串，校验失败",
+                "requiredChange": "前端移除 Number() 转换，按契约直接提交字符串 user_id；由原开发 owner（前端任务 T02）修复",
+                "acceptanceEvidence": "修复后通过 UI 为业务组添加成员应成功，成员列表读回正确（重跑 QA-05）"
+              }
+            ]
+          }
+        }
+      },
+      "createdAt": "2026-10-20T11:06:50.350Z"
+    },
+    {
+      "requestId": "cli:submit:T02:cf018182-30ee-4d8f-af01-da9a6a4b8099",
+      "actorId": "general-app-development-expert",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-20T11:07:10.768Z"
+    },
+    {
+      "requestId": "cli:complete:T02:29365dc7-02ad-48e6-b3a8-b7d50b7c9781",
+      "actorId": "general-app-development-expert",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/",
+              "bytes": 152244,
+              "sha256": "sha256:6db324b3c1be06d080f24011c5254ea851d943dd389330fd2e5659887b1b37c4"
+            }
+          ],
+          "fixedFindingIds": [
+            "DEFECT-01"
+          ]
+        }
+      },
+      "createdAt": "2026-10-20T11:11:06.038Z"
     }
   ]
 }

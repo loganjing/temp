@@ -1,19 +1,19 @@
 {
   "schemaVersion": 2,
-  "receiptId": "implementation:3",
+  "receiptId": "implementation:7",
   "receiptType": "implementation-report",
   "specId": "general-application-development-spec",
-  "graphRevision": 5,
+  "graphRevision": 6,
   "actionId": "implementation",
-  "inputRevision": 2,
-  "stateVersion": 3,
+  "inputRevision": 6,
+  "stateVersion": 7,
   "outcome": "passed",
   "contentHash": "sha256:ef8c6c5c508b1ce6b02d5ac8c20b5fafd06724ae8098ebcb27b48dd8b3bdc356",
-  "createdAt": "2026-10-20T10:03:45.901Z",
+  "createdAt": "2026-10-20T11:11:22.606Z",
   "timing": {
     "startedAt": "2026-10-20T09:23:37.446Z",
-    "completedAt": "2026-10-20T10:03:45.901Z",
-    "durationMs": 2408455
+    "completedAt": "2026-10-20T11:11:22.606Z",
+    "durationMs": 6465160
   },
   "artifacts": [
     {
