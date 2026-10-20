@@ -1,0 +1,556 @@
+{
+  "schemaVersion": 1,
+  "revision": 10,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:8a6628f8-9495-414c-9d0c-1c0a9b35b027",
+      "createdAt": "2026-10-20T07:10:03.430Z",
+      "executionId": "ses_ea7da4fa6ffeo1zLYA66BlEnbp",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:2bebac84-4335-4e03-8921-403ea17845af",
+      "createdAt": "2026-10-20T07:10:05.364Z",
+      "executionId": "ses_ea7da44eeffeKsR3NX24K1aMNw",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 2,
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:865c840d-a4e7-425c-8e29-7f3bf5802fc8",
+      "createdAt": "2026-10-20T07:59:01.739Z",
+      "executionId": "ses_ea7adb1d7ffeAb4bn66xWg3g12",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_ea7da4fa6ffeo1zLYA66BlEnbp",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/",
+            "bytes": 78715,
+            "sha256": "sha256:2076e96a70228fb8be3b2b2d23053ed2112c850eceafaa7eb06065a5367f397c"
+          },
+          {
+            "path": "app/ticket-system/src/shared/",
+            "bytes": 6548,
+            "sha256": "sha256:0de2928ed29cefec4a286228f4f9dd46a2ae40e8a114ea4f1b9fc8d2163db6f0"
+          },
+          {
+            "path": "app/ticket-system/test/",
+            "bytes": 50658,
+            "sha256": "sha256:a6df549c9623e09dfd70cc175744fd70b4ab740c769278a4e6b26ab8033c589e"
+          }
+        ]
+      },
+      "createdAt": "2026-10-20T07:51:44.085Z"
+    },
+    {
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_ea7da44eeffeKsR3NX24K1aMNw",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/",
+            "bytes": 116903,
+            "sha256": "sha256:791fc715d8fe8cf6d9088c78719152972f39f44fb2a807057067bf0772998137"
+          }
+        ]
+      },
+      "createdAt": "2026-10-20T07:51:46.841Z"
+    },
+    {
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T01",
+      "attempt": 2,
+      "executionId": "ses_ea7adb1d7ffeAb4bn66xWg3g12",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/",
+            "bytes": 78715,
+            "sha256": "sha256:2076e96a70228fb8be3b2b2d23053ed2112c850eceafaa7eb06065a5367f397c"
+          },
+          {
+            "path": "app/ticket-system/src/shared/",
+            "bytes": 6548,
+            "sha256": "sha256:0de2928ed29cefec4a286228f4f9dd46a2ae40e8a114ea4f1b9fc8d2163db6f0"
+          },
+          {
+            "path": "app/ticket-system/test/",
+            "bytes": 51141,
+            "sha256": "sha256:ca92b6308488bf26b32551d318b1c0ee2a032e7c4f5088fb1aa2c927df481be8"
+          }
+        ],
+        "fixedFindingIds": [
+          "F1"
+        ]
+      },
+      "createdAt": "2026-10-20T08:02:49.443Z"
+    }
+  ],
+  "repairs": [
+    {
+      "repairId": "cli:reopen:T01:ffffc6c0-89be-4d10-b65d-619dd362808b:T01:2",
+      "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+      "taskId": "T01",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "findingIds": [
+        "F1"
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "taskId": "T01",
+          "problem": "test/tickets.test.mjs 用例「multi-round replies record author and time and backfill first reply」第 264 行断言 submitterReply.body.createdAt > handlerReply.body.createdAt（严格大于）。服务端时间戳按契约 §1 为毫秒精度 ISO 8601（nowIso() = new Date().toISOString()），同一毫秒内的两次回复 createdAt 相同；全量测试套件并发运行时两次请求可能落在同一毫秒，导致该断言偶发失败（协调者在合并状态两次全量运行分别得到 19/19 通过与 18/19 失败、失败均为此用例，单文件运行通过）。测试对契约未承诺的严格递增时间戳做了强断言，属于交付测试套件的稳定性缺陷。",
+          "requiredChange": "由原实现 owner 在不改变契约语义与产品行为的前提下修复该用例的偶发失败：断言应与契约承诺一致（毫秒精度时间戳 + 回复列表按 created_at ASC, id ASC 稳定排序），或以确定性方式保证两轮回复时间可区分（例如对同毫秒场景按列表顺序/回复人断言可区分性，或确保断言不依赖两次请求跨毫秒边界）。不得为此修改 technical-contract.md 的时间格式或引入新的产品行为。",
+          "acceptanceEvidence": "在 app/ticket-system 内以 npm test 连续运行全量套件至少 3 次，全部 19/19 通过且无偶发失败；npm run typecheck:server 通过；报告给出实际命令与每次运行结果。",
+          "affectedArtifacts": [
+            {
+              "path": "app/ticket-system/test/tickets.test.mjs"
+            }
+          ]
+        }
+      ],
+      "status": "resolved",
+      "createdAt": "2026-10-20T07:58:52.730Z",
+      "resolvedAt": "2026-10-20T08:02:49.443Z"
+    }
+  ],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:8a6628f8-9495-414c-9d0c-1c0a9b35b027",
+      "actorId": "荆龙刚",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000312",
+          "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "实现工单系统 Hono 服务端全部业务 API、数据迁移、种子数据与服务端集成测试",
+          "objective": "## 目标\n\n在 `app/ticket-system` 的 `src/server/` 内实现工单系统服务端全部业务能力。接口行为以已批准的 `docs/wi-t1000312/technical-contract.md` 为唯一契约来源（method/path、字段、错误码、授权、幂等、状态机、名称映射责任均以契约为准，不另行发明）；数据模型、迁移编号（自 0002 起）与事务边界遵循 `docs/wi-t1000312/architecture-baseline.md` §4。\n\n## 范围\n\n- 身份与用户：登录/`me`/用户列表查询，userkit 用户 + 项目 `user_profiles` 角色/部门扩展（同一事务创建用户）。\n- 工单域：创建（事务内发号 `TK-`+6 位零填充 + 分类规则自动分配 + 日志）、列表（状态/公司/分类/优先级筛选、关键词搜索、排序、分页、公司行级隔离）、详情、人工分配、转派、完成、取消、提交人完整信息（含历史工单）。\n- 回复与评价、工单日志、通知（emailkit 发送 + `notifications` outbox 记录，事务提交后发送）、统计分布与仪表盘聚合。\n- 版本化迁移：companies、user_profiles、groups、group_members、category_rules、tickets、ticket_sequence、replies、ratings、ticket_logs、notifications；幂等种子数据（公司、各角色用户与密码凭证、业务组/成员/分类规则示例、已知分布的工单样本）。\n- `src/shared/` 平台中立契约类型与枚举常量（本任务是该目录唯一 owner；前端任务不写该目录）。\n- `app/ticket-system/test/` 下新增服务端业务集成测试，基于 `test/with-http-server.mjs` 以真实 HTTP 验证契约关键行为（公司隔离、自动分配、状态流转、回复、评价、完成通知记录、统计口径）。\n\n## 贡献的验收条件\n\n对 AC-01～AC-13 提供服务端行为：数据持久化与读回（AC-01/02/04/05/09/10/13 的 session-persistence 证据）、公司行级隔离与 404 不泄露语义（AC-03）、分类自动分配事务（AC-06）、转派归属变更与日志（AC-07）、提交人完整信息与历史工单（AC-08）、完成处理记录与邮件发送记录（AC-09）、工作台筛选/搜索/排序/公司维度查询（AC-11）、按公司/部门分布与四类运营指标聚合（AC-12）。\n\n## 验证\n\n- `npm run typecheck:server`（server 局部类型检查，在 `app/ticket-system` 内执行）\n- `npm test`（node --test 运行 `test/` 套件，含新增业务测试，真实 HTTP 服务）\n\n不修改 `src/client/`；`package.json` 如需依赖/脚本变更由本任务唯一执行。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000312/requirements.md",
+              "sha256": "sha256:b3014c61a5b2d7689275926a26f46d353a3ffe32d17806e997ea51eaf321290b"
+            },
+            {
+              "path": "docs/wi-t1000312/architecture-baseline.md",
+              "sha256": "sha256:86f71dc4d01fce35512b1614db3864c1b1251f662fdaa295bf119da1695a1371"
+            },
+            {
+              "path": "docs/wi-t1000312/technical-contract.md",
+              "sha256": "sha256:36d484e2270ce3d4e22094be89b5043674ece6f14dd3b58c3fbaf66733ee889e"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/test/",
+            "app/ticket-system/package.json"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/test/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/",
+              "app/ticket-system/src/shared/",
+              "app/ticket-system/test/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-20T07:10:03.430Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:2bebac84-4335-4e03-8921-403ea17845af",
+      "actorId": "荆龙刚",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000312",
+          "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "实现工单系统 React SPA 全部页面、路由、API 集成与客户端构建验证",
+          "objective": "## 目标\n\n在 `app/ticket-system` 的 `src/client/` 内实现工单系统 React/Vite SPA 的全部用户界面。页面清单、布局与视觉基线遵循 `docs/wi-t1000312/architecture-baseline.md` §3（左侧导航应用壳 + master-detail 主工作区、Modern SaaS 视觉、状态徽章、桌面 Web）；接口调用严格遵循 `docs/wi-t1000312/technical-contract.md`——前端基于契约转写类型与请求封装，不发明 API 行为。\n\n## 范围\n\n- 登录页与认证状态（Bearer token 持有、401 统一处理、按角色显隐导航）。\n- 工作台（handler/admin：待处理/待分配队列，筛选、关键词搜索、排序、公司维度筛选）。\n- 我的工单（submitter 视角）与工单详情页（基础信息、提交人完整信息卡含历史工单入口、多轮回复流、按角色与状态渲染的处理操作与满意度评价区、操作日志、通知记录）。\n- 统计分析页（按公司/部门分布 + 工单量/平均响应时间/满意度/热点问题 KPI 仪表盘）。\n- 配置管理页（admin：业务组与成员、分类分配规则维护）。\n- `src/client/platform/api-client.ts` 之上的业务请求层与契约类型定义（类型在 `src/client` 内从 technical-contract.md 转写，不依赖并行任务的 `src/shared/` 产物，不写该目录）。\n- 全局状态基线：加载骨架、空数据文案、错误条、无权限（403/404）提示、操作 toast；主题/描述等可截断文本提供全文查看。\n\n## 贡献的验收条件\n\n对 AC-01～AC-13 提供用户界面呈现与交互入口：各 UI 类验收场景的创建/查看/回复/分配/转派/完成/取消/评价操作与字段读回界面（AC-01/02/04/05/06/07/08/10/11/12/13 的 runtime-render 与 interaction 证据）、公司隔离在列表/搜索/详情的界面不可见性（AC-03）、完成通知记录区（AC-09）、配置保存读回（AC-05）。\n\n## 验证\n\n- `npm run typecheck:client`（client 局部类型检查，在 `app/ticket-system` 内执行）\n- `npm run build:client`（Vite 生产构建）\n\n不修改 `src/server/`、`src/shared/` 与 `test/`；现有依赖已满足前端需求，不修改 `package.json`。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000312/requirements.md",
+              "sha256": "sha256:b3014c61a5b2d7689275926a26f46d353a3ffe32d17806e997ea51eaf321290b"
+            },
+            {
+              "path": "docs/wi-t1000312/architecture-baseline.md",
+              "sha256": "sha256:86f71dc4d01fce35512b1614db3864c1b1251f662fdaa295bf119da1695a1371"
+            },
+            {
+              "path": "docs/wi-t1000312/technical-contract.md",
+              "sha256": "sha256:36d484e2270ce3d4e22094be89b5043674ece6f14dd3b58c3fbaf66733ee889e"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/",
+            "app/ticket-system/index.html",
+            "app/ticket-system/tailwind.config.js",
+            "app/ticket-system/postcss.config.js",
+            "app/ticket-system/vite.config.ts"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-20T07:10:05.365Z"
+    },
+    {
+      "requestId": "cli:submit:T01:05a3528a-b188-470b-8fd5-9fa4142215f7",
+      "actorId": "荆龙刚",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-20T07:10:39.947Z"
+    },
+    {
+      "requestId": "cli:submit:T02:c5b897cf-aebc-48c6-aeb2-6d6d3375d4ee",
+      "actorId": "荆龙刚",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-20T07:10:42.456Z"
+    },
+    {
+      "requestId": "cli:complete:T01:2eb4c6d5-c834-434e-93a7-8b11e2db7c05",
+      "actorId": "荆龙刚",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/",
+              "bytes": 78715,
+              "sha256": "sha256:2076e96a70228fb8be3b2b2d23053ed2112c850eceafaa7eb06065a5367f397c"
+            },
+            {
+              "path": "app/ticket-system/src/shared/",
+              "bytes": 6548,
+              "sha256": "sha256:0de2928ed29cefec4a286228f4f9dd46a2ae40e8a114ea4f1b9fc8d2163db6f0"
+            },
+            {
+              "path": "app/ticket-system/test/",
+              "bytes": 50658,
+              "sha256": "sha256:a6df549c9623e09dfd70cc175744fd70b4ab740c769278a4e6b26ab8033c589e"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-20T07:51:44.085Z"
+    },
+    {
+      "requestId": "cli:complete:T02:771f9c6a-b86a-457a-a7b4-0df3d90ff896",
+      "actorId": "荆龙刚",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/",
+              "bytes": 116903,
+              "sha256": "sha256:791fc715d8fe8cf6d9088c78719152972f39f44fb2a807057067bf0772998137"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-20T07:51:46.841Z"
+    },
+    {
+      "requestId": "cli:reopen:T01:ffffc6c0-89be-4d10-b65d-619dd362808b",
+      "actorId": "荆龙刚",
+      "operation": "reopen",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "cli:reopen:T01:ffffc6c0-89be-4d10-b65d-619dd362808b:T01:2",
+          "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+          "taskId": "T01",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "findingIds": [
+            "F1"
+          ],
+          "findings": [
+            {
+              "id": "F1",
+              "taskId": "T01",
+              "problem": "test/tickets.test.mjs 用例「multi-round replies record author and time and backfill first reply」第 264 行断言 submitterReply.body.createdAt > handlerReply.body.createdAt（严格大于）。服务端时间戳按契约 §1 为毫秒精度 ISO 8601（nowIso() = new Date().toISOString()），同一毫秒内的两次回复 createdAt 相同；全量测试套件并发运行时两次请求可能落在同一毫秒，导致该断言偶发失败（协调者在合并状态两次全量运行分别得到 19/19 通过与 18/19 失败、失败均为此用例，单文件运行通过）。测试对契约未承诺的严格递增时间戳做了强断言，属于交付测试套件的稳定性缺陷。",
+              "requiredChange": "由原实现 owner 在不改变契约语义与产品行为的前提下修复该用例的偶发失败：断言应与契约承诺一致（毫秒精度时间戳 + 回复列表按 created_at ASC, id ASC 稳定排序），或以确定性方式保证两轮回复时间可区分（例如对同毫秒场景按列表顺序/回复人断言可区分性，或确保断言不依赖两次请求跨毫秒边界）。不得为此修改 technical-contract.md 的时间格式或引入新的产品行为。",
+              "acceptanceEvidence": "在 app/ticket-system 内以 npm test 连续运行全量套件至少 3 次，全部 19/19 通过且无偶发失败；npm run typecheck:server 通过；报告给出实际命令与每次运行结果。",
+              "affectedArtifacts": [
+                {
+                  "path": "app/ticket-system/test/tickets.test.mjs"
+                }
+              ]
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-20T07:58:52.730Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-20T07:58:52.730Z"
+    },
+    {
+      "requestId": "cli:prepare:T01:865c840d-a4e7-425c-8e29-7f3bf5802fc8",
+      "actorId": "荆龙刚",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000312",
+          "planId": "plan:e5b1f7d2-e82b-43cd-b34c-c2d5f8c127e0",
+          "taskId": "T01",
+          "attempt": 2,
+          "summary": "实现工单系统 Hono 服务端全部业务 API、数据迁移、种子数据与服务端集成测试",
+          "objective": "## 目标\n\n在 `app/ticket-system` 的 `src/server/` 内实现工单系统服务端全部业务能力。接口行为以已批准的 `docs/wi-t1000312/technical-contract.md` 为唯一契约来源（method/path、字段、错误码、授权、幂等、状态机、名称映射责任均以契约为准，不另行发明）；数据模型、迁移编号（自 0002 起）与事务边界遵循 `docs/wi-t1000312/architecture-baseline.md` §4。\n\n## 范围\n\n- 身份与用户：登录/`me`/用户列表查询，userkit 用户 + 项目 `user_profiles` 角色/部门扩展（同一事务创建用户）。\n- 工单域：创建（事务内发号 `TK-`+6 位零填充 + 分类规则自动分配 + 日志）、列表（状态/公司/分类/优先级筛选、关键词搜索、排序、分页、公司行级隔离）、详情、人工分配、转派、完成、取消、提交人完整信息（含历史工单）。\n- 回复与评价、工单日志、通知（emailkit 发送 + `notifications` outbox 记录，事务提交后发送）、统计分布与仪表盘聚合。\n- 版本化迁移：companies、user_profiles、groups、group_members、category_rules、tickets、ticket_sequence、replies、ratings、ticket_logs、notifications；幂等种子数据（公司、各角色用户与密码凭证、业务组/成员/分类规则示例、已知分布的工单样本）。\n- `src/shared/` 平台中立契约类型与枚举常量（本任务是该目录唯一 owner；前端任务不写该目录）。\n- `app/ticket-system/test/` 下新增服务端业务集成测试，基于 `test/with-http-server.mjs` 以真实 HTTP 验证契约关键行为（公司隔离、自动分配、状态流转、回复、评价、完成通知记录、统计口径）。\n\n## 贡献的验收条件\n\n对 AC-01～AC-13 提供服务端行为：数据持久化与读回（AC-01/02/04/05/09/10/13 的 session-persistence 证据）、公司行级隔离与 404 不泄露语义（AC-03）、分类自动分配事务（AC-06）、转派归属变更与日志（AC-07）、提交人完整信息与历史工单（AC-08）、完成处理记录与邮件发送记录（AC-09）、工作台筛选/搜索/排序/公司维度查询（AC-11）、按公司/部门分布与四类运营指标聚合（AC-12）。\n\n## 验证\n\n- `npm run typecheck:server`（server 局部类型检查，在 `app/ticket-system` 内执行）\n- `npm test`（node --test 运行 `test/` 套件，含新增业务测试，真实 HTTP 服务）\n\n不修改 `src/client/`；`package.json` 如需依赖/脚本变更由本任务唯一执行。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000312/requirements.md",
+              "sha256": "sha256:b3014c61a5b2d7689275926a26f46d353a3ffe32d17806e997ea51eaf321290b"
+            },
+            {
+              "path": "docs/wi-t1000312/architecture-baseline.md",
+              "sha256": "sha256:86f71dc4d01fce35512b1614db3864c1b1251f662fdaa295bf119da1695a1371"
+            },
+            {
+              "path": "docs/wi-t1000312/technical-contract.md",
+              "sha256": "sha256:36d484e2270ce3d4e22094be89b5043674ece6f14dd3b58c3fbaf66733ee889e"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/test/",
+            "app/ticket-system/package.json"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/test/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/",
+              "app/ticket-system/src/shared/",
+              "app/ticket-system/test/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": [],
+          "retry": {
+            "kind": "qa-repair",
+            "repairId": "cli:reopen:T01:ffffc6c0-89be-4d10-b65d-619dd362808b:T01:2",
+            "priorAttempt": 1,
+            "findingIds": [
+              "F1"
+            ],
+            "findings": [
+              {
+                "id": "F1",
+                "taskId": "T01",
+                "problem": "test/tickets.test.mjs 用例「multi-round replies record author and time and backfill first reply」第 264 行断言 submitterReply.body.createdAt > handlerReply.body.createdAt（严格大于）。服务端时间戳按契约 §1 为毫秒精度 ISO 8601（nowIso() = new Date().toISOString()），同一毫秒内的两次回复 createdAt 相同；全量测试套件并发运行时两次请求可能落在同一毫秒，导致该断言偶发失败（协调者在合并状态两次全量运行分别得到 19/19 通过与 18/19 失败、失败均为此用例，单文件运行通过）。测试对契约未承诺的严格递增时间戳做了强断言，属于交付测试套件的稳定性缺陷。",
+                "requiredChange": "由原实现 owner 在不改变契约语义与产品行为的前提下修复该用例的偶发失败：断言应与契约承诺一致（毫秒精度时间戳 + 回复列表按 created_at ASC, id ASC 稳定排序），或以确定性方式保证两轮回复时间可区分（例如对同毫秒场景按列表顺序/回复人断言可区分性，或确保断言不依赖两次请求跨毫秒边界）。不得为此修改 technical-contract.md 的时间格式或引入新的产品行为。",
+                "acceptanceEvidence": "在 app/ticket-system 内以 npm test 连续运行全量套件至少 3 次，全部 19/19 通过且无偶发失败；npm run typecheck:server 通过；报告给出实际命令与每次运行结果。",
+                "affectedArtifacts": [
+                  {
+                    "path": "app/ticket-system/test/tickets.test.mjs"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "createdAt": "2026-10-20T07:59:01.739Z"
+    },
+    {
+      "requestId": "cli:submit:T01:8ab6dc3d-507a-4bf0-9c32-4b15b906bbf2",
+      "actorId": "荆龙刚",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-20T07:59:17.030Z"
+    },
+    {
+      "requestId": "cli:complete:T01:634c2a58-e066-43c2-a647-b803c3b43f79",
+      "actorId": "荆龙刚",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/",
+              "bytes": 78715,
+              "sha256": "sha256:2076e96a70228fb8be3b2b2d23053ed2112c850eceafaa7eb06065a5367f397c"
+            },
+            {
+              "path": "app/ticket-system/src/shared/",
+              "bytes": 6548,
+              "sha256": "sha256:0de2928ed29cefec4a286228f4f9dd46a2ae40e8a114ea4f1b9fc8d2163db6f0"
+            },
+            {
+              "path": "app/ticket-system/test/",
+              "bytes": 51141,
+              "sha256": "sha256:ca92b6308488bf26b32551d318b1c0ee2a032e7c4f5088fb1aa2c927df481be8"
+            }
+          ],
+          "fixedFindingIds": [
+            "F1"
+          ]
+        }
+      },
+      "createdAt": "2026-10-20T08:02:49.443Z"
+    }
+  ]
+}

@@ -1,20 +1,60 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createApp } from '../src/server/app.ts'
-import { authBoundary } from '../src/server/platform/auth.ts'
-import { withHttpServer } from './with-http-server.mjs'
+import { api, login, seed, withTicketApp } from './app-fixture.mjs'
 
-test('selected authkit protects business routes until a real UserResolver is connected', async () => {
-  const app = createApp({
-    protect: authBoundary,
-    registerPublicRoutes: (routes) => routes.get('/api/public', (c) => c.json({ ok: true })),
-    registerProtectedRoutes: (routes) => routes.get('/api/private', (c) => c.json({ ok: true })),
+test('selected authkit boundary rejects requests without a valid token', async () => {
+  await withTicketApp(async (url) => {
+    const anonymous = await api(url, null, '/api/me')
+    assert.equal(anonymous.status, 401)
+
+    const invalidToken = await api(url, 'not-a-real-token', '/api/me')
+    assert.equal(invalidToken.status, 401)
+
+    const { response, body } = await login(url, seed.users.submitterA1)
+    assert.equal(response.status, 200)
+    assert.ok(body.token)
+    assert.equal(body.user.role, 'submitter')
+    assert.equal(body.user.companyId, seed.companies.a)
+
+    const authenticated = await api(url, body.token, '/api/me')
+    assert.equal(authenticated.status, 200)
+    const me = await authenticated.json()
+    assert.equal(me.id, seed.ids.submitterA1)
+    assert.equal(me.companyName, '公司A')
+    assert.equal(me.department, '研发部')
   })
-  await withHttpServer(app, async (url) => {
-    const publicResponse = await fetch(`${url}/api/public`)
-    assert.equal(publicResponse.status, 200)
-    const privateResponse = await fetch(`${url}/api/private`)
-    assert.equal(privateResponse.status, 503)
-    assert.equal((await privateResponse.json()).error.code, 'AUTH_NOT_CONFIGURED')
+})
+
+test('login rejects bad credentials and disabled accounts with contract error codes', async () => {
+  await withTicketApp(async (url) => {
+    const wrongPassword = await login(url, seed.users.submitterA1, 'wrong-password')
+    assert.equal(wrongPassword.response.status, 401)
+    assert.deepEqual(wrongPassword.body, { error: 'invalid_credentials' })
+
+    const unknownUser = await login(url, 'nobody@example.com', seed.password)
+    assert.equal(unknownUser.response.status, 401)
+    assert.deepEqual(unknownUser.body, { error: 'invalid_credentials' })
+
+    const disabled = await login(url, seed.users.disabledA)
+    assert.equal(disabled.response.status, 401)
+    assert.deepEqual(disabled.body, { error: 'account_disabled' })
+
+    const missingFields = await fetch(`${url}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: seed.users.submitterA1 }),
+    })
+    assert.equal(missingFields.status, 400)
+  })
+})
+
+test('login rate limit returns 429 after ten attempts in the window', async () => {
+  await withTicketApp(async (url) => {
+    for (let i = 0; i < 10; i++) {
+      const { response } = await login(url, seed.users.submitterA1)
+      assert.equal(response.status, 200)
+    }
+    const blocked = await login(url, seed.users.submitterA1)
+    assert.equal(blocked.response.status, 429)
   })
 })

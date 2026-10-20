@@ -18,10 +18,29 @@ function camelCaseResponse(value: unknown): unknown {
   ]))
 }
 
+let authToken: string | null = null
+let unauthorizedHandler: (() => void) | undefined
+
+export function setAuthToken(token: string | null) {
+  authToken = token
+}
+
+export function onUnauthorized(handler: () => void) {
+  unauthorizedHandler = handler
+}
+
 export async function apiRequest<T>(path: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(path, options)
+  const headers = new Headers(options?.headers)
+  const hadToken = authToken !== null
+  if (authToken) headers.set('Authorization', `Bearer ${authToken}`)
+  const response = await fetch(path, { ...options, headers })
   const data: unknown = response.status === 204 ? undefined : await response.json().catch(() => undefined)
   if (response.ok) return camelCaseResponse(data) as T
+
+  if (response.status === 401 && hadToken) {
+    authToken = null
+    unauthorizedHandler?.()
+  }
 
   const body = data && typeof data === 'object' ? data as Record<string, unknown> : undefined
   const error = body?.error
@@ -31,4 +50,13 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
     response.status,
     typeof detail?.code === 'string' ? detail.code : undefined,
   )
+}
+
+export async function apiJsonRequest<T>(path: string, method: 'POST' | 'PUT' | 'DELETE', body?: unknown): Promise<T> {
+  const options: RequestInit = { method }
+  if (body !== undefined) {
+    options.headers = { 'Content-Type': 'application/json' }
+    options.body = JSON.stringify(body)
+  }
+  return apiRequest<T>(path, options)
 }

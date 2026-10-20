@@ -2,5 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-body { min-width: 320px; min-height: 100vh; margin: 0; }
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md bg-indigo-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .input-base {
+    @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-50;
+  }
+  .card-base {
+    @apply rounded-xl border border-slate-200 bg-white;
+  }
+  .section-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+}
+
+:root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background-color: #f8fafc; color: #0f172a; }
