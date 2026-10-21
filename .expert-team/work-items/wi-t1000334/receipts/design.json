@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:551d078d559bddb72fb6dc363c15781dcb4359d94df608dfff4d1047b8ebddb4",
+  "createdAt": "2026-10-21T06:23:10.446Z",
+  "timing": {
+    "startedAt": "2026-10-21T05:54:18.936Z",
+    "completedAt": "2026-10-21T06:23:10.445Z",
+    "durationMs": 1731509
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000334/architecture-baseline.md",
+      "bytes": 17210,
+      "sha256": "sha256:79a0048e1efbf321cbb42db0927108577b78f807ffb88e9250f899af794b0857",
+      "title": "工单系统架构基线（136-ticket）"
+    },
+    {
+      "path": "docs/wi-t1000334/technical-contract.md",
+      "bytes": 14954,
+      "sha256": "sha256:80500c5c5da352b81b62ad685ed5d69df9e8333741b3195947a737662b0edb62",
+      "title": "工单系统技术契约（136-ticket）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "bootstrapPath": "docs/wi-t1000334/workspace-bootstrap.json",
+      "bootstrapSha256": "sha256:98918a240f7d80c479fc36df05bf60ffa3ce55217b8f710cb5721f1739749f7d",
+      "initResult": "initialized",
+      "packageRoot": "app/ticket-system",
+      "planDigest": "sha256:7a31d29dc04275e31d4281dbf59d0699cf8f26cad261bba4ef58519bf06cdc1c",
+      "scaffoldDigest": "sha256:0260ab5579bb7115ab775c2f1da461849f33cb9f5eebdfd69ad21646747f93d5",
+      "planSha256": "sha256:98918a240f7d80c479fc36df05bf60ffa3ce55217b8f710cb5721f1739749f7d"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:1334e2b6175f039acf1b8f1e69227538baee2e9a997cc8e54cea7f1feffaa7bd",
+        "path": ".expert-team/work-items/wi-t1000334/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
