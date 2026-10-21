@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:fa14f53332734a9bda14b6dc6fbcc8ae923d3bc535a8bd0f1d901264e1c992e8",
+  "createdAt": "2026-10-21T03:14:19.642Z",
+  "timing": {
+    "startedAt": "2026-10-21T03:02:37.738Z",
+    "completedAt": "2026-10-21T03:14:19.642Z",
+    "durationMs": 701904
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000329/architecture-baseline.md",
+      "bytes": 18494,
+      "sha256": "sha256:161be98073242dd3e261205a53eaf944a44f6d5fce784ab72e4842f0c28c4bd4",
+      "role": "primary",
+      "title": "系统设计 — 132-ticket 工单系统"
+    },
+    {
+      "path": "docs/wi-t1000329/technical-contract.md",
+      "bytes": 13261,
+      "sha256": "sha256:da7483d998b4462a8f98ce79a39ea07bf010635e61254730421f13f7af7dbb90",
+      "role": "supporting",
+      "title": "132-ticket 工单系统 — 技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "evidence": "Bootstrap input docs/wi-t1000329/workspace-bootstrap.json (sha256: a01c8331f3002fa5413503247a8d29f079987e770393cf8fe1cc305184334c7e) approved and initialized via the registered workspace initializer; planSha256 sha256:a01c8331f3002fa5413503247a8d29f079987e770393cf8fe1cc305184334c7e, planDigest sha256:ad90dc1c3d441badd4f0e8ea31d2c36840c8abdec2fd6489f351434cd79e191a, scaffoldDigest sha256:ddea9d79c4e9dffdcedbe8de06157ee4c9b631be3bbaee7f16c40208c8c6b774; packageRoot app/ticket-system; modules authkit/dbkit/emailkit/userkit; checks bootstrap-schema, module-distribution-files, scaffold-assets, source-layout-map, generated-scaffold-contract, npm install, npm run build, npm run test (3 pass), workspace-merge, existing docs unchanged; platform-baseline.json readable and app/ticket-system/AGENTS.md present."
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:ebb96eaba0e219426808675fa8fa2ddf1be897e556a1567fa8f657819028bf52",
+        "path": ".expert-team/work-items/wi-t1000329/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

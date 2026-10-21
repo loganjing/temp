@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-21T03:00:06.654Z"
+  "updatedAt": "2026-10-21T03:14:19.642Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000329/requirements.md",
+      "sha256": "sha256:1e9b523023202a9ef50189512029f6c0c5d6855ea93a027f7eaa130e2ded409c"
+    },
+    "reason": "需求基线明确要求多公司数据隔离与授权（公司A用户不能查看公司B工单）、提交人与处理人跨用户协作（多轮回复、转派）、工单完成后发送邮件通知（外部集成/后台处理）、按公司/部门维度的统计聚合与运营仪表盘，均为服务端权威能力，无法用单用户本地存储承载，故选 fullstack-complex 路线。",
+    "evidence": {
+      "supporting": [
+        "5.1/AC-03 公司隔离：不同公司用户不能查看对方工单，需要服务端授权与权威数据边界（证据类型 authorization）",
+        "旅程A/AC-02：提交人与处理人在同一工单上多轮回复，明确跨用户共享数据",
+        "5.4/AC-08：工单完成后向提交人邮箱发送通知邮件，需要服务端后台发送能力与可查发送记录",
+        "5.2/AC-05：公司级业务组、成员与分类自动分配规则，需要服务端权威配置与分配逻辑",
+        "5.6/AC-10/AC-11：按公司、部门维度统计工单分布及运营仪表盘，需要跨用户数据聚合",
+        "第2节：提交人、处理人、配置管理人员、统计查看者多角色操作主体，需要认证与权限体系"
+      ],
+      "excluding": [],
+      "unresolved": [
+        "邮件发送渠道与模板未规定（需求第7节），设计将采用可替换的邮件服务抽象并保留发送记录",
+        "权限体系与角色命名未规定，设计采用与公司隔离绑定的最小角色模型"
+      ]
+    },
+    "decidedAt": "2026-10-21T03:03:31.382Z",
+    "sha256": "sha256:ebb96eaba0e219426808675fa8fa2ddf1be897e556a1567fa8f657819028bf52"
+  }
 }
