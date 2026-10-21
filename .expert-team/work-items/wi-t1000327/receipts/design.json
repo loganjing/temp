@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:1a34865690d5c04441774821eb73082fbb210e7541d37ce40ab0a4596c689486",
+  "createdAt": "2026-10-21T01:53:25.407Z",
+  "timing": {
+    "startedAt": "2026-10-21T01:35:11.671Z",
+    "completedAt": "2026-10-21T01:53:25.407Z",
+    "durationMs": 1093736
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000327/architecture-baseline.md",
+      "bytes": 14830,
+      "sha256": "sha256:9851aad33553ddafd4caa3bfb6657edce764f6933e404f39704e3a53a05d7494",
+      "role": "primary",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000327/technical-contract.md",
+      "bytes": 19222,
+      "sha256": "sha256:c5566b48d4738a61dd3ac572aae6485399371b1bc6aff2726914da2f618f9234",
+      "role": "supporting",
+      "title": "技术契约（工单系统 · wi-t1000327）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "type": "workspace-init",
+      "command": "node general-app-team-lead/tools/workspace-bootstrap/init-workspace.mjs <workspace> --plan docs/wi-t1000327/workspace-bootstrap.json --approved",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "approved workspace-init for new project: plan docs/wi-t1000327/workspace-bootstrap.json (planSha256 sha256:93b35ec8f088d0df64231d59321b02f2a20809f428808aba4442a81a8f23c9ee), planDigest sha256:9ea63b239d1c388d18fd449e7af23ffe0fcc552daf33deaeda7c0411a815da29, scaffoldDigest sha256:2acd3b3f1e45e75da2c3ec4e1d71479cf92a3f3f381e3c5b7eb30eb016edaab3, packageRoot app/ticket-system, modules dbkit+authkit+userkit; passed checks: bootstrap-schema, module-distribution-files, scaffold-assets, source-layout-map, generated-scaffold-contract, npm install, npm run build, npm run test (3/3), workspace-merge, existing docs unchanged; platform-baseline.json readable and app/ticket-system/AGENTS.md present"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:f5c31d7f9a98c06e6c06a3fa0bce36c28f4b31327e4a1bef8e4336cd060084db",
+        "path": ".expert-team/work-items/wi-t1000327/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

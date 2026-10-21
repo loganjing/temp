@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-21T01:33:35.751Z"
+  "updatedAt": "2026-10-21T01:53:25.407Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000327/requirements.md",
+      "sha256": "sha256:29e8b8f6f355510d47297db3ee4463de333f812b50032d2a8bd7b34e38dd1a05"
+    },
+    "reason": "需求明确要求跨用户共享的服务端权威数据与公司级隔离：提交人创建的工单需被其他用户（处理人/业务组）查看、回复、转派与完成，多轮回复与业务组协作必须跨用户共享同一份权威数据（AC-02/AC-06/AC-07）；工单按公司隔离要求服务端权威数据边界与授权控制（AC-03）；工单完成后向提交人邮箱发送通知邮件，属于外部服务集成（FR-08/AC-09）；统计分析与运营指标仪表盘需要服务端聚合计算（FR-10/FR-11）；分类自动分配规则需在工单创建时于服务端执行（FR-05）。浏览器本地存储无法满足跨用户/跨公司共享与邮件发送，因此选择 fullstack-complex 完整路线。",
+    "evidence": {
+      "supporting": [
+        "AC-02/AC-07：工单多轮回复与转派要求提交人与处理人跨用户共享同一工单的权威数据",
+        "AC-03 及需求 4.3：工单按公司隔离，要求服务端权威数据边界与授权控制（提交人、处理人、管理者角色）",
+        "FR-08/AC-09：工单完成后发送邮件通知提交人邮箱，需要外部邮件服务集成，纯前端无法实现",
+        "AC-05/FR-04：业务组与成员管理是跨用户共享的配置数据",
+        "FR-10/FR-11/AC-11/AC-12：按公司/部门统计分布与运营指标仪表盘需要服务端聚合计算",
+        "FR-05/AC-06：分类自动分配规则需服务端在工单创建时执行分配流转",
+        "FR-13/AC-14：操作日志用于审计追溯，需要服务端持久化"
+      ],
+      "excluding": [
+        "排除 simple-frontend：浏览器 localStorage 数据仅限当前浏览器/设备，无法实现 AC-02/AC-03 要求的跨用户共享与公司隔离",
+        "排除 simple-frontend：AC-09 邮件通知无法在纯前端本地完成，需要外部邮件服务"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-21T01:36:03.765Z",
+    "sha256": "sha256:f5c31d7f9a98c06e6c06a3fa0bce36c28f4b31327e4a1bef8e4336cd060084db"
+  }
 }
