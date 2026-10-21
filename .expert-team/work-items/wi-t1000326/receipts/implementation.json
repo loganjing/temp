@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:ad54995e523fc68242dc37069c00420df81ff18916228f1b571bfeeeb2c33536",
+  "createdAt": "2026-10-21T01:42:08.156Z",
+  "timing": {
+    "startedAt": "2026-10-21T01:31:18.245Z",
+    "completedAt": "2026-10-21T01:42:08.156Z",
+    "durationMs": 649911
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000326/implementation-report.md",
+      "bytes": 5483,
+      "sha256": "sha256:253920dc94d345d84bf0777d7e92fd9155432fe22ce6f8360aaeb48fb37b4d60",
+      "title": "130-clock 实现报告"
+    }
+  ],
+  "url": "http://localhost:5179/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "command": "npm run typecheck",
+      "workDir": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "tsc --noEmit 无诊断输出"
+    },
+    {
+      "checkId": "unit-tests",
+      "command": "npm run test",
+      "workDir": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "vitest run 13/13 通过（tests/clock.test.ts 8 例 + tests/useClock.test.tsx 5 例）"
+    },
+    {
+      "checkId": "build",
+      "command": "npm run build",
+      "workDir": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "tsc --noEmit && vite build 产出 dist/ 纯静态文件"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:d903fab276a8d5d78d9ba465809bfc110fa909dd5a1f7177989eac449254ff6a",
+        "path": ".expert-team/work-items/wi-t1000326/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
