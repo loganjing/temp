@@ -7,30 +7,10 @@ export function createApplicationAuth(db: DbClient) {
   const userStore = createUserStore(db)
   const userResolver = createUserResolver(userStore)
   const auth = createAuth({ userResolver })
-  const loginRoute = auth.createLoginRoute({
-    loginField: 'email',
-    findByCredential: async (email) => {
-      const user = await userStore.findByCredential(email, 'email')
-      if (!user) return null
-      return {
-        id: user.id,
-        role: 'user',
-        status: user.enabled ? 'active' : 'disabled',
-        passwordHash: user.passwordHash,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        roles: ['user'],
-        passwordChangeRequired: user.passwordChangeRequired,
-      }
-    },
-    responseTransform: (user, token) => ({
-      token,
-      user: { id: user.id, name: user.name, email: user.email, phone: user.phone, roles: user.roles, passwordChangeRequired: user.passwordChangeRequired },
-    }),
-  })
   const requireAnyAuth: MiddlewareHandler = async (context, next) => {
-    await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
+    let authenticated = false
+    const response = await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
+      authenticated = true
       const user = (context as unknown as { get(key: string): { passwordChangeRequired?: boolean } }).get('currentUser')
       if (user.passwordChangeRequired && !['/api/auth/me', '/api/auth/password'].includes(context.req.path)) {
         context.json({ error: { code: 'PASSWORD_CHANGE_REQUIRED', message: 'Change your temporary password before continuing' } }, 403)
@@ -38,6 +18,12 @@ export function createApplicationAuth(db: DbClient) {
       }
       await next()
     })
+    // 认证失败时统一为契约错误格式 {error:{code,message}}（authkit 原生形状为 {error:string}）。
+    if (authenticated || !response || (response.status !== 401 && response.status !== 403)) return response
+    const payload = (await response.json().catch(() => null)) as { error?: unknown } | null
+    const message = typeof payload?.error === 'string' ? payload.error : '请先登录'
+    const code = response.status === 401 ? 'UNAUTHENTICATED' : 'FORBIDDEN'
+    return context.json({ error: { code, message } }, response.status as 401 | 403)
   }
-  return { ...auth, requireAnyAuth, userStore, userResolver, loginRoute }
+  return { ...auth, requireAnyAuth, userStore, userResolver }
 }

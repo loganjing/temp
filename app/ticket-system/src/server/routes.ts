@@ -1,7 +1,12 @@
 import { randomUUID } from 'node:crypto'
-import type { Hono, MiddlewareHandler } from 'hono'
+import type { Hono } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { findSessionProfile, toSummary } from './business/session'
+import { registerNotificationRoutes } from './business/notifications'
+import { registerOrgRoutes } from './business/org'
+import { registerStatsRoutes } from './business/stats'
+import { registerTicketRoutes } from './business/tickets'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -51,14 +56,42 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     }
     return context.json({ ok: true }, 201)
   })
-  app.post('/api/auth/login', platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
+  // 登录（契约 4.1：请求 {username, password}，错误统一为 {error:{code,message}}）。
+  // 凭证来自 userkit platform_users（email 列承载登录名），会话由 authkit Bearer token 建立。
+  app.post('/api/auth/login', platform.auth.loginRateLimit, async (context) => {
+    const body = (await context.req.json().catch(() => ({}))) as Record<string, unknown>
+    const username = typeof body.username === 'string' ? body.username.trim() : ''
+    const password = typeof body.password === 'string' ? body.password : ''
+    if (username === '' || password === '') {
+      return context.json(errorBody('INVALID_INPUT', '用户名与密码为必填项'), 400)
+    }
+    const user = await platform.auth.userStore.findByCredential(username, 'email')
+    if (!user || !platform.auth.verifyPassword(password, user.passwordHash)) {
+      return context.json(errorBody('UNAUTHENTICATED', '用户名或密码错误'), 401)
+    }
+    if (!user.enabled) {
+      return context.json(errorBody('FORBIDDEN', '账户已禁用，请联系管理员'), 403)
+    }
+    const token = platform.auth.signToken(user.id)
+    return context.json({
+      token,
+      user: { id: user.id, name: user.name, email: user.email, phone: user.phone, passwordChangeRequired: user.passwordChangeRequired },
+    })
+  })
   app.get('/api/auth/sso/start', (context) => platform.auth.sso.start(context as never))
   app.get('/api/auth/sso/callback', (context) => platform.auth.sso.callback(context as never))
   app.post('/api/auth/sso/exchange', (context) => platform.auth.sso.exchange(context as never))
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  // 契约 4.1：GET /api/auth/me 返回 {user: UserProfileSummary}（业务档案）。
+  app.get('/api/auth/me', async (context) => {
+    const profile = await findSessionProfile(platform.db, context)
+    if (!profile) return context.json(errorBody('FORBIDDEN', '当前用户没有业务档案'), 403)
+    return context.json({ user: toSummary(profile) })
+  })
+  // 契约 4.1：登出返回 204（Bearer token 为无状态凭证，由客户端丢弃）。
+  app.post('/api/auth/logout', (context) => context.body(null, 204))
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -141,4 +174,11 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  // 业务模块（契约 4.2–4.5）：工单核心 / 组织与分配 / 统计分析 / 通知。
+  // 所有业务查询与写入按会话用户业务档案强制公司隔离（business/session.ts）。
+  registerTicketRoutes(app, platform.db)
+  registerOrgRoutes(app, platform.db)
+  registerStatsRoutes(app, platform.db)
+  registerNotificationRoutes(app, platform.db)
 }

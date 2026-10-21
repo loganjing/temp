@@ -1,108 +1,178 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { BrowserRouter, Navigate, NavLink, Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { fetchCurrentUser, logout as apiLogout } from './api'
 import UsersPage from './admin/UsersPage'
+import { RoleBadge, ToastProvider } from './components/ui'
+import LoginPage from './pages/LoginPage'
+import WorkbenchPage from './pages/WorkbenchPage'
+import MyTicketsPage from './pages/MyTicketsPage'
+import StatsPage from './pages/StatsPage'
+import AdminPage from './pages/AdminPage'
+import NotificationsPage from './pages/NotificationsPage'
+import { SessionContext, useSession, type Session } from './session'
+import type { UserProfileSummary } from './types'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
-type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+type BootstrapState = 'checking' | 'login' | 'ready'
 
 export default function App() {
   const [state, setState] = useState<BootstrapState>('checking')
-  const [user, setUser] = useState<CurrentUser | null>(null)
-  const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
+  const [user, setUser] = useState<UserProfileSummary | null>(null)
 
-  const refresh = async () => {
-    const token = localStorage.getItem('platform-token')
-    if (token) {
-      try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
-        setState('authenticated')
-        return
-      } catch {
-        localStorage.removeItem('platform-token')
-      }
-    }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
-  }
-
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
-
-  const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
+  const refresh = useCallback(async () => {
     try {
-      if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
-        setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
-      } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
-        localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
-        setState('authenticated')
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
-    } finally {
-      setBusy(false)
+      const profile = await fetchCurrentUser()
+      setUser(profile)
+      setState('ready')
+      return true
+    } catch {
+      setUser(null)
+      setState('login')
+      return false
     }
+  }, [])
+
+  const signOut = useCallback(async () => {
+    await apiLogout()
+    setUser(null)
+    setState('login')
+  }, [])
+
+  useEffect(() => {
+    void refresh()
+  }, [refresh])
+
+  const session = useMemo<Session | null>(() => {
+    if (!user) return null
+    return { user, refresh, signOut }
+  }, [user, refresh, signOut])
+
+  if (state === 'checking') {
+    return (
+      <main className="grid min-h-screen place-items-center bg-slate-50">
+        <p className="text-sm text-slate-500">加载中…</p>
+      </main>
+    )
   }
 
-  const changePassword = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
-  if (state === 'required' || state === 'login') return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>{state === 'required' ? '创建首个账户 / Set up the first account' : '登录 / Sign in'}</h1>
-        <p>{state === 'required' ? '仅在没有用户时可执行一次。/ Available once while no users exist.' : '使用本地账户登录。/ Sign in with your local account.'}</p>
-        <form onSubmit={(event) => void submitIdentity(event)} className="stack">
-          {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
-          <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-          <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建账户 / Create account' : '登录 / Sign in'}</button>
-        </form>
-      </section>
-    </main>
-  )
-  if (!user) return null
-  if (user.passwordChangeRequired) return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>更改临时密码 / Change temporary password</h1>
-        <p>继续使用前请设置新密码。/ Set a new password before continuing.</p>
-        <form onSubmit={(event) => void changePassword(event)} className="stack">
-          <label>新密码 / New password<input name="password" type="password" autoComplete="new-password" minLength={12} required /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>更新密码 / Update password</button>
-        </form>
-      </section>
-    </main>
-  )
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <ToastProvider>
+      <BrowserRouter>
+        <SessionContext.Provider value={session}>
+          <Routes>
+            <Route
+              path="/login"
+              element={user ? <Navigate to="/" replace /> : <LoginPage onSuccess={() => void refresh()} />}
+            />
+            <Route path="/" element={user ? <AppShell /> : <Navigate to="/login" replace />}>
+              <Route index element={<Navigate to="/workbench" replace />} />
+              <Route path="workbench" element={<WorkbenchPage />} />
+              <Route path="my-tickets" element={<MyTicketsPage />} />
+              <Route path="stats" element={<StatsPage />} />
+              <Route path="admin" element={<AdminPage />} />
+              <Route path="notifications" element={<NotificationsPage />} />
+              <Route
+                path="users"
+                element={
+                  <div className="starter-scope min-h-0 flex-1 overflow-y-auto p-6">
+                    <UsersPage />
+                  </div>
+                }
+              />
+              <Route path="*" element={<Navigate to="/workbench" replace />} />
+            </Route>
+          </Routes>
+        </SessionContext.Provider>
+      </BrowserRouter>
+    </ToastProvider>
+  )
+}
+
+const pageTitles: Record<string, string> = {
+  '/workbench': '工作台',
+  '/my-tickets': '我的工单',
+  '/stats': '统计分析',
+  '/admin': '管理',
+  '/notifications': '我的通知',
+  '/users': '用户管理 · 账户引导',
+}
+
+function AppShell() {
+  const { user, signOut } = useSession()
+  const location = useLocation()
+
+  const navItems = [
+    { to: '/workbench', label: '工作台' },
+    { to: '/my-tickets', label: '我的工单' },
+    { to: '/stats', label: '统计' },
+    ...(user.role === 'company_admin' ? [{ to: '/admin', label: '管理' }] : []),
+    { to: '/notifications', label: '我的通知' },
+  ]
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-900">
+      <aside className="flex w-60 shrink-0 flex-col border-r border-slate-200 bg-white">
+        <div className="flex h-14 shrink-0 items-center gap-2.5 border-b border-slate-100 px-5">
+          <div className="grid h-8 w-8 place-items-center rounded-lg bg-blue-600 text-sm font-bold text-white">工</div>
+          <span className="text-sm font-semibold">工单系统</span>
+        </div>
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-3">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `flex items-center rounded-lg px-3 py-2 text-sm transition-colors ${
+                  isActive
+                    ? 'bg-blue-50 font-medium text-blue-700'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+          <div className="my-3 border-t border-slate-100" />
+          <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              `flex items-center rounded-lg px-3 py-2 text-sm transition-colors ${
+                isActive
+                  ? 'bg-blue-50 font-medium text-blue-700'
+                  : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
+              }`
+            }
+            title="账户与凭证引导（基础用户管理）"
+          >
+            用户管理
+          </NavLink>
+        </nav>
+        <p className="border-t border-slate-100 px-5 py-3 text-[11px] leading-relaxed text-slate-400">
+          工单数据按公司隔离
+          <br />
+          桌面 Web · ≥1280px
+        </p>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
+          <h1 className="text-sm font-medium text-slate-700">{pageTitles[location.pathname] ?? '工单系统'}</h1>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-slate-600" title={user.email}>
+              {user.displayName}
+            </span>
+            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
+              {user.companyName}
+            </span>
+            <RoleBadge role={user.role} />
+            <button type="button" className="btn btn-secondary h-8 px-3 text-xs" onClick={() => void signOut()}>
+              退出登录
+            </button>
+          </div>
+        </header>
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden p-6">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   )
 }

@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "revision": 6,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:3bd92da2-9c9b-4218-9325-36182aad6ef1",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:3a0421a3-7e91-4986-85ca-2bb0b61fe325",
+      "createdAt": "2026-10-21T02:51:45.540Z",
+      "executionId": "ses_ea3a05357ffei9QFIx84VEmLQN",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:3bd92da2-9c9b-4218-9325-36182aad6ef1",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:2965c597-22c9-4a89-895c-f39b8e7c589d",
+      "createdAt": "2026-10-21T02:52:03.177Z",
+      "executionId": "ses_ea3a03a50ffe19M9L4xp2zS1Hi",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:3bd92da2-9c9b-4218-9325-36182aad6ef1",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_ea3a05357ffei9QFIx84VEmLQN",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/",
+            "bytes": 74783,
+            "sha256": "sha256:bae7f5159889e246a1c9dab16ad0c7429d22dcc7f7a2672e9fbb5d3a4917ebf4"
+          }
+        ],
+        "summary": "服务端实现完成：业务表迁移、种子数据与工单/组织/统计/通知全部 API，含公司隔离与角色权限。验证：npm test 19/19 通过（含 tickets.test.mjs 16 个子测试），npm run typecheck（server + client）无错误。",
+        "verification": [
+          {
+            "command": "npm test",
+            "result": "19 pass / 0 fail"
+          },
+          {
+            "command": "npm run typecheck",
+            "result": "pass, no errors"
+          }
+        ]
+      },
+      "createdAt": "2026-10-21T04:29:58.250Z"
+    },
+    {
+      "planId": "plan:3bd92da2-9c9b-4218-9325-36182aad6ef1",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_ea3a03a50ffe19M9L4xp2zS1Hi",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/",
+            "bytes": 121145,
+            "sha256": "sha256:e83139af85abb7a5244c8593fb7b63c38074cf6229b7a41c82fb77a5908f9783"
+          }
+        ],
+        "summary": "前端实现完成：登录、应用壳、工作台双栏（split-master-detail）、工单详情面板（回复/提交人信息/日志/动作）、我的工单、统计仪表盘、管理与我的通知页面。验证：npm run typecheck:client 与 npm run build:client 均通过（退出码 0）；并与并行任务 T01 的服务端实现做了只读边界核对，请求/响应形态一致。",
+        "verification": [
+          {
+            "command": "npm run typecheck:client",
+            "result": "exit code 0"
+          },
+          {
+            "command": "npm run build:client",
+            "result": "exit code 0 (50 modules, 620ms)"
+          }
+        ]
+      },
+      "createdAt": "2026-10-21T04:30:04.287Z"
+    }
+  ],
+  "repairs": [],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:3a0421a3-7e91-4986-85ca-2bb0b61fe325",
+      "actorId": "lingee-primary",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000327",
+          "planId": "plan:3bd92da2-9c9b-4218-9325-36182aad6ef1",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "实现工单系统 Hono 服务端：业务迁移、种子数据、工单/组织/统计/通知 API 与公司隔离权限",
+          "objective": "## 目标\n\n在 `app/ticket-system` 服务端完整落地工单系统业务能力。字段级 API、DDL、枚举、种子与统计口径以 `docs/wi-t1000327/technical-contract.md` 为唯一来源；模块边界、运行顺序与事务约定遵循 `docs/wi-t1000327/architecture-baseline.md`。\n\n### 实现范围\n\n- 数据层：按契约第 5 节 DDL 在 `src/server/migrations/sqlite/` 新增编号业务迁移（公司、用户业务档案、业务组与成员、分类、分配规则、工单、回复、操作日志、满意度评价、本地发件箱），不修改 userkit 既有迁移；首次启动空库时按契约 4.7 执行种子数据（不种子工单）。\n- 工单能力：创建（含按分类自动分配事务）、列表查询（筛选、搜索、排序、角色可见性、scope/mine）、详情、多轮回复（含首次回复时间）、人工分配、转派、完成（同事务写处理记录与完成通知）、取消、满意度评价、操作日志查询、提交人完整信息（含历史工单）。\n- 组织与分配：业务组与成员管理、分类管理、分配规则管理、平台公司列表。\n- 统计分析：公司/部门维度工单分布与运营指标仪表盘，platform_ops 跨公司只读视角。\n- 通知：当前登录用户为收件人的完成通知列表。\n- 公司隔离与权限：所有业务查询与写入按会话用户公司强制过滤（不信任前端公司参数）；端点级角色授权与统一错误码语义按契约第 1 节。\n\n### 验证方式\n\n- 以应用包现有的服务端分层类型检查与 node 测试框架（隔离 DB_PATH、真实 HTTP 服务）验证迁移、种子、关键事务（创建自动分配、完成与通知同事务、评价唯一约束）及公司隔离/角色权限行为，并报告真实结果。\n\n### 验收贡献\n\n- 为 AC-01~AC-14 全部验收条件提供 API 行为、数据持久化、公司隔离与授权的服务端实现；界面由并行任务 T02 提供。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13",
+            "AC-14"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000327/requirements.md",
+              "sha256": "sha256:29e8b8f6f355510d47297db3ee4463de333f812b50032d2a8bd7b34e38dd1a05"
+            },
+            {
+              "path": "docs/wi-t1000327/architecture-baseline.md",
+              "sha256": "sha256:9851aad33553ddafd4caa3bfb6657edce764f6933e404f39704e3a53a05d7494"
+            },
+            {
+              "path": "docs/wi-t1000327/technical-contract.md",
+              "sha256": "sha256:c5566b48d4738a61dd3ac572aae6485399371b1bc6aff2726914da2f618f9234"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/package.json",
+            "app/ticket-system/test/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-21T02:51:45.540Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:2965c597-22c9-4a89-895c-f39b8e7c589d",
+      "actorId": "lingee-primary",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000327",
+          "planId": "plan:3bd92da2-9c9b-4218-9325-36182aad6ef1",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "实现工单系统 React/Vite 前端：登录、工作台双栏、我的工单、统计仪表盘、管理与通知页面",
+          "objective": "## 目标\n\n在 `app/ticket-system` 前端完整实现工单系统页面与交互。API 行为、字段与类型以 `docs/wi-t1000327/technical-contract.md` 为唯一来源（契约类型在客户端边界内建模，不发明 API 行为）；布局与视觉遵循 `docs/wi-t1000327/architecture-baseline.md` 1.5 的 UI 基线（helpdesk 应用模板、split-master-detail 工作台、Modern SaaS 视觉预设、左侧导航 + 顶部上下文栏、桌面 Web ≥1280px）。\n\n### 实现范围\n\n- 全局壳与登录：登录页；左侧导航（工作台、我的工单、统计、管理、我的通知）与顶部上下文栏（当前用户、公司、角色、登出）；保留 starter 用户管理入口作为账户引导。\n- 工作台（split-master-detail）：待处理工单列表与当前工单详情双栏协同；状态、优先级、分类筛选与公司维度筛选（platform_ops），主题与工单号搜索，创建时间/优先级排序，条件可组合。\n- 工单详情：完整字段与长文本可读呈现、多轮回复时间线与回复输入、提交人完整信息区（姓名、公司、部门、历史工单）、操作日志区；按角色与状态提供分配、转派、完成、取消、评价等动作入口。\n- 我的工单：提交人本人全部状态工单列表与已完成工单的满意度评价入口。\n- 统计分析：运营指标 KPI（工单量、平均响应时间、满意度）、公司/部门维度分布图表、热点问题列表；platform_ops 可按公司切换。\n- 管理：业务组与成员、分类、分配规则管理（company_admin）。\n- 我的通知：完成通知收件箱（提交人视角）。\n- 全局状态：加载骨架、空数据引导、错误提示与重试、无权限 403 文案、成功 toast。\n\n### 验证方式\n\n- 以应用包现有的客户端分层类型检查与客户端构建完成开发期验证；API 集成基于契约字段的类型化客户端边界，不依赖运行中的服务端。\n\n### 验收贡献\n\n- 为 AC-01~AC-13 提供全部用户界面与交互实现，为 AC-14 提供操作日志查看界面；服务端行为由并行任务 T01 提供。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13",
+            "AC-14"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000327/requirements.md",
+              "sha256": "sha256:29e8b8f6f355510d47297db3ee4463de333f812b50032d2a8bd7b34e38dd1a05"
+            },
+            {
+              "path": "docs/wi-t1000327/architecture-baseline.md",
+              "sha256": "sha256:9851aad33553ddafd4caa3bfb6657edce764f6933e404f39704e3a53a05d7494"
+            },
+            {
+              "path": "docs/wi-t1000327/technical-contract.md",
+              "sha256": "sha256:c5566b48d4738a61dd3ac572aae6485399371b1bc6aff2726914da2f618f9234"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/",
+            "app/ticket-system/index.html",
+            "app/ticket-system/tailwind.config.js"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-21T02:52:03.177Z"
+    },
+    {
+      "requestId": "cli:submit:T01:7dda39f8-46f7-4383-a3e0-e0448157e46d",
+      "actorId": "lingee-primary",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-21T02:52:37.917Z"
+    },
+    {
+      "requestId": "cli:submit:T02:a91bc626-0b4d-4541-81b2-82bec91d51d8",
+      "actorId": "lingee-primary",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-21T02:52:40.146Z"
+    },
+    {
+      "requestId": "cli:complete:T01:3e89cce7-0437-4bfb-a0ad-55091142ad1a",
+      "actorId": "lingee-primary",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/",
+              "bytes": 74783,
+              "sha256": "sha256:bae7f5159889e246a1c9dab16ad0c7429d22dcc7f7a2672e9fbb5d3a4917ebf4"
+            }
+          ],
+          "summary": "服务端实现完成：业务表迁移、种子数据与工单/组织/统计/通知全部 API，含公司隔离与角色权限。验证：npm test 19/19 通过（含 tickets.test.mjs 16 个子测试），npm run typecheck（server + client）无错误。",
+          "verification": [
+            {
+              "command": "npm test",
+              "result": "19 pass / 0 fail"
+            },
+            {
+              "command": "npm run typecheck",
+              "result": "pass, no errors"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-21T04:29:58.250Z"
+    },
+    {
+      "requestId": "cli:complete:T02:dd9032bd-f28c-43d2-a1d5-0332fe122c1f",
+      "actorId": "lingee-primary",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/",
+              "bytes": 121145,
+              "sha256": "sha256:e83139af85abb7a5244c8593fb7b63c38074cf6229b7a41c82fb77a5908f9783"
+            }
+          ],
+          "summary": "前端实现完成：登录、应用壳、工作台双栏（split-master-detail）、工单详情面板（回复/提交人信息/日志/动作）、我的工单、统计仪表盘、管理与我的通知页面。验证：npm run typecheck:client 与 npm run build:client 均通过（退出码 0）；并与并行任务 T01 的服务端实现做了只读边界核对，请求/响应形态一致。",
+          "verification": [
+            {
+              "command": "npm run typecheck:client",
+              "result": "exit code 0"
+            },
+            {
+              "command": "npm run build:client",
+              "result": "exit code 0 (50 modules, 620ms)"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-21T04:30:04.287Z"
+    }
+  ]
+}

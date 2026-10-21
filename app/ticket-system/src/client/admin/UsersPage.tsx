@@ -78,7 +78,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="admin-grid">
+    <div className="admin-grid starter-scope">
       <section className="card">
         <h2>添加用户 / Add user</h2>
         <form className="form-grid" onSubmit={(event) => void submitCreate(event)}>

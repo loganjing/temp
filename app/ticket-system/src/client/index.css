@@ -2,64 +2,175 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------------------
+ * 基础（Modern SaaS：柔和中性色、细边界、少阴影、中等圆角、单一主色）
+ * ------------------------------------------------------------------------- */
 :root {
-  color-scheme: light dark;
-  --page: #f4f6f8;
+  color-scheme: light;
   --surface: #ffffff;
   --text: #17212b;
   --muted: #596773;
   --border: #d5dde4;
-  --accent: #1458a6;
-  --danger: #a32323;
-  --success: #17643c;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  --accent: #2563eb;
+  --danger: #dc2626;
+  --success: #059669;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page: #10151b;
-    --surface: #19212a;
-    --text: #e7edf3;
-    --muted: #a9b5c1;
-    --border: #354250;
-    --accent: #8abaff;
-    --danger: #ff9b9b;
-    --success: #8fe0b3;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background: #f8fafc;
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  /* 按钮与输入：覆盖 starter 的全局元素样式，统一交互控件观感 */
+  .btn {
+    @apply inline-flex min-h-0 h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply border-0 bg-blue-600 text-white hover:bg-blue-700;
+  }
+  .btn-secondary {
+    @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+  }
+  .btn-danger {
+    @apply border-0 bg-red-600 text-white hover:bg-red-700;
+  }
+  .input {
+    @apply min-h-0 h-9 w-full shrink-0 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 shadow-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:outline-none;
+  }
+  .label-text {
+    @apply mb-1.5 block text-xs font-medium text-slate-500;
+  }
+  .panel {
+    @apply rounded-xl border border-slate-200 bg-white;
   }
 }
-* { box-sizing: border-box; }
-body { min-width: 320px; min-height: 100vh; margin: 0; color: var(--text); background: var(--page); }
-button, input, select { font: inherit; }
-button { min-height: 40px; padding: 0.5rem 0.85rem; color: white; background: var(--accent); border: 1px solid var(--accent); border-radius: 6px; cursor: pointer; }
-button:disabled { opacity: 0.6; cursor: wait; }
-button.secondary { color: var(--text); background: var(--surface); border-color: var(--border); }
-input, select { width: 100%; min-height: 40px; padding: 0.5rem 0.65rem; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
-label { display: grid; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; }
-.shell { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
-.auth-shell { min-height: 100vh; display: grid; place-items: center; }
-.card { min-width: 0; padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
-.auth-card { width: min(440px, 100%); }
-.stack, .form-grid { display: grid; gap: 1rem; }
-.form-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); align-items: end; }
-.topbar, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.topbar { margin-bottom: 1.25rem; }
-.topbar h1, .section-heading h2 { margin: 0 0 0.3rem; }
-.topbar p, .auth-card p { color: var(--muted); }
-.admin-grid { display: grid; gap: 1rem; }
-.section-heading { margin-bottom: 1rem; }
-.search { width: min(340px, 100%); }
-.table-scroll { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; text-align: left; }
-th, td { padding: 0.75rem; vertical-align: top; border-bottom: 1px solid var(--border); }
-th { color: var(--muted); font-weight: 600; white-space: nowrap; }
-td strong, .subtext { display: block; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.subtext { margin-top: 0.25rem; color: var(--muted); font-size: 0.85rem; }
-.row-actions { display: grid; gap: 0.5rem; }
-.row-actions { min-width: 230px; }
-.reset-form { display: grid; gap: 0.4rem; }
-.error { color: var(--danger); }
-.success { color: var(--success); }
-@media (max-width: 680px) {
-  .shell { width: min(100% - 1rem, 1200px); padding-top: 1rem; }
-  .topbar, .section-heading { align-items: stretch; flex-direction: column; }
-  .search { width: 100%; }
+
+/* ---------------------------------------------------------------------------
+ * starter 用户管理页（保留原样式体系，作为账户引导入口）
+ * ------------------------------------------------------------------------- */
+.starter-scope button {
+  min-height: 40px;
+  padding: 0.5rem 0.85rem;
+  color: white;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.starter-scope button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.starter-scope button.secondary {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+}
+.starter-scope input,
+.starter-scope select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.5rem 0.65rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.starter-scope label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.starter-scope .card {
+  min-width: 0;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.starter-scope .form-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  align-items: end;
+}
+.starter-scope .stack {
+  display: grid;
+  gap: 1rem;
+}
+.starter-scope .admin-grid {
+  display: grid;
+  gap: 1rem;
+}
+.starter-scope .section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.starter-scope .search {
+  width: min(340px, 100%);
+}
+.starter-scope .table-scroll {
+  overflow-x: auto;
+}
+.starter-scope table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.starter-scope th,
+.starter-scope td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+.starter-scope th {
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.starter-scope td strong {
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.starter-scope .subtext {
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.starter-scope .row-actions {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 230px;
+}
+.starter-scope .reset-form {
+  display: grid;
+  gap: 0.4rem;
+}
+.starter-scope .error {
+  color: var(--danger);
+}
+.starter-scope .success {
+  color: var(--success);
 }
