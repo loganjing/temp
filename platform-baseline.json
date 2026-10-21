@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "packageRoot": "app/ticketing",
+  "profile": "hono-react-vite",
+  "identityMode": "local-password",
+  "sourceLayout": {
+    "pathBase": "application-package-root",
+    "directories": [
+      {
+        "path": "src/server/",
+        "purpose": "Hono server entry, middleware, routes, platform bindings, services, repositories, and migrations.",
+        "imports": [
+          "src/shared/",
+          "server dependencies",
+          "selected vendor modules"
+        ],
+        "forbiddenImports": [
+          "src/client/",
+          "React",
+          "DOM APIs",
+          "browser globals"
+        ],
+        "ownership": "Server implementation tasks own this subtree unless the plan declares a narrower owner."
+      },
+      {
+        "path": "src/client/",
+        "purpose": "React/Vite browser entry, app composition, pages, components, hooks, browser API client, i18n provider, and styles.",
+        "imports": [
+          "src/shared/",
+          "browser dependencies"
+        ],
+        "forbiddenImports": [
+          "src/server/",
+          "Node built-ins",
+          "Hono server runtime",
+          "server secrets"
+        ],
+        "ownership": "Client implementation tasks own this subtree unless the plan declares a narrower owner."
+      },
+      {
+        "path": "src/shared/",
+        "purpose": "Platform-neutral contracts, schemas, locale resources, constants, and pure logic shared by server and client.",
+        "imports": [
+          "platform-neutral TypeScript and JSON"
+        ],
+        "forbiddenImports": [
+          "src/server/",
+          "src/client/",
+          "Node APIs",
+          "Hono",
+          "React",
+          "DOM APIs",
+          "browser globals",
+          "database drivers"
+        ],
+        "ownership": "Assign one task as owner for every shared artifact; parallel server and client tasks must not both write this subtree."
+      }
+    ],
+    "entries": [
+      {
+        "path": "index.html",
+        "purpose": "Vite document shell; loads src/client/main.tsx.",
+        "inspectWhen": [
+          "client entry or HTML changes"
+        ]
+      },
+      {
+        "path": "package.json",
+        "purpose": "Application scripts, dependencies, and runtime commands.",
+        "inspectWhen": [
+          "a task changes dependencies or package scripts"
+        ]
+      },
+      {
+        "path": "vite.config.ts",
+        "purpose": "Vite plugins, development port, and API proxy.",
+        "inspectWhen": [
+          "a task changes client build or dev-server behavior"
+        ]
+      },
+      {
+        "path": "tsconfig.json",
+        "purpose": "Aggregate TypeScript compiler options and complete application source check.",
+        "inspectWhen": [
+          "a task changes the complete type-check or shared compiler options"
+        ]
+      },
+      {
+        "path": "tsconfig.client.json",
+        "purpose": "Client-only TypeScript check for src/client/ and platform-neutral src/shared/ files.",
+        "inspectWhen": [
+          "a client task needs independent type-checking or client source inclusion changes"
+        ]
+      },
+      {
+        "path": "tsconfig.server.json",
+        "purpose": "Server-only TypeScript check for src/server/ and platform-neutral src/shared/ files.",
+        "inspectWhen": [
+          "a server task needs independent type-checking or server source inclusion changes"
+        ]
+      },
+      {
+        "path": "src/server/index.ts",
+        "purpose": "Initializes selected server resources, assembles the Hono app, starts HTTP, and closes resources.",
+        "inspectWhen": [
+          "server startup, module bootstrap, or shutdown changes"
+        ]
+      },
+      {
+        "path": "src/server/app.ts",
+        "purpose": "Owns global middleware, API errors, public/protected route wiring, and production SPA fallback.",
+        "inspectWhen": [
+          "middleware, error shape, route order, or static hosting changes"
+        ]
+      },
+      {
+        "path": "src/server/routes.ts",
+        "purpose": "Public and authenticated business route registration points.",
+        "inspectWhen": [
+          "server endpoints or route ownership changes"
+        ]
+      },
+      {
+        "path": "src/server/platform/bootstrap.ts",
+        "purpose": "Initializes resources for selected platform modules.",
+        "inspectWhen": [
+          "a selected module changes server resource startup"
+        ]
+      },
+      {
+        "path": "src/server/platform/auth.ts",
+        "purpose": "Server identity resolver and authentication boundary binding point.",
+        "inspectWhen": [
+          "authentication, identity resolution, or authorization scope changes"
+        ]
+      },
+      {
+        "path": "src/server/platform/locale.ts",
+        "purpose": "Default no-op server request locale boundary; replaced by the selected i18n module.",
+        "inspectWhen": [
+          "server-side locale behavior or i18n wiring changes"
+        ]
+      },
+      {
+        "path": "src/server/migrations/",
+        "purpose": "Database migration files governed by the approved design.",
+        "inspectWhen": [
+          "a task adds or changes schema or migration registration"
+        ]
+      },
+      {
+        "path": "src/server/migrations/sqlite/",
+        "purpose": "SQLite migrations installed by the selected platform modules.",
+        "inspectWhen": [
+          "a task adds or changes SQLite schema"
+        ]
+      },
+      {
+        "path": "src/client/main.tsx",
+        "purpose": "Mounts React and application-wide client providers.",
+        "inspectWhen": [
+          "client mount or global provider changes"
+        ]
+      },
+      {
+        "path": "src/client/App.tsx",
+        "purpose": "Composes the top-level client application and navigation.",
+        "inspectWhen": [
+          "top-level application composition or navigation changes"
+        ]
+      },
+      {
+        "path": "src/client/admin/UsersPage.tsx",
+        "purpose": "Starter user management page for the local identity integration.",
+        "inspectWhen": [
+          "a task changes the starter user management page"
+        ]
+      },
+      {
+        "path": "src/client/platform/api-client.ts",
+        "purpose": "Single browser request boundary, wire response normalization, and API error decoding.",
+        "inspectWhen": [
+          "client API integration, wire conversion, or API error behavior changes"
+        ]
+      },
+      {
+        "path": "src/client/platform/i18n.tsx",
+        "purpose": "Default client locale provider; replaced by the selected i18n module when installed.",
+        "inspectWhen": [
+          "client translation behavior or i18n wiring changes"
+        ]
+      },
+      {
+        "path": "src/client/index.css",
+        "purpose": "Client application styles added by the selected UI integration.",
+        "inspectWhen": [
+          "the task changes global styles or a selected UI integration"
+        ]
+      },
+      {
+        "path": "test/with-http-server.mjs",
+        "purpose": "Starts an isolated real HTTP server for application tests.",
+        "inspectWhen": [
+          "a task adds server or HTTP integration tests"
+        ]
+      },
+      {
+        "path": "test/platform.test.mjs",
+        "purpose": "Checks baseline HTTP errors, health, and production static fallback.",
+        "inspectWhen": [
+          "a task changes platform entry behavior"
+        ]
+      },
+      {
+        "path": "test/dbkit.test.mjs",
+        "purpose": "Verifies selected dbkit startup, migrations, and database behavior.",
+        "inspectWhen": [
+          "a task changes the dbkit binding or database startup"
+        ]
+      },
+      {
+        "path": "tailwind.config.js",
+        "purpose": "Tailwind content scanning and theme configuration for the selected UI integration.",
+        "inspectWhen": [
+          "a task changes Tailwind theme or content scanning"
+        ]
+      },
+      {
+        "path": "postcss.config.js",
+        "purpose": "PostCSS plugins for the selected Tailwind UI integration.",
+        "inspectWhen": [
+          "a task changes CSS processing"
+        ]
+      }
+    ]
+  },
+  "apiError": {
+    "shape": "{error:{code,message}}",
+    "overrideWhenDesignDiffers": true
+  },
+  "applicationEntryFiles": [
+    "index.html",
+    "package.json",
+    "vite.config.ts",
+    "tsconfig.json",
+    "tsconfig.client.json",
+    "tsconfig.server.json",
+    "src/server/index.ts",
+    "src/server/app.ts",
+    "src/server/routes.ts",
+    "src/server/platform/bootstrap.ts",
+    "src/server/platform/auth.ts",
+    "src/server/platform/locale.ts",
+    "src/server/migrations/",
+    "src/server/migrations/sqlite/",
+    "src/client/main.tsx",
+    "src/client/App.tsx",
+    "src/client/admin/UsersPage.tsx",
+    "src/client/platform/api-client.ts",
+    "src/client/platform/i18n.tsx",
+    "src/client/index.css",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ],
+  "verificationFiles": [
+    "test/with-http-server.mjs",
+    "test/platform.test.mjs",
+    "test/dbkit.test.mjs"
+  ],
+  "modules": {
+    "dbkit": {
+      "packageName": "@commonapp/dbkit",
+      "status": "wired",
+      "failClosed": false,
+      "entryFiles": [
+        "src/server/platform/bootstrap.ts",
+        "src/server/migrations/sqlite/",
+        "src/server/routes.ts"
+      ],
+      "requiredApplicationBindings": []
+    },
+    "authkit": {
+      "packageName": "@commonapp/authkit",
+      "status": "wired",
+      "failClosed": false,
+      "entryFiles": [
+        "src/server/platform/auth.ts",
+        "src/server/routes.ts"
+      ],
+      "requiredApplicationBindings": []
+    },
+    "userkit": {
+      "packageName": "@commonapp/userkit",
+      "status": "wired",
+      "failClosed": false,
+      "entryFiles": [
+        "src/server/platform/auth.ts",
+        "src/server/migrations/sqlite/0001_platform_users.sql"
+      ],
+      "requiredApplicationBindings": [
+        "Derive tenant or company authorization scope from trusted server-side data"
+      ]
+    },
+    "auditkit": {
+      "packageName": "@commonapp/auditkit",
+      "status": "installed",
+      "failClosed": false,
+      "entryFiles": [
+        "src/server/migrations/sqlite/0003_platform_audit_events.sql"
+      ],
+      "requiredApplicationBindings": [
+        "Record business-specific state changes through auditKit.record",
+        "Review retention and access policy for audit history"
+      ]
+    },
+    "emailkit": {
+      "packageName": "@commonapp/emailkit",
+      "status": "installed",
+      "failClosed": false,
+      "entryFiles": [],
+      "requiredApplicationBindings": []
+    }
+  }
+}

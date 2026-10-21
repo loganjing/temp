@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-21T08:10:56.781Z"
+  "updatedAt": "2026-10-21T09:01:54.488Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000335/requirements.md",
+      "sha256": "sha256:59ce16019f7ade2ec34074f8f153a6e857ac9ce0be4aeef3893a3af169c6a272"
+    },
+    "reason": "需求要求跨用户共享的服务端权威工单数据：提交人与处理人分属不同角色并读写同一工单（多轮回复、转派、处理），工单按公司隔离需要身份与数据权限边界，工单完成需向提交人邮箱发送邮件通知，统计仪表盘需跨公司/部门聚合权威数据，关键操作需持久日志。纯前端 localStorage 无法满足跨用户共享、公司隔离与邮件发送，故走完整全栈设计路线。",
+    "evidence": {
+      "supporting": [
+        "需求 4.1/AC-02：工单按公司隔离，跨公司用户不可见、不可操作对方公司工单（authorization 权限边界，需要服务端身份与数据权限）",
+        "需求 4.2/4.3/AC-06/AC-07：提交人创建、业务组成员处理、跨业务组转派——不同用户读写同一工单，需要跨用户共享的服务端权威数据",
+        "需求 4.4/AC-08：工单完成时向提交人邮箱发送邮件通知，属外部通道/集成能力，浏览器内无法完成",
+        "需求 4.6/AC-10：统计分析与运营仪表盘需对全部工单、回复、评价做跨公司/部门权威聚合",
+        "需求 4.8/AC-12：关键操作日志要求操作类型、操作人、操作时间、相关工单的持久留痕"
+      ],
+      "excluding": [
+        "没有任何条目表明单浏览器本地数据即可满足；AC-02 直接验证跨公司不可见，AC-04/AC-08 验证提交人与处理人的跨用户交互，localStorage 单设备数据无法承载",
+        "完成邮件通知为外部服务集成，排除 simple-frontend"
+      ],
+      "unresolved": [
+        "邮件服务提供方与发送通道未规定（需求第 5 节），设计将以可替换的通知通道抽象承载",
+        "具体账号体系与权限模型未规定（需求第 5 节），设计仅以公司隔离为最小权限边界",
+        "部署方式、运行环境与数据存储技术未规定（需求第 5 节），由 fullstack 设计路线选择并固化"
+      ]
+    },
+    "decidedAt": "2026-10-21T08:48:05.409Z",
+    "sha256": "sha256:3bb6de1d154af48dd3e70813f224d242a9fd3c4720c624accb096741b7079f5d"
+  }
 }

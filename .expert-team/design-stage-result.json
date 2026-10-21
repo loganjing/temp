@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "artifacts": [
+    { "path": "docs/wi-t1000335/architecture-baseline.md" },
+    { "path": "docs/wi-t1000335/technical-contract.md" }
+  ],
+  "verification": [
+    {
+      "id": "workspace-init:approved",
+      "passed": true,
+      "path": "docs/wi-t1000335/workspace-bootstrap.json",
+      "result": "initialized",
+      "packageRoot": "app/ticketing",
+      "planDigest": "sha256:86dbd996d321f65305a85aecd7e57c9e3bc794c178abbcdf90c7be7181ea2fa5",
+      "scaffoldDigest": "sha256:0559b9e2dd940deddd63189736357e7fa8c3d81791c1d8c31f94e76e91426ca6",
+      "planSha256": "sha256:c63a5c4a84ee687339965f492e6e116142494bded003a4d02eb3ad87e354ea56"
+    }
+  ]
+}
