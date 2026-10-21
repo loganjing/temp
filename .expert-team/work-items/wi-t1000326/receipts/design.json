@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:a39af17d76997e7cc1a95bf3e041551bc2918c57fcdbdcb4c3bfdaf0e0981f57",
+  "createdAt": "2026-10-21T01:26:33.004Z",
+  "timing": {
+    "startedAt": "2026-10-21T01:24:57.392Z",
+    "completedAt": "2026-10-21T01:26:33.004Z",
+    "durationMs": 95612
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000326/architecture-baseline.md",
+      "bytes": 2897,
+      "sha256": "sha256:54db04102654a061bec87fb533b918f5594acfcb06037493ed00f1e42ac06346",
+      "title": "130-clock 架构基线（simple-frontend / 紧凑路线）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:d903fab276a8d5d78d9ba465809bfc110fa909dd5a1f7177989eac449254ff6a",
+        "path": ".expert-team/work-items/wi-t1000326/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

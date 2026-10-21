@@ -2,14 +2,46 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-21T01:22:32.495Z"
+  "updatedAt": "2026-10-21T01:26:33.004Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000326/requirements.md",
+      "sha256": "sha256:04f432bc0e7803877edabad8381f7d0201bfbd4ebfd02a1c61c060ddcbe1be4a"
+    },
+    "reason": "需求仅为单一页面实时展示用户设备的当前时分秒（AC-01，只读展示），时间信号来自浏览器本地时钟，无 CRUD、无持久化、无共享数据需求；页面刷新或重开后重新读取当前时间即满足语义，无需任何服务端能力，因此走 simple-frontend 紧凑路线。",
+    "evidence": {
+      "supporting": [
+        "需求唯一目标是页面打开后实时显示当前时分秒并按秒自动更新，为只读展示，无数据录入或修改",
+        "需求明确时间来源默认采用用户设备本地时间，客户端时间 API 即可满足，无需服务端权威时间源",
+        "需求未要求任何数据在刷新或重开后保留，无持久化需求，甚至无需 localStorage",
+        "单一用户界面展示，无多用户、多角色或协作场景"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据或权威时间同步",
+        "需求未要求认证、权限或账号体系",
+        "需求未要求后台任务或服务端定时调度",
+        "需求未要求外部服务集成或第三方系统",
+        "需求未要求跨用户、跨设备、跨浏览器共享数据"
+      ],
+      "unresolved": [
+        "小时制式（12/24 小时制）需求未规定，设计选择保守默认 24 小时制，不影响架构路线",
+        "是否同时显示日期需求未规定，保持最小范围仅显示时分秒，不影响架构路线",
+        "页面版式与样式细节需求未规定，属实现层自由度，不影响架构路线"
+      ]
+    },
+    "decidedAt": "2026-10-21T01:25:31.400Z",
+    "sha256": "sha256:d903fab276a8d5d78d9ba465809bfc110fa909dd5a1f7177989eac449254ff6a"
+  }
 }
