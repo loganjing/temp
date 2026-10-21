@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "业务任务：130-clock。做一个页面实时显示最近的时分秒。请在当前 Session 中完成这个 IssueTask，按指定的连续阶段范围执行：requirements。",
   "request": "业务任务：130-clock。做一个页面实时显示最近的时分秒。请在当前 Session 中完成这个 IssueTask，按指定的连续阶段范围执行：requirements。",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-21T01:21:57.157Z"
+  "revision": 1,
+  "createdAt": "2026-10-21T01:21:57.157Z",
+  "completedAt": "2026-10-21T02:54:48.377Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:3cfc98f3351d58fe4c9b2d2c17ec267723bd30abaab1cf2d6f6ca6fe52d4988b",
+    "completedAt": "2026-10-21T02:54:48.377Z"
+  },
+  "updatedAt": "2026-10-21T02:54:48.377Z"
 }
