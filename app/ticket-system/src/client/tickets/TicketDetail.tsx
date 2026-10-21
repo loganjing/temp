@@ -44,7 +44,9 @@ export default function TicketDetail({ ticketId, onClose, onTicketChange, onSele
   const [ratingScore, setRatingScore] = useState(0)
   const [ratingComment, setRatingComment] = useState('')
 
-  const groups = useResource(() => listGroups(), '业务组加载失败')
+  // useResource 以 loader 引用为重载依赖，必须传稳定回调，否则会形成无限请求循环。
+  const loadGroups = useCallback(() => listGroups(), [])
+  const groups = useResource(loadGroups, '业务组加载失败')
 
   const load = useCallback(async () => {
     setLoading(true)

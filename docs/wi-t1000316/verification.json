@@ -1,0 +1,618 @@
+{
+  "decision": "pass",
+  "summary": {
+    "objective": "验证工单系统（wi-t1000316）实现交付的 12 条强制验收：工单生命周期、多轮回复、公司隔离、自动分配、转派、完成通知邮件、满意度评价、统计与工作台、操作日志。",
+    "changedBehavior": "app/ticket-system 新增完整前后端实现：Hono REST API、React SPA、SQLite 迁移、SMTP 完成通知、统计分析与种子数据。",
+    "nonGoals": [
+      "SSO/MCP 登录渠道",
+      "真实外部 SMTP 服务商投递",
+      "性能与容量测试"
+    ],
+    "riskLabels": [
+      "security-authorization",
+      "company-isolation",
+      "email-delivery",
+      "state-machine"
+    ]
+  },
+  "environment": {
+    "name": "本地开发环境（macOS darwin，Node 24）",
+    "version": "git 927d464（实现阶段交付）+ DEV-001 返工修复 T02 attempt 2（工作区未提交；前端构建 assets/index-CAaBxPlN.js，2026-10-20 21:34）",
+    "dataProfile": "seed 演示数据（2 公司/8 用户/4 业务组/2 分配规则）+ 第 1 轮 API 批量脚本工单 TK-000001..TK-000004（4518 主库）+ 第 2 轮浏览器复验：TK-000005（完整生命周期，已完成+5 分评价）、TK-000006（新规则自动分配）、配置员新增业务组「复验验证组」（成员林岚）与规则「账号问题→复验验证组」",
+    "configuration": "主实例 4518（SMTP 未配置，通知降级 skipped，通知记录含收件人与主题）；第 1 轮临时实例 4520（SMTP 127.0.0.1:1025 桩，通知 sent，验证后已停止）；第 2 轮浏览器复验全部在 4518 执行"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "以某公司提交人身份进入工单创建入口，填写主题、描述，选择问题分类和优先级，提交工单。",
+          "expected": "工单创建成功并生成唯一工单ID；工单详情可见主题、描述、分类、优先级、提交人姓名/邮箱/公司/部门及创建时间；工单状态为生命周期初始状态。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "以某公司提交人身份进入工单创建入口，填写主题、描述，选择问题分类和优先级，提交工单。",
+          "expected": "工单创建成功并生成唯一工单ID；工单详情可见主题、描述、分类、优先级、提交人姓名/邮箱/公司/部门及创建时间；工单状态为生命周期初始状态。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在工单详情中由不同回复人（如提交人与处理人）先后进行两次以上回复。",
+          "expected": "工单详情按时间展示全部回复内容，每条回复可见回复人身份与回复时间。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "在工单详情中由不同回复人（如提交人与处理人）先后进行两次以上回复。",
+          "expected": "工单详情按时间展示全部回复内容，每条回复可见回复人身份与回复时间。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "依次创建工单（创建状态）、进入分配流程（待分配）、确认归属业务组（待处理）、执行完成操作（完成）；另创建一个工单并在待处理状态下执行取消。",
+          "expected": "每步操作后工单状态显示为对应状态；取消后工单状态为\"取消\"，不再进入处理流程；完成的工单状态为\"完成\"。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "依次创建工单（创建状态）、进入分配流程（待分配）、确认归属业务组（待处理）、执行完成操作（完成）；另创建一个工单并在待处理状态下执行取消。",
+          "expected": "每步操作后工单状态显示为对应状态；取消后工单状态为\"取消\"，不再进入处理流程；完成的工单状态为\"完成\"。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "处理人打开待处理工单详情，查看提交人信息面板及其历史工单列表；执行完成操作后查看工单记录。",
+          "expected": "详情中可见提交人姓名、公司、部门及其历史工单（限本公司范围）；完成后工单记录处理人身份与处理时间，状态变为\"完成\"。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "处理人打开待处理工单详情，查看提交人信息面板及其历史工单列表；执行完成操作后查看工单记录。",
+          "expected": "详情中可见提交人姓名、公司、部门及其历史工单（限本公司范围）；完成后工单记录处理人身份与处理时间，状态变为\"完成\"。"
+        },
+        {
+          "requirementId": "AC-08",
+          "kind": "interaction",
+          "action": "完成一个由邮箱为E的提交人创建的工单，随后检查邮箱E的收件结果。",
+          "expected": "邮箱E收到该工单的完成通知邮件，邮件内容可识别对应工单。"
+        },
+        {
+          "requirementId": "AC-08",
+          "kind": "other",
+          "action": "完成一个由邮箱为E的提交人创建的工单，随后检查邮箱E的收件结果。",
+          "expected": "邮箱E收到该工单的完成通知邮件，邮件内容可识别对应工单。"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "interaction",
+          "action": "提交人对一个已完成工单提交满意度评价，随后再次查看该工单。",
+          "expected": "评价提交成功；工单详情或评价入口可读回已提交的满意度结果。"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "session-persistence",
+          "action": "提交人对一个已完成工单提交满意度评价，随后再次查看该工单。",
+          "expected": "评价提交成功；工单详情或评价入口可读回已提交的满意度结果。"
+        }
+      ],
+      "evidence": "passed：DEV-001 修复后浏览器全流程复验通过（agent_browser 实跑，4518，2026-10-20 21:52–22:02，构建 assets/index-CAaBxPlN.js）：陈晓创建 TK-000005（两步流创建+分配，规则命中技术支持组→待处理），详情字段与提交人面板完整；陈晓/林岚先后回复（回复计数 1→2）；转派账务问题组/周源后归属与受理成员变更、状态保持待处理；林岚完成（处理人与完成时间入记录）；陈晓重登录后评价读回 5/5 分；TK-000002 取消路径状态已取消。第 1 轮 API 批量核验 17 项全通过（tests/qa-verify-batch-results-20261020.json）作为同一交付的服务端行为证据。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本会话 agent_browser 复验会话（preview lingee-preview-6，http://localhost:4518，2026-10-20 21:52–22:02；DEV-001 修复后页面恢复正常渲染与交互，无请求循环）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "以某公司提交人身份进入工单创建入口，填写主题、描述，选择问题分类和优先级，提交工单。",
+          "expected": "工单创建成功并生成唯一工单ID；工单详情可见主题、描述、分类、优先级、提交人姓名/邮箱/公司/部门及创建时间；工单状态为生命周期初始状态。",
+          "actual": "陈晓在创建页填写主题「QA-复验-浏览器全流程工单」、描述、分类故障报修、优先级 P1（高）并提交成功，生成唯一工单号 TK-000005；两步流（创建→进入分配）完成后详情可见主题/描述/分类/优先级、提交人面板（陈晓/云帆科技/研发部/a-submitter@demo.io）与创建时间 2026/10/20 21:52:37；操作日志含创建工单→进入分配序列（初始 created 状态经两步流转为待处理；创建接口 201 且初始状态 created 另见 API 核验 S4a）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "以某公司提交人身份进入工单创建入口，填写主题、描述，选择问题分类和优先级，提交工单。",
+          "expected": "工单创建成功并生成唯一工单ID；工单详情可见主题、描述、分类、优先级、提交人姓名/邮箱/公司/部门及创建时间；工单状态为生命周期初始状态。",
+          "actual": "TK-000005 详情页完整渲染：问题描述、工单信息（分类/状态/归属组/创建时间/进入分配/归属时间/首次回复）、提交人信息面板（姓名/公司/部门/邮箱）均可见且与提交值一致",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在工单详情中由不同回复人（如提交人与处理人）先后进行两次以上回复。",
+          "expected": "工单详情按时间展示全部回复内容，每条回复可见回复人身份与回复时间。",
+          "actual": "提交人陈晓 2026/10/20 21:53:39、处理人林岚 2026/10/20 21:58:03 先后各回复一次，详情回复区计数由（1）增至（2），每条回复显示回复人姓名、身份（提交人/处理人）与回复时间，按时间顺序展示",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "在工单详情中由不同回复人（如提交人与处理人）先后进行两次以上回复。",
+          "expected": "工单详情按时间展示全部回复内容，每条回复可见回复人身份与回复时间。",
+          "actual": "回复列表渲染两条回复（陈晓·提交人·21:53:39、林岚·处理人·21:58:03），内容与回复人身份、时间完整可见",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "依次创建工单（创建状态）、进入分配流程（待分配）、确认归属业务组（待处理）、执行完成操作（完成）；另创建一个工单并在待处理状态下执行取消。",
+          "expected": "每步操作后工单状态显示为对应状态；取消后工单状态为\"取消\"，不再进入处理流程；完成的工单状态为\"完成\"。",
+          "actual": "TK-000005 依次：创建（21:52:37）→进入分配（同刻，状态待处理）→完成（21:58:37，状态已完成）；另对待分配工单 TK-000002 执行取消，状态已取消且操作区不再提供完成入口（状态守卫），列表徽章同步为已取消",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "依次创建工单（创建状态）、进入分配流程（待分配）、确认归属业务组（待处理）、执行完成操作（完成）；另创建一个工单并在待处理状态下执行取消。",
+          "expected": "每步操作后工单状态显示为对应状态；取消后工单状态为\"取消\"，不再进入处理流程；完成的工单状态为\"完成\"。",
+          "actual": "每步操作后列表与详情状态徽章即时更新：TK-000005 待处理→已完成，TK-000002 待分配→已取消，渲染与后端状态一致",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "处理人打开待处理工单详情，查看提交人信息面板及其历史工单列表；执行完成操作后查看工单记录。",
+          "expected": "详情中可见提交人姓名、公司、部门及其历史工单（限本公司范围）；完成后工单记录处理人身份与处理时间，状态变为\"完成\"。",
+          "actual": "林岚打开 TK-000005 详情：提交人信息面板显示陈晓/云帆科技/研发部/a-submitter@demo.io；历史工单列表 3 条（TK-000002/3/4，均本公司范围、不含当前工单）；完成后工单记录处理人林岚、完成时间 2026/10/20 21:58:37",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "处理人打开待处理工单详情，查看提交人信息面板及其历史工单列表；执行完成操作后查看工单记录。",
+          "expected": "详情中可见提交人姓名、公司、部门及其历史工单（限本公司范围）；完成后工单记录处理人身份与处理时间，状态变为\"完成\"。",
+          "actual": "提交人面板、历史工单（含编号/主题/状态徽章）与处理人/完成时间字段在详情页完整渲染，历史工单仅含本公司数据",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-08",
+          "kind": "interaction",
+          "action": "完成一个由邮箱为E的提交人创建的工单，随后检查邮箱E的收件结果。",
+          "expected": "邮箱E收到该工单的完成通知邮件，邮件内容可识别对应工单。",
+          "actual": "林岚在浏览器完成 TK-000005 后，详情通知记录显示收件人 a-submitter@demo.io、主题「[工单系统] 工单 TK-000005「QA-复验-浏览器全流程工单」已完成」（4518 未配置 SMTP，状态显示已跳过）；同交付在 SMTP 桩实例实际收到完成邮件（S5）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-08",
+          "kind": "other",
+          "action": "完成一个由邮箱为E的提交人创建的工单，随后检查邮箱E的收件结果。",
+          "expected": "邮箱E收到该工单的完成通知邮件，邮件内容可识别对应工单。",
+          "actual": "SMTP 桩 127.0.0.1:1025（4520 隔离实例）实际收到 1 封收件人为 a-submitter@demo.io 的完成通知邮件：主题可识别工单（TK-000001）、正文含工单号/处理人林岚/完成时间；完成接口通知状态 sent（tests/qa-verify-batch.mjs S5，tests/qa-verify-batch-results-20261020.json）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "interaction",
+          "action": "提交人对一个已完成工单提交满意度评价，随后再次查看该工单。",
+          "expected": "评价提交成功；工单详情或评价入口可读回已提交的满意度结果。",
+          "actual": "陈晓对已完成工单 TK-000005 在详情满意度评价区选择 5 分并填写评价意见后提交，页面提示「评价已提交」",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "session-persistence",
+          "action": "提交人对一个已完成工单提交满意度评价，随后再次查看该工单。",
+          "expected": "评价提交成功；工单详情或评价入口可读回已提交的满意度结果。",
+          "actual": "陈晓退出后重新登录，再次查看 TK-000005 详情：评价读回 ★★★★★ 5/5 分、评价人陈晓、时间 2026/10/20 21:59:32、记录 {\"score\":5}，评价意见文本完整（跨会话持久可读）",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "以A公司提交人身份查看工单列表，并尝试访问B公司已存在工单的详情入口。",
+          "expected": "A公司用户的工单列表仅包含A公司工单；无法查看或操作B公司工单详情；统计与工作台数据同样仅限本公司范围。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "以A公司提交人身份查看工单列表，并尝试访问B公司已存在工单的详情入口。",
+          "expected": "A公司用户的工单列表仅包含A公司工单；无法查看或操作B公司工单详情；统计与工作台数据同样仅限本公司范围。"
+        }
+      ],
+      "evidence": "passed：DEV-001 修复后浏览器授权与隔离路径实跑通过（4518，2026-10-20）：陈晓（A 公司）列表仅含本公司工单（无 B 公司 TK-000001）；直接访问跨公司工单 URL 显示「资源不存在或无权访问」；无效路由 /create 正确显示资源不存在守卫页；统计页仅聚合本公司数据并标注公司隔离。第 1 轮 API/安全核验 401/404/403/列表隔离 7 项全通过（tests/qa-verify-batch-results-20261020.json S1/S2/S3）。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本会话 agent_browser 复验会话（preview lingee-preview-6，http://localhost:4518，2026-10-20 21:52–22:02）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "以A公司提交人身份查看工单列表，并尝试访问B公司已存在工单的详情入口。",
+          "expected": "A公司用户的工单列表仅包含A公司工单；无法查看或操作B公司工单详情；统计与工作台数据同样仅限本公司范围。",
+          "actual": "陈晓（云帆科技）工作台/我的工单列表仅显示 A 公司工单（TK-000002..TK-000006），不含 B 公司 TK-000001；直接访问 B 公司工单详情 URL /tickets/TK-000001 显示「资源不存在或无权访问」（不泄露存在性）；访问无效路由 /create 同样进入守卫页；统计页与工作台数据均仅限本公司（云帆科技 4 条聚合）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "以A公司提交人身份查看工单列表，并尝试访问B公司已存在工单的详情入口。",
+          "expected": "A公司用户的工单列表仅包含A公司工单；无法查看或操作B公司工单详情；统计与工作台数据同样仅限本公司范围。",
+          "actual": "A 公司会话下列表、详情、统计页渲染数据全部为 A 公司范围，无 B 公司数据泄露；隔离边界在渲染层保持",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "为公司A添加两个业务组并分别设置成员；配置分类X→业务组一的自动分配规则；以公司A提交人身份创建分类为X的工单。",
+          "expected": "业务组与成员配置保存成功并可读回；新工单自动归属业务组一，进入待处理状态，业务组成员可在工作台看到该工单。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "为公司A添加两个业务组并分别设置成员；配置分类X→业务组一的自动分配规则；以公司A提交人身份创建分类为X的工单。",
+          "expected": "业务组与成员配置保存成功并可读回；新工单自动归属业务组一，进入待处理状态，业务组成员可在工作台看到该工单。"
+        }
+      ],
+      "evidence": "passed：DEV-001 修复后配置界面浏览器实跑通过（4518，2026-10-20 22:00–22:02）：配置员高远在业务组配置页新建业务组「复验验证组」、设置成员林岚、保存规则「账号问题→复验验证组」，全部保存并读回；随后陈晓创建账号问题工单 TK-000006，自动归属复验验证组进入待处理，成员林岚工作台可见该工单（业务组筛选含新组）。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本会话 agent_browser 复验会话（preview lingee-preview-6，http://localhost:4518，2026-10-20 22:00–22:02）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "为公司A添加两个业务组并分别设置成员；配置分类X→业务组一的自动分配规则；以公司A提交人身份创建分类为X的工单。",
+          "expected": "业务组与成员配置保存成功并可读回；新工单自动归属业务组一，进入待处理状态，业务组成员可在工作台看到该工单。",
+          "actual": "高远（公司配置员）新建业务组「复验验证组」→设置成员林岚（保存后列表显示「成员 1 人：林岚」）→保存自动分配规则「账号问题→复验验证组」（规则列表读回）；陈晓随即创建分类账号问题工单 TK-000006，创建流程后自动归属复验验证组、状态待处理（列表与详情一致），成员林岚登录工作台可见该工单且业务组筛选下拉包含复验验证组",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "为公司A添加两个业务组并分别设置成员；配置分类X→业务组一的自动分配规则；以公司A提交人身份创建分类为X的工单。",
+          "expected": "业务组与成员配置保存成功并可读回；新工单自动归属业务组一，进入待处理状态，业务组成员可在工作台看到该工单。",
+          "actual": "配置页业务组（3，含新组）/成员/规则（2，含新规则）与「尚未配置规则的分类」提示实时读回；工单列表 TK-000006 行渲染账号问题/P2/待处理/陈晓/复验验证组，与配置和预期一致",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "在待处理工单详情中执行转派到另一业务组的操作。",
+          "expected": "工单归属业务组变更为目标业务组，工单仍处于待处理状态，转派操作被记录（操作日志）。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "在待处理工单详情中执行转派到另一业务组的操作。",
+          "expected": "工单归属业务组变更为目标业务组，工单仍处于待处理状态，转派操作被记录（操作日志）。"
+        }
+      ],
+      "evidence": "passed：DEV-001 修复后转派流程浏览器实跑通过（4518，2026-10-20 21:58）：林岚在 TK-000005 详情发起转派，选择目标业务组账务问题组、指定组内成员周源并填写转派原因，确认后归属业务组由技术支持组变更为账务问题组、受理成员周源，状态保持待处理；操作日志记录转派条目（含目标组/目标成员/原因 JSON）。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本会话 agent_browser 复验会话（preview lingee-preview-6，http://localhost:4518，2026-10-20 21:58）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "在待处理工单详情中执行转派到另一业务组的操作。",
+          "expected": "工单归属业务组变更为目标业务组，工单仍处于待处理状态，转派操作被记录（操作日志）。",
+          "actual": "林岚在待处理工单 TK-000005 详情点击「转派」，弹窗选择目标业务组「账务问题组」、指定组内成员「周源」、填写转派原因后确认；转派成功提示「工单已转派」，归属业务组变更为账务问题组、受理成员显示周源，工单仍为待处理状态",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "在待处理工单详情中执行转派到另一业务组的操作。",
+          "expected": "工单归属业务组变更为目标业务组，工单仍处于待处理状态，转派操作被记录（操作日志）。",
+          "actual": "操作日志渲染转派条目：操作人林岚、时间 2026/10/20 21:58:25，明细 {\"targetGroupId\":2,\"targetGroupName\":\"账务问题组\",\"targetUserId\":\"65b1ab3b…\",\"reason\":\"复验：浏览器端转派至账务问题组验证。\"}；工单信息区归属业务组/受理成员同步更新",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-10",
+          "kind": "runtime-render",
+          "action": "进入统计分析页面，分别按公司、部门维度查看工单分布；查看仪表盘各运营指标。",
+          "expected": "分布视图按所选维度聚合工单数量；仪表盘可见工单量、平均响应时间、满意度、热点问题指标，数值与当前统计范围（受公司隔离约束）内的数据一致。"
+        }
+      ],
+      "evidence": "passed：DEV-001 修复后统计页面浏览器实跑通过（4518，2026-10-20 21:59）：仪表盘显示工单量 4、平均响应时间 0.5 分钟、满意度 4.00/5（已评价 1 条）、热点问题功能咨询 2 条居首；状态分布待分配 1/待处理 1/已完成 1/已取消 1；工单分布支持按部门（研发部 4 条）与按公司（云帆科技 4 条）维度切换，均与当时 A 公司数据一致并受公司隔离约束。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本会话 agent_browser 复验会话（preview lingee-preview-6，http://localhost:4518，2026-10-20 21:59）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-10",
+          "kind": "runtime-render",
+          "action": "进入统计分析页面，分别按公司、部门维度查看工单分布；查看仪表盘各运营指标。",
+          "expected": "分布视图按所选维度聚合工单数量；仪表盘可见工单量、平均响应时间、满意度、热点问题指标，数值与当前统计范围（受公司隔离约束）内的数据一致。",
+          "actual": "统计页渲染仪表盘四指标（工单量 4=当时 A 公司全部工单、平均响应 0.5 分钟、满意度 4.00/5 对应 TK-000003 的 4 分评价、热点问题功能咨询 2 条居首）与状态分布（待分配 1/待处理 1/已完成 1/已取消 1）；分布视图按部门显示研发部 4 条，切换按公司显示云帆科技 4 条并注明「公司维度受公司隔离约束」，数值与数据一致",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-11",
+          "kind": "interaction",
+          "action": "在工作台分别执行筛选（按公司维度及分类/优先级等条件）、搜索（按工单ID或主题等关键字）、排序（按创建时间或优先级等字段）操作。",
+          "expected": "列表按所选条件更新；公司维度筛选生效且不越过公司隔离边界；搜索命中相关工单；列表顺序符合所选排序字段。"
+        },
+        {
+          "requirementId": "AC-11",
+          "kind": "runtime-render",
+          "action": "在工作台分别执行筛选（按公司维度及分类/优先级等条件）、搜索（按工单ID或主题等关键字）、排序（按创建时间或优先级等字段）操作。",
+          "expected": "列表按所选条件更新；公司维度筛选生效且不越过公司隔离边界；搜索命中相关工单；列表顺序符合所选排序字段。"
+        }
+      ],
+      "evidence": "passed：DEV-001 修复后工作台交互浏览器实跑通过（4518，2026-10-20 21:54–21:58）：搜索「QA-复验」命中 1 行；按分类筛选「故障报修」与搜索组合生效；排序切换为按优先级后列表顺序由创建时间序变为 P4/P3/P1/P1；状态筛选复选框与升/降序切换控件可用；全部条件组合下列表始终仅含本公司（A 公司）工单，未越过公司隔离边界。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本会话 agent_browser 复验会话（preview lingee-preview-6，http://localhost:4518，2026-10-20 21:54–21:58）"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-11",
+          "kind": "interaction",
+          "action": "在工作台分别执行筛选（按公司维度及分类/优先级等条件）、搜索（按工单ID或主题等关键字）、排序（按创建时间或优先级等字段）操作。",
+          "expected": "列表按所选条件更新；公司维度筛选生效且不越过公司隔离边界；搜索命中相关工单；列表顺序符合所选排序字段。",
+          "actual": "在工作台（我的工单/工作台两个视图）执行：关键字搜索「QA-复验」→列表收敛为 1 行（TK-000005）；分类筛选选择「故障报修」→与搜索组合仅 1 行，清空搜索后按分类过滤；排序字段切换「按优先级排序」→顺序变为 TK-000004(P4)/TK-000002(P3)/TK-000005(P1)/TK-000003(P1)（URL 同步 sort=priority）；状态筛选复选框与升/降序切换按钮均可用",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-11",
+          "kind": "runtime-render",
+          "action": "在工作台分别执行筛选（按公司维度及分类/优先级等条件）、搜索（按工单ID或主题等关键字）、排序（按创建时间或优先级等字段）操作。",
+          "expected": "列表按所选条件更新；公司维度筛选生效且不越过公司隔离边界；搜索命中相关工单；列表顺序符合所选排序字段。",
+          "actual": "列表按所选条件即时重渲染（行数与顺序变化），筛选状态同步写入 URL 查询参数；各条件下列表仅含 A 公司工单，公司隔离边界保持",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-12",
+          "action": "对同一工单依次执行创建、分配、回复、转派、完成、评价等操作后，查询该工单的操作日志。",
+          "expected": "每个关键操作均有对应日志条目，包含操作类型、操作人、操作时间。"
+        }
+      ],
+      "evidence": "passed：tests/qa-verify-batch.mjs S4（2026-10-20 本轮，完整结构化明细见 tests/qa-verify-batch-results-20261020.json）对 4518 实例执行完整生命周期后，GET /api/tickets/TK-000003/activity 返回 8 条日志（created×1、dispatched×1、assigned×1、replied×2、transferred×1、completed×1、rated×1），每条含操作类型、非空操作人与 ISO 时间，字段不完整 0 条；取消路径 TK-000004 日志含 created/dispatched/cancelled（S4h）。同 runner 的 S1/S2/S3（授权与公司隔离）与 S5（SMTP 投递）结果同见该证据文件。",
+      "observation": {
+        "method": "http",
+        "actor": "expert",
+        "reference": "tests/qa-verify-batch.mjs 运行输出（2026-10-20 本轮，S1-S5 场景；结构化明细已保存 tests/qa-verify-batch-results-20261020.json）"
+      },
+      "command": "node tests/qa-verify-batch.mjs",
+      "exitCode": 0,
+      "results": [
+        {
+          "requirementId": "AC-12",
+          "action": "对同一工单依次执行创建、分配、回复、转派、完成、评价等操作后，查询该工单的操作日志。",
+          "expected": "每个关键操作均有对应日志条目，包含操作类型、操作人、操作时间。",
+          "actual": "对 TK-000003 依次执行创建→分配→双角色回复→转派→完成→评价后查询日志：8 条记录覆盖全部关键操作类型（created×1、dispatched×1、assigned×1、replied×2、transferred×1、completed×1、rated×1），每条含操作类型、非空操作人与 ISO 时间，字段不完整 0 条；另对 TK-000004 验证取消路径日志（created/dispatched/cancelled）",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 提交人提交工单后，系统生成含工单ID、主题、描述、分类、SLA 优先级（P0–P4）、提交人信息（姓名、邮箱、公司、部门）和创建时间的工单记录。; AC-02: 同一工单可进行多轮回复，每轮回复记录并展示回复人和回复时间。; AC-03: 任何用户只能访问其所属公司的工单数据（列表、详情、回复、统计、工作台），无法查看或操作其他公司的工单。; AC-04: 工单按\"创建 → 待分配 → 待处理 → 完成\"流转，未完成的工单可被取消，每次流转后状态可观察。; AC-05: 可为某公司添加多个业务组并设置成员；配置公司级\"分类→业务组\"规则后，该公司新建工单按分类自动归属到对应业务组。; AC-06: 处理人可将工单转派给其他业务组或成员，转派后工单归属变更且操作留痕。; AC-07: 处理工单时可查看提交人完整信息（姓名、公司、部门、历史工单）；工单完成后记录处理人与处理时间。; AC-08: 工单完成后，系统向提交人邮箱发送完成通知邮件。; AC-09: 工单完成后，提交人可对该工单进行满意度评价，评价结果被记录并可读回。; AC-10: 统计分析支持按公司、部门维度展示工单分布；仪表盘展示工单量、平均响应时间、满意度、热点问题等运营指标。; AC-11: 处理人可在工作台查看待处理工单列表，并支持筛选（含公司维度）、搜索、排序。; AC-12: 工单关键操作（创建、分配、回复、转派、完成、取消、评价）留有日志记录，包含操作类型、操作人与操作时间。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-01 浏览器断言（interaction/runtime-render）：TK-000005 创建成功生成唯一工单号，详情字段与提交人信息面板（姓名/邮箱/公司/部门）完整；初始 created 状态与创建接口 201 另由 API 核验 S4a 佐证。"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-01 浏览器断言：陈晓/林岚先后回复，回复计数 1→2，每条含回复人身份与时间，按时间展示。"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "authorization",
+          "runtime-render"
+        ],
+        "evidence": "QA-02 浏览器断言：A 公司会话列表/详情/统计仅本公司数据，跨公司 URL 显示资源不存在；API 核验 401/404/403/列表隔离 7 项全通过（S1/S2/S3）。"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-01 浏览器断言：TK-000005 创建→分配（待处理）→完成（已完成）；TK-000002 待分配取消（已取消），状态守卫阻止取消后处理。"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-03 浏览器断言：高远新建业务组/成员/规则并读回；陈晓创建账号问题工单 TK-000006 自动归属复验验证组进入待处理，成员工作台可见。"
+      },
+      {
+        "id": "AC-06",
+        "source": "requirements.md#AC-06",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-04 浏览器断言：转派账务问题组/周源后归属与受理成员变更、状态保持待处理，日志含转派明细。"
+      },
+      {
+        "id": "AC-07",
+        "source": "requirements.md#AC-07",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-01 浏览器断言：提交人面板（陈晓/云帆科技/研发部/邮箱）与历史工单 3 条（本公司范围）可见；完成记录处理人林岚与完成时间。"
+      },
+      {
+        "id": "AC-08",
+        "source": "requirements.md#AC-08",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "other"
+        ],
+        "evidence": "QA-01 浏览器断言（interaction/other）：浏览器完成 TK-000005 后通知记录含收件人与主题；SMTP 桩实际收到 a-submitter@demo.io 完成邮件（S5，通知 sent）。"
+      },
+      {
+        "id": "AC-09",
+        "source": "requirements.md#AC-09",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-01 浏览器断言：评价提交成功（5 分+意见），重新登录后读回 5/5 分与评价记录（跨会话持久）。"
+      },
+      {
+        "id": "AC-10",
+        "source": "requirements.md#AC-10",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-05 浏览器断言：仪表盘四指标与状态分布、部门/公司双维度分布均渲染且数值与公司隔离范围内数据一致。"
+      },
+      {
+        "id": "AC-11",
+        "source": "requirements.md#AC-11",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-06"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-06 浏览器断言：搜索/分类筛选/优先级排序/状态筛选/升降序切换全部生效，条件组合未越过公司隔离。"
+      },
+      {
+        "id": "AC-12",
+        "source": "requirements.md#AC-12",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-07"
+        ],
+        "evidence": "QA-07 passed：完整生命周期操作后活动日志 8 种动作齐全、操作人与时间字段完整；取消路径日志同步核验（S4g/S4h）。"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui",
+      "E2E/API"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [
+    "SMTP 真实外部服务商投递未验证（AC-08 以本地 SMTP 桩验证实际投递协议与邮件内容；真实服务商投递在本 Work Item nonGoals 中明确排除）"
+  ],
+  "baselineUpdates": []
+}

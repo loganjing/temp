@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useCallback, useState, type FormEvent } from 'react'
 import { apiRequest, toUserMessage } from '../platform/api-client'
 import { createCategory, createGroup, deleteCategory, deleteCategoryRule, deleteGroup, listCategories, listCategoryRules, listGroups, saveCategoryRule, updateGroupMembers } from '../api/admin'
 import { useAuth } from '../auth/AuthContext'
@@ -22,9 +22,13 @@ export default function GroupsPage() {
   const [usersLoading, setUsersLoading] = useState(false)
   const [usersError, setUsersError] = useState('')
 
-  const groups = useResource(() => listGroups(), '业务组加载失败')
-  const categories = useResource(() => listCategories(), '分类清单加载失败')
-  const rules = useResource(() => listCategoryRules(), '分配规则加载失败')
+  // useResource 以 loader 引用为重载依赖，必须传稳定回调，否则会形成无限请求循环。
+  const loadGroups = useCallback(() => listGroups(), [])
+  const loadCategories = useCallback(() => listCategories(), [])
+  const loadRules = useCallback(() => listCategoryRules(), [])
+  const groups = useResource(loadGroups, '业务组加载失败')
+  const categories = useResource(loadCategories, '分类清单加载失败')
+  const rules = useResource(loadRules, '分配规则加载失败')
 
   const runAction = async (action: () => Promise<string>) => {
     setBusy(true)

@@ -68,8 +68,11 @@ export default function TicketWorkspace({ view }: TicketWorkspaceProps) {
     return () => window.clearTimeout(timer)
   }, [searchText, q, updateParams])
 
-  const categories = useResource(() => listCategories(), '分类清单加载失败')
-  const groups = useResource(() => listGroups(), '业务组加载失败')
+  // useResource 以 loader 引用为重载依赖，必须传稳定回调，否则会形成无限请求循环。
+  const loadCategories = useCallback(() => listCategories(), [])
+  const loadGroups = useCallback(() => listGroups(), [])
+  const categories = useResource(loadCategories, '分类清单加载失败')
+  const groups = useResource(loadGroups, '业务组加载失败')
 
   const loader = useCallback(
     () =>

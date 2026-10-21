@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useCallback, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createTicket, dispatchTicket } from '../api/tickets'
 import { listCategories } from '../api/admin'
@@ -10,7 +10,9 @@ import type { Priority } from '../platform/types'
 
 export default function TicketCreatePage() {
   const navigate = useNavigate()
-  const categories = useResource(() => listCategories(), '分类清单加载失败')
+  // useResource 以 loader 引用为重载依赖，必须传稳定回调，否则会形成无限请求循环。
+  const loadCategories = useCallback(() => listCategories(), [])
+  const categories = useResource(loadCategories, '分类清单加载失败')
   const [subject, setSubject] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')

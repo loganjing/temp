@@ -13,8 +13,13 @@
     },
     "implementation": {
       "startedAt": "2026-10-20T11:26:47.303Z",
-      "completedAt": "2026-10-20T12:13:32.254Z",
-      "durationMs": 2804951
+      "completedAt": "2026-10-20T13:38:36.756Z",
+      "durationMs": 7909453
+    },
+    "verification": {
+      "startedAt": "2026-10-20T12:14:43.355Z",
+      "completedAt": "2026-10-20T14:06:06.241Z",
+      "durationMs": 6682886
     }
   }
 }

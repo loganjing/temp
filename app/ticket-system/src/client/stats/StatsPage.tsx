@@ -15,7 +15,9 @@ const DIMENSION_LABELS: Record<Dimension, string> = {
 export default function StatsPage() {
   const [dimension, setDimension] = useState<Dimension>('department')
 
-  const dashboard = useResource(() => fetchDashboard(), '仪表盘数据加载失败')
+  // useResource 以 loader 引用为重载依赖，必须传稳定回调，否则会形成无限请求循环。
+  const loadDashboard = useCallback(() => fetchDashboard(), [])
+  const dashboard = useResource(loadDashboard, '仪表盘数据加载失败')
   const distributionLoader = useCallback(() => fetchDistribution(dimension), [dimension])
   const distribution = useResource(distributionLoader, '分布数据加载失败')
 

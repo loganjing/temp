@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-20T13:11+08:00",
+  "command": "node tests/qa-verify-batch.mjs",
+  "exitCode": 0,
+  "summary": { "total": 17, "passed": 17, "not-passed": 0 },
+  "instances": {
+    "main": "http://localhost:4518 (S1-S4)",
+    "smtpInstance": "http://localhost:4520 (S5, DB_PATH=/tmp/qa-verify-smtp.db, SMTP stub 127.0.0.1:1025)"
+  },
+  "results": [
+    { "scenarioId": "S1", "requirementIds": ["AC-03"], "action": "不带令牌请求 GET /api/tickets", "expected": "HTTP 401，错误码 UNAUTHORIZED", "expectedStatus": 401, "actualStatus": 401, "actual": "HTTP 401，错误码 UNAUTHORIZED", "status": "passed" },
+    { "scenarioId": "S2a", "requirementIds": ["AC-03", "AC-05"], "action": "公司 B 创建工单 TK-000001 并进入分配（规则：账务问题→账务问题组）", "expected": "HTTP 200，状态 processing，归属账务问题组", "actual": "HTTP 200，状态 processing，归属 账务问题组", "status": "passed" },
+    { "scenarioId": "S2b", "requirementIds": ["AC-03"], "action": "公司 A 用户读取公司 B 工单 TK-000001 详情", "expected": "HTTP 404，错误码 NOT_FOUND（不泄露存在性）", "expectedStatus": 404, "actualStatus": 404, "actual": "HTTP 404，错误码 NOT_FOUND", "status": "passed" },
+    { "scenarioId": "S2c", "requirementIds": ["AC-03"], "action": "公司 A 用户尝试取消公司 B 工单 TK-000001", "expected": "HTTP 404（写操作同样被隔离边界拒绝）", "expectedStatus": 404, "actualStatus": 404, "actual": "HTTP 404，错误码 NOT_FOUND", "status": "passed" },
+    { "scenarioId": "S2d", "requirementIds": ["AC-03"], "action": "公司 A 用户工作台列表（view=workbench）", "expected": "列表不含公司 B 工单（当前 A 公司工单数为 0）", "actual": "total=0，是否包含 B 工单：false", "status": "passed" },
+    { "scenarioId": "S2e", "requirementIds": ["AC-03"], "action": "公司 B 用户工作台列表（view=workbench）", "expected": "仅包含本公司工单（含刚创建的隔离验证工单）", "actual": "total=1，包含 TK-000001：true", "status": "passed" },
+    { "scenarioId": "S3a", "requirementIds": ["AC-03"], "action": "提交人（陈晓）对本公司待分配工单 TK-000002 执行转派", "expected": "HTTP 403，错误码 FORBIDDEN（转派限处理人/配置员）", "expectedStatus": 403, "actualStatus": 403, "actual": "HTTP 403，错误码 FORBIDDEN", "status": "passed" },
+    { "scenarioId": "S3b", "requirementIds": ["AC-03"], "action": "提交人（陈晓）对本公司工单 TK-000002 执行完成", "expected": "HTTP 403，错误码 FORBIDDEN（完成限处理人/配置员）", "expectedStatus": 403, "actualStatus": 403, "actual": "HTTP 403，错误码 FORBIDDEN", "status": "passed" },
+    { "scenarioId": "S4a", "requirementIds": ["AC-12", "AC-04"], "action": "创建工单 TK-000003 后读取详情（分配前）", "expected": "HTTP 200，状态 created（初始状态），ticketNo 形如 TK-XXXXXX", "actual": "HTTP 200，状态 created，编号 TK-000003", "status": "passed" },
+    { "scenarioId": "S4b", "requirementIds": ["AC-12", "AC-05"], "action": "进入分配流程（公司 A 规则：故障报修→技术支持组）", "expected": "HTTP 200，状态 processing，归属技术支持组", "actual": "HTTP 200，状态 processing，归属 技术支持组", "status": "passed" },
+    { "scenarioId": "S4c", "requirementIds": ["AC-12", "AC-02"], "action": "提交人与处理人先后各回复一次", "expected": "两次 HTTP 201", "actual": "提交人回复 HTTP 201，处理人回复 HTTP 201", "status": "passed" },
+    { "scenarioId": "S4d", "requirementIds": ["AC-12", "AC-06"], "action": "处理人转派工单至账务问题组（成员周源）", "expected": "HTTP 200，状态仍为 processing，归属变更为账务问题组", "actual": "HTTP 200，状态 processing，归属 账务问题组", "status": "passed" },
+    { "scenarioId": "S4e", "requirementIds": ["AC-12", "AC-07", "AC-08"], "action": "处理人（林岚）完成工单", "expected": "HTTP 200，状态 completed，处理人=林岚，完成时间已记录；通知记录收件人为提交人邮箱", "actual": "HTTP 200，状态 completed，处理人 林岚，完成时间 2026-10-20T13:11:46.496Z；通知 skipped→a-submitter@demo.io", "status": "passed" },
+    { "scenarioId": "S4f", "requirementIds": ["AC-12", "AC-09"], "action": "提交人提交满意度评价（4 分）并读回", "expected": "HTTP 201；详情读回 score=4，回复数 2", "actual": "评价 HTTP 201；读回 score=4，回复数 2", "status": "passed" },
+    { "scenarioId": "S4g", "requirementIds": ["AC-12"], "action": "查询工单 TK-000003 操作日志并校验字段完整性", "expected": "含 created/dispatched/assigned/replied/transferred/completed/rated 动作；每条含非空操作人与 ISO 时间；回复类 ≥2 条", "actual": "共 8 条：created×1、dispatched×1、assigned×1、replied×2、transferred×1、completed×1、rated×1；字段不完整 0 条", "status": "passed" },
+    { "scenarioId": "S4h", "requirementIds": ["AC-12", "AC-04"], "action": "待分配工单 TK-000004 由处理人取消并核验日志", "expected": "HTTP 200，状态 cancelled；日志含 created/dispatched/cancelled", "actual": "HTTP 200，状态 cancelled；日志动作 created、dispatched、cancelled", "status": "passed" },
+    { "scenarioId": "S5", "requirementIds": ["AC-08"], "action": "在配置 SMTP 的实例上完成工单 TK-000001，核验桩邮箱收件", "expected": "完成接口通知状态 sent；邮箱收到 1 封收件人为 a-submitter@demo.io 的邮件，主题与正文可识别工单（含处理人林岚）", "actual": "完成接口 HTTP 200，通知状态 sent；桩邮箱收件 1 封；收件人匹配=true，主题可识别工单=true，正文含处理人与工单号=true", "status": "passed" }
+  ]
+}

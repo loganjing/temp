@@ -1,25 +1,25 @@
 {
   "schemaVersion": 2,
-  "receiptId": "implementation:3",
+  "receiptId": "implementation:6",
   "receiptType": "implementation-report",
   "specId": "general-application-development-spec",
   "graphRevision": 5,
   "actionId": "implementation",
-  "inputRevision": 2,
-  "stateVersion": 3,
+  "inputRevision": 5,
+  "stateVersion": 6,
   "outcome": "passed",
-  "contentHash": "sha256:31c05ab6a02eb77a077ec8258b9f3586db0b426de7b4c33bc90a423b8d5f28b2",
-  "createdAt": "2026-10-20T12:13:32.254Z",
+  "contentHash": "sha256:52977d38deb556bc6ea7cf24a5a020f81e719987ee37e2b18919c88bd67450db",
+  "createdAt": "2026-10-20T13:38:36.756Z",
   "timing": {
     "startedAt": "2026-10-20T11:26:47.303Z",
-    "completedAt": "2026-10-20T12:13:32.254Z",
-    "durationMs": 2804951
+    "completedAt": "2026-10-20T13:38:36.756Z",
+    "durationMs": 7909453
   },
   "artifacts": [
     {
       "path": "docs/wi-t1000316/implementation-report.md",
-      "bytes": 6387,
-      "sha256": "sha256:a1d54b490cfa0032d4049499c7992fad538e6e4385023b57c7a1051f988c9585",
+      "bytes": 7986,
+      "sha256": "sha256:fae57ab677b8ceee060228e6d39107b0e19641412c3b6537499d8217e2ec2d9f",
       "title": "实现阶段报告（128-ticket 工单系统 · wi-t1000316）"
     }
   ],

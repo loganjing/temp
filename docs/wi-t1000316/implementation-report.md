@@ -7,9 +7,9 @@
 | 任务 | 范围 | 状态 | 结算产物 |
 | --- | --- | --- | --- |
 | T01 服务端 | 数据迁移、契约 §4 全部 REST API、状态机、邮件通知、统计、种子脚本 | completed（attempt 1） | `app/ticket-system/src/server/`（sha256:ec4e3118e3f3798ed5d2de7d35a316a4dde35880da990e7b73b03c04ac72601c） |
-| T02 前端 | React SPA：登录、工作台、详情、统计、配置、用户管理 | completed（attempt 1） | `app/ticket-system/src/client/`（sha256:c8a63dcbd288ed96ea9c662ef2b47775dd39fa41e11e8cbfb89840581ef3362b） |
+| T02 前端 | React SPA：登录、工作台、详情、统计、配置、用户管理 | completed（attempt 2，qa-repair 修复 DEV-001） | `app/ticket-system/src/client/`（返工产物哈希见 §5.2） |
 
-执行说明：T01 首轮在产出最终报告前异常中断（子会话 UnknownError），经父会话恢复续跑后完成收尾验证并结算；两任务写入范围均未越界（git 状态核对）。
+执行说明：T01 首轮在产出最终报告前异常中断（子会话 UnknownError），经父会话恢复续跑后完成收尾验证并结算；两任务写入范围均未越界（git 状态核对）。T02 第 2 次派发为验证阶段缺陷返工（finding DEV-001，repairId verification:4:repair:T02:T02:2），已完成修复并结算。
 
 ## 2. 实现内容
 
@@ -48,6 +48,14 @@
 - 契约对齐：GET /api/categories 与 GET /api/groups 对本公司任意登录用户开放读（提交人创建工单、agent 转派所需），写操作限 company_admin；冒烟实证 submitter 读 categories 200。
 - 用户管理：POST /api/admin/users、PUT /api/admin/users/:id 接受并维护 department/role，同步 user_profiles（测试覆盖）；新建用户 passwordChangeRequired 流程：改密前业务 API 403、改密后恢复。
 - 关键缺陷修复（T01）：authkit 短路分支 `context.json(403)` 未落 `context.res`，经 locale 中间件透传 Context 导致真实 HTTP 下 500 RangeError；修复为 `context.res = context.json(..., 403)`（`src/server/platform/auth.ts`），真实 HTTP 复现验证通过。
+
+### 5.2 返工（T02 attempt 2，修复 DEV-001）
+
+- **根因**：`useResource` 的 `useEffect` 以 loader 函数引用为重载依赖，9 处调用点传入内联箭头函数导致每次渲染触发 refetch，形成无限请求循环（QA 观测约 370 req/s、页面冻结）。
+- **修复**：调用方全部改用 `useCallback` 稳定回调（5 个文件：`TicketCreatePage.tsx`、`TicketWorkspace.tsx`、`TicketDetail.tsx`、`GroupsPage.tsx`、`StatsPage.tsx`），每处附注释防回归；`hooks/useResource.ts` 语义不变（loader 引用变化或显式 `reload()` 时重载）。静态复核确认 client 内其余 `useEffect` 依赖均为稳定值，无同类隐患。
+- **开发侧验证**：`npm run typecheck:client` EXIT=0；`npm run build:client` EXIT=0（54 modules）。
+- **返工结算产物**（attempt 2，sha256）：`tickets/TicketCreatePage.tsx` sha256:738a93b9c253acace200e1165264caafc7709f93ddf4745dddc1bda532aa0655、`tickets/TicketWorkspace.tsx` sha256:0bee45ea8302bae9ec21014138c794f99ee427717fa59a50b5abec006313acd2、`tickets/TicketDetail.tsx` sha256:2f9b6fee59652de97a2d3bb0399b6cfbe8dbb824d0eb46f04dca021ce9b13acf、`admin/GroupsPage.tsx` sha256:00724aea80614feb216f3a8d96df9922c1842e084fc278a559d0b9e0f7b05a29、`stats/StatsPage.tsx` sha256:5ec4b677a852220fec4d7364f49057adbb776b8ad92d41dc06c8e4b5d6ec6696。
+- 浏览器端复验（返工要求中的复跑 browser-ui 检查）按任务边界移交本 Work Item 的验证阶段执行。
 
 ## 6. 边界与移交
 

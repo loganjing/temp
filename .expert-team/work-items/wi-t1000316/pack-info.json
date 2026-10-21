@@ -715,7 +715,8 @@
     }
   ],
   "executionStageIds": [
-    "implementation"
+    "implementation",
+    "verification"
   ],
   "failureMappings": [
     {
