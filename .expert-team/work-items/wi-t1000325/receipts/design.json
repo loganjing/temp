@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:e06d96efa85425950a3bdd467f8f30b9e305401c4473382a2a9789dabc5df8db",
+  "createdAt": "2026-10-21T01:22:24.592Z",
+  "timing": {
+    "startedAt": "2026-10-21T01:21:10.316Z",
+    "completedAt": "2026-10-21T01:22:24.592Z",
+    "durationMs": 74276
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000325/architecture-baseline.md",
+      "bytes": 3214,
+      "sha256": "sha256:fc7a9fb0f125f4a070e29cdb7e81b1b11cf368093e20f0ac1b5996944b1cf292",
+      "title": "教师管理系统架构基线（WorkItem: wi-t1000325）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:aeefd36a2eda923d9aa1a435558b6fbd3a5e3d9ff5f38cddcf89795a43eb644f",
+        "path": ".expert-team/work-items/wi-t1000325/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
