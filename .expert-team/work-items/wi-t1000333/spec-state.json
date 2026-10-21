@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-21T05:31:12.705Z"
+  "updatedAt": "2026-10-21T05:56:13.796Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000333/requirements.md",
+      "sha256": "sha256:c11cd2382c77b7a2f3ce76816c89a4ba300acf757733fd69a2415e6378532105"
+    },
+    "reason": "工单系统需要多角色（提交人/处理人/公司配置管理员）跨用户共享同一工单数据：工单按公司隔离并要求直接访问其他公司工单不可见（AC-03，authorization），新工单按分类自动分配到业务组（AC-05），完成时向提交人邮箱发送通知邮件（AC-07），操作日志自动记录关键操作（AC-11），并提供跨公司/部门统计仪表盘（AC-09）。这些能力需要服务端权威数据、服务端权限隔离、服务端业务规则与外部邮件集成，浏览器本地存储无法承载。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单按公司隔离：提交人只能查看本公司工单，直接访问其他公司工单不可见，需要服务端权威数据边界与权限校验",
+        "AC-07 工单完成时向提交人邮箱发送完成通知邮件，需要服务端邮件发送能力（外部集成）",
+        "AC-05 新工单按问题分类自动分配到业务组并进入待处理，分配规则需在服务端对新工单生效",
+        "AC-02/AC-07 提交人与处理方对同一工单多轮回复，数据需跨用户共享而非单设备本地",
+        "AC-09 跨公司、跨部门统计工单分布与运营指标仪表盘，需聚合多用户共享数据",
+        "AC-11 操作日志自动记录操作类型、操作人、时间与关联工单，需服务端审计记录",
+        "需求 2 节定义提交人、处理人、公司配置管理员等多角色，存在跨用户协作"
+      ],
+      "excluding": [
+        "单用户 CRUD 且仅要求刷新/重开后数据仍在的简单前端场景不成立：本系统为多公司多用户协作系统",
+        "localStorage 无法实现跨用户/跨设备的工单共享与回复",
+        "浏览器端无法对‘直接访问其他公司工单不可见’提供强制性公司隔离",
+        "浏览器端无法可靠完成邮件发送"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-21T05:33:07.741Z",
+    "sha256": "sha256:64c8d77aad8217d6594f51dec53bc59ab1747b34cc0554840464db62204dc6c1"
+  }
 }

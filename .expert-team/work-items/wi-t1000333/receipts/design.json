@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:12ef5996533523761d41a25f6e40493f10637ea801416bdd3a4dcc213f9012e6",
+  "createdAt": "2026-10-21T05:56:13.796Z",
+  "timing": {
+    "startedAt": "2026-10-21T05:32:26.624Z",
+    "completedAt": "2026-10-21T05:56:13.796Z",
+    "durationMs": 1427172
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000333/architecture-baseline.md",
+      "bytes": 15210,
+      "sha256": "sha256:9e6e3ecf9b9550ff65ffd81a4576e02ec654bfcaddf54286b7b960e8ddbdcb73",
+      "role": "primary",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000333/technical-contract.md",
+      "bytes": 17272,
+      "sha256": "sha256:f3a5f70de956dc0dccc471a0bfce063b516953e78c7fe8ea3112f3c9d1f3e7bf",
+      "role": "supporting",
+      "title": "技术契约（135-ticket 工单系统）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "path": "docs/wi-t1000333/workspace-bootstrap.json",
+      "sha256": "sha256:d87e45e902b0a23d3d95a6e4d23fdc7ae755776d8ee13ef76e4927c6523a1240",
+      "result": "initialized",
+      "packageRoot": "app/ticket-system",
+      "planDigest": "sha256:d24c6a45d87a54db2109b6d6a2ecb6f9986561f5217b3294779d6fbe5cecc1e7",
+      "planSha256": "sha256:d87e45e902b0a23d3d95a6e4d23fdc7ae755776d8ee13ef76e4927c6523a1240",
+      "scaffoldDigest": "sha256:0559b9e2dd940deddd63189736357e7fa8c3d81791c1d8c31f94e76e91426ca6",
+      "modules": [
+        "dbkit",
+        "authkit",
+        "userkit",
+        "auditkit",
+        "emailkit"
+      ]
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:64c8d77aad8217d6594f51dec53bc59ab1747b34cc0554840464db62204dc6c1",
+        "path": ".expert-team/work-items/wi-t1000333/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
