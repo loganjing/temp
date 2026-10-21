@@ -1,121 +1,416 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from '../platform/api-client'
+// 用户管理（admin）：用户开户与业务档案维护（契约第 2 节）。
+// 认证凭证由服务端 userkit 存储；本页仅负责业务档案（姓名、邮箱、公司、部门、角色）。
+import { useState, type FormEvent } from 'react'
+import { createUser, listUsers, updateUserProfile } from '../api/users'
+import { listCompanies } from '../api/org'
+import {
+  Badge,
+  Button,
+  Card,
+  EmptyState,
+  ErrorBanner,
+  Field,
+  inputClass,
+  PageHeader,
+  Spinner,
+  SuccessNote,
+  TableSkeleton,
+} from '../components/ui'
+import { IconPencil, IconPlus, IconUsers, IconX } from '../components/icons'
+import { roleLabel } from '../contracts/labels'
+import { errorMessage, useAsync } from '../hooks/useAsync'
+import type { Role, UserItem } from '../contracts/types'
 
-type User = { id: string; name: string; email: string; phone: string | null; enabled: boolean }
+const PAGE_SIZE = 20
+const ROLE_OPTIONS: Role[] = ['submitter', 'agent', 'admin', 'viewer']
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>([])
-  const [search, setSearch] = useState('')
-  const [offset, setOffset] = useState(0)
-  const [total, setTotal] = useState(0)
-  const [message, setMessage] = useState('')
+  const [page, setPage] = useState(1)
+  const [companyFilter, setCompanyFilter] = useState('')
+  const [formOpen, setFormOpen] = useState(false)
+  const [notice, setNotice] = useState('')
   const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
 
-  const load = useCallback(async () => {
-    const result = await apiRequest<{ users: User[]; total: number }>(`/api/admin/users?search=${encodeURIComponent(search)}&limit=50&offset=${offset}`)
-    setUsers(result.users)
-    setTotal(result.total)
-  }, [search, offset])
+  const companies = useAsync(() => listCompanies(), [])
+  const users = useAsync(
+    () => listUsers({ page, pageSize: PAGE_SIZE, companyId: companyFilter ? Number(companyFilter) : undefined }),
+    [page, companyFilter],
+  )
 
-  useEffect(() => { void load().catch((cause) => setError(cause instanceof Error ? cause.message : '加载失败 / Load failed')) }, [load])
+  const [create, setCreate] = useState({
+    username: '',
+    password: '',
+    displayName: '',
+    email: '',
+    companyId: '',
+    department: '',
+    role: 'submitter' as Role,
+  })
+  const [createBusy, setCreateBusy] = useState(false)
+
+  const [editingUserId, setEditingUserId] = useState<number | null>(null)
+  const [edit, setEdit] = useState({
+    displayName: '',
+    email: '',
+    companyId: '',
+    department: '',
+    role: 'submitter' as Role,
+  })
+  const [editBusy, setEditBusy] = useState(false)
 
   const submitCreate = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setBusy(true)
+    const companyId = Number(create.companyId)
+    if (!Number.isInteger(companyId) || companyId <= 0) {
+      setError('请选择所属公司')
+      return
+    }
+    setCreateBusy(true)
     setError('')
-    setMessage('')
-    const form = event.currentTarget
-    const body = Object.fromEntries(new FormData(form).entries())
+    setNotice('')
     try {
-      await apiRequest('/api/admin/users', { method: 'POST', body: JSON.stringify(body) })
-      form.reset()
-      setMessage('用户已创建 / User created')
-      await load()
+      const user = await createUser({
+        username: create.username.trim(),
+        password: create.password,
+        displayName: create.displayName.trim(),
+        email: create.email.trim(),
+        companyId,
+        department: create.department.trim(),
+        role: create.role,
+      })
+      setCreate({
+        username: '',
+        password: '',
+        displayName: '',
+        email: '',
+        companyId: '',
+        department: '',
+        role: 'submitter',
+      })
+      setNotice(`用户「${user.displayName}」已创建`)
+      users.reload()
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '创建失败 / Create failed')
+      setError(errorMessage(cause, '创建用户失败'))
     } finally {
-      setBusy(false)
+      setCreateBusy(false)
     }
   }
 
-  const setEnabled = async (user: User) => {
+  const startEdit = (user: UserItem) => {
+    setEditingUserId(user.userId)
+    setEdit({
+      displayName: user.displayName,
+      email: user.email,
+      companyId: String(user.companyId),
+      department: user.department,
+      role: (ROLE_OPTIONS.includes(user.role as Role) ? user.role : 'submitter') as Role,
+    })
     setError('')
-    try {
-      await apiRequest(`/api/admin/users/${encodeURIComponent(user.id)}/status`, { method: 'PATCH', body: JSON.stringify({ enabled: !user.enabled }) })
-      await load()
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新失败 / Update failed')
-    }
+    setNotice('')
   }
 
-  const updateUser = async (event: FormEvent<HTMLFormElement>, user: User) => {
+  const submitEdit = async (event: FormEvent<HTMLFormElement>, userId: number) => {
     event.preventDefault()
-    const form = event.currentTarget
-    const body = Object.fromEntries(new FormData(form).entries())
+    const companyId = Number(edit.companyId)
+    if (!Number.isInteger(companyId) || companyId <= 0) {
+      setError('请选择所属公司')
+      return
+    }
+    setEditBusy(true)
     setError('')
+    setNotice('')
     try {
-      await apiRequest(`/api/admin/users/${encodeURIComponent(user.id)}`, { method: 'PATCH', body: JSON.stringify(body) })
-      setMessage(`已更新 ${user.email} / Updated ${user.email}`)
-      await load()
+      const user = await updateUserProfile(userId, {
+        displayName: edit.displayName.trim(),
+        email: edit.email.trim(),
+        companyId,
+        department: edit.department.trim(),
+        role: edit.role,
+      })
+      setEditingUserId(null)
+      setNotice(`用户「${user.displayName}」的业务档案已更新`)
+      users.reload()
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新失败 / Update failed')
+      setError(errorMessage(cause, '更新档案失败'))
+    } finally {
+      setEditBusy(false)
     }
   }
 
-  const resetPassword = async (event: FormEvent<HTMLFormElement>, user: User) => {
-    event.preventDefault()
-    const form = event.currentTarget
-    const body = Object.fromEntries(new FormData(form).entries())
-    setError('')
-    try {
-      await apiRequest(`/api/admin/users/${encodeURIComponent(user.id)}/password`, { method: 'POST', body: JSON.stringify(body) })
-      form.reset()
-      setMessage(`已重置 ${user.email} 的密码 / Password reset for ${user.email}`)
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '重置失败 / Reset failed')
-    }
-  }
+  const data = users.data
+  const totalPages = data ? Math.max(1, Math.ceil(data.total / data.pageSize)) : 1
+  const companyOptions = companies.data?.items ?? []
+  const companyName = (id: number) => companyOptions.find((company) => company.id === id)?.name
 
   return (
-    <div className="admin-grid">
-      <section className="card">
-        <h2>添加用户 / Add user</h2>
-        <form className="form-grid" onSubmit={(event) => void submitCreate(event)}>
-          <label>姓名 / Name<input name="name" required maxLength={200} /></label>
-          <label>邮箱 / Email<input name="email" type="email" required maxLength={320} /></label>
-          <label>手机号（可选）/ Phone (optional)<input name="phone" type="tel" /></label>
-          <label>临时密码 / Temporary password<input name="password" type="password" minLength={12} required /></label>
-          <button disabled={busy}>创建 / Create</button>
-        </form>
-      </section>
+    <div>
+      <PageHeader
+        title="用户管理"
+        description="开户并维护用户业务档案（姓名、邮箱、公司、部门、角色）"
+        actions={
+          <Button onClick={() => setFormOpen((open) => !open)}>
+            <IconPlus />
+            {formOpen ? '收起表单' : '创建用户'}
+          </Button>
+        }
+      />
 
-      <section className="card">
-        <div className="section-heading"><h2>用户 / Users ({total})</h2><label className="search">搜索 / Search<input value={search} onChange={(event) => { setSearch(event.currentTarget.value); setOffset(0) }} /></label></div>
-        {message && <p role="status" className="success">{message}</p>}
-        {error && <p role="alert" className="error">{error}</p>}
-        <div className="table-scroll">
-          <table>
-            <thead><tr><th>用户 / User</th><th>手机号 / Phone</th><th>状态 / Status</th><th>操作 / Actions</th></tr></thead>
-            <tbody>{users.map((user) => <tr key={user.id}>
-              <td><strong title={user.name}>{user.name}</strong><span className="subtext" title={user.email}>{user.email}</span></td>
-              <td title={user.phone ?? ''}>{user.phone || '—'}</td>
-              <td>{user.enabled ? '启用 / Active' : '停用 / Disabled'}</td>
-              <td><div className="row-actions">
-                <button className="secondary" onClick={() => void setEnabled(user)}>{user.enabled ? '停用 / Disable' : '启用 / Enable'}</button>
-                <details><summary>编辑 / Edit</summary><form className="reset-form" onSubmit={(event) => void updateUser(event, user)}>
-                  <input aria-label="姓名 / Name" name="name" defaultValue={user.name} required maxLength={200} />
-                  <input aria-label="邮箱 / Email" name="email" type="email" defaultValue={user.email} required maxLength={320} />
-                  <input aria-label="手机号 / Phone" name="phone" type="tel" defaultValue={user.phone ?? ''} />
-                  <button className="secondary">保存 / Save</button>
-                </form></details>
-                <form className="reset-form" onSubmit={(event) => void resetPassword(event, user)}><input aria-label="新密码 / New password" name="password" type="password" minLength={12} placeholder="新密码 / New password" required /><button className="secondary">重置密码 / Reset</button></form>
-              </div></td>
-            </tr>)}</tbody>
-          </table>
-        </div>
-        <div className="section-heading pagination"><span>{total === 0 ? '无用户 / No users' : `${offset + 1}–${Math.min(offset + users.length, total)} / ${total}`}</span><div className="row-actions"><button className="secondary" disabled={offset === 0} onClick={() => setOffset(Math.max(offset - 50, 0))}>上一页 / Previous</button><button className="secondary" disabled={offset + users.length >= total} onClick={() => setOffset(offset + 50)}>下一页 / Next</button></div></div>
-      </section>
+      {formOpen && (
+        <Card title="创建用户" className="mb-6" description="用户名与密码为登录凭证；密码至少 8 位">
+          <form onSubmit={submitCreate} className="grid items-end gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Field label="用户名" required hint="3-64 字，唯一">
+              <input
+                className={inputClass}
+                required
+                minLength={3}
+                maxLength={64}
+                value={create.username}
+                onChange={(event) => setCreate({ ...create, username: event.currentTarget.value })}
+              />
+            </Field>
+            <Field label="初始密码" required hint="至少 8 位">
+              <input
+                className={inputClass}
+                type="password"
+                required
+                minLength={8}
+                value={create.password}
+                onChange={(event) => setCreate({ ...create, password: event.currentTarget.value })}
+              />
+            </Field>
+            <Field label="姓名" required hint="1-64 字">
+              <input
+                className={inputClass}
+                required
+                maxLength={64}
+                value={create.displayName}
+                onChange={(event) => setCreate({ ...create, displayName: event.currentTarget.value })}
+              />
+            </Field>
+            <Field label="邮箱" required>
+              <input
+                className={inputClass}
+                type="email"
+                required
+                value={create.email}
+                onChange={(event) => setCreate({ ...create, email: event.currentTarget.value })}
+              />
+            </Field>
+            <Field label="所属公司" required>
+              <select
+                className={inputClass}
+                required
+                value={create.companyId}
+                onChange={(event) => setCreate({ ...create, companyId: event.currentTarget.value })}
+              >
+                <option value="">选择公司</option>
+                {companyOptions.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="部门" hint="0-64 字">
+              <input
+                className={inputClass}
+                maxLength={64}
+                value={create.department}
+                onChange={(event) => setCreate({ ...create, department: event.currentTarget.value })}
+              />
+            </Field>
+            <Field label="业务角色" required>
+              <select
+                className={inputClass}
+                value={create.role}
+                onChange={(event) => setCreate({ ...create, role: event.currentTarget.value as Role })}
+              >
+                {ROLE_OPTIONS.map((role) => (
+                  <option key={role} value={role}>
+                    {roleLabel(role)}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Button type="submit" disabled={createBusy}>
+              {createBusy ? <Spinner /> : <IconPlus />}
+              创建用户
+            </Button>
+          </form>
+        </Card>
+      )}
+
+      <Card
+        title={`用户列表（${data?.total ?? 0}）`}
+        actions={
+          <div className="flex items-center gap-2">
+            <select
+              className={`${inputClass} w-44`}
+              aria-label="按公司过滤"
+              value={companyFilter}
+              onChange={(event) => {
+                setCompanyFilter(event.currentTarget.value)
+                setPage(1)
+              }}
+            >
+              <option value="">全部公司</option>
+              {companyOptions.map((company) => (
+                <option key={company.id} value={company.id}>
+                  {company.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        }
+        bodyClassName="pt-2"
+      >
+        <ErrorBanner message={users.error ?? error} />
+        <SuccessNote message={notice || null} />
+        {users.loading && !data ? (
+          <TableSkeleton rows={6} cols={5} />
+        ) : !data || data.items.length === 0 ? (
+          <EmptyState
+            icon={<IconUsers className="size-5" />}
+            title="没有符合条件的用户"
+            description="调整公司过滤条件，或创建新用户。"
+          />
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 text-xs text-slate-500">
+                  <th className="px-3 py-2.5 font-medium">用户名</th>
+                  <th className="px-3 py-2.5 font-medium">姓名</th>
+                  <th className="px-3 py-2.5 font-medium">邮箱</th>
+                  <th className="px-3 py-2.5 font-medium">公司</th>
+                  <th className="px-3 py-2.5 font-medium">部门</th>
+                  <th className="px-3 py-2.5 font-medium">角色</th>
+                  <th className="px-3 py-2.5 font-medium">操作</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {data.items.map((user) => (
+                  <tr key={user.userId} className="align-top">
+                    {editingUserId === user.userId ? (
+                      <td colSpan={7} className="px-3 py-3">
+                        <form
+                          onSubmit={(event) => void submitEdit(event, user.userId)}
+                          className="grid items-end gap-3 sm:grid-cols-2 lg:grid-cols-5"
+                        >
+                          <Field label="姓名">
+                            <input
+                              className={inputClass}
+                              maxLength={64}
+                              required
+                              value={edit.displayName}
+                              onChange={(event) => setEdit({ ...edit, displayName: event.currentTarget.value })}
+                            />
+                          </Field>
+                          <Field label="邮箱">
+                            <input
+                              className={inputClass}
+                              type="email"
+                              required
+                              value={edit.email}
+                              onChange={(event) => setEdit({ ...edit, email: event.currentTarget.value })}
+                            />
+                          </Field>
+                          <Field label="所属公司">
+                            <select
+                              className={inputClass}
+                              required
+                              value={edit.companyId}
+                              onChange={(event) => setEdit({ ...edit, companyId: event.currentTarget.value })}
+                            >
+                              <option value="">选择公司</option>
+                              {companyOptions.map((company) => (
+                                <option key={company.id} value={company.id}>
+                                  {company.name}
+                                </option>
+                              ))}
+                            </select>
+                          </Field>
+                          <Field label="部门">
+                            <input
+                              className={inputClass}
+                              maxLength={64}
+                              value={edit.department}
+                              onChange={(event) => setEdit({ ...edit, department: event.currentTarget.value })}
+                            />
+                          </Field>
+                          <Field label="业务角色">
+                            <select
+                              className={inputClass}
+                              value={edit.role}
+                              onChange={(event) => setEdit({ ...edit, role: event.currentTarget.value as Role })}
+                            >
+                              {ROLE_OPTIONS.map((role) => (
+                                <option key={role} value={role}>
+                                  {roleLabel(role)}
+                                </option>
+                              ))}
+                            </select>
+                          </Field>
+                          <div className="flex gap-2 lg:col-span-5">
+                            <Button type="submit" disabled={editBusy}>
+                              {editBusy ? <Spinner /> : null}
+                              保存档案
+                            </Button>
+                            <Button variant="ghost" onClick={() => setEditingUserId(null)}>
+                              <IconX />
+                              取消
+                            </Button>
+                          </div>
+                        </form>
+                      </td>
+                    ) : (
+                      <>
+                        <td className="px-3 py-2.5 text-slate-600">{user.username}</td>
+                        <td className="px-3 py-2.5 text-slate-800">{user.displayName}</td>
+                        <td className="max-w-56 px-3 py-2.5">
+                          <span className="block truncate text-slate-600" title={user.email}>
+                            {user.email}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2.5 text-slate-600">
+                          {companyName(user.companyId) ?? user.companyName}
+                        </td>
+                        <td className="px-3 py-2.5 text-slate-600">{user.department || '—'}</td>
+                        <td className="px-3 py-2.5">
+                          <Badge tone="bg-slate-100 text-slate-600 ring-slate-300">
+                            {roleLabel(user.role)}
+                          </Badge>
+                        </td>
+                        <td className="px-3 py-2.5">
+                          <Button variant="ghost" onClick={() => startEdit(user)} aria-label="编辑档案">
+                            <IconPencil className="size-4" />
+                            编辑
+                          </Button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {data && data.total > data.pageSize && (
+          <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4 text-sm text-slate-500">
+            <span>
+              第 {data.page} / {totalPages} 页 · 共 {data.total} 条
+            </span>
+            <div className="flex gap-2">
+              <Button variant="secondary" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+                上一页
+              </Button>
+              <Button variant="secondary" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
+                下一页
+              </Button>
+            </div>
+          </div>
+        )}
+      </Card>
     </div>
   )
 }
