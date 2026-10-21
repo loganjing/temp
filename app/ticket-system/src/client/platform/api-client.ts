@@ -5,6 +5,20 @@ export class ApiRequestError extends Error {
   }
 }
 
+export function describeError(error: unknown): string {
+  if (error instanceof ApiRequestError) return error.message
+  if (error instanceof Error && error.message !== '') return error.message
+  return '请求失败，请稍后重试'
+}
+
+// 会话失效（401 + AUTH_REQUIRED）时由会话层注册的回调；登录接口本身的
+// 401（AUTH_INVALID）不触发，避免把“用户名或密码错误”当成会话过期。
+let sessionExpiredHandler: (() => void) | null = null
+
+export function setSessionExpiredHandler(handler: (() => void) | null): void {
+  sessionExpiredHandler = handler
+}
+
 export async function apiRequest<T>(path: string, options?: RequestInit): Promise<T> {
   const token = localStorage.getItem('platform-token')
   const headers = new Headers(options?.headers)
@@ -16,5 +30,10 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
   const body = data && typeof data === 'object' ? data as Record<string, unknown> : undefined
   const error = body?.error
   const detail = error && typeof error === 'object' ? error as Record<string, unknown> : undefined
-  throw new ApiRequestError(typeof detail?.message === 'string' ? detail.message : typeof error === 'string' ? error : `HTTP ${response.status}`, response.status, typeof detail?.code === 'string' ? detail.code : undefined)
+  const code = typeof detail?.code === 'string' ? detail.code : undefined
+  const message = typeof detail?.message === 'string'
+    ? detail.message
+    : typeof error === 'string' ? error : `HTTP ${response.status}`
+  if (response.status === 401 && code === 'AUTH_REQUIRED') sessionExpiredHandler?.()
+  throw new ApiRequestError(message, response.status, code)
 }

@@ -2,6 +2,13 @@ import { randomUUID } from 'node:crypto'
 import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { registerIdentityRoutes } from './modules/identity'
+import { registerTicketRoutes } from './modules/ticket'
+import { registerAssignmentRoutes } from './modules/assignment'
+import { registerProcessingRoutes } from './modules/processing'
+import { registerRatingRoutes } from './modules/rating'
+import { registerStatsRoutes } from './modules/stats'
+import { registerAuditQueryRoutes } from './modules/audit-query'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -51,6 +58,7 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     }
     return context.json({ ok: true }, 201)
   })
+  // 契约 2.1：登录（username 登录名 + Bearer 令牌 + 业务档案 AuthUser）。
   app.post('/api/auth/login', platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
   app.get('/api/auth/sso/start', (context) => platform.auth.sso.start(context as never))
   app.get('/api/auth/sso/callback', (context) => platform.auth.sso.callback(context as never))
@@ -58,7 +66,6 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -141,4 +148,13 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  // 业务模块（契约第 2-8 节）。
+  registerIdentityRoutes(app, platform)
+  registerTicketRoutes(app, platform)
+  registerAssignmentRoutes(app, platform)
+  registerProcessingRoutes(app, platform)
+  registerRatingRoutes(app, platform)
+  registerStatsRoutes(app, platform)
+  registerAuditQueryRoutes(app, platform)
 }

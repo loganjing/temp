@@ -2,64 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light dark;
-  --page: #f4f6f8;
-  --surface: #ffffff;
-  --text: #17212b;
-  --muted: #596773;
-  --border: #d5dde4;
-  --accent: #1458a6;
-  --danger: #a32323;
-  --success: #17643c;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page: #10151b;
-    --surface: #19212a;
-    --text: #e7edf3;
-    --muted: #a9b5c1;
-    --border: #354250;
-    --accent: #8abaff;
-    --danger: #ff9b9b;
-    --success: #8fe0b3;
+@layer base {
+  body {
+    @apply bg-slate-100 text-slate-900;
+    font-family: Inter, 'PingFang SC', 'Microsoft YaHei', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 }
-* { box-sizing: border-box; }
-body { min-width: 320px; min-height: 100vh; margin: 0; color: var(--text); background: var(--page); }
-button, input, select { font: inherit; }
-button { min-height: 40px; padding: 0.5rem 0.85rem; color: white; background: var(--accent); border: 1px solid var(--accent); border-radius: 6px; cursor: pointer; }
-button:disabled { opacity: 0.6; cursor: wait; }
-button.secondary { color: var(--text); background: var(--surface); border-color: var(--border); }
-input, select { width: 100%; min-height: 40px; padding: 0.5rem 0.65rem; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
-label { display: grid; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; }
-.shell { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
-.auth-shell { min-height: 100vh; display: grid; place-items: center; }
-.card { min-width: 0; padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
-.auth-card { width: min(440px, 100%); }
-.stack, .form-grid { display: grid; gap: 1rem; }
-.form-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); align-items: end; }
-.topbar, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.topbar { margin-bottom: 1.25rem; }
-.topbar h1, .section-heading h2 { margin: 0 0 0.3rem; }
-.topbar p, .auth-card p { color: var(--muted); }
-.admin-grid { display: grid; gap: 1rem; }
-.section-heading { margin-bottom: 1rem; }
-.search { width: min(340px, 100%); }
-.table-scroll { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; text-align: left; }
-th, td { padding: 0.75rem; vertical-align: top; border-bottom: 1px solid var(--border); }
-th { color: var(--muted); font-weight: 600; white-space: nowrap; }
-td strong, .subtext { display: block; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.subtext { margin-top: 0.25rem; color: var(--muted); font-size: 0.85rem; }
-.row-actions { display: grid; gap: 0.5rem; }
-.row-actions { min-width: 230px; }
-.reset-form { display: grid; gap: 0.4rem; }
-.error { color: var(--danger); }
-.success { color: var(--success); }
-@media (max-width: 680px) {
-  .shell { width: min(100% - 1rem, 1200px); padding-top: 1rem; }
-  .topbar, .section-heading { align-items: stretch; flex-direction: column; }
-  .search { width: 100%; }
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .input-base {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 transition placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 disabled:cursor-not-allowed disabled:bg-slate-50;
+  }
+  .field-label {
+    @apply mb-1 block text-xs font-medium text-slate-500;
+  }
 }

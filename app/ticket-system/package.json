@@ -11,6 +11,7 @@
     "build:client": "vite build",
     "build": "npm run typecheck && npm run build:client",
     "test": "node --import tsx --test test/*.test.mjs",
+    "seed": "node --import tsx src/server/seed.ts",
     "start": "node --import tsx src/server/index.ts",
     "preview": "vite preview"
   },
