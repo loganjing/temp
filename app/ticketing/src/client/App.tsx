@@ -1,28 +1,38 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
+import { BrowserRouter, NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import { identityApi } from './platform/api-client'
+import type { SessionUser } from './components/contracts'
+import { ToastProvider, useToast } from './components/ui'
 import UsersPage from './admin/UsersPage'
+import WorkbenchPage from './pages/WorkbenchPage'
+import TicketsPage from './pages/TicketsPage'
+import TicketCreatePage from './pages/TicketCreatePage'
+import GroupsRulesPage from './pages/GroupsRulesPage'
+import StatsPage from './pages/StatsPage'
+import AuditLogsPage from './pages/AuditLogsPage'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
 type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
 
 export default function App() {
   const [state, setState] = useState<BootstrapState>('checking')
-  const [user, setUser] = useState<CurrentUser | null>(null)
+  const [user, setUser] = useState<SessionUser | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const toast = useToast()
 
   const refresh = async () => {
     const token = localStorage.getItem('platform-token')
     if (token) {
       try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
+        const me = await identityApi.me()
+        setUser(me)
         setState('authenticated')
         return
       } catch {
         localStorage.removeItem('platform-token')
       }
     }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
+    const status = await identityApi.bootstrapStatus()
     setState(status.required ? 'required' : 'login')
   }
 
@@ -35,14 +45,15 @@ export default function App() {
     const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
       if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
+        await identityApi.bootstrap({ name: String(body.name), email: String(body.email), password: String(body.password) })
         setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
+        toast.success('账户已创建，请登录')
       } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
+        const result = await identityApi.login(String(body.email), String(body.password))
         localStorage.setItem('platform-token', result.token)
         setUser(result.user)
         setState('authenticated')
+        toast.success(`欢迎，${result.user.name}`)
       }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
@@ -57,13 +68,20 @@ export default function App() {
     setError('')
     const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
+      await identityApi.changePassword(String(body.password))
       setUser(user ? { ...user, passwordChangeRequired: false } : user)
+      toast.success('密码已更新')
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
     } finally {
       setBusy(false)
     }
+  }
+
+  const signOut = () => {
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
   }
 
   if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
@@ -96,13 +114,75 @@ export default function App() {
       </section>
     </main>
   )
+
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <ToastProvider>
+      <BrowserRouter>
+        <AppShell user={user} onSignOut={signOut} />
+      </BrowserRouter>
+    </ToastProvider>
+  )
+}
+
+interface NavItem { to: string; label: string }
+const NAV: NavItem[] = [
+  { to: '/workbench', label: '工作台' },
+  { to: '/tickets', label: '工单' },
+  { to: '/stats', label: '统计' },
+  { to: '/groups', label: '业务组与规则' },
+  { to: '/audit', label: '操作日志' },
+  { to: '/users', label: '用户管理' },
+]
+
+function AppShell({ user, onSignOut }: { user: SessionUser; onSignOut: () => void }) {
+  return (
+    <div className="flex min-h-screen">
+      <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+        <div className="border-b border-slate-200 px-4 py-4 dark:border-slate-700">
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">工单系统</p>
+        </div>
+        <nav className="flex flex-1 flex-col gap-1 p-2">
+          {NAV.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `rounded-lg px-3 py-2 text-sm ${isActive ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'}`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-5 py-3 dark:border-slate-700 dark:bg-slate-800">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100" title={user.name}>{user.name}</p>
+            <p className="truncate text-xs text-slate-500 dark:text-slate-400" title={user.email}>{user.email}</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs text-slate-600 dark:bg-slate-700 dark:text-slate-300" title={`公司：${user.company?.name}`}>
+              {user.company?.name ?? '—'}
+            </span>
+            <button className="secondary" onClick={onSignOut}>退出 / Sign out</button>
+          </div>
+        </header>
+        <main className="mx-auto w-full max-w-6xl flex-1 p-5">
+          <Routes>
+            <Route path="/" element={<Navigate to="/workbench" replace />} />
+            <Route path="/workbench" element={<WorkbenchPage currentUser={user} />} />
+            <Route path="/tickets" element={<TicketsPage currentUser={user} />} />
+            <Route path="/tickets/new" element={<TicketCreatePage currentUser={user} />} />
+            <Route path="/tickets/:ticketNo" element={<TicketsPage currentUser={user} />} />
+            <Route path="/stats" element={<StatsPage currentUser={user} />} />
+            <Route path="/groups" element={<GroupsRulesPage currentUser={user} />} />
+            <Route path="/audit" element={<AuditLogsPage currentUser={user} />} />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="*" element={<Navigate to="/workbench" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
   )
 }

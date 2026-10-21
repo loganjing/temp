@@ -10,6 +10,11 @@
       "startedAt": "2026-10-21T08:47:21.790Z",
       "completedAt": "2026-10-21T09:01:54.487Z",
       "durationMs": 872697
+    },
+    "implementation": {
+      "startedAt": "2026-10-21T09:12:05.706Z",
+      "completedAt": "2026-10-21T09:44:36.608Z",
+      "durationMs": 1950902
     }
   }
 }
