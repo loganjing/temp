@@ -1,15 +1,15 @@
 import 'dotenv/config'
 import { serve } from '@hono/node-server'
 import { createApp } from './app'
-import { authBoundary } from './platform/auth'
+import { createAuthBoundary, type AppEnv } from './platform/auth'
 import { initializePlatform } from './platform/bootstrap'
 import { registerPublicRoutes, registerProtectedRoutes } from './routes'
 
 const platform = await initializePlatform()
-const app = createApp({
+const app = createApp<AppEnv>({
   registerPublicRoutes: (routes) => registerPublicRoutes(routes, platform),
   registerProtectedRoutes: (routes) => registerProtectedRoutes(routes, platform),
-  protect: authBoundary,
+  protect: createAuthBoundary(platform.db),
 })
 const port = Number(process.env.PORT || 3000)
 const server = serve({ fetch: app.fetch, port }, () => {
