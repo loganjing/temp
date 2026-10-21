@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:15836a386ec24702d7d61b162f7fd7f6289a80f3ae5d8f5142ed14ab5902e464",
+  "createdAt": "2026-10-21T01:22:32.495Z",
+  "timing": {
+    "startedAt": "2026-10-21T01:21:57.331Z",
+    "completedAt": "2026-10-21T01:22:32.495Z",
+    "durationMs": 35164
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000326/requirements.md",
+      "bytes": 1606,
+      "sha256": "sha256:04f432bc0e7803877edabad8381f7d0201bfbd4ebfd02a1c61c060ddcbe1be4a",
+      "title": "130-clock：实时显示当前时分秒的页面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}

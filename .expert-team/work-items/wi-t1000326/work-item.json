@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000326",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "业务任务：130-clock。做一个页面实时显示最近的时分秒。请在当前 Session 中完成这个 IssueTask，按指定的连续阶段范围执行：requirements。",
+  "request": "业务任务：130-clock。做一个页面实时显示最近的时分秒。请在当前 Session 中完成这个 IssueTask，按指定的连续阶段范围执行：requirements。",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-21T01:21:57.157Z"
+}
