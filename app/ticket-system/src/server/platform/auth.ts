@@ -30,7 +30,7 @@ export function createApplicationAuth(db: DbClient) {
     }),
   })
   const requireAnyAuth: MiddlewareHandler = async (context, next) => {
-    await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
+    const response = await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
       const user = (context as unknown as { get(key: string): { passwordChangeRequired?: boolean } }).get('currentUser')
       if (user.passwordChangeRequired && !['/api/auth/me', '/api/auth/password'].includes(context.req.path)) {
         context.json({ error: { code: 'PASSWORD_CHANGE_REQUIRED', message: 'Change your temporary password before continuing' } }, 403)
@@ -38,6 +38,18 @@ export function createApplicationAuth(db: DbClient) {
       }
       await next()
     })
+    // authkit 的未认证响应是扁平 { error }；统一为契约第 1 节的 { error: { code, message } } 形状。
+    if (response instanceof Response && response.status === 401) {
+      let message = 'Not authenticated'
+      try {
+        const body = (await response.clone().json()) as { error?: string }
+        if (typeof body?.error === 'string' && body.error) message = body.error
+      } catch {
+        // 保留默认消息
+      }
+      return context.json({ error: { code: 'UNAUTHENTICATED', message } }, 401)
+    }
+    return response
   }
   return { ...auth, requireAnyAuth, userStore, userResolver, loginRoute }
 }

@@ -1,0 +1,86 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "服务端实现：工单领域/组织权限/统计/审计/邮件接线与集成测试",
+      "objective": "## 目标\n\n按 docs/wi-t1000333/technical-contract.md 实现 app/ticket-system 的全部服务端行为，交付可独立运行、经真实 HTTP 测试验证的工单系统后端。\n\n- 数据与迁移：在 app/ticket-system/src/server/migrations/sqlite/ 落地契约第 6 节工单域迁移（表、约束、索引、categories 固定集合种子），复用 userkit/auditkit 随包迁移；启动时空库幂等种子公司A/公司B 与示例账号（经 userkit 用户 API 创建账户并设置组织档案）。\n- 组织与权限：契约第 4 节组织与配置接口，服务端计算提交人/处理人/公司配置管理员角色、公司隔离与可见范围。\n- 工单领域：契约第 3 节全部工单接口——创建（单事务内按分类自动分配）、列表（可见范围过滤、搜索、排序）、详情、提交人完整信息与历史工单、多轮回复（维护 first_reply_at）、手工分配、转派、完成（记录处理人与处理时间，事务提交后经 emailkit 发送完成通知，失败不回滚）、取消、满意度评价（每工单一次）与操作日志读取；非法状态迁移返回 409，越权访问按 404 处理。\n- 统计：契约第 5 节公司/部门分布与运营仪表盘聚合接口。\n- 审计：契约第 8 节全部事件类型经 auditkit 持久化（邮箱脱敏），邮件发送结果记入审计。\n- 不写 src/shared/：契约类型分别落在 server/client 各层，避免并行任务共享写入该子树。\n\n## 验证\n\n- `npm run typecheck:server` 通过；在应用包内执行 `npm test` 通过。\n- 新增测试经 test/with-http-server.mjs 启动隔离 HTTP 服务与独立 DB_PATH；完成通知邮件用本地可捕获的测试 SMTP 服务验证收件内容与失败语义。\n- 不写 src/client/、前端构建配置与 package.json/锁文件（服务端依赖已齐备）；如确需新增服务端依赖，作为阻塞上报而非直接写入。\n\n## AC 贡献\n\nAC-01～AC-11 的服务端行为、数据落库、授权与审计均为本任务产出；界面呈现由并行前端任务 T02 承担。",
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11"
+      ],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        "docs/wi-t1000333/requirements.md",
+        "docs/wi-t1000333/architecture-baseline.md",
+        "docs/wi-t1000333/technical-contract.md"
+      ],
+      "artifactPaths": [
+        "app/ticket-system/src/server/",
+        "app/ticket-system/test/"
+      ],
+      "additionalWritePaths": [
+        "app/ticket-system/tsconfig.json",
+        "app/ticket-system/tsconfig.server.json"
+      ],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    },
+    {
+      "taskId": "T02",
+      "summary": "前端 SPA 实现：工单工作台/详情协作/统计仪表盘/配置界面",
+      "objective": "## 目标\n\n按 docs/wi-t1000333/technical-contract.md 字段契约与 docs/wi-t1000333/architecture-baseline.md 第 3 节 UI 基线（helpdesk 应用模板、split-master-detail 布局、Modern SaaS 视觉）实现 app/ticket-system 前端 React/Vite SPA。\n\n- 页面与流程：登录；工单列表/详情双栏协同（创建工单、多轮回复时间线、按角色呈现回复/手工分配/转派/完成/取消/评价操作、提交人完整信息与历史工单区、工单操作日志展示）；工作台（status=pending 待处理列表、公司筛选、关键字搜索、创建时间/优先级排序）；统计（公司/部门分布，工单量/平均响应时间/满意度/热点问题仪表盘）；配置（业务组与成员、分类→业务组分配规则、用户组织档案）；与既有用户管理页集成导航。\n- 契约集成：请求、响应与错误形状严格按技术契约实现，契约类型在 src/client/ 内定义，不虚构接口行为；以 /api/auth/me 返回的组织与组成员信息驱动角色化界面。\n- 交互基线：加载骨架、空数据引导、401/403/404/409/422 错误反馈与成功提示；图标统一使用 lucide-react（唯一计划新增依赖），不使用表情符号作为图标。\n\n## 验证\n\n- `npm run typecheck:client` 与 `npm run build:client` 通过（含在 npm workspace 根安装 lucide-react 并更新根 package-lock.json）。\n- 与真实后端的联调与浏览器验收归后续验证阶段（两任务合并后以整包 `npm run build` 为聚合验收入口）；本任务以契约类型与客户端构建为独立验证。\n\n## 写入边界与 AC 贡献\n\n- 唯一拥有 src/client/、index.html、vite.config.ts、tailwind.config.js、postcss.config.js、tsconfig.client.json、app/ticket-system/package.json 与根 package-lock.json；不写 src/server/、src/shared/、test/。\n- AC-01～AC-10 的用户界面呈现与交互、AC-11 的操作日志展示为本任务贡献；服务端行为由 T01 承担。",
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11"
+      ],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        "docs/wi-t1000333/requirements.md",
+        "docs/wi-t1000333/architecture-baseline.md",
+        "docs/wi-t1000333/technical-contract.md"
+      ],
+      "artifactPaths": [
+        "app/ticket-system/src/client/"
+      ],
+      "additionalWritePaths": [
+        "app/ticket-system/index.html",
+        "app/ticket-system/vite.config.ts",
+        "app/ticket-system/tailwind.config.js",
+        "app/ticket-system/postcss.config.js",
+        "app/ticket-system/tsconfig.client.json",
+        "app/ticket-system/package.json",
+        "package-lock.json"
+      ],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    }
+  ]
+}

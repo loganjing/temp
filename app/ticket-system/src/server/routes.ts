@@ -1,7 +1,9 @@
 import { randomUUID } from 'node:crypto'
-import type { Hono, MiddlewareHandler } from 'hono'
+import type { Hono } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { loadIdentity } from './domain/org'
+import { registerTicketRoutes } from './domain/routes'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -51,14 +53,47 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     }
     return context.json({ ok: true }, 201)
   })
-  app.post('/api/auth/login', platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
+  // 密码登录（契约 2）：body { username, password }，username 为邮箱标识；同时兼容脚手架的 email 字段。
+  app.post('/api/auth/login', platform.auth.loginRateLimit, async (context) => {
+    const body = await context.req.json().catch(() => null)
+    const record = body && typeof body === 'object' ? (body as Record<string, unknown>) : {}
+    const identifier =
+      typeof record.username === 'string' && record.username.trim() ? record.username.trim().toLowerCase()
+        : typeof record.email === 'string' && record.email.trim() ? record.email.trim().toLowerCase()
+          : ''
+    const password = typeof record.password === 'string' ? record.password : ''
+    if (!identifier || !password) return context.json(errorBody('INVALID_INPUT', 'username and password are required'), 400)
+    const user = await platform.auth.userStore.findByCredential(identifier, 'email')
+    if (!user || !platform.auth.verifyPassword(password, user.passwordHash)) {
+      return context.json(errorBody('INVALID_CREDENTIALS', 'Invalid username or password'), 401)
+    }
+    const token = platform.auth.signToken(user.id)
+    return context.json({ token, user: { id: user.id, name: user.name, email: user.email } })
+  })
   app.get('/api/auth/sso/start', (context) => platform.auth.sso.start(context as never))
   app.get('/api/auth/sso/callback', (context) => platform.auth.sso.callback(context as never))
   app.post('/api/auth/sso/exchange', (context) => platform.auth.sso.exchange(context as never))
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  app.get('/api/auth/me', async (context) => {
+    const user = (context as unknown as { get(key: string): unknown }).get('currentUser') as AuthUser
+    const identity = await loadIdentity(platform.db, user.id)
+    return context.json({
+      user: { id: user.id, name: user.name, email: user.email },
+      org: identity.org
+        ? {
+            companyId: identity.org.companyId,
+            companyName: identity.org.companyName,
+            department: identity.org.department,
+            isCompanyAdmin: identity.org.isCompanyAdmin,
+          }
+        : null,
+      groups: identity.groups.map((group) => ({ id: group.id, name: group.name, companyId: group.companyId })),
+    })
+  })
+  // 登出（契约 2）：Bearer token 为无状态凭据，登出即由客户端丢弃 token。
+  app.post('/api/auth/logout', (context) => context.body(null, 204))
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -141,4 +176,7 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  // 工单域业务路由（契约 3-5 节）：组织与配置、工单、统计、审计接线。
+  registerTicketRoutes(app, platform)
 }
