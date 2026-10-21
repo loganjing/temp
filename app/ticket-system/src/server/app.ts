@@ -2,6 +2,7 @@ import { Hono, type Env, type MiddlewareHandler } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { localeMiddleware } from './platform/locale'
+import { ApiError } from './domain/support'
 
 // 业务路由由实现阶段注册。平台边界在初始化后即可运行和验证。
 export function createApp<E extends Env = Env>(options: {
@@ -12,6 +13,15 @@ export function createApp<E extends Env = Env>(options: {
   const app = new Hono<E>()
 
   app.onError((error, c) => {
+    // 业务域按契约第 0 节抛出统一错误形状（含 VALIDATION details）。
+    if (error instanceof ApiError) {
+      const body: Record<string, unknown> = { code: error.code, message: error.message }
+      if (error.details) body.details = error.details
+      return new Response(JSON.stringify({ error: body }), {
+        status: error.status,
+        headers: { 'content-type': 'application/json; charset=UTF-8' },
+      })
+    }
     if (error instanceof HTTPException) {
       return c.json({ error: { code: 'HTTP_ERROR', message: error.message } }, error.status)
     }

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:236ca8bf37ae6be8b4ac888186a30200f4e8b184bda526ed3758917fadc0b271",
+  "createdAt": "2026-10-21T07:37:30.645Z",
+  "timing": {
+    "startedAt": "2026-10-21T05:54:24.506Z",
+    "completedAt": "2026-10-21T07:37:30.645Z",
+    "durationMs": 6186139
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000332/implementation-report.md",
+      "bytes": 9608,
+      "sha256": "sha256:2efe2c70c1e745602b84419e3918e5f7bd595a7694b183d0633678c55b8dbe72",
+      "title": "工单系统（134-ticket）开发实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:fdf2957a236bf9f55e912051a97bada34981116b7a5d050070472d35a3b7fb4d",
+        "path": ".expert-team/work-items/wi-t1000332/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
