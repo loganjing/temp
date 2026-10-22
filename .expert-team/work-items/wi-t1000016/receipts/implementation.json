@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:f64a53f74f04444d9c720aed33e4e5bb31e68503128cfb61ac610060d10be4d7",
+  "createdAt": "2026-10-22T14:51:59.215Z",
+  "timing": {
+    "startedAt": "2026-10-22T14:30:25.980Z",
+    "completedAt": "2026-10-22T14:51:59.215Z",
+    "durationMs": 1293235
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000016/implementation-report.md",
+      "bytes": 7532,
+      "sha256": "sha256:90e6b9a2c5bba32c85b1f1ffda974c07069886362dfade3a71e6c3458bc26b46",
+      "title": "工单系统实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:f5926aee23995079309f0f28701606068eb6af88f19006409f6d32a7cb2feb2b",
+        "path": ".expert-team/work-items/wi-t1000016/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"status":"completed","artifacts":[{"path":"app/ticket-system/src/server/routes.ts"},{"path":"app/ticket-system/src/server/migrations/sqlite/0004_business_tables.sql"},{"path":"app/ticket-system/src/shared/types.ts"},{"path":"app/ticket-system/src/server/services/"}],"verification":{"typecheck:server":"passed","build":"passed","test":"3/3 passed","migrate":"passed"}}

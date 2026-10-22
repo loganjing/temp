@@ -5,11 +5,13 @@
   "scripts": {
     "dev:web": "vite",
     "dev:server": "tsx watch src/server/index.ts",
+    "dev": "concurrently \"npm:dev:web\" \"npm:dev:server\"",
     "typecheck": "npm run typecheck:server && npm run typecheck:client",
     "typecheck:client": "tsc -p tsconfig.client.json",
     "typecheck:server": "tsc -p tsconfig.server.json",
     "build:client": "vite build",
     "build": "npm run typecheck && npm run build:client",
+    "migrate": "node --import tsx -e \"(async () => { const m = await import('./src/server/platform/bootstrap.ts'); const p = await m.initializePlatform(); await p.close(); console.log('migrations applied'); })()\"",
     "test": "node --import tsx --test test/*.test.mjs",
     "start": "node --import tsx src/server/index.ts",
     "preview": "vite preview"
@@ -40,6 +42,7 @@
     "vite": "^5.4.0",
     "tailwindcss": "^3.4.17",
     "postcss": "^8.5.6",
-    "autoprefixer": "^10.4.21"
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.0.0"
   }
 }
