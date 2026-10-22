@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T01:28:52.445Z"
+  "updatedAt": "2026-10-22T01:42:08.393Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000006/requirements.md",
+      "sha256": "sha256:005de26b5438aed102663267a7a3dce4b63b885effc3f5ee7a813d130bf3db22"
+    },
+    "reason": "已批准的 144-ticket 工单系统需求明确要求多公司（多租户）隔离、按角色的差异化能力（提交人/处理人/配置人/管理者）、后台自动分配任务、外部邮件通知、跨用户共享的工单与统计视图以及操作日志。这些能力不能由浏览器本地存储承载：工单必须对所有相关用户与公司可见一致（AC-02/AC-03/AC-08），自动分配与完成通知属后台任务（AC-07/AC-10），公司隔离与角色可见性属服务端授权（AC-03），统计数据必须基于服务器权威数据聚合（AC-12/AC-13），邮件通知为外部服务集成（AC-10）。因此选择 fullstack-complex 完整设计路线。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单与配置按公司隔离，其他公司用户不可见、不可访问、不可操作 → 需要服务端权威数据与授权边界，localStorage 无法实现跨用户隔离。",
+        "AC-07 工单按分类自动分配到业务组，入口类型为后台任务 → 需要在服务端创建/落库流程中执行的自动分配能力。",
+        "AC-10 工单完成时向提交人邮箱发送完成通知邮件，入口类型为后台任务，证据类型 other → 需要外部邮件服务集成与发送结果记录。",
+        "AC-12/AC-13 按公司与部门维度的分布统计及运营指标仪表盘（工单量、平均响应时间、满意度、热点问题）→ 需要基于服务器权威数据集的聚合查询。",
+        "AC-02/AC-08/AC-09 多轮回复、转派、处理人查看提交人历史工单 → 多用户在同一工单上共享并读取一致的历史数据。",
+        "AC-05 生命周期与处理记录、AC-15 操作日志 → 需要在服务端集中记录状态流转、处理人与操作时间。",
+        "需求第 2 节角色表列出提交人、处理人、配置人、管理者四类角色，具备差异化可见与操作范围。"
+      ],
+      "excluding": [
+        "需求第 7 节将产品载体、登录与授权机制的技术实现、数据存储技术标为未规定；这不排除 fullstack-complex，只是不把具体技术选型当作需求承诺。",
+        "未发现任何要求数据仅限当前浏览器或设备可用的表述，因此不构成 simple-frontend 的适用证据。"
+      ],
+      "unresolved": [
+        "需求未规定登录与授权机制的技术实现，设计中需给出保守可逆的默认承载方式并标注为推荐基线。",
+        "需求未规定各 SLA 优先级时限、未命中自动分配规则时的人工分配去向、转派轨迹保留要求、满意度评价刻度与邮件模板/重试策略，设计不擅自确定业务语义，相关处理保持最小可逆。"
+      ]
+    },
+    "decidedAt": "2026-10-22T01:35:38.289Z",
+    "sha256": "sha256:49dc89fa8a9f41aff2fba97d12be5ce5964a901f36adc396789d0a08cc685bdf"
+  }
 }

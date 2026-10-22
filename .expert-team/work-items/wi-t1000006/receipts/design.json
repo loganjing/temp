@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:4d8aa8453980e02f13401cbf2a5669e6021240d90fade0c041a87b7f1250a49e",
+  "createdAt": "2026-10-22T01:42:08.393Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:35:07.048Z",
+    "completedAt": "2026-10-22T01:42:08.392Z",
+    "durationMs": 421344
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000006/architecture-baseline.md",
+      "bytes": 23776,
+      "sha256": "sha256:4dba1256ac2f60998f909df754aaf797e0f279934663b00842183f867dc20290",
+      "role": "primary",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000006/technical-contract.md",
+      "bytes": 20361,
+      "sha256": "sha256:a40f3297ccc987b6f08376891044449f23b453040cb0a4f0b190b4de2549b36b",
+      "role": "supporting",
+      "title": "技术契约（工单系统 API）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "bootstrapInput": "docs/wi-t1000006/workspace-bootstrap.json",
+      "bootstrapSha256": "sha256:32ff963792212c7a7dce85d468a23fcb939714ffaee85f6857eccbbb31ff98fd",
+      "result": "initialized",
+      "packageRoot": "app/ticket-system",
+      "planDigest": "sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+      "scaffoldDigest": "sha256:7c069ea345349a384d754b0e4ee5f86f8988c519419be8af2b51ad2e361fe746",
+      "planSha256": "sha256:32ff963792212c7a7dce85d468a23fcb939714ffaee85f6857eccbbb31ff98fd"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:49dc89fa8a9f41aff2fba97d12be5ce5964a901f36adc396789d0a08cc685bdf",
+        "path": ".expert-team/work-items/wi-t1000006/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
