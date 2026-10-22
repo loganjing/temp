@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:841cf5f110d3e65f3b79fb7e7cd327ecb480125a63fb2520035d66ab3a7eceaf",
+  "createdAt": "2026-10-22T01:40:57.739Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:34:13.587Z",
+    "completedAt": "2026-10-22T01:40:57.739Z",
+    "durationMs": 404152
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000005/implementation-report.md",
+      "bytes": 9147,
+      "sha256": "sha256:dc6ea969ee80c1a319c237c28a4980f42ce9a2b446688ce4d1472020723bd8a2",
+      "title": "实现报告 — 专注时段记录系统（143-timeline）"
+    }
+  ],
+  "url": "http://127.0.0.1:5173/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "command": "npm run typecheck",
+      "cwd": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "tsc --noEmit 无类型错误"
+    },
+    {
+      "checkId": "unit-test",
+      "command": "npm test",
+      "cwd": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "vitest run：5 个测试文件、36 个用例全部通过（pomodoro/records/heatmap/format/config）"
+    },
+    {
+      "checkId": "build",
+      "command": "npm run build",
+      "cwd": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "tsc --noEmit && vite build：36 modules transformed；dist/index.html、dist/assets/index-BCZt9gwS.css(5.56 kB)、dist/assets/index-BoxoFB96.js(153.38 kB)"
+    },
+    {
+      "checkId": "preview-server",
+      "command": "npm run dev",
+      "cwd": ".",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "注册后台作业运行中，预览地址 http://127.0.0.1:5173/，GET / 返回 HTTP 200；仅证明预览入口可达，不作为浏览器验收证据"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:bcd62db53526ce57d7e16e6c8e90f3cae4ef05b4b6275cee2e222983f46990a2",
+        "path": ".expert-team/work-items/wi-t1000005/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
