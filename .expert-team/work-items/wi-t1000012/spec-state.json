@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T05:55:32.135Z"
+  "updatedAt": "2026-10-22T05:58:13.135Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000012/requirements.md",
+      "sha256": "sha256:488a3181e10501754df244dc3d90a0527e34d343a69742ccd713361956ae174a"
+    },
+    "reason": "需求描述的是单用户教师记录 CRUD 管理应用。需求中未提及服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/跨设备数据共享。需求明确说明技术选型未规定且跨重启持久性未要求，浏览器 localStorage 即可满足数据读写回的需求。",
+    "evidence": {
+      "supporting": [
+        "需求仅描述教师记录的新增、查询、修改、删除四种 CRUD 操作，无服务端能力要求",
+        "需求未提及任何认证、权限或多用户场景",
+        "需求未提及后台任务、定时任务或异步处理",
+        "需求未提及外部服务集成或第三方 API 调用",
+        "需求未提及跨用户、跨设备或跨浏览器数据共享",
+        "需求明确说明「技术选型（数据库、存储方式等）未规定」且「跨重启或部署后的持久性未规定」",
+        "所有验收场景（AC-01 至 AC-04）均为用户界面交互，无服务端验证或服务端数据一致性要求"
+      ],
+      "excluding": [
+        "无多用户协同或权限控制的证据",
+        "无服务端 API 或后端服务的证据",
+        "无外部系统集成或数据同步的证据"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T05:57:40.818Z",
+    "sha256": "sha256:c51e494ccc75f31e0826c9d0b2f116f80febdae1ab115450615df64eedd33f98"
+  }
 }
