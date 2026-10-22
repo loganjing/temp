@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T03:32:08.254Z"
+  "updatedAt": "2026-10-22T05:12:45.250Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000010/requirements.md",
+      "sha256": "sha256:33264e1b02758b7a6170b3b0832dae1b787008cb9975318d8e978075916fde37"
+    },
+    "reason": "需求仅需在浏览器页面中实时显示当前时分秒，所有时间数据来自浏览器本地时钟（Date API），无需服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备共享。页面打开即显示时间，通过前端定时器自动更新秒数，属于纯前端展示场景。",
+    "evidence": {
+      "supporting": [
+        "AC-01 页面加载后显示当前时间——可由浏览器 Date API 直接获取，无需服务端",
+        "AC-02 时间实时自动更新——通过前端 setInterval/requestAnimationFrame 即可实现秒数逐秒变化",
+        "需求未提及任何数据持久化、跨设备同步或用户间共享"
+      ],
+      "excluding": [
+        "无服务端权威数据需求：时间来源为浏览器本地时钟，不涉及服务端数据库",
+        "无认证/权限需求：页面任何人可访问，无需登录或角色控制",
+        "无后台任务需求：定时器在浏览器页面生命周期内运行，无需服务端后台进程",
+        "无外部服务集成需求：不调用任何外部 API 或第三方服务",
+        "无跨用户/设备共享需求：无数据需要在不同浏览器或用户间同步"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T05:10:51.189Z",
+    "sha256": "sha256:fe5a256fe5c92ebb53c2542f154003d950650a8d2056d6133449c5804de61ce7"
+  }
 }
