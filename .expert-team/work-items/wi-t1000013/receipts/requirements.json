@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:773aae3b757085e9fe3ab0eb2942f6d57f4d659dbe6dc8833f7601e624dabb3f",
+  "createdAt": "2026-10-22T06:19:14.108Z",
+  "timing": {
+    "startedAt": "2026-10-22T06:18:58.373Z",
+    "completedAt": "2026-10-22T06:19:14.108Z",
+    "durationMs": 15735
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000013/requirements.md",
+      "bytes": 840,
+      "sha256": "sha256:6a983beb65a455293c7b6f574e7435d95d45b09166c700e67fbf8abc390089cb",
+      "title": "需求文档：实时时钟页面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
