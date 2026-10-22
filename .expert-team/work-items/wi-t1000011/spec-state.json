@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T05:54:27.097Z"
+  "updatedAt": "2026-10-22T05:57:59.965Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000011/requirements.md",
+      "sha256": "sha256:02abddd0dc25a99a88e1df039245699aad94bb9b4d30dddb95e2e66306c7ce11"
+    },
+    "reason": "需求仅要求在浏览器页面中实时显示当前系统时间的时、分、秒，每秒刷新。不涉及服务端权威数据、用户认证/权限、后台任务、外部服务集成或跨用户/跨设备数据共享。所有时间数据来自浏览器本地时钟，无需持久化存储，页面关闭即停止更新。符合 simple-frontend 路线定义。",
+    "evidence": {
+      "supporting": [
+        "需求 AC-01 仅要求页面打开后显示 HH:MM:SS 格式当前时间并自动更新",
+        "时间数据来源为浏览器本地系统时钟（new Date()），无需服务端接口",
+        "无任何数据持久化需求，页面关闭即停止更新",
+        "无认证、权限、多用户或跨设备共享需求",
+        "无后台任务、定时器仅在页面可见时运行",
+        "无外部服务或第三方集成"
+      ],
+      "excluding": [
+        "无服务端权威数据需求——时间数据由浏览器本地时钟提供",
+        "无数据库需求——不涉及数据持久化或查询",
+        "无认证/权限需求——页面无用户登录或访问控制",
+        "无后台任务需求——定时器随页面生命周期启停",
+        "无外部集成需求——不调用任何外部 API 或服务"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T05:57:39.712Z",
+    "sha256": "sha256:11187224893e95f58246dd4aa9f85999212cf654c2253ac396a7be23d4f60c20"
+  }
 }
