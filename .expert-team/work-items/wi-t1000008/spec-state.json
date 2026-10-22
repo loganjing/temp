@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T02:39:28.715Z"
+  "updatedAt": "2026-10-22T02:40:56.776Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000008/requirements.md",
+      "sha256": "sha256:ebaed5b22ce404f6256a424b8acb8d6ae77d2905641d4a679ae1fa1b29cbd22a"
+    },
+    "reason": "需求仅要求一个页面实时显示当前时分秒，所有逻辑在前端完成，使用浏览器原生 Date 和 setInterval 即可实现。无服务端权威数据、无数据库、无认证/权限、无后台任务、无外部服务集成、无跨用户/跨设备共享需求。",
+    "evidence": {
+      "supporting": [
+        "页面只展示当前时间（时、分、秒），数据源为浏览器系统时间",
+        "时间实时更新通过前端定时器（setInterval）即可实现，无需服务端推送",
+        "无任何数据持久化需求，无需 localStorage 或其他存储",
+        "无用户认证、权限控制需求",
+        "无后台任务、外部 API 调用或第三方服务集成",
+        "无跨用户、跨设备数据共享需求"
+      ],
+      "excluding": [
+        "排除服务端：需求未要求任何服务端数据或 API",
+        "排除数据库：无数据持久化或 CRUD 需求",
+        "排除认证：无用户登录或权限控制",
+        "排除后台任务：无离线处理或定时服务端任务",
+        "排除外部集成：无第三方服务调用",
+        "排除共享数据：无跨用户/跨设备同步需求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T02:40:40.158Z",
+    "sha256": "sha256:ab6933f16bc288d26ce2ac5272774368cc8004d45c5ae39ced8c0c0fc08bbfd2"
+  }
 }
