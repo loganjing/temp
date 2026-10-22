@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T01:24:44.745Z"
+  "updatedAt": "2026-10-22T01:27:32.665Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000005/requirements.md",
+      "sha256": "sha256:7c04bfbda6ff8af6640982c3b6df166319986ba3c3e08557bd61887ab7f90d51"
+    },
+    "reason": "需求要求单页面番茄钟应用，仅需刷新或重开页面后数据仍在（localStorage 即可满足），无服务端权威数据、无认证/权限、无后台任务、无外部服务集成、无多用户或跨设备共享需求。所有功能（倒计时、当日记录列表、累计时长、热力图）均可在浏览器端独立完成。",
+    "evidence": {
+      "supporting": [
+        "需求 2.5 明确：完成的记录在刷新或重新打开页面后仍可被读取，存储方式与实现技术未规定，满足 localStorage 场景",
+        "需求 2.5 未规定清单：账号与登录、多用户与共享、跨设备同步、历史多日回看、通知提醒、声音提示等均未作要求",
+        "需求 2.5 明确：用户未指定运行平台与设备适配，只要求单页面内的用户界面入口",
+        "所有验收场景（AC-01 至 AC-04）的证据类型为 runtime-render / interaction / session-persistence / visual-style，均属于浏览器端可验证范围",
+        "需求 1 明确：用户在单页面上使用内置番茄钟管理专注，无任何服务端交互描述"
+      ],
+      "excluding": [
+        "需求 2.5 明确未要求账号与登录、多用户与共享、跨设备同步",
+        "需求 2.5 明确未要求服务端权威数据存储",
+        "需求 2.5 明确未要求后台任务或外部服务集成",
+        "需求 2.5 明确未要求通知提醒、声音提示等需要服务端或系统能力的特性"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T01:27:11.868Z",
+    "sha256": "sha256:bcd62db53526ce57d7e16e6c8e90f3cae4ef05b4b6275cee2e222983f46990a2"
+  }
 }

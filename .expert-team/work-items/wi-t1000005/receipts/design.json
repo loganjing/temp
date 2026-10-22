@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:04f4825de9086a803bf6263d4be67cb6616b3f5e6636303c8f02a782f4151412",
+  "createdAt": "2026-10-22T01:27:32.665Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:26:50.723Z",
+    "completedAt": "2026-10-22T01:27:32.665Z",
+    "durationMs": 41942
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000005/architecture-baseline.md",
+      "bytes": 2592,
+      "sha256": "sha256:352b11ba0a47edd15e97c7c252e6360e858974b21981de7e21d85d8fd890d635",
+      "title": "架构基线 — 专注时段记录系统（143-timeline）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:bcd62db53526ce57d7e16e6c8e90f3cae4ef05b4b6275cee2e222983f46990a2",
+        "path": ".expert-team/work-items/wi-t1000005/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
