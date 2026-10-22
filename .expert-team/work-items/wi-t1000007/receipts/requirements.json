@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:6a885d348f9797148d8a0a7e2deb66ef76dcda7a19594e84c3bb1700ce80450d",
+  "createdAt": "2026-10-22T01:33:07.045Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:31:29.570Z",
+    "completedAt": "2026-10-22T01:33:07.045Z",
+    "durationMs": 97475
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000007/requirements.md",
+      "bytes": 19258,
+      "sha256": "sha256:14d2a1d670f67774af340f5d9456864953c61ffb733e60fe90bda471656c9b89",
+      "title": "工单系统 需求文档（wi-t1000007）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
