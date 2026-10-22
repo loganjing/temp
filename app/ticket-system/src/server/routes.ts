@@ -2,6 +2,10 @@ import { randomUUID } from 'node:crypto'
 import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { toProfileDto } from './tickets/repository'
+import { registerTicketRoutes } from './tickets/routes'
+import { createTicketService } from './tickets/service'
+import { asHandler } from './tickets/http'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -58,7 +62,20 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  const tickets = createTicketService(platform)
+  app.get('/api/auth/me', asHandler(async (context) => {
+    const user = (context as unknown as { get(key: string): AuthUser }).get('currentUser')
+    const actor = await tickets.resolveActor(user.id)
+    return context.json({
+      user: { id: actor.userId, email: actor.email, name: actor.name },
+      profile: toProfileDto(actor.profile),
+      // 兼容既有平台客户端读取的扁平字段
+      id: actor.userId,
+      name: actor.name,
+      email: actor.email,
+      passwordChangeRequired: user.passwordChangeRequired,
+    })
+  }))
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -141,4 +158,6 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  registerTicketRoutes(app, platform)
 }

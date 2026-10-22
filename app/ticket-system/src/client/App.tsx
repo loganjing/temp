@@ -1,51 +1,74 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { authApi } from './api/auth'
+import { describeApiError } from './api/errors'
+import type { AuthUser, Profile } from './api/types'
+import AppShell from './app/AppShell'
 import UsersPage from './admin/UsersPage'
+import BusinessGroupsPage from './admin/BusinessGroupsPage'
+import CatalogPage from './admin/CatalogPage'
+import WorkbenchPage from './tickets/WorkbenchPage'
+import TicketDetailPage from './tickets/TicketDetailPage'
+import StatisticsPage from './statistics/StatisticsPage'
+import { SessionProvider } from './session'
+import { ApiRequestError } from './platform/api-client'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
 type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+type SessionUser = { user: AuthUser; profile: Profile | null }
 
 export default function App() {
   const [state, setState] = useState<BootstrapState>('checking')
-  const [user, setUser] = useState<CurrentUser | null>(null)
+  const [session, setSession] = useState<SessionUser | null>(null)
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
   const refresh = async () => {
     const token = localStorage.getItem('platform-token')
     if (token) {
       try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
+        const me = await authApi.me()
+        if (typeof me?.user?.id !== 'number') throw new Error('unexpected /api/auth/me payload')
+        setSession({ user: me.user, profile: me.profile ?? null })
         setState('authenticated')
         return
       } catch {
         localStorage.removeItem('platform-token')
       }
     }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
+    try {
+      const status = await authApi.bootstrapStatus()
+      setState(status.required ? 'required' : 'login')
+    } catch (cause) {
+      setState('login')
+      if (!(cause instanceof ApiRequestError && cause.status >= 400 && cause.status < 500)) {
+        setError('无法连接服务，请确认服务端已启动。')
+      }
+    }
   }
 
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
+  useEffect(() => { void refresh().catch(() => setError('无法连接服务，请确认服务端已启动。')) }, [])
 
   const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setBusy(true)
     setError('')
+    setMessage('')
     const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
       if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
+        await authApi.bootstrap({ name: String(body.name ?? ''), email: String(body.email ?? ''), password: String(body.password ?? '') })
         setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
+        setMessage('账户已创建，请登录。')
       } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
+        const result = await authApi.login({ email: String(body.email ?? ''), password: String(body.password ?? '') })
+        if (typeof result?.token !== 'string' || typeof result.user?.id !== 'number') throw new Error('登录响应不符合契约：缺少 token 或 user。')
         localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
+        setSession({ user: result.user, profile: result.profile ?? null })
         setState('authenticated')
       }
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
+      setError(describeApiError(cause, '操作失败，请重试。'))
     } finally {
       setBusy(false)
     }
@@ -57,14 +80,23 @@ export default function App() {
     setError('')
     const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
+      await authApi.changePassword({ password: String(body.password ?? '') })
+      setSession((current) => (current ? { ...current, user: { ...current.user, passwordChangeRequired: false } } : current))
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
+      setError(describeApiError(cause, '更新密码失败。'))
     } finally {
       setBusy(false)
     }
   }
+
+  const signOut = useCallback(() => {
+    void authApi.logout().catch(() => undefined)
+    localStorage.removeItem('platform-token')
+    setSession(null)
+    setError('')
+    setMessage('')
+    setState('login')
+  }, [])
 
   if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
   if (state === 'required' || state === 'login') return (
@@ -76,14 +108,15 @@ export default function App() {
           {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
           <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
           <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
+          {message && <p role="status" className="success">{message}</p>}
           {error && <p role="alert" className="error">{error}</p>}
           <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建账户 / Create account' : '登录 / Sign in'}</button>
         </form>
       </section>
     </main>
   )
-  if (!user) return null
-  if (user.passwordChangeRequired) return (
+  if (!session) return null
+  if (session.user.passwordChangeRequired) return (
     <main className="shell auth-shell">
       <section className="card auth-card">
         <h1>更改临时密码 / Change temporary password</h1>
@@ -97,12 +130,20 @@ export default function App() {
     </main>
   )
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <SessionProvider value={{ user: session.user, profile: session.profile, signOut }}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AppShell />}>
+            <Route path="/workbench" element={<WorkbenchPage />} />
+            <Route path="/tickets/:ticketId" element={<TicketDetailPage />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/admin/groups" element={<BusinessGroupsPage />} />
+            <Route path="/admin/catalog" element={<CatalogPage />} />
+            <Route path="/admin/users" element={<UsersPage />} />
+            <Route path="*" element={<Navigate to="/workbench" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </SessionProvider>
   )
 }
