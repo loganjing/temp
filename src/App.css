@@ -1,0 +1,15 @@
+.clock-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.clock-time {
+  font-size: 5rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: #00d9ff;
+  text-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
