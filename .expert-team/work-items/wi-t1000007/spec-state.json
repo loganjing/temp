@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T01:33:07.045Z"
+  "updatedAt": "2026-10-22T01:37:22.549Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000007/requirements.md",
+      "sha256": "sha256:14d2a1d670f67774af340f5d9456864953c61ffb733e60fe90bda471656c9b89"
+    },
+    "reason": "需求要求服务端权威数据与跨用户共享：工单按公司隔离（多公司、多用户可见范围不同）、业务组与“分类→业务组”分配规则由配置者维护并被提交人触发的自动分配读取、工单完成需触发面向提交人邮箱的邮件发送（外部服务）、关键操作需产生包含操作人与操作时间的可核对日志。这些能力超出单浏览器 localStorage 的单用户 CRUD 范围。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单按公司隔离：不同公司操作者的可见范围与可执行操作不同，需要服务端权威数据与授权判定",
+        "AC-05/AC-06 业务组与“分类→业务组”分配规则由配置产生、被工单提交时的自动分配读取，属跨用户共享的持久配置",
+        "AC-09 工单完成时触发面向提交人邮箱的完成通知发送，属明确的外部服务集成",
+        "AC-14 关键操作需产生可核对的操作日志（操作类型、操作人、操作时间、工单 ID），要求服务端统一记录",
+        "AC-01/AC-02/AC-10/AC-13 提交人与处理人等不同角色在不同会话读回同一工单、回复线程、评价与工作台列表，需要跨会话共享的权威存储"
+      ],
+      "excluding": [
+        "需求未要求单用户离线使用或单机运行",
+        "需求未声明数据仅在当前浏览器/设备可用，反而要求按公司隔离的多用户可见范围"
+      ],
+      "unresolved": [
+        "跨公司可见范围（如平台级支持人员）未规定，设计按公司内隔离实现并保留扩展点",
+        "邮件服务与模板具体实现未指定，需选择可产生可观察发送记录的发送通道"
+      ]
+    },
+    "decidedAt": "2026-10-22T01:34:48.618Z",
+    "sha256": "sha256:608171687441dbba863cf5423c1648262f7cdca59c2eba36bb2c4070b2fba1ab"
+  }
 }
