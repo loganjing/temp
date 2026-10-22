@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T06:19:14.108Z"
+  "updatedAt": "2026-10-22T06:23:03.516Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000013/requirements.md",
+      "sha256": "sha256:6a983beb65a455293c7b6f574e7435d95d45b09166c700e67fbf8abc390089cb"
+    },
+    "reason": "需求仅要求在页面上实时显示当前时分秒（HH:MM:SS），每秒更新。无需服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备共享数据。所有逻辑在浏览器端通过 JavaScript 即可完成，不涉及任何服务端能力。",
+    "evidence": {
+      "supporting": [
+        "需求核心行为：页面打开后立即显示当前时间，格式为 HH:MM:SS（24小时制，两位补零）",
+        "需求核心行为：时间每秒更新一次，无需用户手动刷新",
+        "需求明确：页面仅展示时间，不包含其他功能模块",
+        "验收场景 AC-01 仅要求页面运行时渲染验证（runtime-render），无服务端交互"
+      ],
+      "excluding": [
+        "无服务端权威数据存储需求——时间来自浏览器本地时钟",
+        "无认证/权限要求",
+        "无后台任务或定时服务端任务",
+        "无外部服务集成或 API 调用",
+        "无跨用户/设备共享数据需求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T06:22:43.615Z",
+    "sha256": "sha256:f925491f8167504cbfcf1f4286c8158ca3ea081a134f28295cd5327d68cd2795"
+  }
 }
