@@ -2,14 +2,38 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T07:58:42.926Z"
+  "updatedAt": "2026-10-22T14:35:27.534Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000018/requirements.md",
+      "sha256": "sha256:543ccded7789c7d04737c42772c9529d4d0ca7734d4b17794cb7593991c9dd0b"
+    },
+    "reason": "工单系统需要服务端权威数据存储（工单、业务组、成员、分配规则），多用户协作与角色权限控制（提交人、处理人、管理员），公司数据隔离需要服务端授权边界，工单完成时发送邮件通知需要服务端邮件服务，统计分析按公司/部门聚合需要服务端数据处理。这些能力需求明确超出单用户浏览器存储范围。",
+    "evidence": {
+      "supporting": [
+        "公司数据隔离（AC-10）需要服务端授权和数据权威边界，无法用浏览器 localStorage 实现",
+        "多用户协作：工单在不同角色（提交人、处理人、管理员）间分配和转派，需要共享的服务端状态",
+        "工单完成时发送邮件通知（AC-05）需要服务端邮件发送能力",
+        "统计分析按公司、部门维度聚合工单数据（AC-07）需要服务端数据聚合处理",
+        "角色权限控制（提交人、处理人、管理员）需要服务端身份认证",
+        "分类-业务组自动分配规则需要服务端规则引擎处理"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T14:30:34.945Z",
+    "sha256": "sha256:05a66ae2945cfd4608e3988e4ed308949aa46fd5778472b5e9fdba4af8d25243"
+  }
 }
