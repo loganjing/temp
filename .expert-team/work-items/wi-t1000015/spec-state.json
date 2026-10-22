@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T06:57:30.716Z"
+  "updatedAt": "2026-10-22T07:00:08.849Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000015/requirements.md",
+      "sha256": "sha256:10dc3d6a5211ec9c4911259446266e1f93975a8b76abfce6896ab9055c1eb2ac"
+    },
+    "reason": "需求仅需在浏览器页面实时显示当前时:分:秒，时间源为客户端系统时钟，不涉及服务端权威数据、认证、后台任务、外部服务或跨用户共享数据。",
+    "evidence": {
+      "supporting": [
+        "需求仅要求页面展示当前时:分:秒，时间源为浏览器系统时钟（Date API）",
+        "需求未提及任何服务端API、数据库、认证或权限",
+        "需求未提及后台任务、外部服务集成或跨用户/设备数据共享"
+      ],
+      "excluding": [
+        "无需服务端权威数据——时间来自客户端系统时钟",
+        "无需认证/权限——页面直接显示公开时间信息",
+        "无需后台任务——setInterval即可驱动实时更新",
+        "无需外部服务集成——使用浏览器原生Date API",
+        "无需数据库或持久化——无数据存储需求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T06:59:50.440Z",
+    "sha256": "sha256:a19fcb178a9a9e7b0526a2a14f1fe86758032fd5c2e0dc4102af479c8eded711"
+  }
 }
