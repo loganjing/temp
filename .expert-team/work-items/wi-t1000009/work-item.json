@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。",
   "request": "做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-22T03:10:33.445Z"
+  "revision": 1,
+  "createdAt": "2026-10-22T03:10:33.445Z",
+  "completedAt": "2026-10-22T05:26:06.255Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:b195aa46a5444b6c37639e52151fdd75671aa5bdcb47bc94869ac009d22ed608",
+    "completedAt": "2026-10-22T05:26:06.255Z"
+  },
+  "updatedAt": "2026-10-22T05:26:06.255Z"
 }
