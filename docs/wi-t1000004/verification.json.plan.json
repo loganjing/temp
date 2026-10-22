@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "acceptance": [
+    {
+      "id": "AC-01",
+      "source": "requirements.md#AC-01",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "session-persistence"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    },
+    {
+      "id": "AC-02",
+      "source": "requirements.md#AC-02",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "runtime-render",
+        "interaction"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    },
+    {
+      "id": "AC-03",
+      "source": "requirements.md#AC-03",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    },
+    {
+      "id": "AC-04",
+      "source": "requirements.md#AC-04",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    },
+    {
+      "id": "AC-05",
+      "source": "requirements.md#AC-05",
+      "surface": "user-interface",
+      "evidenceKinds": [
+        "interaction",
+        "error-feedback"
+      ],
+      "checkIds": [
+        "QA-01"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "进入教师管理界面，触发新增，填写教师名称「张老师」、教授课程「数学」、年级「三年级」、手机「13800000000」、邮箱「zhang@example.com」，执行保存；随后在同一使用过程中重新打开教师列表并查看该条记录。",
+          "expected": "保存成功并出现成功反馈；列表中新增该教师记录；读回的五个字段值与提交内容一致。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "进入教师管理界面，触发新增，填写教师名称「张老师」、教授课程「数学」、年级「三年级」、手机「13800000000」、邮箱「zhang@example.com」，执行保存；随后在同一使用过程中重新打开教师列表并查看该条记录。",
+          "expected": "保存成功并出现成功反馈；列表中新增该教师记录；读回的五个字段值与提交内容一致。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "在已有至少两名教师数据的情况下打开教师列表，记录展示内容；再打开其中一名教师的详情。",
+          "expected": "列表展示全部已存在的教师记录及其字段；所选教师的详情展示内容与列表一致，无缺失或错位字段。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在已有至少两名教师数据的情况下打开教师列表，记录展示内容；再打开其中一名教师的详情。",
+          "expected": "列表展示全部已存在的教师记录及其字段；所选教师的详情展示内容与列表一致，无缺失或错位字段。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "编辑一名已有教师的手机号与邮箱，执行保存；重新打开该教师记录查看。",
+          "expected": "保存成功；读回手机号与邮箱为更新后的值；该教师其他字段未被意外改动。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "在教师列表中删除一名已有教师，随后重新打开教师列表。",
+          "expected": "该教师记录不再出现在列表中；其他教师记录不受影响。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "分别尝试保存「教师名称留空」、「手机填写 123」、「邮箱填写 abc」三种输入，每次检查反馈与列表。",
+          "expected": "三次尝试均保存失败，提示对应字段的校验信息，且列表中没有产生新的教师记录。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "error-feedback",
+          "action": "分别尝试保存「教师名称留空」、「手机填写 123」、「邮箱填写 abc」三种输入，每次检查反馈与列表。",
+          "expected": "三次尝试均保存失败，提示对应字段的校验信息，且列表中没有产生新的教师记录。"
+        }
+      ]
+    }
+  ]
+}
