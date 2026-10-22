@@ -1,0 +1,40 @@
+.clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock-digits {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.clock-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clock-value {
+  font-size: clamp(3.5rem, 15vw, 8rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: #38bdf8;
+}
+
+.clock-label {
+  font-size: clamp(0.875rem, 3vw, 1.5rem);
+  font-weight: 500;
+  color: #94a3b8;
+  margin-top: 0.25rem;
+}
+
+.clock-separator {
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #38bdf8;
+  padding-bottom: 0.1em;
+}
