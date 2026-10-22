@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T03:11:11.310Z"
+  "updatedAt": "2026-10-22T05:15:06.786Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000009/requirements.md",
+      "sha256": "sha256:0f4cf043e2d15278d35db164093974c4249a95d1ca6c998a682c6f27840e42c9"
+    },
+    "reason": "教师管理系统是单用户CRUD应用。需求中四个验收场景的入口类型均为用户界面，证据类型为interaction和session-persistence，仅要求页面刷新或重开后数据仍保留，可用浏览器localStorage实现。需求未提及服务端权威数据、认证权限、后台任务、外部服务集成或跨用户/设备数据共享的任何要求，六项能力均明确无必要，无歧义。",
+    "evidence": {
+      "supporting": [
+        "需求为单用户教师CRUD应用，四个验收场景的入口类型均为用户界面",
+        "证据类型为interaction和session-persistence，仅要求页面刷新/重开后数据仍在，可用localStorage实现",
+        "无服务端API、数据库、认证、后台任务、外部集成或跨用户共享的任何需求声明"
+      ],
+      "excluding": [
+        "需求未提及服务端权威数据或数据库",
+        "需求未提及认证或权限管理",
+        "需求未提及后台任务或定时作业",
+        "需求未提及外部服务集成",
+        "需求未提及跨设备、跨浏览器或跨用户数据共享"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T05:14:46.565Z",
+    "sha256": "sha256:931ac159aa1989d9acd90a5f83605d307615e5aecf5f12481cebaee4590c238b"
+  }
 }
