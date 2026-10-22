@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:4811e3f2c8a1af47c4bd8a7ec1e8d56d4de112f8f18071c5da6b6f03258456e5",
+  "createdAt": "2026-10-22T01:24:44.745Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:24:05.493Z",
+    "completedAt": "2026-10-22T01:24:44.745Z",
+    "durationMs": 39252
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000005/requirements.md",
+      "bytes": 6701,
+      "sha256": "sha256:7c04bfbda6ff8af6640982c3b6df166319986ba3c3e08557bd61887ab7f90d51",
+      "title": "专注时段记录系统（143-timeline）需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
