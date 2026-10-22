@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "做一个页面实时显示最近的时分秒",
   "request": "做一个页面实时显示最近的时分秒",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-22T05:54:02.129Z"
+  "revision": 1,
+  "createdAt": "2026-10-22T05:54:02.129Z",
+  "completedAt": "2026-10-22T06:09:07.475Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:fedc4a87fb9e08ad471b961f52c6a7c3ba9598963c126bd265d2ef1fdf5cf62a",
+    "completedAt": "2026-10-22T06:09:07.475Z"
+  },
+  "updatedAt": "2026-10-22T06:09:07.475Z"
 }
