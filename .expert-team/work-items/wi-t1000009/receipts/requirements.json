@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:dc17826d9c4ff8914fa099feed9120e7847825d27ed13d39b92a05d7f868a45c",
+  "createdAt": "2026-10-22T03:11:11.310Z",
+  "timing": {
+    "startedAt": "2026-10-22T03:10:33.630Z",
+    "completedAt": "2026-10-22T03:11:11.310Z",
+    "durationMs": 37680
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000009/requirements.md",
+      "bytes": 3053,
+      "sha256": "sha256:0f4cf043e2d15278d35db164093974c4249a95d1ca6c998a682c6f27840e42c9",
+      "title": "教师管理系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
