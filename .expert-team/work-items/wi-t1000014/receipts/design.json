@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:e98ee91ac76f29fc89a9dddcfc19969702e1e8e1c9026d8ae6627fc945b17a09",
+  "createdAt": "2026-10-22T06:45:29.856Z",
+  "timing": {
+    "startedAt": "2026-10-22T06:44:32.038Z",
+    "completedAt": "2026-10-22T06:45:29.856Z",
+    "durationMs": 57818
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000014/architecture-baseline.md",
+      "bytes": 1993,
+      "sha256": "sha256:cd32daf0206c9b4a72fbd92e0a3ca92e611286672ed5ff944d9d2599f80370c0",
+      "title": "架构基线：实时时钟页面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:a92464df25b053a52d75cf6460934d48cc2ac52a46f695484449484cb67d17c9",
+        "path": ".expert-team/work-items/wi-t1000014/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

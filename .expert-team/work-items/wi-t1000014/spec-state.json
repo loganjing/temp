@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T06:31:35.320Z"
+  "updatedAt": "2026-10-22T06:45:29.856Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000014/requirements.md",
+      "sha256": "sha256:be9c149ca6801997dfda387742403dbbd6ecfa13b3d437168c2a0e3916f8e82a"
+    },
+    "reason": "需求仅要求一个页面实时显示当前时:分:秒，时间来源于浏览器系统时钟，无需服务端权威数据、认证、后台任务、外部服务集成或跨用户/设备数据共享。所有逻辑可在单个 HTML 页面内通过客户端 JavaScript 完成。",
+    "evidence": {
+      "supporting": [
+        "AC-01 仅要求页面打开后以时:分:秒格式持续显示当前系统时间，属于纯浏览器渲染行为",
+        "时间来源为当前系统时间，由浏览器 Date API 直接获取，无需服务端接口",
+        "实时更新通过客户端定时器（setInterval/requestAnimationFrame）实现，无需后台任务",
+        "需求中无任何数据持久化要求，页面刷新后重新显示当前时间即可",
+        "无用户认证、权限控制要求",
+        "无外部服务集成或跨用户数据共享要求"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据存储或检索",
+        "需求未要求用户认证或授权",
+        "需求未要求后台任务或异步作业队列",
+        "需求未要求外部 API 或第三方服务集成",
+        "需求未要求跨用户或跨设备数据共享"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T06:45:02.297Z",
+    "sha256": "sha256:a92464df25b053a52d75cf6460934d48cc2ac52a46f695484449484cb67d17c9"
+  }
 }
