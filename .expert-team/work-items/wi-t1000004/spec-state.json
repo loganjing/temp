@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T01:24:18.729Z"
+  "updatedAt": "2026-10-22T01:27:19.785Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000004/requirements.md",
+      "sha256": "sha256:c067b511caa5dd9daf9f82f38225d4f831018bfe933af605f5dd6ca4e14445bf"
+    },
+    "reason": "这是一个单用户教师管理 CRUD 应用，需求明确只承诺同一使用过程中的会话级数据读回，不要求刷新/重开/重启后的数据持久性，也不指定存储方式。需求未提及服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备共享。所有验收场景入口类型均为用户界面，证据类型为 interaction 和 session-persistence，与浏览器端 localStorage 方案完全匹配。",
+    "evidence": {
+      "supporting": [
+        "需求第11行：保存后可在同一使用过程中读回，不约定刷新、重开、重启或重新部署后的数据持久性，也不指定存储方式——符合 simple-frontend 的 localStorage 会话级持久化",
+        "需求第18行：角色与权限未规定——无需服务端认证/授权",
+        "需求第16行：录入校验为前端表单校验（必填、基本格式）——无需服务端校验",
+        "所有 AC（AC-01 至 AC-05）入口类型均为用户界面，证据类型为 interaction/session-persistence——均为前端可观察行为",
+        "需求未提及任何后台任务、定时任务、消息队列或异步处理",
+        "需求未提及任何外部服务集成或第三方 API 调用"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据库——排除 fullstack 的权威数据层",
+        "需求未要求跨用户或跨设备数据共享——排除 fullstack 的共享数据边界",
+        "需求未要求认证/权限——排除 fullstack 的安全网关",
+        "需求未要求后台任务或外部服务——排除 fullstack 的服务端能力"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T01:27:01.164Z",
+    "sha256": "sha256:96676b9bae93bd44eaf42d451cb64c70214c061352f77bfc1e7f2a8245c77b6c"
+  }
 }
