@@ -2,14 +2,39 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T07:54:41.655Z"
+  "updatedAt": "2026-10-22T13:56:49.392Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000016/requirements.md",
+      "sha256": "sha256:2b5f11296a52851de5fc63bdc827706d581f27b141bc4bd5b52133504a74208a"
+    },
+    "reason": "工单系统要求多公司数据隔离、多角色（提交人/处理人/管理员）权限控制、跨用户共享的权威数据、邮件通知外部集成、后台自动分配规则和统计分析仪表盘，均明确需要服务端权威数据和后端服务能力",
+    "evidence": {
+      "supporting": [
+        "工单按公司隔离，多公司多用户需要服务端权威数据管理（需求5.1公司隔离）",
+        "角色权限：提交人、处理人、管理员三种角色，需要认证和权限控制（需求第2节）",
+        "工单完成发送邮件通知，需要外部服务集成（需求5.4完成通知）",
+        "分类自动分配规则需要服务端后台逻辑处理（需求5.2自动分配规则）",
+        "统计分析仪表盘需要聚合查询服务端数据（需求5.6统计分析）",
+        "工单分配、转派等多用户协作需要跨用户共享状态（需求5.2、5.3）",
+        "操作日志记录需要服务端持久化（需求5.8操作日志）"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T13:51:29.750Z",
+    "sha256": "sha256:f5926aee23995079309f0f28701606068eb6af88f19006409f6d32a7cb2feb2b"
+  }
 }
