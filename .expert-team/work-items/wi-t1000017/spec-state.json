@@ -2,14 +2,38 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-22T07:56:45.773Z"
+  "updatedAt": "2026-10-22T14:34:09.725Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000017/requirements.md",
+      "sha256": "sha256:2c99ae88ae02b9ef53737ff1da5b3ce12230aa34e5ad24f6007b89c1127532d6"
+    },
+    "reason": "系统明确要求服务端权威数据，跨用户共享（提交人、处理人、管理员多角色协作）、按公司数据隔离与授权（AC-07）、后台邮件通知（AC-03）和外部邮件服务集成。这些能力无法由浏览器 localStorage 满足，必须走完整全栈路线。",
+    "evidence": {
+      "supporting": [
+        "AC-07：工单按公司隔离，用户只能访问本公司工单，需要服务端授权与数据隔离",
+        "AC-03：工单完成后系统向提交人邮箱发送通知邮件，需要后台任务和外部邮件服务",
+        "AC-01/AC-04/AC-10：跨用户协作——提交人创建、处理人处理、转派给其他成员、多轮回复，需要服务端权威共享数据",
+        "AC-06：管理员配置业务组和分类自动分配规则，配置数据需跨用户共享",
+        "AC-09：统计分析仪表盘聚合多公司、多部门数据，需要服务端聚合查询",
+        "三个角色（提交人、处理人、管理员）需要认证后访问共享权威数据"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-22T14:30:47.583Z",
+    "sha256": "sha256:12b37df721fda3894244548f99ca83e5cdff6c000691c230567cf3b112fe7ad6"
+  }
 }
