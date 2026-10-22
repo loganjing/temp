@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:7fc84e88a4ab9fb10a3ecb62c4f52f59012a002e2d1ca132f2b656bf455b4ba0",
+  "createdAt": "2026-10-22T01:38:36.384Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:33:23.895Z",
+    "completedAt": "2026-10-22T01:38:36.384Z",
+    "durationMs": 312489
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000004/implementation-report.md",
+      "bytes": 9117,
+      "sha256": "sha256:d2662b03ffb36036736696b82be375f8f2050e1ad3dc707fccc5cf33216f71a4",
+      "title": "教师管理系统 实现报告（142-teachers）"
+    }
+  ],
+  "url": "http://127.0.0.1:5199/",
+  "verification": [
+    {
+      "checkId": "npm-install",
+      "command": "npm install --no-audit --no-fund",
+      "cwd": "/Users/loganjing/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000004",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "added 98 packages；package-lock.json 已生成"
+    },
+    {
+      "checkId": "typecheck",
+      "command": "npm run typecheck",
+      "cwd": "/Users/loganjing/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000004",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "tsc --noEmit 无错误输出"
+    },
+    {
+      "checkId": "unit-tests",
+      "command": "npm run test",
+      "cwd": "/Users/loganjing/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000004",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "vitest run：2 个测试文件、20 个用例全部通过（teacher.test.ts 11、teacher-repository.test.ts 9）"
+    },
+    {
+      "checkId": "build",
+      "command": "npm run build",
+      "cwd": "/Users/loganjing/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000004",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "vite v5.4.21 转换 1577 个模块，产出 dist/index.html、dist/assets/index-DdOae-Vq.css(6.71kB)、dist/assets/index-B_ukUtS5.js(155.23kB)"
+    },
+    {
+      "checkId": "dev-server-preview",
+      "command": "npm run dev（后台注册作业）",
+      "cwd": "/Users/loganjing/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000004",
+      "status": "passed",
+      "exitCode": 0,
+      "evidence": "Vite ready in 85ms，GET http://127.0.0.1:5199/ 与 GET /src/main.tsx 均返回 200"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:96676b9bae93bd44eaf42d451cb64c70214c061352f77bfc1e7f2a8245c77b6c",
+        "path": ".expert-team/work-items/wi-t1000004/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
