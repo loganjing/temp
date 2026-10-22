@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:c7c3757086f90c5ce59c795201f8de06cc2968e0bcc00aef728fb35a4f2064e7",
+  "createdAt": "2026-10-22T06:00:43.015Z",
+  "timing": {
+    "startedAt": "2026-10-22T05:59:06.769Z",
+    "completedAt": "2026-10-22T06:00:43.015Z",
+    "durationMs": 96246
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000011/implementation-report.md",
+      "bytes": 2897,
+      "sha256": "sha256:2d7a9747d47cc137d7e01f3c12769a23c9aaf6003d74ebc1b41a3ecc68c5dc7c",
+      "title": "实现报告：实时时钟页面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:11187224893e95f58246dd4aa9f85999212cf654c2253ac396a7be23d4f60c20",
+        "path": ".expert-team/work-items/wi-t1000011/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
