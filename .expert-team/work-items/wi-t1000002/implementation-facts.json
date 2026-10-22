@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "attempts": [
     {
       "attempt": 1,
@@ -49,7 +49,42 @@
       "createdAt": "2026-10-22T02:39:45.269Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T02:T02:2",
+      "planId": "plan:1396b0a3-4a4d-4172-87be-b5c100f43e7a",
+      "taskId": "T02",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEFECT-01"
+      ],
+      "findings": [
+        {
+          "id": "DEFECT-01",
+          "taskId": "T02",
+          "severity": "blocking",
+          "environment": "Hono + React + Vite + SQLite，后端 :3001 提供 API 与前端静态文件",
+          "steps": [
+            "1. 打开 http://127.0.0.1:3001/ 显示登录表单",
+            "2. 填写 alice@acme.com / user-pass-1234 并点击登录",
+            "3. POST /api/auth/login 返回 200 且包含有效 token",
+            "4. 页面未跳转，停留在登录表单"
+          ],
+          "expected": "登录成功后应跳转到工单工作台主界面",
+          "actual": "页面停留在登录表单，token 未存入 localStorage",
+          "problem": "前端 App.tsx:65 检查 typeof result.user.id !== \"number\"，但后端 authkit/userkit 返回 UUID 字符串作为用户 ID。同理 App.tsx:31 对 GET /api/auth/me 的检查也会失败。技术契约第 2 节声明 user.id 类型为 number，但实际实现为 string。",
+          "requiredChange": "统一前端与后端的 user.id 类型：或将前端类型定义和运行时检查改为接受 string（UUID），或将后端响应中的 user.id 转为数字。前者更符合 authkit/userkit 的实际设计。",
+          "acceptanceEvidence": "修复后在浏览器中成功登录并跳转到工单工作台，GET /api/auth/me 返回正确用户信息",
+          "location": "src/client/App.tsx:65,31; src/client/api/types.ts:10; src/server/routes.ts:66-77; src/server/platform/auth.ts:22-45"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-22T07:45:42.018Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -255,6 +290,51 @@
         }
       },
       "createdAt": "2026-10-22T02:39:45.269Z"
+    },
+    {
+      "requestId": "verification:4:repair:T02",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T02:T02:2",
+          "planId": "plan:1396b0a3-4a4d-4172-87be-b5c100f43e7a",
+          "taskId": "T02",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEFECT-01"
+          ],
+          "findings": [
+            {
+              "id": "DEFECT-01",
+              "taskId": "T02",
+              "severity": "blocking",
+              "environment": "Hono + React + Vite + SQLite，后端 :3001 提供 API 与前端静态文件",
+              "steps": [
+                "1. 打开 http://127.0.0.1:3001/ 显示登录表单",
+                "2. 填写 alice@acme.com / user-pass-1234 并点击登录",
+                "3. POST /api/auth/login 返回 200 且包含有效 token",
+                "4. 页面未跳转，停留在登录表单"
+              ],
+              "expected": "登录成功后应跳转到工单工作台主界面",
+              "actual": "页面停留在登录表单，token 未存入 localStorage",
+              "problem": "前端 App.tsx:65 检查 typeof result.user.id !== \"number\"，但后端 authkit/userkit 返回 UUID 字符串作为用户 ID。同理 App.tsx:31 对 GET /api/auth/me 的检查也会失败。技术契约第 2 节声明 user.id 类型为 number，但实际实现为 string。",
+              "requiredChange": "统一前端与后端的 user.id 类型：或将前端类型定义和运行时检查改为接受 string（UUID），或将后端响应中的 user.id 转为数字。前者更符合 authkit/userkit 的实际设计。",
+              "acceptanceEvidence": "修复后在浏览器中成功登录并跳转到工单工作台，GET /api/auth/me 返回正确用户信息",
+              "location": "src/client/App.tsx:65,31; src/client/api/types.ts:10; src/server/routes.ts:66-77; src/server/platform/auth.ts:22-45"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-22T07:45:42.018Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-22T07:45:42.018Z"
     }
   ]
 }
