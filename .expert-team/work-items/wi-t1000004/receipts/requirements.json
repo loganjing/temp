@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:30f8a3ec9d6614ca7e803a29532e07c104ccdd44450b32316fafcf69f54f926d",
+  "createdAt": "2026-10-22T01:24:18.729Z",
+  "timing": {
+    "startedAt": "2026-10-22T01:23:32.613Z",
+    "completedAt": "2026-10-22T01:24:18.729Z",
+    "durationMs": 46116
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000004/requirements.md",
+      "bytes": 4616,
+      "sha256": "sha256:c067b511caa5dd9daf9f82f38225d4f831018bfe933af605f5dd6ca4e14445bf",
+      "title": "教师管理系统 需求基线（142-teachers）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
