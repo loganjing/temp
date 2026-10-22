@@ -2,6 +2,11 @@ import { randomUUID } from 'node:crypto'
 import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { registerContextRoutes } from './routes/context'
+import { registerTicketRoutes } from './routes/tickets'
+import { registerOrgRoutes } from './routes/org'
+import { registerAnalyticsRoutes } from './routes/analytics'
+import { registerAuditRoutes } from './routes/audit'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -141,4 +146,11 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  // 业务端点：身份上下文、工单生命周期、组织配置、统计聚合与操作日志。
+  registerContextRoutes(app, platform)
+  registerTicketRoutes(app, platform)
+  registerOrgRoutes(app, platform)
+  registerAnalyticsRoutes(app, platform)
+  registerAuditRoutes(app, platform)
 }

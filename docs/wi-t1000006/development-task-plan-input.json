@@ -1,0 +1,106 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "服务端：工单域、组织配置、统计聚合、完成通知与操作日志 API 全链路",
+      "objective": "## 目标\n\n在应用包 `app/ticket-system` 内实现工单系统的全部服务端能力与共享契约，使已批准技术契约（`docs/wi-t1000006/technical-contract.md`）中的端点全部可用：身份上下文、工单读写与生命周期（创建含分类自动分配、多轮回复、分配、转派、完成、取消、满意度评价、通知结果）、组织配置（业务组与成员、分类→业务组规则、本公司成员）、统计与分析（公司与部门分布、运营指标）、操作日志。字段、枚举、可空性、错误码、权限键与公司范围语义以该契约为唯一来源，本任务不重复抄写其端点与字段清单。\n\n## 范围与边界\n\n- 写入范围：`src/server/**`、`src/shared/**`、`test/**`（均相对 `app/ticket-system`），以及服务端与依赖相关包配置（`package.json`、`tsconfig.json`、`tsconfig.server.json`）。\n- 不写 `src/client/**`。跨端共享的类型、枚举与常量放 `src/shared/`，供前端按契约引用。\n- 数据库结构只通过 `src/server/migrations/sqlite/` 下的新增迁移文件建立（编号自 `0004` 起），不手工改 schema、不使用 ORM 自动同步。\n\n## 必须闭合的行为\n\n- 公司隔离与对象归属在服务端每个端点独立强制；跨公司对象一律按不存在处理（404），请求体中的公司字段不生效。\n- 工单创建在单个事务内完成公司内编号分配、提交人快照与分类规则自动分配；未命中规则时工单停留在“待分配”。\n- 生命周期前置状态校验：非法流转返回 422，重复评价与重复分类规则返回 409，已完成工单不可取消。\n- 完成操作用事务写入处理人与处理时间，事务提交后由通知模块向提交人邮箱发送完成通知并记录成功/失败结果；通知失败不回滚完成状态，结果可在工单上读回。\n- 每个成功的写操作在同一请求内写入一条 audit 事件，包含操作对象、操作人（系统触发记为 `system`）与时间，覆盖创建、自动分配、人工分配、转派、回复、完成、取消、评价、完成通知与业务组/规则配置变更。\n- 统计与分析在请求时按公司范围实时聚合，平均响应时间、满意度与热点问题按需求推荐基线口径计算，只经工单域公开只读查询取数。\n\n## 需求贡献\n\n覆盖 AC-01 至 AC-15 的服务端侧：唯一工单 ID 与完整工单信息读回（AC-01）、回复记录（AC-02）、公司隔离强制（AC-03）、优先级与分类读写及工作台筛选条件（AC-04）、状态流转与处理记录（AC-05）、业务组与成员持久化（AC-06）、创建事务内自动分配（AC-07）、转派与处理方切换（AC-08）、提交人完整信息与历史工单（AC-09）、完成通知发送与结果记录（AC-10）、评价唯一性与聚合（AC-11、AC-13）、分布与指标聚合（AC-12、AC-13）、列表筛选/搜索/排序/公司维度过滤（AC-14）、操作日志（AC-15）。\n\n## 验证\n\n从项目实际配置选择并运行：在 `app/ticket-system` 下执行 `npm run typecheck:server` 与 `npm test`，并在 `test/` 下为端点行为补充真实 HTTP 测试（复用 `test/with-http-server.mjs`，独立数据库文件与空闲端口）。如实记录命令与结果；失败需修正后重跑。",
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11",
+        "AC-12",
+        "AC-13",
+        "AC-14",
+        "AC-15"
+      ],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000006/requirements.md"
+        },
+        {
+          "path": "docs/wi-t1000006/architecture-baseline.md"
+        },
+        {
+          "path": "docs/wi-t1000006/technical-contract.md"
+        }
+      ],
+      "artifactPaths": [],
+      "additionalWritePaths": [
+        "app/ticket-system/package.json",
+        "app/ticket-system/tsconfig.json",
+        "app/ticket-system/tsconfig.server.json"
+      ],
+      "additionalWriteScopes": [
+        "app/ticket-system/src/server",
+        "app/ticket-system/src/shared",
+        "app/ticket-system/test"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    },
+    {
+      "taskId": "T02",
+      "summary": "前端：工单工作台、我的工单与评价、配置、统计仪表盘与操作日志界面",
+      "objective": "## 目标\n\n在应用包 `app/ticket-system` 内实现工单系统的全部浏览器界面，依据已批准技术契约（`docs/wi-t1000006/technical-contract.md`）第 7 节的前端消费约定与架构基线第 3 节的 UI 全局基线交付：工单工作台（待处理工单队列与当前工单详情并列：提交人完整信息与历史工单、回复流、转派轨迹、处理记录，以及回复/转派/完成/取消与关键字搜索、字段排序、分类/优先级/业务组/公司维度筛选与分页）、我的工单与满意度评价、业务组与分配规则配置、统计与分析仪表盘（工单量、平均响应时间、满意度、热点问题、公司与部门维度分布）、操作日志查看。界面结构与应用壳（左侧导航、顶部上下文栏、首页即工单工作台）按架构基线执行，不在本任务重复抄写其页面清单。\n\n## 范围与边界\n\n- 写入范围：`src/client/**`（相对 `app/ticket-system`），以及客户端构建相关包配置 `index.html`、`vite.config.ts`、`tailwind.config.js`、`postcss.config.js`、`tsconfig.client.json`。\n- 不写 `src/server/**` 与 `src/shared/**`；服务端契约与共享类型由服务端任务提供，本任务在共享类型不可用时按契约定义用客户端本地类型承载，不自行发明接口行为。\n- 只调用契约定义的 REST 接口；字段名与枚举值直接使用契约定义，不另建枚举映射。\n- 应用启动先调用 `GET /api/me/context`，据此决定导航可见项与操作可用性。\n\n## 必须闭合的行为\n\n- 全局状态覆盖加载、空态（说明范围无数据并给出主行动）、错误（可重试并保留已填写内容）、无权限（明确提示且不渲染受限数据）、成功（保存/分配/转派/完成/取消/评价后的即时确认与最新状态）。\n- 写操作成功后以服务端返回的最新对象刷新当前视图，不使用乐观更新替代服务端返回值。\n- 403 与 404 一律呈现为“不存在或无权访问”，不区分两者。\n- 视觉基线：Modern SaaS 风格（柔和中性色、细边界、少阴影、中等圆角、一个主色加状态色、短反馈动效）；桌面 Web 布局。\n- 工单完成后的评价表单展示有序评分刻度并提交，评价结果与时间在工单详情读回；处理人工单详情展示提交人姓名、公司、部门与历史工单。\n\n## 需求贡献\n\n覆盖 AC-01 至 AC-15 的浏览器界面侧：工单提交与详情读回（AC-01）、回复交互（AC-02）、按公司范围渲染与跨公司对象不可见（AC-03）、优先级与分类设置及工作台按分类筛选（AC-04）、状态与处理记录展示、取消操作（AC-05）、业务组与成员编辑（AC-06）、工单归属业务组展示（AC-07）、转派操作与处理人工作台可见性（AC-08）、提交人完整信息与历史工单区域（AC-09）、通知结果区域（AC-10）、满意度评价表单与读回（AC-11）、分布统计页面（AC-12）、运营指标仪表盘（AC-13）、工作台搜索/排序/公司维度筛选（AC-14）、操作日志页面（AC-15）。\n\n## 验证\n\n从项目实际配置选择并运行：在 `app/ticket-system` 下执行 `npm run typecheck:client` 与 `npm run build:client`。如实记录命令与结果；失败需修正后重跑。本任务不做浏览器端到端验证，端到端验收由后续阶段负责。",
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11",
+        "AC-12",
+        "AC-13",
+        "AC-14",
+        "AC-15"
+      ],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000006/requirements.md"
+        },
+        {
+          "path": "docs/wi-t1000006/architecture-baseline.md"
+        },
+        {
+          "path": "docs/wi-t1000006/technical-contract.md"
+        }
+      ],
+      "artifactPaths": [],
+      "additionalWritePaths": [
+        "app/ticket-system/index.html",
+        "app/ticket-system/vite.config.ts",
+        "app/ticket-system/tailwind.config.js",
+        "app/ticket-system/postcss.config.js",
+        "app/ticket-system/tsconfig.client.json"
+      ],
+      "additionalWriteScopes": [
+        "app/ticket-system/src/client"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    }
+  ]
+}
