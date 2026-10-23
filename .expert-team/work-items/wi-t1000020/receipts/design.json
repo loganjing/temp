@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:c58ea1ac875fc06b59b9538319b8474382167bd9ebbf2d41d44751be6c78f240",
+  "createdAt": "2026-10-23T05:30:43.750Z",
+  "timing": {
+    "startedAt": "2026-10-23T05:25:06.581Z",
+    "completedAt": "2026-10-23T05:30:43.750Z",
+    "durationMs": 337169
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000020/architecture-baseline.md",
+      "bytes": 19872,
+      "sha256": "sha256:1290d4335d4a98407a8d6319860d7db7023f5de3be3e77e9d374c54bed7767c2",
+      "role": "primary",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000020/technical-contract.md",
+      "bytes": 18470,
+      "sha256": "sha256:8823aa22cfeb7541f684c83fffe11b13ecafff61fedcd242aeef9a054c7fcac8",
+      "role": "supporting",
+      "title": "技术契约 — 157-ticket 工单系统"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "evidence": {
+        "bootstrapPath": "docs/wi-t1000020/workspace-bootstrap.json",
+        "planSha256": "sha256:5acdd13596a905b15a206a9093fd8452c834f151ba9719bb3a3b4b2bce923a00",
+        "planDigest": "sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+        "scaffoldDigest": "sha256:4b91ceb0a4bffa1e525e72eb224c1bd9ffd942aef8fb9d710322206100fc8dc7",
+        "packageRoot": "app/ticket-system",
+        "modules": [
+          "dbkit",
+          "authkit",
+          "userkit",
+          "permissionkit",
+          "auditkit",
+          "emailkit"
+        ],
+        "checks": [
+          "bootstrap-schema",
+          "module-distribution-files",
+          "scaffold-assets",
+          "source-layout-map",
+          "generated-scaffold-contract",
+          "npm install",
+          "npm run build",
+          "npm run test",
+          "workspace-merge",
+          "existing docs unchanged"
+        ]
+      }
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:1cea4a779e29dc811f552e1d40dd2281d480cdb41ebfefa6745ac5845029b4d9",
+        "path": ".expert-team/work-items/wi-t1000020/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

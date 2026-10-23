@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000020/architecture-baseline.md",
+      "role": "primary"
+    },
+    {
+      "path": "docs/wi-t1000020/technical-contract.md",
+      "role": "supporting"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "evidence": {
+        "bootstrapPath": "docs/wi-t1000020/workspace-bootstrap.json",
+        "planSha256": "sha256:5acdd13596a905b15a206a9093fd8452c834f151ba9719bb3a3b4b2bce923a00",
+        "planDigest": "sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+        "scaffoldDigest": "sha256:4b91ceb0a4bffa1e525e72eb224c1bd9ffd942aef8fb9d710322206100fc8dc7",
+        "packageRoot": "app/ticket-system",
+        "modules": ["dbkit", "authkit", "userkit", "permissionkit", "auditkit", "emailkit"],
+        "checks": ["bootstrap-schema", "module-distribution-files", "scaffold-assets", "source-layout-map", "generated-scaffold-contract", "npm install", "npm run build", "npm run test", "workspace-merge", "existing docs unchanged"]
+      }
+    }
+  ]
+}

@@ -2,14 +2,39 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T01:36:36.959Z"
+  "updatedAt": "2026-10-23T05:30:43.750Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000020/requirements.md",
+      "sha256": "sha256:d89332c54b1ecdd9a3282ce3826fcbb785eaf7d10e8f5efd27ee89c88765a83a"
+    },
+    "reason": "工单系统要求多公司数据隔离、多角色（提交人、处理人、管理员）跨用户协作、按分类自动分配的服务端逻辑、工单完成后的邮件通知外部集成、操作日志服务端持久化、以及按公司/部门维度的统计分析聚合，均明确需要服务端权威数据、认证/权限和外部服务集成，属于全栈复杂应用。",
+    "evidence": {
+      "supporting": [
+        "工单按公司隔离，不同公司之间工单数据不可见，需要服务端权威数据",
+        "多角色（提交人、处理人、管理员）跨用户协作，需认证/权限控制",
+        "工单完成后发送邮件通知提交人，需要外部邮件服务集成",
+        "按分类自动分配到业务组，需要服务端业务规则逻辑",
+        "统计分析仪表盘需服务端聚合计算工单量、平均响应时间、满意度等指标",
+        "操作日志记录需服务端持久化",
+        "工单转派涉及不同处理人之间的工单流转，需跨用户共享数据"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T05:25:32.103Z",
+    "sha256": "sha256:1cea4a779e29dc811f552e1d40dd2281d480cdb41ebfefa6745ac5845029b4d9"
+  }
 }
