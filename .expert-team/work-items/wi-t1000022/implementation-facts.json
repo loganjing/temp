@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "revision": 6,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:b6ca8016-72cd-4875-895e-d9b39d51f8e8",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:847d62fc-2d2c-45c8-bddb-ce5a3dc247bf",
+      "createdAt": "2026-10-23T06:54:18.370Z",
+      "executionId": "ses_e9875cb5bffeR2nHiN4Yno9oqe",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:b6ca8016-72cd-4875-895e-d9b39d51f8e8",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:6706af39-3300-4916-927e-5ab7645a3d5c",
+      "createdAt": "2026-10-23T06:54:20.363Z",
+      "executionId": "ses_e9875a092ffeLiu8dI4Wphz6eT",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:b6ca8016-72cd-4875-895e-d9b39d51f8e8",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_e9875cb5bffeR2nHiN4Yno9oqe",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/routes.ts",
+            "bytes": 24626,
+            "sha256": "sha256:4c3e9c49bdac2c5c820dca5964c446d85d9a1b45d4be8e4d41948df17e72bbef"
+          },
+          {
+            "path": "app/ticket-system/src/server/migrations/sqlite/",
+            "bytes": 8725,
+            "sha256": "sha256:f44aab0334103168631ac10a25e4ecff2dfd6a5b97aa70890f68a1764e09bdf4"
+          },
+          {
+            "path": "app/ticket-system/src/shared/",
+            "bytes": 3320,
+            "sha256": "sha256:4585999dfd7396be3c66dea235983df4115e7a2173f5661a2f24c8b68f0b1b9e"
+          }
+        ]
+      },
+      "createdAt": "2026-10-23T07:19:02.225Z"
+    },
+    {
+      "planId": "plan:b6ca8016-72cd-4875-895e-d9b39d51f8e8",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_e9875a092ffeLiu8dI4Wphz6eT",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/App.tsx",
+            "bytes": 8316,
+            "sha256": "sha256:6a72fb260b77d8b863f1f11bf369bc610c463e9d4f8efc0320bd5a68e7c9132a"
+          },
+          {
+            "path": "app/ticket-system/src/client/pages/",
+            "bytes": 18039,
+            "sha256": "sha256:7d1ae590b55df38978afb96cca1ddef0e8c7dc95112954601f21ff8294a921af"
+          },
+          {
+            "path": "app/ticket-system/src/client/components/",
+            "bytes": 21464,
+            "sha256": "sha256:9ea66d0bb2015b60348e3510d20eb0d6668bea6d81a0e2ea7c3be4bb784f8cd2"
+          }
+        ]
+      },
+      "createdAt": "2026-10-23T07:19:05.621Z"
+    }
+  ],
+  "repairs": [],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:847d62fc-2d2c-45c8-bddb-ce5a3dc247bf",
+      "actorId": "general-app-development-expert",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000022",
+          "planId": "plan:b6ca8016-72cd-4875-895e-d9b39d51f8e8",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "工单系统后端实现：数据库迁移、全部业务 API 端点、模块集成与审计日志",
+          "objective": "## 后端实现目标\n\n基于已批准的技术契约 (`docs/wi-t1000022/technical-contract.md`) 实现工单系统全部后端业务逻辑。\n\n### 实现范围\n\n1. **数据库迁移**：在 `src/server/migrations/sqlite/` 新增业务表迁移文件\n   - `companies` 表（公司信息）\n   - `business_groups` / `business_group_members` / `assignment_rules` 表（工单分配）\n   - `tickets` / `ticket_replies` / `ticket_transfers` / `ticket_evaluations` 表（工单核心）\n   - 扩展 `users` 表增加 `department` 字段（已有 `company_id`）\n\n2. **API 端点实现**：在 `src/server/routes.ts` 注册全部技术契约定义的端点\n   - 认证已有（login/me），需调整 `auth/me` 返回 `companyId`、`department`、`role`\n   - 工单管理：`POST/GET/PATCH /api/tickets`、`GET /api/tickets/:id`、`POST /api/tickets/:id/replies`\n   - 工单分配：`POST/GET /api/business-groups`、`PUT /api/business-groups/:id/members`、`POST/GET /api/assignment-rules`\n   - 工单协作：`POST /api/tickets/:id/transfer`\n   - 工单处理：`GET /api/tickets/:id/submitter`、`POST /api/tickets/:id/complete`\n   - 用户评价：`POST/GET /api/tickets/:id/evaluation`\n   - 统计分析：`GET /api/statistics/distribution`、`GET /api/statistics/dashboard`\n   - 工单工作台：`GET /api/workbench/tickets`\n   - 操作日志：`GET /api/tickets/:id/logs`\n\n3. **模块集成**\n   - `permissionkit`：在 `src/server/migrations/sqlite/0002_platform_permissions.sql` 注册角色（submitter/handler/admin）并实现权限检查中间件\n   - `auditkit`：在各业务操作后通过 `auditKit.record` 写入审计事件\n   - `emailkit`：在工单完成时调用 SMTP 发送通知邮件到提交人邮箱，发送失败降级处理\n\n4. **公司隔离**：服务层中间件统一按当前用户 `company_id` 过滤\n\n5. **共享类型**：在 `src/shared/` 定义前后端共用的枚举常量（状态、优先级）和 API 类型契约\n\n### 验证\n\n- `npm run typecheck:server` — 服务端类型检查通过\n- `npm run test` — 现有平台测试与新增业务测试通过\n- 全量 `npm run build` — 类型检查与客户端构建通过",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000022/requirements.md",
+              "sha256": "sha256:c971beae5e5ec175fd091e7f539377090bcb61495da368ac1a487149ab1c1b4f"
+            },
+            {
+              "path": "docs/wi-t1000022/architecture-baseline.md",
+              "sha256": "sha256:3d1bff5340624622f9ac01c53a8dd15b274fdd240db9a17c92a33cd0bd739987"
+            },
+            {
+              "path": "docs/wi-t1000022/technical-contract.md",
+              "sha256": "sha256:c9d10849673cb5d32d228cd230327825dd47fdd04405672770be59bc25fc0e36"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/routes.ts",
+            "app/ticket-system/src/server/migrations/sqlite/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/src/server/services/",
+            "app/ticket-system/src/server/migrations/sqlite/0004_ticket_companies.sql",
+            "app/ticket-system/src/server/migrations/sqlite/0005_ticket_business.sql",
+            "app/ticket-system/src/server/migrations/sqlite/0006_ticket_core.sql",
+            "app/ticket-system/src/server/platform/permissions.ts",
+            "app/ticket-system/src/server/platform/email.ts",
+            "app/ticket-system/src/server/platform/audit.ts",
+            "app/ticket-system/src/shared/types.ts",
+            "app/ticket-system/src/shared/enums.ts"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/routes.ts",
+            "app/ticket-system/src/server/migrations/sqlite/",
+            "app/ticket-system/src/shared/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/routes.ts",
+              "app/ticket-system/src/server/migrations/sqlite/",
+              "app/ticket-system/src/shared/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-23T06:54:18.370Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:6706af39-3300-4916-927e-5ab7645a3d5c",
+      "actorId": "general-app-development-expert",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000022",
+          "planId": "plan:b6ca8016-72cd-4875-895e-d9b39d51f8e8",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "工单系统前端实现：工作台、工单详情、统计分析仪表盘、管理配置页面",
+          "objective": "## 前端实现目标\n\n基于已批准的技术契约 (`docs/wi-t1000022/technical-contract.md`) 和设计基线 (`docs/wi-t1000022/architecture-baseline.md`) 实现工单系统全部前端页面。\n\n### 实现范围\n\n1. **应用壳与导航**：重构 `src/client/App.tsx`，实现左侧导航栏 + 顶部上下文栏 + 主工作区布局\n   - 导航项：工单工作台、统计分析、管理配置\n   - 保留现有登录/认证流程\n\n2. **工单工作台页面**（`split-master-detail` 布局）\n   - 待处理工单列表，支持筛选（状态/优先级/分类）、搜索（主题/描述）、排序（创建时间/优先级）、按公司筛选\n   - 选中工单后右侧面板展示工单详情（主题、描述、分类、优先级、状态、提交人信息）\n   - 回复流：多轮回复列表 + 回复输入\n   - 操作按钮：转派、完成、取消（按角色显示）\n   - 提交人信息面板：姓名、公司、部门、历史工单\n   - 满意度评价区域（工单完成后）\n\n3. **统计分析页面**（`command-command-dashboard` 布局）\n   - 工单分布：按公司/部门维度切换展示\n   - 运营指标仪表盘：工单量、平均响应时间、满意度、热点问题分类\n\n4. **管理配置页面**\n   - 业务组管理：创建业务组、设置成员\n   - 分配规则配置：创建分类→业务组规则\n\n5. **API 客户端**：在 `src/client/platform/api-client.ts` 基础上实现业务 API 调用封装\n\n6. **全局状态**：加载态骨架屏、空态引导、错误态 toast、成功态 toast\n\n### 验证\n\n- `npm run typecheck:client` — 客户端类型检查通过\n- `npm run build:client` — Vite 构建通过\n- 全量 `npm run build` — 完整类型检查与构建通过",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000022/requirements.md",
+              "sha256": "sha256:c971beae5e5ec175fd091e7f539377090bcb61495da368ac1a487149ab1c1b4f"
+            },
+            {
+              "path": "docs/wi-t1000022/architecture-baseline.md",
+              "sha256": "sha256:3d1bff5340624622f9ac01c53a8dd15b274fdd240db9a17c92a33cd0bd739987"
+            },
+            {
+              "path": "docs/wi-t1000022/technical-contract.md",
+              "sha256": "sha256:c9d10849673cb5d32d228cd230327825dd47fdd04405672770be59bc25fc0e36"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/App.tsx",
+            "app/ticket-system/src/client/pages/",
+            "app/ticket-system/src/client/components/",
+            "app/ticket-system/src/client/pages/Workbench.tsx",
+            "app/ticket-system/src/client/pages/Statistics.tsx",
+            "app/ticket-system/src/client/pages/AdminConfig.tsx",
+            "app/ticket-system/src/client/components/TicketDetail.tsx",
+            "app/ticket-system/src/client/components/TicketList.tsx",
+            "app/ticket-system/src/client/components/SubmitterInfo.tsx",
+            "app/ticket-system/src/client/components/ReplyStream.tsx",
+            "app/ticket-system/src/client/components/EvaluationPanel.tsx",
+            "app/ticket-system/src/client/hooks/useTickets.ts",
+            "app/ticket-system/src/client/api/ticket-api.ts"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/App.tsx",
+            "app/ticket-system/src/client/pages/",
+            "app/ticket-system/src/client/components/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/App.tsx",
+              "app/ticket-system/src/client/pages/",
+              "app/ticket-system/src/client/components/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-23T06:54:20.363Z"
+    },
+    {
+      "requestId": "cli:submit:T01:7684b7ea-6326-451e-8ae6-9561c8621de2",
+      "actorId": "general-app-development-expert",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-23T06:54:58.064Z"
+    },
+    {
+      "requestId": "cli:submit:T02:bffdf3da-cc20-4c7f-85da-bf9c468f7149",
+      "actorId": "general-app-development-expert",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-23T06:55:00.392Z"
+    },
+    {
+      "requestId": "cli:complete:T01:261a8fad-0f58-4615-96d3-1277c64a1001",
+      "actorId": "general-app-development-expert",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/routes.ts",
+              "bytes": 24626,
+              "sha256": "sha256:4c3e9c49bdac2c5c820dca5964c446d85d9a1b45d4be8e4d41948df17e72bbef"
+            },
+            {
+              "path": "app/ticket-system/src/server/migrations/sqlite/",
+              "bytes": 8725,
+              "sha256": "sha256:f44aab0334103168631ac10a25e4ecff2dfd6a5b97aa70890f68a1764e09bdf4"
+            },
+            {
+              "path": "app/ticket-system/src/shared/",
+              "bytes": 3320,
+              "sha256": "sha256:4585999dfd7396be3c66dea235983df4115e7a2173f5661a2f24c8b68f0b1b9e"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-23T07:19:02.225Z"
+    },
+    {
+      "requestId": "cli:complete:T02:e30c4c33-41fc-48ae-aaea-25797a3dcbcf",
+      "actorId": "general-app-development-expert",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/App.tsx",
+              "bytes": 8316,
+              "sha256": "sha256:6a72fb260b77d8b863f1f11bf369bc610c463e9d4f8efc0320bd5a68e7c9132a"
+            },
+            {
+              "path": "app/ticket-system/src/client/pages/",
+              "bytes": 18039,
+              "sha256": "sha256:7d1ae590b55df38978afb96cca1ddef0e8c7dc95112954601f21ff8294a921af"
+            },
+            {
+              "path": "app/ticket-system/src/client/components/",
+              "bytes": 21464,
+              "sha256": "sha256:9ea66d0bb2015b60348e3510d20eb0d6668bea6d81a0e2ea7c3be4bb784f8cd2"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-23T07:19:05.621Z"
+    }
+  ]
+}
