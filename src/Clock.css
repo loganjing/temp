@@ -1,0 +1,24 @@
+.clock-container {
+  text-align: center;
+}
+
+.clock-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #8a8a9a;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.clock-display {
+  font-size: 4rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  color: #e0e0e0;
+  letter-spacing: 0.15em;
+  padding: 1.5rem 2.5rem;
+  background: #16213e;
+  border-radius: 12px;
+  border: 1px solid #2a2a4a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
