@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000023",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "开发巡逻路线配置、视频事件识别、实时告警、人工处置和事件留痕功能。业务任务：160-robotwarning",
+  "request": "开发巡逻路线配置、视频事件识别、实时告警、人工处置和事件留痕功能。业务任务：160-robotwarning",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-23T05:30:23.503Z"
+}

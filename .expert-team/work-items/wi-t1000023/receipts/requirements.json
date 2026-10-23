@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:dec9bd46f1339964a7c1acb50dc40a0db0cbf7bf8e1e6f65e7c34bf21f21fcf5",
+  "createdAt": "2026-10-23T05:31:44.760Z",
+  "timing": {
+    "startedAt": "2026-10-23T05:30:23.689Z",
+    "completedAt": "2026-10-23T05:31:44.760Z",
+    "durationMs": 81071
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000023/requirements.md",
+      "bytes": 5109,
+      "sha256": "sha256:a18579cb727c265525563a1715ebf5460ba61a4fe22480826fccf0ad443d3f16",
+      "title": "需求规格：机器人巡逻告警系统（160-robotwarning）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
