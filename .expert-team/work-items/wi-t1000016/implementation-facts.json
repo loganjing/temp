@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "attempts": [
     {
       "attempt": 1,
@@ -86,7 +86,75 @@
       "createdAt": "2026-10-22T14:50:39.531Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T02:T02:2",
+      "planId": "plan:e98ebd8c-7abe-4686-a0c1-8cd33d7953de",
+      "taskId": "T02",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEF-01",
+        "DEF-02",
+        "DEF-03"
+      ],
+      "findings": [
+        {
+          "id": "DEF-01",
+          "taskId": "T02",
+          "severity": "major",
+          "environment": "local-dev",
+          "steps": [
+            "导航到工单工作台",
+            "点击创建工单",
+            "填写表单字段（主题、描述）",
+            "点击提交按钮"
+          ],
+          "expected": "工单创建成功并出现在工作台列表中",
+          "actual": "表单提交按钮未触发API调用，工单未通过UI创建",
+          "problem": "浏览器自动化fill命令无法触发React受控组件的onChange事件，导致表单状态未更新，提交按钮无法生效",
+          "requiredChange": "验证表单提交在真实键盘输入下正常工作；如需支持自动化测试，考虑使用type命令或调整React事件处理",
+          "acceptanceEvidence": "后端POST /api/tickets通过curl验证正常，工单创建后UI刷新正确显示"
+        },
+        {
+          "id": "DEF-02",
+          "taskId": "T02",
+          "severity": "major",
+          "environment": "local-dev",
+          "steps": [
+            "打开工单详情",
+            "在回复textarea中输入文本",
+            "点击回复按钮"
+          ],
+          "expected": "回复提交成功并出现在回复列表中",
+          "actual": "回复按钮保持禁用状态，未触发API调用",
+          "problem": "浏览器自动化fill命令无法触发React受控textarea的onChange事件，回复按钮的disabled状态依赖replyContent.trim()未更新",
+          "requiredChange": "验证回复表单在真实键盘输入下正常工作；如需支持自动化测试，考虑使用type命令",
+          "acceptanceEvidence": "后端POST /api/tickets/:id/replies通过curl验证正常，回复提交后UI刷新正确显示"
+        },
+        {
+          "id": "DEF-03",
+          "taskId": "T02",
+          "severity": "minor",
+          "environment": "local-dev",
+          "steps": [
+            "打开已完成工单作为提交人",
+            "点击星级评分",
+            "点击提交评价按钮"
+          ],
+          "expected": "评价提交成功并显示在工单详情中",
+          "actual": "星级选择和评价提交未通过浏览器自动化触发",
+          "problem": "评价表单的React状态未通过浏览器自动化事件更新，星级选择和textarea均受影响",
+          "requiredChange": "验证评价表单在真实用户交互下正常工作",
+          "acceptanceEvidence": "后端POST /api/tickets/:id/evaluation通过curl验证正常，评价提交后UI正确显示4/5星"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-23T00:49:27.163Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -322,6 +390,84 @@
         }
       },
       "createdAt": "2026-10-22T14:50:39.531Z"
+    },
+    {
+      "requestId": "verification:4:repair:T02",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T02:T02:2",
+          "planId": "plan:e98ebd8c-7abe-4686-a0c1-8cd33d7953de",
+          "taskId": "T02",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEF-01",
+            "DEF-02",
+            "DEF-03"
+          ],
+          "findings": [
+            {
+              "id": "DEF-01",
+              "taskId": "T02",
+              "severity": "major",
+              "environment": "local-dev",
+              "steps": [
+                "导航到工单工作台",
+                "点击创建工单",
+                "填写表单字段（主题、描述）",
+                "点击提交按钮"
+              ],
+              "expected": "工单创建成功并出现在工作台列表中",
+              "actual": "表单提交按钮未触发API调用，工单未通过UI创建",
+              "problem": "浏览器自动化fill命令无法触发React受控组件的onChange事件，导致表单状态未更新，提交按钮无法生效",
+              "requiredChange": "验证表单提交在真实键盘输入下正常工作；如需支持自动化测试，考虑使用type命令或调整React事件处理",
+              "acceptanceEvidence": "后端POST /api/tickets通过curl验证正常，工单创建后UI刷新正确显示"
+            },
+            {
+              "id": "DEF-02",
+              "taskId": "T02",
+              "severity": "major",
+              "environment": "local-dev",
+              "steps": [
+                "打开工单详情",
+                "在回复textarea中输入文本",
+                "点击回复按钮"
+              ],
+              "expected": "回复提交成功并出现在回复列表中",
+              "actual": "回复按钮保持禁用状态，未触发API调用",
+              "problem": "浏览器自动化fill命令无法触发React受控textarea的onChange事件，回复按钮的disabled状态依赖replyContent.trim()未更新",
+              "requiredChange": "验证回复表单在真实键盘输入下正常工作；如需支持自动化测试，考虑使用type命令",
+              "acceptanceEvidence": "后端POST /api/tickets/:id/replies通过curl验证正常，回复提交后UI刷新正确显示"
+            },
+            {
+              "id": "DEF-03",
+              "taskId": "T02",
+              "severity": "minor",
+              "environment": "local-dev",
+              "steps": [
+                "打开已完成工单作为提交人",
+                "点击星级评分",
+                "点击提交评价按钮"
+              ],
+              "expected": "评价提交成功并显示在工单详情中",
+              "actual": "星级选择和评价提交未通过浏览器自动化触发",
+              "problem": "评价表单的React状态未通过浏览器自动化事件更新，星级选择和textarea均受影响",
+              "requiredChange": "验证评价表单在真实用户交互下正常工作",
+              "acceptanceEvidence": "后端POST /api/tickets/:id/evaluation通过curl验证正常，评价提交后UI正确显示4/5星"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-23T00:49:27.163Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-23T00:49:27.163Z"
     }
   ]
 }
