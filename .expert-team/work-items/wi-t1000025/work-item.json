@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000025",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "161-仓储搬运：开发搬运任务分配、路径规划、交通避让、执行监控和任务统计功能",
+  "request": "161-仓储搬运：开发搬运任务分配、路径规划、交通避让、执行监控和任务统计功能",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-23T05:44:35.748Z"
+}

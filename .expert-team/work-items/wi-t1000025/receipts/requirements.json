@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:9c1b8093726c33e04d71a04196214c37f7379f83cd4cb0545ac80a57906a00c0",
+  "createdAt": "2026-10-23T05:47:09.228Z",
+  "timing": {
+    "startedAt": "2026-10-23T05:44:35.943Z",
+    "completedAt": "2026-10-23T05:47:09.228Z",
+    "durationMs": 153285
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000025/requirements.md",
+      "bytes": 22464,
+      "sha256": "sha256:ea8eb3e23bf9eb1cea16dbe72c8ac796f70589b71c1c8df5f43f1f47bb3ef6c7",
+      "title": "仓储搬运系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
