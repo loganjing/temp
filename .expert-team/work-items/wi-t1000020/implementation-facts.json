@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "attempts": [
     {
       "attempt": 1,
@@ -49,7 +49,58 @@
       "createdAt": "2026-10-23T07:26:00.717Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T02:T02:2",
+      "planId": "plan:5aabcbf7-d36c-406a-8af7-6a68e8720023",
+      "taskId": "T02",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "D-01",
+        "D-02"
+      ],
+      "findings": [
+        {
+          "id": "D-01",
+          "taskId": "T02",
+          "severity": "major",
+          "environment": "Browser at http://127.0.0.1:5177, backend at http://127.0.0.1:4001",
+          "steps": [
+            "Login as any user (e.g., alice@ticket.com) through the browser UI",
+            "After login, the app navigates to the workbench page",
+            "All API calls (GET /api/companies, GET /api/workbench/tickets, POST /api/tickets) return HTTP 500"
+          ],
+          "expected": "After login, the auth token should be stored in localStorage and attached to subsequent API requests",
+          "actual": "Login succeeds and user is shown as authenticated, but the token is never stored in localStorage. apiRequest() reads localStorage.getItem('platform-token') which is null, so all authenticated API calls lack Authorization header and fail",
+          "problem": "LoginPage.submit() calls onAuthed(result.user) which only sets React state, but never stores result.token in localStorage. The apiRequest function in api-client.ts reads the token from localStorage but no code writes it there after login.",
+          "requiredChange": "In LoginPage.tsx submit handler or App.tsx handleAuthed, store the login token: localStorage.setItem('platform-token', result.token) before calling onAuthed.",
+          "acceptanceEvidence": "Not yet fixed; all browser ACs verified by manually injecting token via eval"
+        },
+        {
+          "id": "D-02",
+          "taskId": "T02",
+          "severity": "major",
+          "environment": "Browser at http://127.0.0.1:5177/workbench as submitter",
+          "steps": [
+            "Login as a submitter (non-admin) user",
+            "Open the workbench page",
+            "Click '创建工单' to open the ticket creation form",
+            "Click the '分类' dropdown"
+          ],
+          "expected": "The category dropdown should list categories for the user's company (e.g., 'Bug')",
+          "actual": "The category dropdown only shows '无分类' (No Category) with no actual categories listed",
+          "problem": "WorkbenchPage.loadCategories(companyId) is only called when filters.company_id changes (line 81), but the company filter dropdown is only rendered for admin users (line 149). Submitters and handlers never trigger category loading because filters.company_id is always empty string for non-admin users.",
+          "requiredChange": "Load categories based on the current user's companyId on mount, not only when the admin company filter changes. Add a useEffect that calls loadCategories(user.companyId) on initial load for non-admin users.",
+          "acceptanceEvidence": "Not yet fixed; auto-assignment verified via API with category_id"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-23T07:55:36.451Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -248,6 +299,67 @@
         }
       },
       "createdAt": "2026-10-23T07:26:00.717Z"
+    },
+    {
+      "requestId": "verification:4:repair:T02",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T02:T02:2",
+          "planId": "plan:5aabcbf7-d36c-406a-8af7-6a68e8720023",
+          "taskId": "T02",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "D-01",
+            "D-02"
+          ],
+          "findings": [
+            {
+              "id": "D-01",
+              "taskId": "T02",
+              "severity": "major",
+              "environment": "Browser at http://127.0.0.1:5177, backend at http://127.0.0.1:4001",
+              "steps": [
+                "Login as any user (e.g., alice@ticket.com) through the browser UI",
+                "After login, the app navigates to the workbench page",
+                "All API calls (GET /api/companies, GET /api/workbench/tickets, POST /api/tickets) return HTTP 500"
+              ],
+              "expected": "After login, the auth token should be stored in localStorage and attached to subsequent API requests",
+              "actual": "Login succeeds and user is shown as authenticated, but the token is never stored in localStorage. apiRequest() reads localStorage.getItem('platform-token') which is null, so all authenticated API calls lack Authorization header and fail",
+              "problem": "LoginPage.submit() calls onAuthed(result.user) which only sets React state, but never stores result.token in localStorage. The apiRequest function in api-client.ts reads the token from localStorage but no code writes it there after login.",
+              "requiredChange": "In LoginPage.tsx submit handler or App.tsx handleAuthed, store the login token: localStorage.setItem('platform-token', result.token) before calling onAuthed.",
+              "acceptanceEvidence": "Not yet fixed; all browser ACs verified by manually injecting token via eval"
+            },
+            {
+              "id": "D-02",
+              "taskId": "T02",
+              "severity": "major",
+              "environment": "Browser at http://127.0.0.1:5177/workbench as submitter",
+              "steps": [
+                "Login as a submitter (non-admin) user",
+                "Open the workbench page",
+                "Click '创建工单' to open the ticket creation form",
+                "Click the '分类' dropdown"
+              ],
+              "expected": "The category dropdown should list categories for the user's company (e.g., 'Bug')",
+              "actual": "The category dropdown only shows '无分类' (No Category) with no actual categories listed",
+              "problem": "WorkbenchPage.loadCategories(companyId) is only called when filters.company_id changes (line 81), but the company filter dropdown is only rendered for admin users (line 149). Submitters and handlers never trigger category loading because filters.company_id is always empty string for non-admin users.",
+              "requiredChange": "Load categories based on the current user's companyId on mount, not only when the admin company filter changes. Add a useEffect that calls loadCategories(user.companyId) on initial load for non-admin users.",
+              "acceptanceEvidence": "Not yet fixed; auto-assignment verified via API with category_id"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-23T07:55:36.451Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-23T07:55:36.451Z"
     }
   ]
 }

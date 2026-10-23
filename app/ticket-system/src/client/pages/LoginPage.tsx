@@ -39,6 +39,7 @@ export default function LoginPage({ onAuthed }: { onAuthed: (user: CurrentUser) 
         onAuthed({ ...user, passwordChangeRequired: false })
       } else {
         const result = await login(body as { email: string; password: string })
+        if (result.token) localStorage.setItem('platform-token', result.token)
         if (result.user.passwordChangeRequired) {
           setUser(result.user)
           setMode('passwordChange')

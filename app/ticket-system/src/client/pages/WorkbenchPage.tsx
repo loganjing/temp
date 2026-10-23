@@ -17,7 +17,7 @@ function priorityVariant(p: string) {
   return p === 'P0' || p === 'P1' ? 'danger' : p === 'P2' ? 'warning' : 'neutral'
 }
 
-export default function WorkbenchPage({ roles }: { roles: string[] }) {
+export default function WorkbenchPage({ roles, companyId }: { roles: string[]; companyId: string | null }) {
   const toast = useToast()
   const isSubmitter = roles.includes('submitter')
   const isAdmin = roles.includes('admin')
@@ -79,6 +79,7 @@ export default function WorkbenchPage({ roles }: { roles: string[] }) {
 
   useEffect(() => { void loadCompanies() }, [loadCompanies])
   useEffect(() => { if (filters.company_id) void loadCategories(filters.company_id) }, [filters.company_id, loadCategories])
+  useEffect(() => { if (!isAdmin && companyId) void loadCategories(companyId) }, [isAdmin, companyId, loadCategories])
   useEffect(() => { void load() }, [load])
 
   useEffect(() => {

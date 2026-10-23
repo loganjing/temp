@@ -81,13 +81,13 @@ export default function App() {
           </header>
           <main className="content-area">
             <Routes>
-              <Route path="/" element={<WorkbenchPage roles={roles} />} />
-              <Route path="/workbench" element={<WorkbenchPage roles={roles} />} />
-              <Route path="/tickets" element={<WorkbenchPage roles={roles} />} />
+              <Route path="/" element={<WorkbenchPage roles={roles} companyId={user.companyId} />} />
+              <Route path="/workbench" element={<WorkbenchPage roles={roles} companyId={user.companyId} />} />
+              <Route path="/tickets" element={<WorkbenchPage roles={roles} companyId={user.companyId} />} />
               <Route path="/tickets/:id" element={<TicketDetailPage roles={roles} />} />
               {roles.includes('admin') && <Route path="/stats" element={<StatsPage />} />}
               {roles.includes('admin') && <Route path="/admin" element={<AdminPage />} />}
-              <Route path="*" element={<WorkbenchPage roles={roles} />} />
+              <Route path="*" element={<WorkbenchPage roles={roles} companyId={user.companyId} />} />
             </Routes>
           </main>
         </div>

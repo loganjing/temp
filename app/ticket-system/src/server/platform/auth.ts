@@ -31,7 +31,7 @@ export function createApplicationAuth(db: DbClient, permissionKit: PermissionKit
     },
     responseTransform: (user, token) => ({
       token,
-      user: { id: user.id, name: user.name, email: user.email, phone: user.phone, roles: user.roles, passwordChangeRequired: user.passwordChangeRequired },
+      user: { id: user.id, name: user.name, email: user.email, phone: user.phone, companyId: user.companyId, roles: user.roles, passwordChangeRequired: user.passwordChangeRequired },
     }),
   })
   const requireAnyAuth: MiddlewareHandler = async (context, next) => {
