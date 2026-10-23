@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T06:53:44.951Z"
+  "updatedAt": "2026-10-23T06:57:42.283Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000026/requirements.md",
+      "sha256": "sha256:2c6265c675802b5bd1fa3de0eb7c95ccdf212dbd5d22e54e6bfe94b3a57525b4"
+    },
+    "reason": "需求仅要求一个页面实时显示当前时分秒并每秒刷新，不涉及服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/跨设备数据共享，所有逻辑可在浏览器端用纯前端技术完成。",
+    "evidence": {
+      "supporting": [
+        "需求核心行为仅描述页面加载后显示当前时间并每秒刷新，属于纯客户端渲染",
+        "验收场景 AC-01 的证据类型为 runtime-render 和 interaction，不涉及服务端 API 或数据库",
+        "范围外未声明任何服务端或后端能力需求"
+      ],
+      "excluding": [
+        "需求未提及服务端权威数据存储或读取",
+        "需求未提及用户认证或权限控制",
+        "需求未提及后台任务或定时服务端推送",
+        "需求未提及外部服务集成或第三方 API 调用",
+        "需求未提及跨用户或跨设备数据共享",
+        "无需 localStorage 等持久化，时间由系统时钟实时提供"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T06:57:16.511Z",
+    "sha256": "sha256:fd4cabc8f35767219a30477b9652c93dfdef923d386b55296cd58985904ed6d6"
+  }
 }
