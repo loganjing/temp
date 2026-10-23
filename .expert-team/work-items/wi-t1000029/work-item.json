@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000029",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "业务任务：165-农业采摘。开发成熟度识别、采摘任务规划、作业进度监控、异常上报和产量统计功能。阶段范围：requirements。",
+  "request": "业务任务：165-农业采摘。开发成熟度识别、采摘任务规划、作业进度监控、异常上报和产量统计功能。阶段范围：requirements。",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-23T09:07:40.793Z"
+}

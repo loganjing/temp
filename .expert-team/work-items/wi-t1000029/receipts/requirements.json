@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:33f30dfa89fa3186433749bcee3669c57848dfdbb801b4c954ebed385f46c0d1",
+  "createdAt": "2026-10-23T09:08:49.686Z",
+  "timing": {
+    "startedAt": "2026-10-23T09:07:41.010Z",
+    "completedAt": "2026-10-23T09:08:49.686Z",
+    "durationMs": 68676
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000029/requirements.md",
+      "bytes": 6964,
+      "sha256": "sha256:796ce104d3fbb058f2bf1f13dccab17db8bdc618015d0f531caf6a4428cde184",
+      "title": "165-农业采摘 需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
