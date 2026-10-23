@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "requirementsSha256": "sha256:ea8eb3e23bf9eb1cea16dbe72c8ac796f70589b71c1c8df5f43f1f47bb3ef6c7",
+    "designSha256": "sha256:c81be345f5dd13fd0ae8e3467894d45acd86c1f9cfff0934a28cc4d8ce570cae"
+  },
+  "tasks": [
+    {
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11",
+        "AC-12"
+      ],
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000025/requirements.md",
+          "sha256": "sha256:ea8eb3e23bf9eb1cea16dbe72c8ac796f70589b71c1c8df5f43f1f47bb3ef6c7"
+        },
+        {
+          "path": "docs/wi-t1000025/architecture-baseline.md",
+          "sha256": "sha256:c81be345f5dd13fd0ae8e3467894d45acd86c1f9cfff0934a28cc4d8ce570cae"
+        },
+        {
+          "path": "docs/wi-t1000025/technical-contract.md",
+          "sha256": "sha256:58bae94079effc21be6d33fc55d0c8f7107ab30b15c987c67e5189c646249845"
+        }
+      ],
+      "artifactPaths": [
+        "server/",
+        "shared/types.ts"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": [],
+      "taskId": "T01",
+      "summary": "后端服务实现：数据库迁移、7个领域模块、REST API 路由、WebSocket 实时推送",
+      "objective": "## 后端服务实现\n\n实现仓储搬运系统全部后端能力，覆盖需求文档中定义的五个核心模块和七个领域服务。\n\n### 实现范围\n\n1. **数据库层** (`server/src/db/`)\n   - SQLite 初始化与连接管理（better-sqlite3）\n   - 版本化迁移脚本，创建全部 7 张表：transport_tasks、transport_resources、locations、map_edges、routes、execution_events、traffic_conflicts\n   - 种子数据：示例仓库地图（库位+通道）和搬运设备\n\n2. **领域模块** (`server/src/modules/`)\n   - **task-management**：搬运任务 CRUD、自动分配（最近空闲设备+优先级排序）、手动分配、取消（含搬运中确认）、完成确认、异常恢复\n   - **device-management**：设备 CRUD、状态管理、位置上报接收（触发冲突重评估和事件记录）\n   - **warehouse-map**：库位和通道拓扑管理、地图拓扑图查询\n   - **path-planning**：Dijkstra 最短路径计算（设备当前位置→源库位→目标库位）、路径重规划（避开阻塞节点）\n   - **traffic-coordination**：冲突检测（节点/对向/尾随冲突）、避让调度（优先级让行+先到先行+绕行替代）、死锁检测与解除\n   - **execution-monitoring**：执行事件记录（11种事件类型）、WebSocket 实时推送（6种消息类型）、异常告警\n   - **statistics**：已完成任务指标聚合（任务总量/完成率/平均时长/设备利用率/异常率/优先级分布/设备任务分布）、CSV 导出\n\n3. **API 路由** (`server/src/routes/`)\n   - 按技术契约实现全部 REST 接口（任务管理 7 个、设备管理 5 个、仓库地图 2 个、路径规划 1 个、交通协调 1 个、执行监控 1 个、统计 2 个）\n   - 统一错误响应格式、请求参数校验\n   - INTEGER 主键序列化为 string\n\n4. **WebSocket 服务** (`server/src/ws/`)\n   - `/ws/monitoring` 连接管理\n   - 6 种服务端推送消息：task_status_change、device_position_update、device_status_change、traffic_alert、execution_event、anomaly_alert\n   - 客户端 subscribe/ping 消息处理\n\n5. **后台服务**\n   - 事件触发自动任务分配\n   - 5 秒安全循环死锁检测\n   - 30 秒设备心跳监控\n\n6. **共享类型** (`shared/types.ts`)\n   - 前后端共享的 TypeScript 类型定义\n\n### 验证\n\n- 后端 TypeScript 编译通过\n- 后端服务可启动并监听端口\n- API 接口可正确响应\n- 数据库迁移可执行\n- WebSocket 连接可建立并推送消息",
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "expertId": "general-app-development-expert",
+      "successors": [],
+      "writableScopes": [
+        "server/",
+        "shared/types.ts",
+        "package.json",
+        "tsconfig.json",
+        "server/tsconfig.json",
+        "server/package.json"
+      ]
+    },
+    {
+      "requirementIds": [
+        "AC-01",
+        "AC-03",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11"
+      ],
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000025/requirements.md",
+          "sha256": "sha256:ea8eb3e23bf9eb1cea16dbe72c8ac796f70589b71c1c8df5f43f1f47bb3ef6c7"
+        },
+        {
+          "path": "docs/wi-t1000025/architecture-baseline.md",
+          "sha256": "sha256:c81be345f5dd13fd0ae8e3467894d45acd86c1f9cfff0934a28cc4d8ce570cae"
+        },
+        {
+          "path": "docs/wi-t1000025/technical-contract.md",
+          "sha256": "sha256:58bae94079effc21be6d33fc55d0c8f7107ab30b15c987c67e5189c646249845"
+        }
+      ],
+      "artifactPaths": [
+        "client/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": [],
+      "taskId": "T02",
+      "summary": "前端 SPA 实现：5个页面模块、API 调用层、WebSocket 实时监控、ECharts 统计图表",
+      "objective": "## 前端 SPA 实现\n\n实现仓储搬运系统全部前端页面和交互能力，基于技术契约定义的 API 和 WebSocket 接口构建 React SPA。\n\n### 实现范围\n\n1. **应用壳与导航** (`client/src/App.tsx`, `client/src/components/Layout/`)\n   - 左侧固定导航栏 + 顶部上下文栏 + 右侧主工作区\n   - 5 个导航项：任务管理、实时监控、任务统计、设备管理、地图配置\n   - 全局状态：加载骨架屏、空数据提示、错误重试、操作成功提示\n\n2. **任务管理页面** (`client/src/pages/tasks/`)\n   - 任务列表（支持状态/设备/优先级筛选、分页）\n   - 任务创建表单（源库位/目标库位选择、货物信息、优先级）\n   - 任务详情（含当前路径、执行事件时间线）\n   - 任务分配操作（自动分配/手动选择设备）\n   - 任务取消操作（搬运中需二次确认）\n   - 任务完成确认\n   - 异常恢复操作（恢复执行/取消）\n\n3. **实时监控看板** (`client/src/pages/monitoring/`)\n   - 活跃任务列表与状态总览\n   - 设备列表与实时位置\n   - 搬运中任务进度（已走路径、当前位置、预计剩余时长）\n   - 异常告警醒目标识\n   - WebSocket 实时更新（任务状态变更、设备位置更新、交通告警、异常告警）\n   - 按状态/设备/优先级筛选\n\n4. **任务统计报表** (`client/src/pages/statistics/`)\n   - 统计指标展示（任务总量/完成率/平均时长/设备利用率/异常率）\n   - ECharts 图表：优先级分布饼图、设备任务分布柱状图、设备利用率柱状图\n   - 按时间范围/设备/优先级筛选\n   - 按日/周/月周期切换\n   - CSV 导出\n\n5. **设备管理页面** (`client/src/pages/resources/`)\n   - 设备列表与状态展示\n   - 设备创建表单\n   - 设备状态管理\n\n6. **地图配置页面** (`client/src/pages/map/`)\n   - 库位列表展示\n   - 通道拓扑查看\n\n7. **API 调用层** (`client/src/api/`)\n   - 基于技术契约的 API 客户端封装\n   - 前端类型定义（基于技术契约，不臆造 API 行为）\n   - 统一错误处理\n\n8. **WebSocket Hook** (`client/src/hooks/`)\n   - useMonitoring hook 管理 WebSocket 连接\n   - 消息订阅与分发\n\n### 验证\n\n- 前端 TypeScript 编译通过\n- 前端构建成功（vite build）\n- 页面可正确渲染和交互\n- API 调用层与契约一致\n- WebSocket 连接可建立并接收推送",
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "expertId": "general-app-development-expert",
+      "successors": [],
+      "writableScopes": [
+        "client/",
+        "index.html",
+        "vite.config.ts",
+        "client/tsconfig.json",
+        "client/package.json"
+      ]
+    }
+  ],
+  "planId": "plan:78f9c884-300c-4c6f-aea0-b19bf0c21e57"
+}
