@@ -1,0 +1,310 @@
+{
+  "decision": "pass",
+  "summary": {
+    "objective": "Verify 5 acceptance criteria for robot patrol warning system: patrol route config, video event detection, real-time alert push, alert handling, and audit trail",
+    "changedBehavior": "All 5 ACs verified: route CRUD, background video event detection with alert generation, WebSocket real-time push, alert handling with status change, and complete audit trail with read-only records",
+    "nonGoals": [],
+    "riskLabels": []
+  },
+  "environment": {
+    "name": "local-dev",
+    "version": "robotwarning-workspace",
+    "dataProfile": "isolated QA database with auto-generated test data from background task"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "创建一条包含名称和路径点的巡逻路线，保存后查看路线列表和该路线详情。",
+          "expected": "路线列表中显示新创建的路线，详情页展示与创建时一致的名称和路径点信息。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "创建一条包含名称和路径点的巡逻路线，保存后查看路线列表和该路线详情。",
+          "expected": "路线列表中显示新创建的路线，详情页展示与创建时一致的名称和路径点信息。"
+        }
+      ],
+      "evidence": "Created patrol route '厂区A栋巡逻线' with 2 waypoints via browser form. Route list displays name, waypoint count (2), and creation time. Detail view shows route name '厂区A栋巡逻线', creation time '2026/10/23 09:09:04', and waypoints table with saved data (waypoint 1: 西门, 30.5735, 104.0651).",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser snapshot at http://127.0.0.1:5177/ — route list and detail view verified"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "创建一条包含名称和路径点的巡逻路线，保存后查看路线列表和该路线详情。",
+          "expected": "路线列表中显示新创建的路线，详情页展示与创建时一致的名称和路径点信息。",
+          "actual": "Route '厂区A栋巡逻线' appears in list with 2 waypoints and timestamp 2026/10/23 09:09:04",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "创建一条包含名称和路径点的巡逻路线，保存后查看路线列表和该路线详情。",
+          "expected": "路线列表中显示新创建的路线，详情页展示与创建时一致的名称和路径点信息。",
+          "actual": "Detail view shows name '厂区A栋巡逻线', creation time, and waypoints table consistent with saved data",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "action": "模拟或触发一次视频事件识别，检查是否生成对应告警记录。",
+          "expected": "生成一条告警记录，包含事件类型、发生时间、关联路线和位置信息。"
+        }
+      ],
+      "evidence": "Background video event detection task auto-generated 13 video events (types: fire, intrusion, obstacle, anomaly) every 15 seconds, each with event_type, occurred_at, route_id, location, and video_segment_ref. Each event triggered a corresponding alert record with matching eventId, alertTime, status=pending, eventType, location, and routeName. Verified via GET /api/video-events and GET /api/alerts at http://127.0.0.1:50760.",
+      "observation": {
+        "method": "http",
+        "actor": "expert",
+        "reference": "curl GET /api/video-events and GET /api/alerts at http://127.0.0.1:50760 — 13 events and 13 alerts returned"
+      },
+      "results": [
+        {
+          "requirementId": "AC-02",
+          "action": "模拟或触发一次视频事件识别，检查是否生成对应告警记录。",
+          "expected": "生成一条告警记录，包含事件类型、发生时间、关联路线和位置信息。",
+          "actual": "13 video events generated with full fields; 13 alerts created with matching eventId, alertTime, eventType, location, routeName '厂区A栋巡逻线'",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "触发一次告警后，观察操作人员侧的告警通知和未处置告警列表。",
+          "expected": "操作人员收到新告警通知，未处置告警列表中出现该告警，信息包含告警时间、事件类型和关联路线/位置。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "触发一次告警后，观察操作人员侧的告警通知和未处置告警列表。",
+          "expected": "操作人员收到新告警通知，未处置告警列表中出现该告警，信息包含告警时间、事件类型和关联路线/位置。"
+        }
+      ],
+      "evidence": "Alert workbench at /alerts shows 'WS 已连接' (WebSocket connected) with 17 pending alerts on page load. Within 15 seconds, count updated to 18 via WebSocket push — confirming real-time alert delivery. Each alert displays event type (obstacle, fire, intrusion, anomaly), status (未处置), location, route name (厂区A栋巡逻线), and timestamp.",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser at http://127.0.0.1:5177/alerts — WS connected, count went from 17 to 18 via real-time push"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "触发一次告警后，观察操作人员侧的告警通知和未处置告警列表。",
+          "expected": "操作人员收到新告警通知，未处置告警列表中出现该告警，信息包含告警时间、事件类型和关联路线/位置。",
+          "actual": "WebSocket connected; alert count increased from 17 to 18 within 15 seconds via real-time push",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "触发一次告警后，观察操作人员侧的告警通知和未处置告警列表。",
+          "expected": "操作人员收到新告警通知，未处置告警列表中出现该告警，信息包含告警时间、事件类型和关联路线/位置。",
+          "actual": "Unhandled alert list shows 18 alerts with event type, time, route/location info",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "选择一条未处置告警，查看详情，执行处置操作（填写处置结果和说明），保存后查看该告警状态和处置记录。",
+          "expected": "告警状态更新为已处置，处置记录包含处置结果和处置说明，可在历史记录中查看。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "选择一条未处置告警，查看详情，执行处置操作（填写处置结果和说明），保存后查看该告警状态和处置记录。",
+          "expected": "告警状态更新为已处置，处置记录包含处置结果和处置说明，可在历史记录中查看。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "选择一条未处置告警，查看详情，执行处置操作（填写处置结果和说明），保存后查看该告警状态和处置记录。",
+          "expected": "告警状态更新为已处置，处置记录包含处置结果和处置说明，可在历史记录中查看。"
+        }
+      ],
+      "evidence": "Selected pending alert (obstacle, 17:13:37) — detail view showed alert time, route '厂区A栋巡逻线', event type 'obstacle', location, occurred time, and video segment 'segment_1792746817897.mp4'. Opened handling form, filled handler name '张三', result '已解决', note '现场检查确认无异常，已处理完毕'. After submit, page showed '告警处置成功' toast. Alert status changed to '已处置'. Detail now shows handling record: handler '张三', result 'resolved', note '现场检查确认无异常，已处理完毕', handled at '2026/10/23 17:14:34'. '已处置' filter shows the handled alert.",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser at http://127.0.0.1:5177/alerts — alert handled, status changed, handling record visible"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "选择一条未处置告警，查看详情，执行处置操作（填写处置结果和说明），保存后查看该告警状态和处置记录。",
+          "expected": "告警状态更新为已处置，处置记录包含处置结果和处置说明，可在历史记录中查看。",
+          "actual": "Alert detail shows associated video event: event type obstacle, occurred time, route name, location, video segment ref",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "选择一条未处置告警，查看详情，执行处置操作（填写处置结果和说明），保存后查看该告警状态和处置记录。",
+          "expected": "告警状态更新为已处置，处置记录包含处置结果和处置说明，可在历史记录中查看。",
+          "actual": "Handling form submitted with handler name '张三', result '已解决', note '现场检查确认无异常，已处理完毕'",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "选择一条未处置告警，查看详情，执行处置操作（填写处置结果和说明），保存后查看该告警状态和处置记录。",
+          "expected": "告警状态更新为已处置，处置记录包含处置结果和处置说明，可在历史记录中查看。",
+          "actual": "Status updated to '已处置'; handling record shows handler, result, note, handled-at time; alert appears in '已处置' filter",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "完成一次从事件识别到告警处置的完整流程后，在事件留痕中按时间和事件类型检索，查看该事件链的完整记录。",
+          "expected": "检索到包含视频事件、关联告警和处置记录的完整事件链记录，信息一致且不可被编辑或删除。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "完成一次从事件识别到告警处置的完整流程后，在事件留痕中按时间和事件类型检索，查看该事件链的完整记录。",
+          "expected": "检索到包含视频事件、关联告警和处置记录的完整事件链记录，信息一致且不可被编辑或删除。"
+        }
+      ],
+      "evidence": "Audit trail page at /audit shows all three event types: video_event_detected, alert_created, alert_handled. Full event chain for handled alert: video_event_detected (17:13:37, 'Video event detected: obstacle at') → alert_created (17:13:37, 'Alert created for obstacle event') → alert_handled (17:14:34, 'Alert handled by 张三: resolved'). Detail popup shows ID, event type, timestamp, entity ID, summary, and full JSON metadata (handlerName: 张三, handlingResult: resolved, handlingNote: 现场检查确认无异常，已处理完毕). Page states '留痕记录不可修改或删除，保证审计完整性'. Event type filter works: selecting '告警处置' narrows list to only the alert_handled record. No edit or delete buttons present on records.",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser at http://127.0.0.1:5177/audit — full event chain verified, detail viewed, filter tested, read-only confirmed"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "完成一次从事件识别到告警处置的完整流程后，在事件留痕中按时间和事件类型检索，查看该事件链的完整记录。",
+          "expected": "检索到包含视频事件、关联告警和处置记录的完整事件链记录，信息一致且不可被编辑或删除。",
+          "actual": "Audit trail shows complete event chain: video_event_detected → alert_created → alert_handled with matching entity IDs and timestamps; detail popup shows full metadata including handler, result, note",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "完成一次从事件识别到告警处置的完整流程后，在事件留痕中按时间和事件类型检索，查看该事件链的完整记录。",
+          "expected": "检索到包含视频事件、关联告警和处置记录的完整事件链记录，信息一致且不可被编辑或删除。",
+          "actual": "Records are read-only: page states '留痕记录不可修改或删除，保证审计完整性'; no edit/delete buttons; event type filter (告警处置) returns only matching records",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 操作人员可创建巡逻路线并成功保存，保存后可通过列表和详情读取到已配置的路线信息。; AC-02: 巡逻过程中系统识别到视频事件后，自动生成对应告警，告警信息包含事件类型、时间、关联路线/位置。; AC-03: 告警生成后，操作人员能实时收到告警通知，并可在告警列表中查看新告警。; AC-04: 操作人员可查看告警详情并执行处置操作，处置后告警状态更新为已处置，处置记录可读回。; AC-05: 从视频事件识别到告警处置的全流程信息可在事件留痕中查询和查看，且记录不可被修改。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-01: Route created, list and detail both show consistent name and waypoints"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "background",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidence": "QA-02: Background task auto-generates video events with alerts containing event type, time, route, and location"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-03: WebSocket real-time push confirmed; unhandled alert list shows alerts with time, event type, route/location"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-04: Alert detail viewed, handling executed, status updated to handled, handling record read back"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-05: Full event chain from video event to alert handling recorded and queryable; records read-only with explicit audit integrity statement"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui",
+      "E2E/API"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [],
+  "baselineUpdates": []
+}
