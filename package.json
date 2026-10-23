@@ -1,0 +1,31 @@
+{
+  "name": "helpdesk-ticket-system",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server/index.ts",
+    "start": "tsx src/server/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx scripts/seed.ts",
+    "migrate": "tsx -e \"import {openDatabase,runMigrations} from '@commonapp/dbkit';const db=openDatabase({path:process.env.DB_PATH||'./data/application.db'});runMigrations(db,{directory:'./migrations/sqlite'});console.log('Migrations complete');db.close();\""
+  },
+  "dependencies": {
+    "hono": "^4.6.14",
+    "@hono/node-server": "^1.13.7",
+    "better-sqlite3": "^11.7.0",
+    "nodemailer": "^6.9.16",
+    "@commonapp/dbkit": "file:vendor/@commonapp/dbkit",
+    "@commonapp/authkit": "file:vendor/@commonapp/authkit",
+    "@commonapp/permissionkit": "file:vendor/@commonapp/permissionkit",
+    "@commonapp/auditkit": "file:vendor/@commonapp/auditkit",
+    "@commonapp/emailkit": "file:vendor/@commonapp/emailkit"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^6.4.17"
+  }
+}

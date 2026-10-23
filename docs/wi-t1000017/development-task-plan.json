@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "requirementsSha256": "sha256:2c99ae88ae02b9ef53737ff1da5b3ce12230aa34e5ad24f6007b89c1127532d6",
+    "designSha256": "sha256:468208eec4c00b2e72c472c25be72ca2273bb88ff017fff07338fb012c875472"
+  },
+  "tasks": [
+    {
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11",
+        "AC-12"
+      ],
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000017/technical-contract.md",
+          "sha256": "sha256:3cd29430bef0169e50df96c3b33b29ca6e909d1ea528cb62f50624b2bf1b166f"
+        },
+        {
+          "path": "docs/wi-t1000017/architecture-baseline.md",
+          "sha256": "sha256:468208eec4c00b2e72c472c25be72ca2273bb88ff017fff07338fb012c875472"
+        }
+      ],
+      "artifactPaths": [
+        "src/server/",
+        "migrations/sqlite/",
+        "src/shared/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": [],
+      "taskId": "T01",
+      "summary": "实现 Hono API 后端：数据库迁移、全部 API 端点、认证授权、审计日志与邮件通知",
+      "objective": "## 后端实现\n\n基于技术契约实现工单系统完整后端服务，包括：\n\n### 数据层\n- SQLite 数据库迁移脚本（companies、departments、users、categories、tickets、ticket_replies、business_groups、business_group_members、category_assignment_rules、satisfaction_evaluations）\n- 引用数据种子脚本（公司、部门、用户、分类的基础数据）\n\n### API 端点\n- 认证：`POST /api/auth/login`、`GET /api/auth/me`（authkit 集成）\n- 工单 CRUD：`POST /api/tickets`（含自动分配逻辑）、`GET /api/tickets`（筛选/搜索/排序/分页）、`GET /api/tickets/:id`（含回复和评价）\n- 工单状态流转：`PATCH /api/tickets/:id/status`（手动分配）、`POST /api/tickets/:id/transfer`（转派）、`POST /api/tickets/:id/complete`（完成+邮件通知）、`POST /api/tickets/:id/cancel`（取消）\n- 工单回复：`POST /api/tickets/:id/replies`、`GET /api/tickets/:id/replies`\n- 用户评价：`POST /api/tickets/:id/evaluation`、`GET /api/tickets/:id/evaluation`\n- 提交人信息：`GET /api/tickets/:id/submitter-info`（含历史工单）\n- 业务组管理：`GET/POST /api/business-groups`、`POST /api/business-groups/:id/members`、`DELETE /api/business-groups/:id/members/:userId`\n- 分配规则：`GET/POST /api/assignment-rules`、`DELETE /api/assignment-rules/:id`\n- 工作台：`GET /api/workbench/tickets`（handler 看本组待处理，admin 看本公司待处理）\n- 统计分析：`GET /api/statistics/overview`、`GET /api/statistics/distribution`、`GET /api/statistics/hot-topics`\n- 操作日志：`GET /api/tickets/:id/logs`（auditkit 集成）\n\n### 横切关注点\n- 公司隔离：所有查询按 company_id 过滤\n- RBAC 授权：permissionkit 中间件，提交人/处理人/管理员三角色\n- 审计日志：工单生命周期关键操作通过 auditkit 写入\n- 邮件通知：工单完成时通过 emailkit 发送 SMTP 邮件\n\n### CommonApp 模块集成\n- dbkit（数据库连接与迁移）、authkit（认证）、permissionkit（授权）、auditkit（审计）、emailkit（邮件）\n\n### 验证\n- TypeScript 类型检查通过\n- 后端构建成功\n- API 端点可通过 curl 或测试脚本调用验证基本功能",
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "expertId": "general-app-development-expert",
+      "successors": [],
+      "writableScopes": [
+        "src/server/",
+        "migrations/sqlite/",
+        "src/shared/",
+        "package.json",
+        "tsconfig.json",
+        "scripts/seed.ts",
+        "vendor/@commonapp/"
+      ]
+    },
+    {
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-12"
+      ],
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000017/technical-contract.md",
+          "sha256": "sha256:3cd29430bef0169e50df96c3b33b29ca6e909d1ea528cb62f50624b2bf1b166f"
+        },
+        {
+          "path": "docs/wi-t1000017/architecture-baseline.md",
+          "sha256": "sha256:468208eec4c00b2e72c472c25be72ca2273bb88ff017fff07338fb012c875472"
+        }
+      ],
+      "artifactPaths": [
+        "src/client/",
+        "index.html"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": [],
+      "taskId": "T02",
+      "summary": "实现 React SPA 前端：工单工作台、工单详情、统计仪表盘、业务组与分配规则管理",
+      "objective": "## 前端实现\n\n基于技术契约实现工单系统完整前端 SPA，使用 React + Vite，采用 split-master-detail 展示模板和 Modern SaaS 视觉风格。\n\n### 页面与组件\n- **应用壳**：左侧导航栏（工单工作台、统计仪表盘、业务组管理、分配规则管理）、顶部上下文栏（当前用户/公司/角色）\n- **工单工作台**：待处理工单列表，支持按公司/SLA优先级/分类筛选、关键词搜索、排序（创建时间/优先级），分页\n- **工单详情（split-master-detail）**：列表+详情分栏，展示工单完整信息\n  - 提交人信息面板（姓名、公司、部门、历史工单列表）\n  - 多轮回复链（按时间正序）\n  - 工单操作区：回复、转派（选择同公司业务组成员）、完成处理、取消\n  - 满意度评价区（已完成工单，提交人可评价）\n  - 操作日志时间线\n- **统计仪表盘**：工单量/完成量/待处理量、平均响应时间、满意度评分、热点问题（按分类）、按公司/部门维度的工单分布图表\n- **业务组管理**：创建业务组、添加/移除成员\n- **分配规则管理**：配置分类→业务组自动分配规则，删除规则\n- **工单创建表单**：主题、描述、分类选择、SLA 优先级选择\n- **登录页**：邮箱+密码登录\n\n### 状态与交互\n- 加载中骨架屏、空数据引导、错误重试、无权限提示\n- 基于技术契约的类型定义（src/shared/types 或前端本地类型）\n- 使用 contract-based types 和 mock 数据，不臆造 API 行为\n- HTTP 客户端封装，携带 Bearer Token\n\n### 验证\n- TypeScript 类型检查通过\n- 前端构建成功（vite build）\n- 页面可渲染，导航和工单列表基本可用",
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "expertId": "general-app-development-expert",
+      "successors": [],
+      "writableScopes": [
+        "src/client/",
+        "index.html",
+        "vite.config.ts"
+      ]
+    }
+  ],
+  "planId": "plan:7fec8c95-1cdf-4953-bc7c-bdef6ff8e124"
+}

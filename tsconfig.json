@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@commonapp/dbkit": ["./vendor/@commonapp/dbkit/src/index.ts"],
+      "@commonapp/authkit": ["./vendor/@commonapp/authkit/src/index.ts"],
+      "@commonapp/permissionkit": ["./vendor/@commonapp/permissionkit/src/index.ts"],
+      "@commonapp/auditkit": ["./vendor/@commonapp/auditkit/src/index.ts"],
+      "@commonapp/emailkit": ["./vendor/@commonapp/emailkit/src/index.ts"]
+    }
+  },
+  "include": ["src/server/**/*", "src/shared/**/*", "scripts/**/*", "vendor/**/*"],
+  "exclude": ["node_modules", "dist", "src/client"]
+}
