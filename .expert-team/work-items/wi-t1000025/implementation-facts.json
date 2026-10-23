@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "attempts": [
     {
       "attempt": 1,
@@ -66,7 +66,41 @@
       "createdAt": "2026-10-23T08:43:00.303Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T01:T01:2",
+      "planId": "plan:78f9c884-300c-4c6f-aea0-b19bf0c21e57",
+      "taskId": "T01",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEFECT-01"
+      ],
+      "findings": [
+        {
+          "id": "DEFECT-01",
+          "taskId": "T01",
+          "severity": "blocking",
+          "environment": "local-dev (port 3002, SQLite /tmp/qa-warehouse-wi-t1000025.db)",
+          "steps": [
+            "1. Create and assign task to device (task #2 assigned to FL-01)",
+            "2. Set device to fault: PATCH /api/resources/3/status {status: fault}",
+            "3. Check task status: GET /api/tasks/2",
+            "4. Attempt recovery: POST /api/tasks/2/recover"
+          ],
+          "expected": "Task status should transition to error when device is set to fault during transit",
+          "actual": "Task remains in_transit; recover endpoint returns 409 (Task must be in error state)",
+          "problem": "task-management markTaskError is only called from path-planning and traffic-coordination, not from device-management when device status changes to fault",
+          "requiredChange": "Add logic in device-management status update to call task-management.markTaskError when a device with an active task transitions to fault status",
+          "acceptanceEvidence": "Not fixed yet"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-23T10:15:56.361Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -284,6 +318,50 @@
         }
       },
       "createdAt": "2026-10-23T08:43:00.303Z"
+    },
+    {
+      "requestId": "verification:4:repair:T01",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T01:T01:2",
+          "planId": "plan:78f9c884-300c-4c6f-aea0-b19bf0c21e57",
+          "taskId": "T01",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEFECT-01"
+          ],
+          "findings": [
+            {
+              "id": "DEFECT-01",
+              "taskId": "T01",
+              "severity": "blocking",
+              "environment": "local-dev (port 3002, SQLite /tmp/qa-warehouse-wi-t1000025.db)",
+              "steps": [
+                "1. Create and assign task to device (task #2 assigned to FL-01)",
+                "2. Set device to fault: PATCH /api/resources/3/status {status: fault}",
+                "3. Check task status: GET /api/tasks/2",
+                "4. Attempt recovery: POST /api/tasks/2/recover"
+              ],
+              "expected": "Task status should transition to error when device is set to fault during transit",
+              "actual": "Task remains in_transit; recover endpoint returns 409 (Task must be in error state)",
+              "problem": "task-management markTaskError is only called from path-planning and traffic-coordination, not from device-management when device status changes to fault",
+              "requiredChange": "Add logic in device-management status update to call task-management.markTaskError when a device with an active task transitions to fault status",
+              "acceptanceEvidence": "Not fixed yet"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-23T10:15:56.361Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-23T10:15:56.361Z"
     }
   ]
 }

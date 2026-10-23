@@ -442,7 +442,7 @@ export class TaskManagementService {
     return this.serializeTask(this.getTaskByIdInternal(taskId)!);
   }
 
-  /** Marks a task as error (used by path planning and traffic coordination). */
+  /** Marks a task as error (used by path planning, traffic coordination, and device management). */
   markTaskError(taskId: number, reason: string): void {
     const task = this.getTaskByIdInternal(taskId);
     if (!task) return;

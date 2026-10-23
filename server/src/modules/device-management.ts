@@ -95,6 +95,19 @@ export class DeviceManagementService {
         .run(newStatus, resourceId);
 
       this.ctx.events.pushDeviceStatusChange(resourceId, oldStatus, newStatus);
+
+      // When a device transitions to fault, mark any active task as error
+      if (newStatus === 'fault') {
+        const activeTask = this.ctx.db.prepare(
+          `SELECT id FROM transport_tasks
+           WHERE assigned_resource_id = ? AND status IN ('assigned', 'in_transit')
+           LIMIT 1`
+        ).get(resourceId) as { id: number } | undefined;
+
+        if (activeTask) {
+          this.ctx.task.markTaskError(activeTask.id, `Device ${row.name} transitioned to fault status`);
+        }
+      }
     }
 
     return this.serializeResource({ ...row, status: newStatus });
