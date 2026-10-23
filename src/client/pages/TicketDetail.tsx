@@ -205,6 +205,7 @@ function ReplyChain({ ticket, onRefresh }: { ticket: TicketDetailType; onRefresh
       </div>
       {error && <div className="form-error mb-8">{error}</div>}
       <button
+        type="button"
         className="btn btn-primary btn-sm"
         onClick={handleReply}
         disabled={submitting || !content.trim()}
@@ -331,6 +332,7 @@ function ActionArea({
               ))}
             </select>
             <button
+              type="button"
               className="btn btn-primary btn-sm"
               onClick={handleTransfer}
               disabled={submitting || !transferTarget}
@@ -338,6 +340,7 @@ function ActionArea({
               确认转派
             </button>
             <button
+              type="button"
               className="btn btn-outline btn-sm"
               onClick={() => setTransferOpen(false)}
             >
@@ -349,6 +352,7 @@ function ActionArea({
       <div className="flex gap-8">
         {canTransfer && !transferOpen && (
           <button
+            type="button"
             className="btn btn-outline btn-sm"
             onClick={() => setTransferOpen(true)}
           >
@@ -357,6 +361,7 @@ function ActionArea({
         )}
         {canComplete && (
           <button
+            type="button"
             className="btn btn-primary btn-sm"
             onClick={handleComplete}
             disabled={submitting}
@@ -366,6 +371,7 @@ function ActionArea({
         )}
         {canCancel && (
           <button
+            type="button"
             className="btn btn-danger btn-sm"
             onClick={handleCancel}
             disabled={submitting}
@@ -439,6 +445,7 @@ function EvaluationArea({
       <div className="flex items-center gap-12">
         <RatingStars value={rating} onChange={setRating} />
         <button
+          type="button"
           className="btn btn-primary btn-sm"
           onClick={handleEvaluate}
           disabled={submitting || rating < 1}

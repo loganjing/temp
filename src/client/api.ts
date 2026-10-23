@@ -35,6 +35,7 @@ import type {
   DistributionResponse,
   HotTopicsResponse,
   TicketLog,
+  Category,
 } from './types';
 
 const TOKEN_KEY = 'ticket_token';
@@ -255,6 +256,19 @@ export const api = {
     return request<TicketListResponse>('GET', '/api/workbench/tickets', {
       query,
     });
+  },
+
+  // ── Reference Data ───────────────────────────────────────────────────────
+
+  listCategories(): Promise<{ items: Category[] }> {
+    return request<{ items: Category[] }>('GET', '/api/categories');
+  },
+
+  listCompanies(): Promise<{ items: { id: number; name: string }[] }> {
+    return request<{ items: { id: number; name: string }[] }>(
+      'GET',
+      '/api/companies',
+    );
   },
 
   // ── Statistics ───────────────────────────────────────────────────────────

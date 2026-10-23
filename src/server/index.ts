@@ -14,6 +14,7 @@ import { createAssignmentRuleRoutes } from './routes/assignment-rules';
 import { createWorkbenchRoutes } from './routes/workbench';
 import { createStatisticsRoutes } from './routes/statistics';
 import { createLogRoutes } from './routes/logs';
+import { createReferenceDataRoutes } from './routes/reference-data';
 
 type AppEnv = { Variables: { user: AuthUser; db: DB } };
 
@@ -107,6 +108,8 @@ function createApp(db: DB): Hono<AppEnv> {
   api.route('/api/workbench', createWorkbenchRoutes(db));
   // Statistics routes
   api.route('/api/statistics', createStatisticsRoutes(db));
+  // Reference data (categories, companies)
+  api.route('/api', createReferenceDataRoutes(db));
 
   app.route('/', api);
 

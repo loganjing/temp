@@ -71,7 +71,12 @@ export function createSubmitterInfoRoutes(db: DB) {
       email: submitter.email,
       companyName: submitter.company_name,
       departmentName: submitter.department_name || '',
-      historyTickets,
+      historyTickets: historyTickets.map((t) => ({
+        id: t.id,
+        title: t.title,
+        status: t.status,
+        createdAt: t.created_at,
+      })),
     }, 200);
   });
 

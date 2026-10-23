@@ -2,11 +2,10 @@
  * Ticket creation form: title, description, category, SLA priority.
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, ApiError } from '../api';
-import { mockCategories } from '../mock-data';
-import type { SlaPriority } from '../types';
+import type { SlaPriority, Category } from '../types';
 import { priorityOrder } from '../components/ui';
 
 export function TicketCreatePage() {
@@ -17,7 +16,12 @@ export function TicketCreatePage() {
   const [slaPriority, setSlaPriority] = useState<SlaPriority>('P2');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [categories] = useState(mockCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    api.listCategories()
+      .then((r) => setCategories(r.items))
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
