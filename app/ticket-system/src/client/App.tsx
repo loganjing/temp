@@ -1,108 +1,97 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { NavLink, Route, Routes } from 'react-router-dom'
 import { apiRequest } from './platform/api-client'
-import UsersPage from './admin/UsersPage'
+import LoginPage from './pages/LoginPage'
+import WorkbenchPage from './pages/WorkbenchPage'
+import TicketDetailPage from './pages/TicketDetailPage'
+import StatsPage from './pages/StatsPage'
+import AdminPage from './pages/AdminPage'
+import { ToastProvider } from './components/Toast'
+import type { CurrentUser } from './types'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
-type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+const NAV_ITEMS = [
+  { to: '/workbench', label: '工单工作台', icon: '📋', roles: ['submitter', 'handler', 'admin'] },
+  { to: '/tickets', label: '工单详情', icon: '🎫', roles: ['submitter', 'handler', 'admin'] },
+  { to: '/stats', label: '统计分析', icon: '📊', roles: ['admin'] },
+  { to: '/admin', label: '管理配置', icon: '⚙️', roles: ['admin'] },
+]
 
 export default function App() {
-  const [state, setState] = useState<BootstrapState>('checking')
+  const [state, setState] = useState<'checking' | 'login' | 'authenticated'>('checking')
   const [user, setUser] = useState<CurrentUser | null>(null)
-  const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     const token = localStorage.getItem('platform-token')
     if (token) {
       try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
+        const me = await apiRequest<CurrentUser>('/api/auth/me')
+        setUser(me)
         setState('authenticated')
         return
       } catch {
         localStorage.removeItem('platform-token')
       }
     }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
+    setState('login')
+  }, [])
+
+  useEffect(() => { void refresh() }, [refresh])
+
+  const handleAuthed = (authedUser: CurrentUser) => {
+    setUser(authedUser)
+    setState('authenticated')
   }
 
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
-
-  const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
-        setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
-      } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
-        localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
-        setState('authenticated')
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
-    } finally {
-      setBusy(false)
-    }
+  const logout = () => {
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
   }
 
-  const changePassword = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
-    } finally {
-      setBusy(false)
-    }
-  }
+  if (state === 'checking') return <main className="auth-shell"><p>加载中…</p></main>
+  if (state === 'login' || !user) return <LoginPage onAuthed={handleAuthed} />
+  if (user.passwordChangeRequired) return <LoginPage onAuthed={handleAuthed} />
 
-  if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
-  if (state === 'required' || state === 'login') return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>{state === 'required' ? '创建首个账户 / Set up the first account' : '登录 / Sign in'}</h1>
-        <p>{state === 'required' ? '仅在没有用户时可执行一次。/ Available once while no users exist.' : '使用本地账户登录。/ Sign in with your local account.'}</p>
-        <form onSubmit={(event) => void submitIdentity(event)} className="stack">
-          {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
-          <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-          <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建账户 / Create account' : '登录 / Sign in'}</button>
-        </form>
-      </section>
-    </main>
-  )
-  if (!user) return null
-  if (user.passwordChangeRequired) return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>更改临时密码 / Change temporary password</h1>
-        <p>继续使用前请设置新密码。/ Set a new password before continuing.</p>
-        <form onSubmit={(event) => void changePassword(event)} className="stack">
-          <label>新密码 / New password<input name="password" type="password" autoComplete="new-password" minLength={12} required /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>更新密码 / Update password</button>
-        </form>
-      </section>
-    </main>
-  )
+  const roles = user.roles
+  const visibleNav = NAV_ITEMS.filter((item) => item.roles.some((r) => roles.includes(r)))
+
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <ToastProvider>
+      <div className="app-shell">
+        <nav className="sidebar">
+          <div className="sidebar-brand">工单系统</div>
+          <div className="sidebar-nav">
+            {visibleNav.map((item) => (
+              <NavLink key={item.to} to={item.to} className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}>
+                <span>{item.icon}</span> {item.label}
+              </NavLink>
+            ))}
+          </div>
+        </nav>
+        <div className="main-area">
+          <header className="topbar">
+            <div></div>
+            <div className="topbar-user">
+              <div className="user-info">
+                <strong>{user.name}</strong>
+                <span>{user.email}</span>
+              </div>
+              <button className="secondary" onClick={logout}>退出</button>
+            </div>
+          </header>
+          <main className="content-area">
+            <Routes>
+              <Route path="/" element={<WorkbenchPage roles={roles} />} />
+              <Route path="/workbench" element={<WorkbenchPage roles={roles} />} />
+              <Route path="/tickets" element={<WorkbenchPage roles={roles} />} />
+              <Route path="/tickets/:id" element={<TicketDetailPage roles={roles} />} />
+              {roles.includes('admin') && <Route path="/stats" element={<StatsPage />} />}
+              {roles.includes('admin') && <Route path="/admin" element={<AdminPage />} />}
+              <Route path="*" element={<WorkbenchPage roles={roles} />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </ToastProvider>
   )
 }
