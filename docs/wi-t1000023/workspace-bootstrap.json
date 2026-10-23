@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "robotwarning",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "tailwind",
+  "packageManager": "npm",
+  "modules": ["dbkit", "auditkit"]
+}

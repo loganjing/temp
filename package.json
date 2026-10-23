@@ -1,0 +1,14 @@
+{
+  "name": "robotwarning-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "dev": "node ./scripts/dev.mjs",
+    "build": "npm run build -w robotwarning",
+    "start": "npm run start -w robotwarning",
+    "test": "npm run test -w robotwarning --if-present"
+  }
+}

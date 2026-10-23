@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T05:31:44.760Z"
+  "updatedAt": "2026-10-23T06:58:58.516Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000023/requirements.md",
+      "sha256": "sha256:a18579cb727c265525563a1715ebf5460ba61a4fe22480826fccf0ad443d3f16"
+    },
+    "reason": "该系统需要服务端权威数据存储（巡逻路线、告警、事件留痕需持久化且不可篡改）、后台任务（视频事件识别为系统自动行为，无需操作人员触发）、实时推送（告警需实时推送至操作人员）、多用户共享（告警推送与处置涉及多操作人员协同）、审计完整性（留痕记录不可被修改或删除，需服务端强制保障），属于典型的全栈应用。",
+    "evidence": {
+      "supporting": [
+        "需求3.2：视频事件识别为系统自动行为，不需要操作人员主动触发 — 需要服务端后台任务处理",
+        "需求3.3：告警应实时推送至操作人员 — 需要服务端实时推送能力（WebSocket/SSE）",
+        "需求3.5：留痕记录不可被修改或删除，保证审计完整性 — 需要服务端权威数据存储与强制约束",
+        "需求3.4：已处置的告警可在历史记录中查看 — 需要持久化共享数据",
+        "需求2.1：告警实时推送给操作人员，多操作人员处置告警 — 多用户共享同一告警状态，需服务端协调"
+      ],
+      "excluding": [
+        "无证据表明此应用只需浏览器本地存储即可满足全部需求",
+        "无证据表明不需要服务端、认证、后台任务或外部集成"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T06:52:35.311Z",
+    "sha256": "sha256:4444ed32bfcabf057f998e8c6c364fa624d3331172bc3ed7a388330812d7781b"
+  }
 }

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:6a510e79ba025de979aa7c0a864feaf533bf97d6e7f72f475d4471987e4274f0",
+  "createdAt": "2026-10-23T06:58:58.516Z",
+  "timing": {
+    "startedAt": "2026-10-23T06:52:09.231Z",
+    "completedAt": "2026-10-23T06:58:58.515Z",
+    "durationMs": 409284
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000023/architecture-baseline.md",
+      "bytes": 11821,
+      "sha256": "sha256:7af911e8f55a33f78d17dd46221dc9f046f8e98c1691b174b82e8d8bbbc7775e",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000023/technical-contract.md",
+      "bytes": 8172,
+      "sha256": "sha256:5e914f5eb7a995bb54a114b5853f128c0353ae9a11c7500fc36d3b5a3b365903",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "path": "docs/wi-t1000023/workspace-bootstrap.json",
+      "sha256": "sha256:b29af7343eeb0f38410ad25982f378b321dc567a6140ca0045af3a6764ae0bbe",
+      "planDigest": "sha256:c8534a1eda772727a38f6792d9d5e61926706a6132efec1e59f91c507d59e6ae",
+      "scaffoldDigest": "sha256:76ebc199b3ea5f4092517be58a6218f8a952c7fa13bd4a3af50a690634474aee",
+      "planSha256": "sha256:b29af7343eeb0f38410ad25982f378b321dc567a6140ca0045af3a6764ae0bbe",
+      "packageRoot": "app/robotwarning"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:4444ed32bfcabf057f998e8c6c364fa624d3331172bc3ed7a388330812d7781b",
+        "path": ".expert-team/work-items/wi-t1000023/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
