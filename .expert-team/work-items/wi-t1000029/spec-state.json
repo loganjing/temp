@@ -2,14 +2,39 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T09:08:49.686Z"
+  "updatedAt": "2026-10-23T09:14:02.411Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000029/requirements.md",
+      "sha256": "sha256:796ce104d3fbb058f2bf1f13dccab17db8bdc618015d0f531caf6a4428cde184"
+    },
+    "reason": "系统涉及农场管理者和采摘作业人员两种角色的跨用户数据共享：管理者创建并分配采摘任务，作业人员接收任务并多次上报采摘进度，管理者实时监控所有进行中任务的进度和产量统计。任务状态生命周期（待执行→执行中→已完成）由不同角色在不同环节推进，异常报告由任意角色提交并由管理者跟踪处理。这些都需要服务端权威数据和角色间数据共享，不能仅靠浏览器 localStorage。",
+    "evidence": {
+      "supporting": [
+        "两类角色需共享数据：管理者创建并分配采摘任务，作业人员接收并上报进度（需求 4.2/4.3）",
+        "任务状态生命周期由不同角色推进：管理者创建任务（待执行），作业人员切换为执行中并上报进度，完成后切换为已完成（需求 4.3）",
+        "管理者需实时监控所有进行中任务的整体进度，包括已分配、进行中、已完成任务数量和采摘量汇总（需求 4.3）",
+        "异常报告可由作业人员和管理者提交，管理者跟踪处理状态变更（需求 4.4）",
+        "产量统计聚合已完成任务的采摘量数据，管理者按地块/品种/时间范围查看（需求 4.5）"
+      ],
+      "excluding": [
+        "无证据表明仅需浏览器 localStorage 即可满足——多角色跨用户共享任务和进度数据（排除 simple-frontend）"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T09:11:18.294Z",
+    "sha256": "sha256:0c0ca8fc739a047396571f54010a193c51108c984ee2c5a3b92131d4ecfd4e93"
+  }
 }

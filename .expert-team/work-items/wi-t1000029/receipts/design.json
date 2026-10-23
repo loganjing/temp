@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:dc0cc384fac07e849dac80b7e03ec1551e35f70d0daea722ad7fe6077c5ffb97",
+  "createdAt": "2026-10-23T09:14:02.411Z",
+  "timing": {
+    "startedAt": "2026-10-23T09:10:50.550Z",
+    "completedAt": "2026-10-23T09:14:02.411Z",
+    "durationMs": 191861
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000029/architecture-baseline.md",
+      "bytes": 8403,
+      "sha256": "sha256:74a39ec6e5ac7c3dadd7e25687653d634dab8a8725c73c13127d39a94093ba81",
+      "role": "primary",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000029/technical-contract.md",
+      "bytes": 14153,
+      "sha256": "sha256:58dc94d5ebac3b1ebe79ba6545fe069cfbf877122d8a9003f2bb81556b1c5a84",
+      "role": "supporting",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:0c0ca8fc739a047396571f54010a193c51108c984ee2c5a3b92131d4ecfd4e93",
+        "path": ".expert-team/work-items/wi-t1000029/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
