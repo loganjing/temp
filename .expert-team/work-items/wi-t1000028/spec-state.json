@@ -2,14 +2,38 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T08:37:48.217Z"
+  "updatedAt": "2026-10-23T08:53:03.172Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000028/requirements.md",
+      "sha256": "sha256:45d98f98cf846ee2c56717c61eaa42616972e49e52911f775e49c96a38a918d8"
+    },
+    "reason": "The ticket system requires server-side authoritative data shared across users (submitters, handlers, admins) with company-level multi-tenant isolation, role-based authorization, email notification integration, auto-assignment background processing, and cross-user statistics aggregation. These are all explicit server-side capabilities that cannot be satisfied by a browser-only frontend.",
+    "evidence": {
+      "supporting": [
+        "工单按公司隔离，A公司用户无法看到B公司工单 — requires server-side tenant isolation and authoritative data",
+        "工单分配需要多个角色协作（提交人、处理人、管理员）— requires cross-user shared data on the server",
+        "工单完成后发送邮件通知提交人 — requires external email service integration",
+        "按分类自动分配到业务组 — requires server-side background processing and rules engine",
+        "统计分析仪表盘：工单量、平均响应时间、满意度、热点问题 — requires server-side aggregation across all tickets",
+        "操作日志记录关键操作（操作人、操作时间、操作类型）— requires persistent server-side audit logging"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T08:43:42.928Z",
+    "sha256": "sha256:de4e46b8c10d17ead6e3bdc3177a94ebbbfd7dc9e75a96c2c61ced3407cb48eb"
+  }
 }
