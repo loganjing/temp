@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T06:54:17.500Z"
+  "updatedAt": "2026-10-23T06:58:05.745Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000027/requirements.md",
+      "sha256": "sha256:ad558069d49e09b788689589d23933e296c98e46c687e5b91203ccea6c0278cd"
+    },
+    "reason": "需求仅要求教师信息的增删改查，所有操作围绕本地教师记录列表；需求未规定事项明确列出权限控制、部署方式、技术栈均未提及。无服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备数据共享要求，符合单用户本地 CRUD 应用特征，使用浏览器 localStorage 即可满足全部需求。",
+    "evidence": {
+      "supporting": [
+        "需求目标：支持对教师信息的增删改查操作，核心对象仅为教师",
+        "所有验收场景（AC-01至AC-04）均为用户界面交互和表单校验，不涉及服务端 API 或跨用户操作",
+        "需求3.1-3.4描述的教师列表查看、新增、编辑、删除均为本地数据操作"
+      ],
+      "excluding": [
+        "未规定事项明确：权限与角色控制用户未提及，未规定——排除认证需求",
+        "未规定事项明确：部署方式未规定——排除服务端部署需求",
+        "未规定事项明确：技术栈、数据库选型、前端框架未规定——排除权威数据库需求",
+        "需求全文无后台任务、定时任务或异步处理描述——排除后台任务",
+        "需求全文无外部服务或第三方集成描述——排除外部集成",
+        "需求全文无多用户、跨设备、跨浏览器数据同步描述——排除共享数据"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T06:57:30.458Z",
+    "sha256": "sha256:7c973912285f92dd878409288fac531af600d388098e891fda12c27cd5c8772b"
+  }
 }
