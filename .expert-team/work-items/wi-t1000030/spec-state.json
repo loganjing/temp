@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T09:20:35.973Z"
+  "updatedAt": "2026-10-23T10:03:15.541Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000030/requirements.md",
+      "sha256": "sha256:96fb4a8443237b4bb9fc9297f5e8688d6056a61f54a69a9ba8888f9d9c66e8d4"
+    },
+    "reason": "需求明确涉及多用户角色（清洁人员上报障碍、主管查看并处理障碍），数据需跨用户共享；定时作业需按调度周期自动生成待执行任务实例，属于后台调度任务；耗材库存低于阈值时系统自动生成提醒，需要服务端逻辑。这些能力超出浏览器 localStorage 单用户范畴。",
+    "evidence": {
+      "supporting": [
+        "需求2.2：作业按设定的调度周期自动生成待执行任务实例 — 需要服务端后台调度能力",
+        "需求2.3：清洁人员上报障碍、主管查看并处理 — 多用户跨角色数据共享",
+        "需求2.4：库存低于阈值时系统生成提醒 — 需要服务端自动检测逻辑",
+        "AC-02/AC-03/AC-04 证据类型包含 session-persistence — 跨会话持久化"
+      ],
+      "excluding": [
+        "需求未明确要求认证/权限体系（未规定事项中列为未规定）",
+        "需求未明确要求外部服务集成"
+      ],
+      "unresolved": [
+        "目标平台、部署方式、技术选型、数据持久化方案均为未规定事项",
+        "用户角色与权限体系未明确指定，但功能描述隐含多角色"
+      ]
+    },
+    "decidedAt": "2026-10-23T09:58:51.040Z",
+    "sha256": "sha256:66b6d19cb38503c64c74f3de8c044bc82d59bfc8af8ce24905fdaa9abced461a"
+  }
 }
