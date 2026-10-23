@@ -2,14 +2,39 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-23T01:34:03.252Z"
+  "updatedAt": "2026-10-23T01:42:41.712Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000021/requirements.md",
+      "sha256": "sha256:f5f48db969bb24ee3c465cfc846af299eada563832a12ef9f50da10318a69805"
+    },
+    "reason": "The ticket system requires server-side authoritative data for multi-user ticket sharing, company-based data isolation with authorization, automatic ticket assignment by category, email notification on completion, and cross-user statistics dashboards. These capabilities cannot be satisfied by browser-local storage.",
+    "evidence": {
+      "supporting": [
+        "Multi-user data sharing: ticket created by submitter, processed by handler in a different session (AC-01, AC-09, AC-10)",
+        "Company-based data isolation requires server-side authorization (AC-03)",
+        "Email notification on ticket completion requires backend service (AC-10)",
+        "Automatic ticket assignment by category to business groups requires server-side rules engine (AC-07)",
+        "Statistics dashboards aggregate across all tickets/companies/departments require server-side queries (AC-12, AC-13)",
+        "Operation logs require persistent server-side audit trail (AC-15)",
+        "Ticket transfer between business group members requires shared server-side state (AC-08)"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-23T01:35:47.746Z",
+    "sha256": "sha256:f0ee6b5c2073ab38eebfa2fa04de464df528775d317776dd17701c45502e9c76"
+  }
 }

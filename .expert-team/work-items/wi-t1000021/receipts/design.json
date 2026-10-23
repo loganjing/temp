@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:94b48f76bf08e4f8c0571ec0df43d9ea06dc6c5d27596405cdd3e5630e10fe21",
+  "createdAt": "2026-10-23T01:42:41.712Z",
+  "timing": {
+    "startedAt": "2026-10-23T01:35:26.509Z",
+    "completedAt": "2026-10-23T01:42:41.711Z",
+    "durationMs": 435202
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000021/architecture-baseline.md",
+      "bytes": 14525,
+      "sha256": "sha256:02e3b98523a3d7bf65451bb4e0175ec639aa7a23afc95e58d969b61e60e6df68",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000021/technical-contract.md",
+      "bytes": 14729,
+      "sha256": "sha256:917e247b07aa0493881b958fba69261368fc79299a565ef51289201160619db4",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "details": {
+        "bootstrapPath": "docs/wi-t1000021/workspace-bootstrap.json",
+        "bootstrapSha256": "sha256:5acdd13596a905b15a206a9093fd8452c834f151ba9719bb3a3b4b2bce923a00",
+        "initResult": "initialized",
+        "packageRoot": "app/ticket-system",
+        "planDigest": "sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+        "scaffoldDigest": "sha256:4b91ceb0a4bffa1e525e72eb224c1bd9ffd942aef8fb9d710322206100fc8dc7",
+        "planSha256": "sha256:5acdd13596a905b15a206a9093fd8452c834f151ba9719bb3a3b4b2bce923a00"
+      }
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:f0ee6b5c2073ab38eebfa2fa04de464df528775d317776dd17701c45502e9c76",
+        "path": ".expert-team/work-items/wi-t1000021/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
