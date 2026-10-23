@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:43ee8aa6ce9a4110cb3c4d285c8ce1e25c55c881c05aaf90303ea748e0f6d5ba",
+  "createdAt": "2026-10-23T11:34:57.525Z",
+  "timing": {
+    "startedAt": "2026-10-23T09:58:41.059Z",
+    "completedAt": "2026-10-23T11:34:57.525Z",
+    "durationMs": 5776466
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000029/implementation-report.md",
+      "bytes": 5188,
+      "sha256": "sha256:b11b06a41988d86662764f9ecc0047bc47a6f8d6f8079058411261826e521735",
+      "title": "实现报告：165-农业采摘"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:0c0ca8fc739a047396571f54010a193c51108c984ee2c5a3b92131d4ecfd4e93",
+        "path": ".expert-team/work-items/wi-t1000029/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
