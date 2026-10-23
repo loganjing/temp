@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "attempts": [
     {
       "attempt": 1,
@@ -49,7 +49,76 @@
       "createdAt": "2026-10-23T01:29:45.000Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T01:T01:2",
+      "planId": "plan:9e700545-7ac6-4ea3-bbd8-87a6a9d8e6ba",
+      "taskId": "T01",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEFECT-001",
+        "DEFECT-002",
+        "DEFECT-003"
+      ],
+      "findings": [
+        {
+          "id": "DEFECT-001",
+          "taskId": "T01",
+          "severity": "blocking",
+          "environment": "local-dev: Node v24.14.1, Hono 4.13.13, SQLite",
+          "steps": [
+            "启动后端服务（PORT=3199）",
+            "以管理员身份调用 GET /api/stats/dashboard（无 companyId 参数）",
+            "观察返回 500 错误 'near AND: syntax error'",
+            "以管理员身份调用 GET /api/stats/dashboard?companyId=<alpha-id>",
+            "观察返回 500 错误 'ambiguous column name: company_id'"
+          ],
+          "expected": "仪表盘 API 应返回工单量、平均响应时间、满意度、热点问题等运营指标，HTTP 200。",
+          "actual": "GET /api/stats/dashboard 无 companyId 时返回 500 'near AND: syntax error'（routes.ts:724）；带 companyId 时返回 500 'ambiguous column name: company_id'（routes.ts:726）。",
+          "problem": "仪表盘 SQL 查询存在两个缺陷：(1) 当 companyId 为空时，filter 变量为空字符串，导致 SQL 拼接为 'FROM tickets  AND assigned_at IS NOT NULL'，缺少 WHERE 关键字；(2) 热点分类查询中 JOIN tickets t LEFT JOIN categories c 后使用 WHERE company_id = ?，company_id 列在两张表中都存在导致歧义。",
+          "requiredChange": "修复 routes.ts:724-726：(1) 当 filter 为空时使用 'WHERE assigned_at IS NOT NULL' 替代拼接空 WHERE；(2) 热点分类查询中使用 t.company_id 明确指定表别名。",
+          "acceptanceEvidence": "GET /api/stats/dashboard 返回 200 且包含 totalTickets/avgResponseMs/satisfactionScore/hotCategories 等字段；统计分析页面仪表盘区域正常渲染指标卡片。"
+        },
+        {
+          "id": "DEFECT-002",
+          "taskId": "T01",
+          "severity": "major",
+          "environment": "local-dev: Node v24.14.1, Hono 4.13.13",
+          "steps": [
+            "创建用户并设置 password_change_required=1（如通过管理员创建用户）",
+            "以该用户身份调用任何受保护路由（如 GET /api/tickets）",
+            "观察服务端抛出 RangeError: init[status] must be in the range of 200 to 599"
+          ],
+          "expected": "passwordChangeRequired=true 的用户访问非 /api/auth/me 和 /api/auth/password 路由时，应返回 403 状态码和错误信息。",
+          "actual": "auth.ts:87 调用 context.json({error:...}, 403) 但未 return，导致中间件继续执行 next()，Hono 尝试使用已发送的响应对象，抛出 RangeError。",
+          "problem": "auth.ts:87 的 requireAnyAuth 中间件中，context.json() 调用后缺少 return 语句，导致响应未正确终止。",
+          "requiredChange": "在 auth.ts:87 添加 return 关键字：return context.json({error:...}, 403)。",
+          "acceptanceEvidence": "passwordChangeRequired=true 的用户访问受保护路由时返回 403 和 PASSWORD_CHANGE_REQUIRED 错误码，无 RangeError。"
+        },
+        {
+          "id": "DEFECT-003",
+          "taskId": "T01",
+          "severity": "minor",
+          "environment": "local-dev: Node v24.14.1, Hono 4.13.13",
+          "steps": [
+            "以管理员身份调用 PATCH /api/admin/users/:id",
+            "请求体包含 companyId/departmentId/role 字段",
+            "观察返回的用户对象中这些字段未更新"
+          ],
+          "expected": "管理员应能通过 PATCH /api/admin/users/:id 更新用户的公司、部门和角色。",
+          "actual": "PATCH 端点（routes.ts:159-170）仅处理 name/email/phone 字段，忽略 companyId/departmentId/role。",
+          "problem": "用户更新端点缺少对公司、部门和角色字段的处理。",
+          "requiredChange": "在 routes.ts PATCH /api/admin/users/:id 中添加 companyId/departmentId/role 字段的更新逻辑。",
+          "acceptanceEvidence": "PATCH /api/admin/users/:id 请求体包含 companyId/departmentId/role 时，用户记录正确更新。"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-23T05:49:36.893Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -244,6 +313,85 @@
         }
       },
       "createdAt": "2026-10-23T01:29:45.000Z"
+    },
+    {
+      "requestId": "verification:4:repair:T01",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T01:T01:2",
+          "planId": "plan:9e700545-7ac6-4ea3-bbd8-87a6a9d8e6ba",
+          "taskId": "T01",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEFECT-001",
+            "DEFECT-002",
+            "DEFECT-003"
+          ],
+          "findings": [
+            {
+              "id": "DEFECT-001",
+              "taskId": "T01",
+              "severity": "blocking",
+              "environment": "local-dev: Node v24.14.1, Hono 4.13.13, SQLite",
+              "steps": [
+                "启动后端服务（PORT=3199）",
+                "以管理员身份调用 GET /api/stats/dashboard（无 companyId 参数）",
+                "观察返回 500 错误 'near AND: syntax error'",
+                "以管理员身份调用 GET /api/stats/dashboard?companyId=<alpha-id>",
+                "观察返回 500 错误 'ambiguous column name: company_id'"
+              ],
+              "expected": "仪表盘 API 应返回工单量、平均响应时间、满意度、热点问题等运营指标，HTTP 200。",
+              "actual": "GET /api/stats/dashboard 无 companyId 时返回 500 'near AND: syntax error'（routes.ts:724）；带 companyId 时返回 500 'ambiguous column name: company_id'（routes.ts:726）。",
+              "problem": "仪表盘 SQL 查询存在两个缺陷：(1) 当 companyId 为空时，filter 变量为空字符串，导致 SQL 拼接为 'FROM tickets  AND assigned_at IS NOT NULL'，缺少 WHERE 关键字；(2) 热点分类查询中 JOIN tickets t LEFT JOIN categories c 后使用 WHERE company_id = ?，company_id 列在两张表中都存在导致歧义。",
+              "requiredChange": "修复 routes.ts:724-726：(1) 当 filter 为空时使用 'WHERE assigned_at IS NOT NULL' 替代拼接空 WHERE；(2) 热点分类查询中使用 t.company_id 明确指定表别名。",
+              "acceptanceEvidence": "GET /api/stats/dashboard 返回 200 且包含 totalTickets/avgResponseMs/satisfactionScore/hotCategories 等字段；统计分析页面仪表盘区域正常渲染指标卡片。"
+            },
+            {
+              "id": "DEFECT-002",
+              "taskId": "T01",
+              "severity": "major",
+              "environment": "local-dev: Node v24.14.1, Hono 4.13.13",
+              "steps": [
+                "创建用户并设置 password_change_required=1（如通过管理员创建用户）",
+                "以该用户身份调用任何受保护路由（如 GET /api/tickets）",
+                "观察服务端抛出 RangeError: init[status] must be in the range of 200 to 599"
+              ],
+              "expected": "passwordChangeRequired=true 的用户访问非 /api/auth/me 和 /api/auth/password 路由时，应返回 403 状态码和错误信息。",
+              "actual": "auth.ts:87 调用 context.json({error:...}, 403) 但未 return，导致中间件继续执行 next()，Hono 尝试使用已发送的响应对象，抛出 RangeError。",
+              "problem": "auth.ts:87 的 requireAnyAuth 中间件中，context.json() 调用后缺少 return 语句，导致响应未正确终止。",
+              "requiredChange": "在 auth.ts:87 添加 return 关键字：return context.json({error:...}, 403)。",
+              "acceptanceEvidence": "passwordChangeRequired=true 的用户访问受保护路由时返回 403 和 PASSWORD_CHANGE_REQUIRED 错误码，无 RangeError。"
+            },
+            {
+              "id": "DEFECT-003",
+              "taskId": "T01",
+              "severity": "minor",
+              "environment": "local-dev: Node v24.14.1, Hono 4.13.13",
+              "steps": [
+                "以管理员身份调用 PATCH /api/admin/users/:id",
+                "请求体包含 companyId/departmentId/role 字段",
+                "观察返回的用户对象中这些字段未更新"
+              ],
+              "expected": "管理员应能通过 PATCH /api/admin/users/:id 更新用户的公司、部门和角色。",
+              "actual": "PATCH 端点（routes.ts:159-170）仅处理 name/email/phone 字段，忽略 companyId/departmentId/role。",
+              "problem": "用户更新端点缺少对公司、部门和角色字段的处理。",
+              "requiredChange": "在 routes.ts PATCH /api/admin/users/:id 中添加 companyId/departmentId/role 字段的更新逻辑。",
+              "acceptanceEvidence": "PATCH /api/admin/users/:id 请求体包含 companyId/departmentId/role 时，用户记录正确更新。"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-23T05:49:36.893Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-23T05:49:36.893Z"
     }
   ]
 }

@@ -81,14 +81,18 @@ export function createApplicationAuth(db: DbClient, options: { permissionKit: { 
     }),
   })
   const requireAnyAuth: MiddlewareHandler = async (context, next) => {
+    let passwordChangeRequired = false
     await (auth.requireAnyAuth as MiddlewareHandler)(context, async () => {
       const user = (context as unknown as { get(key: string): unknown }).get('currentUser') as AppAuthUser | undefined
       if (user?.passwordChangeRequired && !['/api/auth/me', '/api/auth/password'].includes(context.req.path)) {
-        context.json({ error: { code: 'PASSWORD_CHANGE_REQUIRED', message: 'Change your temporary password before continuing' } }, 403)
+        passwordChangeRequired = true
         return
       }
       await next()
     })
+    if (passwordChangeRequired) {
+      return context.json({ error: { code: 'PASSWORD_CHANGE_REQUIRED', message: 'Change your temporary password before continuing' } }, 403)
+    }
   }
   return { ...auth, requireAnyAuth, userStore, userResolver, loginRoute }
 }

@@ -158,12 +158,35 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
   })
   app.patch('/api/admin/users/:id', requireRoles('admin'), async (context) => {
     const body = await context.req.json().catch(() => ({}))
+    const userId = context.req.param('id')
     try {
-      const email = requiredString(body.email, 'email', 320).toLowerCase()
-      if (!email.includes('@')) throw new TypeError('Enter a valid email address')
-      const user = await platform.auth.userStore.update(context.req.param('id'), { name: requiredString(body.name, 'name'), email, phone: typeof body.phone === 'string' ? body.phone : null })
-      if (!user) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
-      return context.json({ user: { id: user.id, name: user.name, email: user.email, phone: user.phone } })
+      const updates: { name?: string; email?: string; phone?: string | null } = {}
+      if (typeof body.name === 'string' && body.name.trim()) updates.name = body.name.trim()
+      if (typeof body.email === 'string' && body.email.trim()) {
+        updates.email = body.email.trim().toLowerCase()
+        if (!updates.email.includes('@')) throw new TypeError('Enter a valid email address')
+      }
+      if (Object.prototype.hasOwnProperty.call(body, 'phone')) updates.phone = typeof body.phone === 'string' ? body.phone : null
+      if (Object.keys(updates).length > 0) {
+        const user = await platform.auth.userStore.update(userId, updates as { name: string; email: string; phone: string | null })
+        if (!user) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
+      }
+      const colUpdates: string[] = []
+      const colParams: unknown[] = []
+      if (typeof body.companyId === 'string') { colUpdates.push('company_id = ?'); colParams.push(body.companyId || null) }
+      if (typeof body.departmentId === 'string') { colUpdates.push('department_id = ?'); colParams.push(body.departmentId || null) }
+      if (colUpdates.length > 0) {
+        colParams.push(new Date().toISOString(), userId)
+        await platform.db.run({ text: `UPDATE users SET ${colUpdates.join(', ')}, updated_at = ? WHERE id = ?`, params: colParams })
+      }
+      if (typeof body.role === 'string' && body.role) {
+        await platform.db.run({ text: 'DELETE FROM user_role_assignments WHERE user_id = ?', params: [userId] })
+        await platform.db.run({ text: 'INSERT INTO user_role_assignments (user_id, role_key, scope_type, scope_id, created_at) VALUES (?, ?, ?, ?, ?)', params: [userId, body.role, '', '', new Date().toISOString()] })
+      }
+      const row = await platform.db.queryOne<{ id: string; name: string; email: string; phone: string | null; company_id: string | null; department_id: string | null }>({ text: 'SELECT id, name, email, phone, company_id, department_id FROM users WHERE id = ?', params: [userId] })
+      if (!row) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
+      const roleRows = await platform.db.queryAll<{ role_key: string }>({ text: 'SELECT role_key FROM user_role_assignments WHERE user_id = ?', params: [userId] })
+      return context.json({ user: { id: row.id, name: row.name, email: row.email, phone: row.phone, companyId: row.company_id, departmentId: row.department_id, roles: roleRows.map((r) => r.role_key) } })
     } catch (error) {
       return context.json(errorBody('INVALID_USER', userMutationError(error, 'Could not update user')), error instanceof TypeError ? 400 : 409)
     }
@@ -718,13 +741,15 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
   })
   app.get('/api/stats/dashboard', requireRoles('admin'), async (c) => {
     const companyId = c.req.query('companyId')
-    const filter = companyId ? 'WHERE company_id = ?' : ''
-    const params = companyId ? [companyId] : []
-    const totalRow = await platform.db.queryOne<{ total: number }>({ text: `SELECT COUNT(*) AS total FROM tickets ${filter}`, params })
-    const avgRow = await platform.db.queryOne<{ avg_hours: number | null }>({ text: `SELECT AVG((julianday(assigned_at) - julianday(created_at)) * 24) AS avg_hours FROM tickets ${filter} AND assigned_at IS NOT NULL`, params })
-    const satRow = await platform.db.queryOne<{ avg_rating: number | null }>({ text: `SELECT AVG(e.rating) AS avg_rating FROM ticket_evaluations e JOIN tickets t ON e.ticket_id = t.id ${filter ? 'WHERE t.company_id = ?' : ''}`, params })
+    const conditions: string[] = []
+    const params: unknown[] = []
+    if (companyId) { conditions.push('t.company_id = ?'); params.push(companyId) }
+    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
+    const totalRow = await platform.db.queryOne<{ total: number }>({ text: `SELECT COUNT(*) AS total FROM tickets t ${where}`, params })
+    const avgRow = await platform.db.queryOne<{ avg_hours: number | null }>({ text: `SELECT AVG((julianday(t.assigned_at) - julianday(t.created_at)) * 24) AS avg_hours FROM tickets t ${where ? where + ' AND t.assigned_at IS NOT NULL' : 'WHERE t.assigned_at IS NOT NULL'}`, params })
+    const satRow = await platform.db.queryOne<{ avg_rating: number | null }>({ text: `SELECT AVG(e.rating) AS avg_rating FROM ticket_evaluations e JOIN tickets t ON e.ticket_id = t.id ${where}`, params })
     const hotRows = await platform.db.queryAll<{ category_id: string; cat_name: string; count: number }>({
-      text: `SELECT t.category_id, c.name AS cat_name, COUNT(*) AS count FROM tickets t LEFT JOIN categories c ON t.category_id = c.id ${filter} AND t.category_id IS NOT NULL GROUP BY t.category_id ORDER BY count DESC LIMIT 5`,
+      text: `SELECT t.category_id, c.name AS cat_name, COUNT(*) AS count FROM tickets t LEFT JOIN categories c ON t.category_id = c.id ${where ? where + ' AND t.category_id IS NOT NULL' : 'WHERE t.category_id IS NOT NULL'} GROUP BY t.category_id ORDER BY count DESC LIMIT 5`,
       params,
     })
     return c.json({
