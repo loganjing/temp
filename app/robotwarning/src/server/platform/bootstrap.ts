@@ -2,6 +2,8 @@ import { mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDb, createDbConfig, runMigrations } from '@commonapp/dbkit'
+import { createAuditKit } from '@commonapp/auditkit'
+import { WsHub } from '../ws/hub'
 
 export async function initializePlatform() {
   const sqlitePath = process.env.DB_PATH ?? './data/application.db'
@@ -13,5 +15,7 @@ export async function initializePlatform() {
     await db.close()
     throw error
   })
-  return { db, close: () => db.close() }
+  const auditKit = createAuditKit(db)
+  const wsHub = new WsHub()
+  return { db, auditKit, wsHub, close: () => db.close() }
 }

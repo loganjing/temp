@@ -9,6 +9,10 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': process.env.QA_API_BASE_URL ?? 'http://localhost:3000',
+      '/ws': {
+        target: process.env.QA_API_BASE_URL ?? 'http://localhost:3000',
+        ws: true,
+      },
     },
   },
 })

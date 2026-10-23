@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:297d377e4c4c2fcd020605aec9d3604fbcf5680cd9c932fc32e4d29d43c61f61",
+  "createdAt": "2026-10-23T07:32:37.696Z",
+  "timing": {
+    "startedAt": "2026-10-23T07:00:11.566Z",
+    "completedAt": "2026-10-23T07:32:37.696Z",
+    "durationMs": 1946130
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000023/implementation-report.md",
+      "bytes": 5864,
+      "sha256": "sha256:ec14188dd9dec675bc32881f1fe42177ccb081f6a2fd365c8d800695402685ec",
+      "title": "实现报告：机器人巡逻告警系统（160-robotwarning）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:4444ed32bfcabf057f998e8c6c364fa624d3331172bc3ed7a388330812d7781b",
+        "path": ".expert-team/work-items/wi-t1000023/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "实现后端 API、WebSocket 实时推送、后台视频事件识别和审计留痕",
+      "objective": "## 后端实现\n\n实现巡逻机器人告警系统的完整后端，覆盖全部 5 个验收标准的后端贡献。\n\n### 业务模块\n\n- **巡逻路线管理**：实现 `GET/POST/PUT/DELETE /api/patrol-routes` 全套 CRUD 接口，校验 name 非空和 waypoints 至少 1 个\n- **视频事件识别**：后台定时任务（15 秒间隔），模拟巡逻视频分析，自动为已配置路线生成随机类型的视频事件\n- **告警管理**：实现 `GET /api/alerts`（含 status 筛选，冗余 eventType/location/routeName）、`GET /api/alerts/:id`（含关联视频事件和路线详情）、`PATCH /api/alerts/:id/handle`（处置告警，含 409 状态冲突和 400 参数校验）\n- **实时推送**：实现 `WS /ws/alerts` WebSocket 端点，告警生成时推送 `alert:new` 消息给所有已连接客户端\n- **事件留痕**：在 bootstrap.ts 中集成 auditkit，在视频事件生成（video_event_detected）、告警创建（alert_created）、告警处置（alert_handled）三个节点写入审计记录；实现 `GET /api/audit-trail` 和 `GET /api/audit-trail/:id` 查询接口\n\n### 数据层\n\n- 创建迁移文件 `0001_patrol_routes.sql`（patrol_routes 表）和 `0002_video_events_alerts.sql`（video_events 和 alerts 表）\n- 在 `src/server/platform/bootstrap.ts` 中集成 `createAuditKit(db)`，返回 auditKit 实例\n- 后端序列化响应时统一 snake_case → camelCase 转换\n\n### 共享类型\n\n- 在 `src/shared/` 下创建平台无关的类型定义（PatrolRoute、VideoEvent、Alert、AuditTrail 等），供后端使用\n\n### 关键文件\n\n- 修改 `src/server/index.ts` 添加 WebSocket upgrade\n- 修改 `src/server/routes.ts` 注册全部业务路由\n- 修改 `src/server/platform/bootstrap.ts` 集成 auditkit\n- 新建 repositories、services、websocket 等后端模块文件\n- 修改 `vite.config.ts` 添加 `/ws` WebSocket 代理（dev 模式）\n\n### 跨任务 AC 贡献\n\n- AC-01：提供路线 CRUD API\n- AC-02：后台事件识别 + 自动生成告警（后端独立完成）\n- AC-03：WebSocket 实时推送告警\n- AC-04：告警处置 API（含状态冲突检查）\n- AC-05：auditkit 审计记录 + 留痕查询 API（后端独立完成）\n\n### 后续 QA owner\n\n验证阶段负责 E2E 全流程验收（路线配置→事件识别→告警推送→处置→留痕查询）\n\n### 验证\n\n- `npm run typecheck:server` 通过\n- `npm test` 通过",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000023/requirements.md" },
+        { "path": "docs/wi-t1000023/architecture-baseline.md" },
+        { "path": "docs/wi-t1000023/technical-contract.md" }
+      ],
+      "artifactPaths": [
+        "app/robotwarning/src/server/",
+        "app/robotwarning/src/shared/"
+      ],
+      "additionalWritePaths": [
+        "app/robotwarning/vite.config.ts"
+      ],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    },
+    {
+      "taskId": "T02",
+      "summary": "实现前端巡逻路线配置、告警处置工作台和事件留痕查询页面",
+      "objective": "## 前端实现\n\n实现巡逻机器人告警系统的完整前端 SPA，覆盖 AC-01、AC-03、AC-04、AC-05 的前端贡献。使用技术契约中定义的接口类型，不臆造 API 行为。\n\n### 应用壳与导航\n\n- 左侧导航栏：巡逻路线、告警处置、事件留痕三个区域\n- 顶部上下文栏：显示当前区域名称和未处置告警计数\n- 使用 react-router-dom 实现页面路由\n\n### 巡逻路线配置页（AC-01 前端贡献）\n\n- 路线列表表格：展示已配置路线，支持点击查看详情\n- 创建/编辑表单：名称输入 + 路径点序列编辑器（位置名称、纬度、经度）\n- 详情页：展示路线名称和路径点信息\n- 删除操作：带确认提示，防止误删\n\n### 告警处置工作台（AC-03、AC-04 前端贡献）\n\n- split-master-detail 布局：左侧告警列表，右侧告警详情\n- 未处置告警列表：显示告警时间、事件类型、关联路线/位置\n- 告警详情：含关联视频事件信息和视频片段引用\n- 处置表单：处置人姓名、处置结果（resolved/escalated/false-alarm）、处置说明\n- 处置成功后告警状态更新为已处置，可在历史记录中查看\n\n### 实时告警推送（AC-03 前端贡献）\n\n- WebSocket 客户端：连接 `/ws/alerts`，发送 `alert:subscribe` 订阅消息\n- 收到 `alert:new` 后更新未处置告警列表和顶部计数\n- 断线自动重连\n- 告警通知淡入动效\n\n### 事件留痕查询页（AC-05 前端贡献）\n\n- 按时间范围（startTime/endTime）和事件类型（video_event_detected/alert_created/alert_handled）检索\n- 留痕记录列表：显示事件类型、时间戳、关联实体 ID、摘要\n- 详情查看：展示完整 details 信息\n- 留痕记录不可编辑或删除（只读展示）\n\n### 设计基线\n\n- Tailwind CSS，Modern SaaS 视觉风格\n- 柔和中性色背景、细边界、少阴影、中等圆角\n- 主色蓝色系，状态色：pending=琥珀，handled=绿\n- 加载态（骨架/加载指示器）、空态（引导文案）、错误态（错误信息+重试）、成功态（短暂成功提示）\n\n### 关键文件\n\n- 修改 `src/client/App.tsx` 添加路由和导航壳\n- 新建页面组件（PatrolRoutes、AlertWorkbench、AuditTrail）\n- 新建 hooks（useAlerts、useWebSocket 等）\n- 使用 `src/client/platform/api-client.ts` 的 `apiRequest` 函数\n\n### 跨任务 AC 贡献\n\n- AC-01：路线配置 UI（创建、列表、详情、删除）\n- AC-03：WebSocket 客户端 + 告警通知 UI\n- AC-04：告警处置 UI（详情查看、处置表单、状态更新）\n- AC-05：留痕查询 UI（检索、列表、详情）\n\n### 验证\n\n- `npm run typecheck:client` 通过\n- `npm run build:client` 通过",
+      "requirementIds": ["AC-01", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000023/requirements.md" },
+        { "path": "docs/wi-t1000023/architecture-baseline.md" },
+        { "path": "docs/wi-t1000023/technical-contract.md" }
+      ],
+      "artifactPaths": [
+        "app/robotwarning/src/client/"
+      ],
+      "additionalWritePaths": [],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    }
+  ]
+}
