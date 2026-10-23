@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:18f1c524bde46d3e924f4042b5dcc1f6a8706d012915be9d2f357ca462912e17",
+  "createdAt": "2026-10-23T09:20:35.973Z",
+  "timing": {
+    "startedAt": "2026-10-23T09:19:45.384Z",
+    "completedAt": "2026-10-23T09:20:35.973Z",
+    "durationMs": 50589
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000030/requirements.md",
+      "bytes": 5411,
+      "sha256": "sha256:96fb4a8443237b4bb9fc9297f5e8688d6056a61f54a69a9ba8888f9d9c66e8d4",
+      "title": "商场清洁系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}

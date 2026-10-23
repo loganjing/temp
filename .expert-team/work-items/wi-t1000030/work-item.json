@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000030",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "商场清洁：开发清洁区域配置、定时作业、障碍处理、耗材提醒和作业质量报告功能",
+  "request": "商场清洁：开发清洁区域配置、定时作业、障碍处理、耗材提醒和作业质量报告功能",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-23T09:19:45.199Z"
+}
