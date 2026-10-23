@@ -1,0 +1,46 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "实现 Hono REST API 服务端：dbkit 数据层、数据库迁移、5 个业务模块路由和定时调度器",
+      "objective": "### 后端实现\n\n基于技术契约实现完整后端服务：\n\n- **数据层**：dbkit 初始化、SQLite 迁移脚本（cleaning_areas、scheduled_jobs、task_instances、obstacles、supply_items、supply_alerts 共 6 张表）、数据库连接管理\n- **REST API 路由**：\n  - 清洁区域 CRUD（GET/POST/PUT/DELETE /api/areas）\n  - 定时作业管理（GET/POST/PUT /api/jobs、GET /api/task-instances）\n  - 障碍处理（GET/POST /api/obstacles、PUT /api/obstacles/:id/resolve）\n  - 耗材管理与提醒（GET/POST/PUT/DELETE /api/supplies、GET /api/supply-alerts、PUT /api/supply-alerts/:id/resolve）\n  - 作业质量报告（GET /api/reports/quality）\n- **定时调度器**：每 60 秒扫描活跃作业，匹配调度周期和起始时间，生成当日任务实例（按 job_id + scheduled_date 去重）\n- **库存自动检测**：耗材创建和更新时检查 quantity < threshold，自动创建或消除 supply_alerts\n- **数据映射**：schedule_days 的 JSON 序列化/反序列化、active 的 INTEGER 与 boolean 转换、low_stock 计算字段\n- **UUID 生成**：所有主键由服务端 crypto.randomUUID() 生成\n\n### 写入归属\n\n- 独占：src/server.js、src/server/、migrations/、package.json、vite.config.js\n\n### 验证\n\n- npm start 可启动 Hono 服务（端口 3000）\n- 通过 typecheck 和构建\n- 后端逻辑通过单元测试",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        "docs/wi-t1000030/technical-contract.md",
+        "docs/wi-t1000030/architecture-baseline.md",
+        "docs/wi-t1000030/requirements.md"
+      ],
+      "artifactPaths": ["src/server.js", "src/server/", "migrations/"],
+      "additionalWritePaths": ["package.json", "vite.config.js"],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    },
+    {
+      "taskId": "T02",
+      "summary": "实现 React SPA 前端：5 个功能模块页面、侧边栏导航和基于契约的 API 客户端",
+      "objective": "### 前端实现\n\n基于技术契约的 API 定义构建 React 18 + Vite SPA，视觉基线为 SaaS 运营管理台（saas-ops-console）：\n\n- **应用壳**：左侧侧边栏导航（清洁区域、定时作业、任务实例、障碍处理、耗材管理、质量报告），顶部上下文栏显示当前模块标题与关键操作按钮\n- **清洁区域页面**：区域列表表格 + 创建/编辑/删除表单（区域名称、位置描述、清洁要求）\n- **定时作业页面**：作业列表（含关联区域名称）+ 创建表单（区域选择、执行人、调度周期 daily/weekly、schedule_days、起始时间）+ 任务实例列表查看\n- **任务实例页面**：任务实例列表（含状态、执行人、区域名称），可按作业和状态筛选\n- **障碍处理页面**：待处理障碍列表 + 上报表单（关联任务实例、障碍描述）+ 标记处理表单（处理方式、处理结果）\n- **耗材管理页面**：耗材列表（含 low_stock 状态）+ 库存管理表单 + 库存不足提醒列表\n- **质量报告页面**：区域和时间范围筛选 + 报告展示（作业完成率、障碍统计、耗材消耗汇总）\n- **API 客户端**：基于技术契约定义的接口和类型，不发明 API 行为\n- **全局状态**：加载骨架屏、空状态提示与创建入口、操作成功/错误反馈\n\n### 写入归属\n\n- 独占：src/client/、src/index.html\n\n### 验证\n\n- 通过 typecheck 和 Vite 构建\n- 页面组件符合 SaaS 运营管理台视觉基线",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        "docs/wi-t1000030/technical-contract.md",
+        "docs/wi-t1000030/architecture-baseline.md",
+        "docs/wi-t1000030/requirements.md"
+      ],
+      "artifactPaths": ["src/client/"],
+      "additionalWritePaths": ["src/index.html"],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    }
+  ]
+}
