@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "mode": "design",
+  "decision": "ready",
+  "artifacts": [
+    { "path": "docs/wi-t1000022/architecture-baseline.md" },
+    { "path": "docs/wi-t1000022/technical-contract.md" }
+  ],
+  "internalArtifacts": ["workspace-bootstrap.json"],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "path": "docs/wi-t1000022/workspace-bootstrap.json",
+      "sha256": "sha256:5acdd13596a905b15a206a9093fd8452c834f151ba9719bb3a3b4b2bce923a00",
+      "planDigest": "sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+      "scaffoldDigest": "sha256:4b91ceb0a4bffa1e525e72eb224c1bd9ffd942aef8fb9d710322206100fc8dc7",
+      "packageRoot": "app/ticket-system"
+    }
+  ]
+}
