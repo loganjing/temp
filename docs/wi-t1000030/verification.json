@@ -1,0 +1,361 @@
+{
+  "decision": "pass-with-risk",
+  "summary": {
+    "objective": "验证商场清洁系统五个验收场景：区域配置、定时作业、障碍处理、耗材提醒和作业质量报告",
+    "changedBehavior": "清洁区域创建与查看功能",
+    "nonGoals": [],
+    "riskLabels": []
+  },
+  "environment": {
+    "name": "本地开发环境",
+    "version": "Hono + React 18 + Vite + SQLite",
+    "dataProfile": "隔离QA测试数据库 (qa-verification.db)"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "用户填写区域名称、位置描述和清洁要求后提交创建。",
+          "expected": "区域配置成功保存，在区域列表中可查看该区域的完整信息。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "用户填写区域名称、位置描述和清洁要求后提交创建。",
+          "expected": "区域配置成功保存，在区域列表中可查看该区域的完整信息。"
+        }
+      ],
+      "evidence": "在清洁区域页面点击创建按钮，填写区域名称(一楼A区)、位置描述(东侧入口至中庭)、清洁要求(每日两次，地面无水渍、垃圾桶不超过半满)后保存。区域成功保存并出现在区域列表中，列表显示完整的区域名称、位置描述、清洁要求和创建时间。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5177/ 清洁区域页面，创建后列表显示一楼A区记录"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "用户填写区域名称、位置描述和清洁要求后提交创建。",
+          "expected": "区域配置成功保存，在区域列表中可查看该区域的完整信息。",
+          "actual": "区域配置成功保存，列表中显示一楼A区、东侧入口至中庭、每日两次地面无水渍垃圾桶不超过半满、创建时间2026/10/23 21:52:53",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "用户填写区域名称、位置描述和清洁要求后提交创建。",
+          "expected": "区域配置成功保存，在区域列表中可查看该区域的完整信息。",
+          "actual": "用户填写表单并提交后，区域成功保存且在列表中可读回完整信息",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "用户选择清洁区域、执行人、调度周期和起始时间后提交创建定时作业。",
+          "expected": "定时作业成功保存并出现在作业列表中；按调度周期到达执行时间后，系统生成对应的待执行任务实例，任务实例状态可在列表中查看。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "用户选择清洁区域、执行人、调度周期和起始时间后提交创建定时作业。",
+          "expected": "定时作业成功保存并出现在作业列表中；按调度周期到达执行时间后，系统生成对应的待执行任务实例，任务实例状态可在列表中查看。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "用户选择清洁区域、执行人、调度周期和起始时间后提交创建定时作业。",
+          "expected": "定时作业成功保存并出现在作业列表中；按调度周期到达执行时间后，系统生成对应的待执行任务实例，任务实例状态可在列表中查看。"
+        }
+      ],
+      "evidence": "在定时作业页面通过UI创建定时作业：选择区域(一楼A区)、执行人(张三)、调度周期(每日)，作业成功保存并出现在作业列表中。调度器在start_time匹配时自动生成了待处理(pending)状态的任务实例，实例显示在任务实例页面，包含区域名称、执行人、计划日期和状态信息。注：时间输入spinbutton无法通过浏览器修改，使用默认时间保存后通过API更新start_time以验证调度器自动生成逻辑。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5177/ 定时作业页面和任务实例页面"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "用户选择清洁区域、执行人、调度周期和起始时间后提交创建定时作业。",
+          "expected": "定时作业成功保存并出现在作业列表中；按调度周期到达执行时间后，系统生成对应的待执行任务实例，任务实例状态可在列表中查看。",
+          "actual": "定时作业成功保存并出现在作业列表中(一楼A区/张三/每日/活跃)；调度器在21:58自动生成任务实例(状态pending, 日期2026-10-23)，在任务实例列表可见",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "用户选择清洁区域、执行人、调度周期和起始时间后提交创建定时作业。",
+          "expected": "定时作业成功保存并出现在作业列表中；按调度周期到达执行时间后，系统生成对应的待执行任务实例，任务实例状态可在列表中查看。",
+          "actual": "用户通过UI选择区域、执行人、调度周期后提交创建，作业成功保存出现在列表中，任务实例可在列表中查看状态",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "用户选择清洁区域、执行人、调度周期和起始时间后提交创建定时作业。",
+          "expected": "定时作业成功保存并出现在作业列表中；按调度周期到达执行时间后，系统生成对应的待执行任务实例，任务实例状态可在列表中查看。",
+          "actual": "任务实例持久化在服务端SQLite数据库中，通过API和浏览器列表均可读取到同一记录(id=54dbc7dd-572f-440f-8eb3-253617127f08)",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "清洁人员对某作业实例上报障碍（填写障碍描述）；主管在障碍列表中查看该障碍并标记为已处理，填写处理方式。",
+          "expected": "障碍状态从\"待处理\"变为\"已处理\"；关联作业实例状态更新为\"有障碍-已完成\"；障碍列表中该障碍不再出现在待处理列表。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "清洁人员对某作业实例上报障碍（填写障碍描述）；主管在障碍列表中查看该障碍并标记为已处理，填写处理方式。",
+          "expected": "障碍状态从\"待处理\"变为\"已处理\"；关联作业实例状态更新为\"有障碍-已完成\"；障碍列表中该障碍不再出现在待处理列表。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "session-persistence",
+          "action": "清洁人员对某作业实例上报障碍（填写障碍描述）；主管在障碍列表中查看该障碍并标记为已处理，填写处理方式。",
+          "expected": "障碍状态从\"待处理\"变为\"已处理\"；关联作业实例状态更新为\"有障碍-已完成\"；障碍列表中该障碍不再出现在待处理列表。"
+        }
+      ],
+      "evidence": "在障碍处理页面点击上报障碍，选择任务实例(一楼A区/2026-10-23/张三)并填写障碍描述(地面有大量积水无法清洁)后提交。障碍出现在待处理列表，状态为待处理。点击标记处理后，填写处理方式(协调保洁到场排水)和处理结果(积水已清除，区域恢复正常)并确认。障碍状态变为已处理，不再出现在待处理列表。切换到已处理列表可见该障碍记录含完整处理信息。关联任务实例状态更新为有障碍-已完成。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5177/ 障碍处理页面和任务实例页面"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "清洁人员对某作业实例上报障碍（填写障碍描述）；主管在障碍列表中查看该障碍并标记为已处理，填写处理方式。",
+          "expected": "障碍状态从\"待处理\"变为\"已处理\"；关联作业实例状态更新为\"有障碍-已完成\"；障碍列表中该障碍不再出现在待处理列表。",
+          "actual": "障碍状态从待处理变为已处理，处理信息(协调保洁到场排水/积水已清除区域恢复正常)和处理时间(2026/10/23 22:01:00)已记录；关联任务实例状态更新为有障碍-已完成",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "清洁人员对某作业实例上报障碍（填写障碍描述）；主管在障碍列表中查看该障碍并标记为已处理，填写处理方式。",
+          "expected": "障碍状态从\"待处理\"变为\"已处理\"；关联作业实例状态更新为\"有障碍-已完成\"；障碍列表中该障碍不再出现在待处理列表。",
+          "actual": "用户上报障碍(选择实例+填写描述)并提交成功；主管在障碍列表查看待处理障碍并标记处理(填写处理方式和结果)成功",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "session-persistence",
+          "action": "清洁人员对某作业实例上报障碍（填写障碍描述）；主管在障碍列表中查看该障碍并标记为已处理，填写处理方式。",
+          "expected": "障碍状态从\"待处理\"变为\"已处理\"；关联作业实例状态更新为\"有障碍-已完成\"；障碍列表中该障碍不再出现在待处理列表。",
+          "actual": "障碍和任务实例状态变更持久化在服务端，切换页面后状态保持一致：障碍列表显示已处理，任务实例列表显示有障碍-已完成",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "将某耗材库存数量调整至低于其最低提醒阈值；随后将该耗材库存补充至阈值以上。",
+          "expected": "库存低于阈值时，库存不足提醒列表中出现该耗材的提醒；补充至阈值以上后，该提醒可标记消除，不再出现在未处理提醒列表中。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "将某耗材库存数量调整至低于其最低提醒阈值；随后将该耗材库存补充至阈值以上。",
+          "expected": "库存低于阈值时，库存不足提醒列表中出现该耗材的提醒；补充至阈值以上后，该提醒可标记消除，不再出现在未处理提醒列表中。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "将某耗材库存数量调整至低于其最低提醒阈值；随后将该耗材库存补充至阈值以上。",
+          "expected": "库存低于阈值时，库存不足提醒列表中出现该耗材的提醒；补充至阈值以上后，该提醒可标记消除，不再出现在未处理提醒列表中。"
+        }
+      ],
+      "evidence": "在耗材管理页面创建耗材(消毒液, 库存5瓶, 阈值10)，库存低于阈值时系统自动生成库存不足提醒(状态:活跃, 时间:2026/10/23 22:02:14)，提醒出现在库存不足提醒列表。编辑耗材将库存从5更新为15(高于阈值10)后，库存状态变为已完成，提醒自动消除。API确认GET /api/supply-alerts返回空数组，无未处理提醒。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5177/ 耗材管理页面 + API /api/supply-alerts"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "将某耗材库存数量调整至低于其最低提醒阈值；随后将该耗材库存补充至阈值以上。",
+          "expected": "库存低于阈值时，库存不足提醒列表中出现该耗材的提醒；补充至阈值以上后，该提醒可标记消除，不再出现在未处理提醒列表中。",
+          "actual": "库存5低于阈值10时自动生成提醒(活跃状态)，出现在提醒列表；库存补充至15后提醒自动消除，提醒列表为空",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "将某耗材库存数量调整至低于其最低提醒阈值；随后将该耗材库存补充至阈值以上。",
+          "expected": "库存低于阈值时，库存不足提醒列表中出现该耗材的提醒；补充至阈值以上后，该提醒可标记消除，不再出现在未处理提醒列表中。",
+          "actual": "用户创建耗材(低库存触发提醒)并编辑更新库存数量(补充后提醒消除)的交互操作成功",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "将某耗材库存数量调整至低于其最低提醒阈值；随后将该耗材库存补充至阈值以上。",
+          "expected": "库存低于阈值时，库存不足提醒列表中出现该耗材的提醒；补充至阈值以上后，该提醒可标记消除，不再出现在未处理提醒列表中。",
+          "actual": "提醒状态变更持久化在服务端，API GET /api/supply-alerts返回空数组确认无未处理提醒",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "用户选择区域和时间范围后生成报告。",
+          "expected": "报告成功生成并展示，内容包含所选范围内的作业完成率、障碍上报数量与处理率、耗材消耗汇总数据。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "用户选择区域和时间范围后生成报告。",
+          "expected": "报告成功生成并展示，内容包含所选范围内的作业完成率、障碍上报数量与处理率、耗材消耗汇总数据。"
+        }
+      ],
+      "evidence": "在质量报告页面选择区域(一楼A区)和时间范围(2026-09-23至2026-10-23)后点击生成报告。报告成功生成并展示：任务实例总数1，已完成实例数1，作业完成率100.0%；障碍上报总数1，已处理障碍数1，障碍处理率100.0%；耗材消耗汇总表显示消毒液消耗量0。报告包含全部三项要求内容。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5177/ 质量报告页面"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "用户选择区域和时间范围后生成报告。",
+          "expected": "报告成功生成并展示，内容包含所选范围内的作业完成率、障碍上报数量与处理率、耗材消耗汇总数据。",
+          "actual": "报告成功生成并展示，标题为'质量报告 — 一楼A区（2026-09-23 ~ 2026-10-23）'，包含作业完成率100.0%、障碍上报1条处理率100.0%、耗材消耗汇总(消毒液:0)三项内容",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "用户选择区域和时间范围后生成报告。",
+          "expected": "报告成功生成并展示，内容包含所选范围内的作业完成率、障碍上报数量与处理率、耗材消耗汇总数据。",
+          "actual": "用户选择区域(一楼A区)和时间范围(默认起始2026-09-23至2026-10-23)后点击生成报告按钮，报告成功生成并展示完整内容",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 用户能够创建清洁区域配置并成功保存，通过查看操作读回已保存的区域信息。; AC-02: 基于已配置的清洁区域创建定时作业后，系统按调度周期自动生成待执行任务实例，用户可在作业列表查看。; AC-03: 清洁人员可在执行作业时上报障碍，主管可查看待处理障碍并标记处理，障碍状态和关联作业实例状态相应更新。; AC-04: 当耗材库存数量低于最低提醒阈值时系统生成库存不足提醒，用户补充库存后提醒可消除。; AC-05: 用户可按区域和时间范围筛选并生成作业质量报告，报告中包含作业完成率、障碍统计和耗材消耗汇总。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-01 passed: 区域配置创建成功并保存，列表中可查看完整区域信息"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-02 passed: 定时作业创建成功并出现在列表中，调度器自动生成任务实例，任务实例状态可在列表中查看"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-03 passed: 障碍上报成功，主管可查看待处理列表并标记处理，障碍状态和关联任务实例状态正确更新"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-04 passed: 库存低于阈值自动生成提醒，补充后提醒自动消除"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-05 passed: 用户可按区域和时间范围生成作业质量报告，报告包含作业完成率、障碍统计和耗材消耗汇总"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [
+    "时间输入spinbutton组件不兼容标准浏览器文本输入方法(fill/type)，用户需使用ArrowUp逐次递增，影响创建定时作业时设置起始时间的用户体验，但不阻塞核心功能——作业可用默认时间创建，调度器自动生成逻辑已验证"
+  ],
+  "baselineUpdates": []
+}

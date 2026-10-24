@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "商场清洁：开发清洁区域配置、定时作业、障碍处理、耗材提醒和作业质量报告功能",
   "request": "商场清洁：开发清洁区域配置、定时作业、障碍处理、耗材提醒和作业质量报告功能",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-23T09:19:45.199Z"
+  "revision": 1,
+  "createdAt": "2026-10-23T09:19:45.199Z",
+  "completedAt": "2026-10-23T14:05:01.062Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:57b46d6d6c0c125084ea5f6b1887595b2bd402908b65344b17b0d8e80f20ed28",
+    "completedAt": "2026-10-23T14:05:01.062Z"
+  },
+  "updatedAt": "2026-10-23T14:05:01.062Z"
 }
