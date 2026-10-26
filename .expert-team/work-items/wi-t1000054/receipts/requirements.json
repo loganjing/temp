@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:87bc6d7405cd01acb2402987b743246f96a40d4aa1a4b359865cc47dc4ae6237",
+  "createdAt": "2026-10-26T10:24:59.340Z",
+  "timing": {
+    "startedAt": "2026-10-26T10:24:19.576Z",
+    "completedAt": "2026-10-26T10:24:59.340Z",
+    "durationMs": 39764
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000054/requirements.md",
+      "bytes": 3405,
+      "sha256": "sha256:a9abec4636b2b1cb58cd6d362bf515c873a34088b34d281171e24b5de6a25496",
+      "role": "requirements",
+      "purpose": "贪吃蛇游戏需求文档，包含目标、核心行为规则和验收场景",
+      "title": "贪吃蛇游戏需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-01",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-02",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-03",
+      "status": "passed"
+    }
+  ]
+}
