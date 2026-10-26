@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:8fa0e2aef8ee704f5b94af40ca10a76b8d96250ea7c8a143a074caa0bb2f28ac",
+  "createdAt": "2026-10-26T03:23:55.092Z",
+  "timing": {
+    "startedAt": "2026-10-26T03:23:31.781Z",
+    "completedAt": "2026-10-26T03:23:55.091Z",
+    "durationMs": 23310
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000044/requirements.md",
+      "bytes": 873,
+      "sha256": "sha256:91d57b583562c2ce007fd676fd895d6527879f59669484ce55542149ff4b8623",
+      "role": "requirements",
+      "purpose": "166-clock 需求文档：目标、核心行为与验收场景",
+      "title": "166-clock 需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-01",
+      "status": "passed"
+    }
+  ]
+}
