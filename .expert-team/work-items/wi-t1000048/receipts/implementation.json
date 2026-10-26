@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:4e9305fcb022d91764e7001cafa6e4714756c27b25aa674a86d07bd9b3d3f037",
+  "createdAt": "2026-10-26T07:01:22.154Z",
+  "timing": {
+    "startedAt": "2026-10-26T06:31:48.272Z",
+    "completedAt": "2026-10-26T07:01:22.154Z",
+    "durationMs": 1773882
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000048/implementation-report.md",
+      "bytes": 8509,
+      "sha256": "sha256:4bd53f3ff098d1e4ba202bef1c50b9e86ce911af153065ac0bbba8f537d213b5",
+      "purpose": "实现报告：任务拆分、交付物清单、验证结果、AC覆盖矩阵、未验证项、关键设计决策",
+      "title": "实现报告 — 170-餐饮服务"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "unit-tests",
+      "status": "passed"
+    },
+    {
+      "checkId": "frontend-build",
+      "status": "passed"
+    },
+    {
+      "checkId": "integration-smoke",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:9efe4d190d106a40567fba37fd260eaacb9ba915a33aa75e78776bb462245132",
+        "path": ".expert-team/work-items/wi-t1000048/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
