@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000045",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "167-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。",
+  "request": "167-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-26T03:24:08.530Z"
+}
