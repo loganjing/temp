@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:c742d7396d761c7db4a1245ebc8335c899c360b3bc7543025d29c9886776bdc9",
+  "createdAt": "2026-10-26T07:46:23.685Z",
+  "timing": {
+    "startedAt": "2026-10-26T07:40:35.303Z",
+    "completedAt": "2026-10-26T07:46:23.685Z",
+    "durationMs": 348382
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000050/architecture-baseline.md",
+      "bytes": 14653,
+      "sha256": "sha256:58d87043e63486a8025d75cc34f3bfe0f50bfca306a66a7eb64cda975eca9196",
+      "role": "primary",
+      "purpose": "工单系统整体架构、技术栈、CommonApp 模块选择、数据模型、UI 基线、外部集成与设计决策",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000050/technical-contract.md",
+      "bytes": 12629,
+      "sha256": "sha256:1c9844482102619b28e9d8913baa6b8301ef7dff1bc92fae98b0a943d3463f04",
+      "role": "supporting",
+      "purpose": "API 契约、实体 ID 对照表、枚举常量、请求/响应字段定义、审计事件类型、错误格式",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:83512263a7d8f3f00404c139a6dbc2b0ff29bf36815a42a503331b819d0b12a4",
+        "path": ".expert-team/work-items/wi-t1000050/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

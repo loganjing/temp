@@ -1,0 +1,31 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000050/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "工单系统整体架构、技术栈、CommonApp 模块选择、数据模型、UI 基线、外部集成与设计决策"
+    },
+    {
+      "path": "docs/wi-t1000050/technical-contract.md",
+      "role": "supporting",
+      "purpose": "API 契约、实体 ID 对照表、枚举常量、请求/响应字段定义、审计事件类型、错误格式"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    }
+  ],
+  "evidence": [
+    "workspace-init: planDigest=sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17, scaffoldDigest=sha256:84d0423e89974711a1c208ba3506d09976497a7a1d52db900c365d4d342e4eda, packageRoot=app/ticket-system",
+    "platform-baseline.json verified: packageRoot=app/ticket-system, modules=[dbkit,authkit,userkit,permissionkit,auditkit,emailkit]",
+    "app/ticket-system/AGENTS.md exists",
+    "npm install, build, and test all passed during workspace init"
+  ]
+}

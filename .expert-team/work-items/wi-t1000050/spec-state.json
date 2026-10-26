@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 15,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-26T07:38:41.290Z"
+  "updatedAt": "2026-10-26T07:46:23.685Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000050/requirements.md",
+      "sha256": "sha256:c66e43c3dc3797733ca7f89b051828e7800b433a9f838d984eb2c346b5af0618"
+    },
+    "reason": "工单系统明确要求公司级数据隔离与同公司跨用户共享，需服务端权威数据库；三种角色（提交人、管理员、处理人）需要认证与授权；工单完成需发送邮件通知（外部服务集成）；统计仪表盘需服务端聚合计算；操作日志需持久化。这些能力均超出简单前端范围，需完整全栈架构。",
+    "evidence": {
+      "supporting": [
+        "工单按公司隔离，同公司用户可查看和处理工单，需服务端权威数据隔离",
+        "三种角色（提交人/管理员/处理人）有不同权限，需服务端认证与授权",
+        "工单完成后向提交人邮箱发送通知，需外部服务集成",
+        "统计仪表盘需跨公司/部门聚合计算工单量、平均响应时间、满意度",
+        "分类自动分配规则和工单转派涉及多用户/业务组间的数据流转",
+        "操作日志需持久化记录全生命周期关键操作"
+      ],
+      "excluding": [
+        "无证据排除服务端能力需求"
+      ],
+      "unresolved": [
+        "邮件发送技术实现方式（SMTP/第三方服务）未规定",
+        "具体RBAC细粒度权限模型未规定",
+        "数据存储与持久化技术方案未规定"
+      ]
+    },
+    "decidedAt": "2026-10-26T07:40:53.423Z",
+    "sha256": "sha256:83512263a7d8f3f00404c139a6dbc2b0ff29bf36815a42a503331b819d0b12a4"
+  }
 }
