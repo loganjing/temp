@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:7d1306095c05261b6b56cb0109be6f2296c61757af01a5f22fb3303343912478",
+  "createdAt": "2026-10-26T06:15:48.094Z",
+  "timing": {
+    "startedAt": "2026-10-26T06:13:23.990Z",
+    "completedAt": "2026-10-26T06:15:48.094Z",
+    "durationMs": 144104
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000048/requirements.md",
+      "bytes": 9575,
+      "sha256": "sha256:dd8f234101536a275daac1faf7200a557d1cfc96b22bea8f3803846d4dd4d526",
+      "role": "requirements",
+      "purpose": "170-餐饮服务需求规格文档，覆盖配送任务队列、多机路径协调、到桌通知、任务取消和运行监控五个功能模块",
+      "title": "170-餐饮服务 — 需求规格"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-01",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-02",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-03",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-04",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-05",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-06",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-07",
+      "status": "passed"
+    }
+  ]
+}

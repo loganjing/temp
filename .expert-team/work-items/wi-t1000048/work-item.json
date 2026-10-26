@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000048",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "170-餐饮服务\n\n开发配送任务队列、多机路径协调、到桌通知、任务取消和运行监控功能。",
+  "request": "170-餐饮服务\n\n开发配送任务队列、多机路径协调、到桌通知、任务取消和运行监控功能。",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-26T06:13:23.787Z"
+}
