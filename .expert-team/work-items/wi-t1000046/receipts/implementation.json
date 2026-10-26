@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:7be9536db16baad3a243c8dae36eaf4c4ed75cd458a4f10328bfa4ee80b8e843",
+  "createdAt": "2026-10-26T05:48:01.155Z",
+  "timing": {
+    "startedAt": "2026-10-26T05:45:05.644Z",
+    "completedAt": "2026-10-26T05:48:01.155Z",
+    "durationMs": 175511
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000046/implementation-report.md",
+      "bytes": 5907,
+      "sha256": "sha256:1f6655fa54680cf179f361f612b3dac9ee9ca835b6845e5616ae1814d9f81822",
+      "role": "implementation-report",
+      "purpose": "实现报告：变更行为、调用链、文件结构、开发验证证据、验收对照、遗留风险",
+      "title": "实现报告：日常专注时段记录系统（168-timeling）"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "dev-server",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:70d6ce8ffdd9d348ca76a94780e255ea997c079495dc2f06e4b2a13b7a0ece80",
+        "path": ".expert-team/work-items/wi-t1000046/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
