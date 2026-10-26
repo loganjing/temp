@@ -2,18 +2,29 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "implementation_ready",
-  "revision": 3,
+  "state": "completed",
+  "revision": 5,
   "completedActions": [
     "requirements",
     "design",
-    "implementation"
+    "implementation",
+    "verification"
   ],
-  "blockers": [],
+  "blockers": [
+    {
+      "blockerId": "semantic:verification:5",
+      "code": "verification-failed",
+      "category": "semantic",
+      "message": "semantic evaluation did not pass for verification",
+      "retryable": false,
+      "sourceReceiptId": "verification:4",
+      "sourceArtifactSha256": "sha256:f2180b1d8946e53816af6fa5c6d01d64b4294a154222743b727595577e3a61c3"
+    }
+  ],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T05:48:01.155Z",
+  "updatedAt": "2026-10-26T06:28:42.473Z",
   "applicationProfile": {
     "schemaVersion": 1,
     "applicationType": "simple-frontend",

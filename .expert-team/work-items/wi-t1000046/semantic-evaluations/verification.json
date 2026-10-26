@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "actionId": "verification",
+  "status": "blocked",
+  "code": "verification-failed",
+  "findings": [
+    {
+      "id": "DEFECT-001",
+      "taskId": "wi-t1000046",
+      "severity": "blocking",
+      "environment": "dev (Vite dev server, React 18 StrictMode)",
+      "steps": [
+        "清除 localStorage，加载 http://127.0.0.1:5173/",
+        "覆盖 setInterval 为 10ms 加速倒计时",
+        "点击「开始专注」，等待专注阶段倒计时结束"
+      ],
+      "expected": "当日列表新增 1 条专注记录",
+      "actual": "当日列表新增 2 条专注记录（时间戳相差 1ms），累计专注时长翻倍",
+      "problem": "saveSession() 在 setSecondsLeft updater 函数内调用（usePomodoro.js:35），React 18 StrictMode 开发模式双重调用 updater 导致副作用执行两次",
+      "requiredChange": "将 saveSession 调用移出 setSecondsLeft updater 函数，改用 useEffect 监听专注完成条件后执行副作用，或在 updater 外预计算会话数据",
+      "acceptanceEvidence": "待修复后复验"
+    }
+  ],
+  "evaluatorId": "quality.verification",
+  "evaluatorVersion": 1,
+  "sourceReceiptId": "verification:4",
+  "sourceArtifactSha256": "sha256:f2180b1d8946e53816af6fa5c6d01d64b4294a154222743b727595577e3a61c3",
+  "validator": "tools/quality-report-validator.mjs",
+  "evaluatedAt": "2026-10-26T06:28:42.467Z"
+}
