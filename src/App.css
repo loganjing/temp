@@ -1,0 +1,19 @@
+.clock-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #1a1a2e;
+}
+
+.clock-container {
+  text-align: center;
+}
+
+.clock-time {
+  font-size: clamp(3rem, 12vw, 8rem);
+  font-weight: 700;
+  color: #e0e0e0;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
