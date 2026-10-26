@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T03:30:28.193Z"
+  "updatedAt": "2026-10-26T05:43:42.213Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000047/requirements.md",
+      "sha256": "sha256:8c772948c07ea221a7751febab0d61b145a1d419e2a87d7af02a78fd3a148936"
+    },
+    "reason": "工单系统是多用户协作应用，需要服务端权威数据存储。需求涉及三个角色（提交人、处理人、管理员）的权限边界，工单在不同用户间分配和转派，管理员为公司配置业务组和自动分配规则——这些都需要跨用户共享的权威数据、权限控制和后台业务逻辑，无法用浏览器 localStorage 实现。",
+    "evidence": {
+      "supporting": [
+        "需求定义了三个角色及权限边界：提交人、处理人、管理员",
+        "工单分配需要跨用户共享——处理人查看分配给自己的工单",
+        "工单转派涉及处理人在不同业务组/处理人之间变更工单归属",
+        "管理员为公司配置业务组、成员和分类自动分配规则，是共享配置数据",
+        "处理人查看提交人历史工单列表，需要跨工单查询服务端数据",
+        "工单生命周期状态变更（待分配→待处理→完成）需在多用户间同步可见"
+      ],
+      "excluding": [
+        "无明确需求要求纯前端 localStorage 存储",
+        "无证据表明数据仅需单浏览器/设备可用"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-26T05:38:01.668Z",
+    "sha256": "sha256:eaaca1c9b73d8bfc1bd174eec1e8246041485c1897c25b7a9ea3dbfb21ac4434"
+  }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "@commonapp/authkit",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "description": "Portable Hono authentication runtime compiled from the registered commonapp sources",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      },
+      "require": {
+        "types": "./index.d.cts",
+        "default": "./index.cjs"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "hono": "^4.6.0"
+  }
+}

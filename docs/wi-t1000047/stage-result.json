@@ -1,0 +1,32 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000047/architecture-baseline.md",
+      "sha256": "sha256:acde12a35f8e3d887bc16eabaa0fe7859d16dfa0b1075dc2afa1609a859ca4dd",
+      "role": "primary",
+      "purpose": "工单系统整体架构、技术栈、数据模型、UI 基线和运行约定"
+    },
+    {
+      "path": "docs/wi-t1000047/technical-contract.md",
+      "sha256": "sha256:b817b679542c220604efadbec227b9029607189a8a809f6e5efb00baec892785",
+      "role": "supporting",
+      "purpose": "工单系统前后端 API 契约、ID 对照表和错误格式"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planDigest": "sha256:0d99be8fa27a65702980ffcc6aa12035cb221e04bf85aba42490889931c50853",
+      "planSha256": "sha256:a1034ea9bf681efeac449e86c8c5bd0fae6b73ebf8c0deecd80882c250d2a119",
+      "scaffoldDigest": "sha256:afe7f28af13dc68b61e05a58bd7a856cf90e19184bb372aafd2b0e6b07812afc",
+      "packageRoot": "app/ticket-system"
+    }
+  ],
+  "evidence": [
+    "workspace-init:approved 通过，modules=[dbkit,authkit,userkit,permissionkit]，packageRoot=app/ticket-system",
+    "architecture-baseline.md 包含 system-design:scope 和 system-design:architecture-boundaries 标记",
+    "technical-contract.md 定义了全部 API 接口、ID 对照表和错误格式"
+  ]
+}
