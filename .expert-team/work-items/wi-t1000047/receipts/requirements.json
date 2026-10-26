@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:458da795810e3ac4a8f246fd09398b29b454ee96cf03b320d8e1a5cacf505087",
+  "createdAt": "2026-10-26T03:30:28.193Z",
+  "timing": {
+    "startedAt": "2026-10-26T03:29:27.001Z",
+    "completedAt": "2026-10-26T03:30:28.192Z",
+    "durationMs": 61191
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000047/requirements.md",
+      "bytes": 9348,
+      "sha256": "sha256:8c772948c07ea221a7751febab0d61b145a1d419e2a87d7af02a78fd3a148936",
+      "role": "requirements",
+      "purpose": "工单系统需求文档，覆盖工单管理、分配、协作、处理和评价的完整需求与验收场景",
+      "title": "工单系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goals-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-results",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-fabricated-scope",
+      "status": "passed"
+    }
+  ]
+}
