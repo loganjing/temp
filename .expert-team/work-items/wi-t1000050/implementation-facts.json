@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "revision": 6,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:d986638a-2a41-4103-abbc-3be07b904d57",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:c1f309c0-7434-4bdb-ac69-01cfca742453",
+      "createdAt": "2026-10-26T07:51:46.150Z",
+      "executionId": "ses_e88cdfce1ffeYmAKCsbH72ad08",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:d986638a-2a41-4103-abbc-3be07b904d57",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:95e5b4b2-3b3e-427b-adde-bed138b944bb",
+      "createdAt": "2026-10-26T07:51:46.322Z",
+      "executionId": "ses_e88cdc9afffefWG8VV0eLphbdN",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:d986638a-2a41-4103-abbc-3be07b904d57",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_e88cdfce1ffeYmAKCsbH72ad08",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [],
+        "verification": [
+          {
+            "checkId": "typecheck:server",
+            "status": "passed",
+            "command": "npm run typecheck:server",
+            "exitCode": 0
+          },
+          {
+            "checkId": "test",
+            "status": "passed",
+            "command": "npm test",
+            "exitCode": 0
+          },
+          {
+            "checkId": "build",
+            "status": "passed",
+            "command": "npm run build",
+            "exitCode": 0
+          }
+        ]
+      },
+      "createdAt": "2026-10-26T08:05:08.122Z"
+    },
+    {
+      "planId": "plan:d986638a-2a41-4103-abbc-3be07b904d57",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_e88cdc9afffefWG8VV0eLphbdN",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [],
+        "verification": [
+          {
+            "checkId": "typecheck:client",
+            "status": "passed",
+            "command": "npm run typecheck:client",
+            "exitCode": 0
+          },
+          {
+            "checkId": "build:client",
+            "status": "passed",
+            "command": "npm run build:client",
+            "exitCode": 0
+          }
+        ]
+      },
+      "createdAt": "2026-10-26T08:05:08.276Z"
+    }
+  ],
+  "repairs": [],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:c1f309c0-7434-4bdb-ac69-01cfca742453",
+      "actorId": "expert-team-coordinator",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000050",
+          "planId": "plan:d986638a-2a41-4103-abbc-3be07b904d57",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "工单系统后端实现：API 路由、数据库迁移、服务层、邮件通知与审计日志",
+          "objective": "## 后端实现目标\n\n基于已批准的技术契约 `technical-contract.md`，在现有 Hono 脚手架上实现工单系统全部后端 API 与数据持久化。\n\n### 数据库迁移\n\n- 新增迁移文件 `src/server/migrations/sqlite/0004_business_tables.sql`，创建 `companies`、`departments`、`business_groups`、`business_group_members`、`categories`、`assignment_rules`、`tickets`、`ticket_replies`、`satisfaction_ratings` 表，字段与 `architecture-baseline.md` 数据模型一致\n\n### 服务层与路由\n\n在 `src/server/` 下实现以下业务路由（注册到现有 `registerProtectedRoutes`），所有查询按当前用户 `companyId` 隔离：\n\n- **工单 CRUD**：`GET/POST /api/tickets`、`GET /api/tickets/:id`\n- **工单回复**：`POST /api/tickets/:id/replies`\n- **工单转派**：`POST /api/tickets/:id/transfer`\n- **工单完成**：`POST /api/tickets/:id/complete`（触发 emailkit 邮件通知）\n- **工单取消**：`POST /api/tickets/:id/cancel`\n- **满意度评价**：`POST /api/tickets/:id/rating`（一次性约束）\n- **提交人信息**：`GET /api/tickets/:id/submitter-info`（含历史工单）\n- **业务组管理**：`GET/POST /api/business-groups`、`POST /api/business-groups/:id/members`、`DELETE /api/business-groups/:id/members/:userId`\n- **分类自动分配规则**：`GET/POST /api/assignment-rules`、`DELETE /api/assignment-rules/:id`\n- **统计仪表盘**：`GET /api/statistics/dashboard`\n- **工单分布**：`GET /api/statistics/distribution`\n- **操作日志**：`GET /api/audit-logs`\n\n### 平台绑定\n\n- 在 `src/server/platform/bootstrap.ts` 中初始化 permissionkit（RBAC 角色注册）、auditkit（审计事件记录）、emailkit（SMTP 邮件发送），按环境变量配置\n- 在 `src/server/platform/auth.ts` 中扩展角色解析，将用户角色从单一 `user` 扩展为 `submitter`/`admin`/`processor`\n\n### 共享类型\n\n- 在 `src/shared/` 下创建平台中立的枚举常量与类型定义（TicketStatus、Priority、Role 等），供前后端引用\n\n### 验证\n\n- `npm run typecheck:server` 通过\n- `npm run build` 通过\n- 路由按技术契约字段和错误格式实现",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000050/requirements.md",
+              "sha256": "sha256:c66e43c3dc3797733ca7f89b051828e7800b433a9f838d984eb2c346b5af0618"
+            },
+            {
+              "path": "docs/wi-t1000050/architecture-baseline.md",
+              "sha256": "sha256:58d87043e63486a8025d75cc34f3bfe0f50bfca306a66a7eb64cda975eca9196"
+            },
+            {
+              "path": "docs/wi-t1000050/technical-contract.md",
+              "sha256": "sha256:1c9844482102619b28e9d8913baa6b8301ef7dff1bc92fae98b0a943d3463f04"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/migrations/sqlite/0004_business_tables.sql",
+            "app/ticket-system/src/server/routes.ts",
+            "app/ticket-system/src/server/platform/bootstrap.ts",
+            "app/ticket-system/src/server/platform/auth.ts",
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [],
+          "expectedOutput": {
+            "artifactPaths": []
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-26T07:51:46.150Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:95e5b4b2-3b3e-427b-adde-bed138b944bb",
+      "actorId": "expert-team-coordinator",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000050",
+          "planId": "plan:d986638a-2a41-4103-abbc-3be07b904d57",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "工单系统前端实现：工单工作台、详情页、统计仪表盘、管理配置与认证流程",
+          "objective": "## 前端实现目标\n\n基于已批准的技术契约 `technical-contract.md` 和 `architecture-baseline.md` UI 基线，在现有 React + Vite 脚手架上实现工单系统全部前端页面与交互。\n\n### 应用导航与壳\n\n- 重写 `src/client/App.tsx`，构建左侧导航栏 + 顶部上下文栏的应用壳，支持路由切换：工单工作台、统计仪表盘、管理配置、操作日志\n- 保持现有认证流程（bootstrap、login、password change），认证后进入工单主界面\n\n### 页面实现\n\n- **工单工作台**：左侧工单列表（搜索、筛选状态/分类/优先级、排序创建时间/优先级、按公司筛选），右侧选中工单详情\n- **工单详情**：展示主题、描述、分类、优先级、状态、提交人信息区域、多轮回复列表与回复输入、操作按钮（转派、完成、取消、评价）\n- **工单创建**：模态表单（主题、描述、分类、SLA 优先级）\n- **提交人信息**：在工单详情中展示提交人姓名、公司、部门、历史工单列表\n- **统计仪表盘**：KPI 卡片行（工单量、平均响应时间、满意度）、热点问题列表、公司/部门维度分布\n- **管理配置**：业务组列表与成员管理、分类自动分配规则配置\n- **操作日志**：操作日志查询页面\n\n### API 集成\n\n- 通过 `src/client/platform/api-client.ts` 调用后端 API，前端使用契约定义的类型，不自行发明 API 行为\n- 从 `src/shared/` 引用枚举常量与类型\n\n### 全局状态\n\n- 加载骨架屏、空数据空态、错误提示卡片、成功 Toast 通知\n- Tailwind CSS 样式，Modern SaaS 风格\n\n### 验证\n\n- `npm run typecheck:client` 通过\n- `npm run build:client` 通过",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000050/requirements.md",
+              "sha256": "sha256:c66e43c3dc3797733ca7f89b051828e7800b433a9f838d984eb2c346b5af0618"
+            },
+            {
+              "path": "docs/wi-t1000050/architecture-baseline.md",
+              "sha256": "sha256:58d87043e63486a8025d75cc34f3bfe0f50bfca306a66a7eb64cda975eca9196"
+            },
+            {
+              "path": "docs/wi-t1000050/technical-contract.md",
+              "sha256": "sha256:1c9844482102619b28e9d8913baa6b8301ef7dff1bc92fae98b0a943d3463f04"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/App.tsx",
+            "app/ticket-system/src/client/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [],
+          "expectedOutput": {
+            "artifactPaths": []
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-10-26T07:51:46.322Z"
+    },
+    {
+      "requestId": "cli:submit:T01:f31b6579-dc06-474c-954f-5a3f1f4c52fd",
+      "actorId": "expert-team-coordinator",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-26T07:52:27.729Z"
+    },
+    {
+      "requestId": "cli:submit:T02:5c8e79cb-7a53-4e44-b791-3a6bb7bf44e1",
+      "actorId": "expert-team-coordinator",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-10-26T07:52:27.878Z"
+    },
+    {
+      "requestId": "cli:complete:T01:474bad47-a887-4450-a304-cab73e4cff91",
+      "actorId": "expert-team-coordinator",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [],
+          "verification": [
+            {
+              "checkId": "typecheck:server",
+              "status": "passed",
+              "command": "npm run typecheck:server",
+              "exitCode": 0
+            },
+            {
+              "checkId": "test",
+              "status": "passed",
+              "command": "npm test",
+              "exitCode": 0
+            },
+            {
+              "checkId": "build",
+              "status": "passed",
+              "command": "npm run build",
+              "exitCode": 0
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-26T08:05:08.122Z"
+    },
+    {
+      "requestId": "cli:complete:T02:cfad35b4-d08e-452e-b397-df3fb7a1d01d",
+      "actorId": "expert-team-coordinator",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [],
+          "verification": [
+            {
+              "checkId": "typecheck:client",
+              "status": "passed",
+              "command": "npm run typecheck:client",
+              "exitCode": 0
+            },
+            {
+              "checkId": "build:client",
+              "status": "passed",
+              "command": "npm run build:client",
+              "exitCode": 0
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-10-26T08:05:08.276Z"
+    }
+  ]
+}

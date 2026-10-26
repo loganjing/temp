@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:9ce9f55f9c94aef01dbb4f1fa0f3f849b69dab7058a8552d60abc1ef6289e402",
+  "createdAt": "2026-10-26T08:05:51.898Z",
+  "timing": {
+    "startedAt": "2026-10-26T07:49:02.327Z",
+    "completedAt": "2026-10-26T08:05:51.898Z",
+    "durationMs": 1009571
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000050/implementation-report.md",
+      "bytes": 4910,
+      "sha256": "sha256:e04df7b8f35c83cdcb9900faa53deec1e180aa794f3f283b725e99e0e330da42",
+      "role": "primary",
+      "purpose": "工单系统实现阶段报告，包含两个并行任务的产物清单、验证结果和验收标准覆盖",
+      "title": "实现报告"
+    },
+    {
+      "path": "docs/wi-t1000050/development-task-plan.json",
+      "bytes": 7366,
+      "sha256": "sha256:a2a966f2f82dfcf5b094eee06ec7a67335f6ccddcf81c49dbefa778b5b3dbec1",
+      "role": "supporting",
+      "purpose": "机器可读开发任务计划"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build",
+      "status": "passed",
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:83512263a7d8f3f00404c139a6dbc2b0ff29bf36815a42a503331b819d0b12a4",
+        "path": ".expert-team/work-items/wi-t1000050/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
