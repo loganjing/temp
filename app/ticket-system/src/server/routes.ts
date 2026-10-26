@@ -2,6 +2,12 @@ import { randomUUID } from 'node:crypto'
 import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { createBusinessServices } from './services/modules'
+import { createTicketService } from './services/ticket-service'
+import { registerTicketRoutes } from './routes/tickets'
+import { registerGroupRoutes } from './routes/groups'
+import { registerStatsRoutes } from './routes/stats'
+import { registerLogRoutes } from './routes/logs'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -141,4 +147,13 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  // Business routes: ticket system (contracts 3.1–3.8).
+  const services = createBusinessServices(platform)
+  const ticket = createTicketService(services)
+  const routeContext = { services, ticket }
+  registerTicketRoutes(app, routeContext)
+  registerGroupRoutes(app, routeContext)
+  registerStatsRoutes(app, routeContext)
+  registerLogRoutes(app, routeContext)
 }

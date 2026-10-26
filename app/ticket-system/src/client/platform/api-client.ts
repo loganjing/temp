@@ -18,3 +18,37 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
   const detail = error && typeof error === 'object' ? error as Record<string, unknown> : undefined
   throw new ApiRequestError(typeof detail?.message === 'string' ? detail.message : typeof error === 'string' ? error : `HTTP ${response.status}`, response.status, typeof detail?.code === 'string' ? detail.code : undefined)
 }
+
+export interface Pagination {
+  page: number
+  limit: number
+  total: number
+}
+
+export interface Paginated<T> {
+  data: T[]
+  pagination: Pagination
+}
+
+// 从查询参数对象构造 query string，跳过 undefined / null / 空字符串。
+export function buildQuery(params: Record<string, string | number | boolean | undefined | null>): string {
+  const sp = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null || value === '') continue
+    sp.set(key, String(value))
+  }
+  const str = sp.toString()
+  return str ? `?${str}` : ''
+}
+
+export function errorCodeOf(error: unknown): string | undefined {
+  return error instanceof ApiRequestError ? error.code : undefined
+}
+
+export function isForbidden(error: unknown): boolean {
+  return error instanceof ApiRequestError && error.status === 403
+}
+
+export function isConflict(error: unknown): boolean {
+  return error instanceof ApiRequestError && error.status === 409
+}

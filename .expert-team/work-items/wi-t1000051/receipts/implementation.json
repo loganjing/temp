@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:67c57e16bcd597165f7554cac9bf4e5223ec402b45c4ec1a1670088b43fe23dc",
+  "createdAt": "2026-10-26T08:37:24.266Z",
+  "timing": {
+    "startedAt": "2026-10-26T08:10:32.828Z",
+    "completedAt": "2026-10-26T08:37:24.266Z",
+    "durationMs": 1611438
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000051/implementation-report.md",
+      "bytes": 6522,
+      "sha256": "sha256:2289c4542416d35b95ed368e947dfadbac090dfa2678b80db611a50c679a8987",
+      "purpose": "实现报告：任务清单、验证证据、AC覆盖矩阵、遗留项",
+      "title": "实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "npm-test",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:1ccfb8d08cfae5a1069ece0afe85fc08e0871323fffcf1197fdd5203c42633fa",
+        "path": ".expert-team/work-items/wi-t1000051/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

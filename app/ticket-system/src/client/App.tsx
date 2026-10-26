@@ -1,8 +1,16 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { apiRequest } from './platform/api-client'
+import { AppShell } from './components/AppShell'
+import WorkbenchPage from './pages/WorkbenchPage'
+import CreateTicketPage from './pages/CreateTicketPage'
+import TicketDetailPage from './pages/TicketDetailPage'
+import BusinessGroupsPage from './pages/BusinessGroupsPage'
+import DashboardPage from './pages/DashboardPage'
+import LogsPage from './pages/LogsPage'
 import UsersPage from './admin/UsersPage'
+import type { CurrentUser } from './types/auth'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
 type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
 
 export default function App() {
@@ -66,6 +74,12 @@ export default function App() {
     }
   }
 
+  const signOut = () => {
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
+  }
+
   if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
   if (state === 'required' || state === 'login') return (
     <main className="shell auth-shell">
@@ -96,13 +110,22 @@ export default function App() {
       </section>
     </main>
   )
+
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppShell user={user} onSignOut={signOut} />}>
+          <Route index element={<Navigate to="/workbench" replace />} />
+          <Route path="/workbench" element={<WorkbenchPage />} />
+          <Route path="/tickets/new" element={<CreateTicketPage />} />
+          <Route path="/tickets/:id" element={<TicketDetailPage user={user} />} />
+          <Route path="/business-groups" element={<BusinessGroupsPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/logs" element={<LogsPage />} />
+          <Route path="/admin/users" element={<UsersPage />} />
+          <Route path="*" element={<Navigate to="/workbench" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
