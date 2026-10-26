@@ -1,0 +1,50 @@
+# 验证报告
+
+## 验证结论
+
+pass
+
+## 摘要
+
+验证贪吃蛇游戏的3项验收场景：方向控制移动吃食增长得分、碰撞结束显示最终得分、游戏结束后可重新开始
+
+变更行为：React 18 + Vite + Canvas 2D 贪吃蛇游戏，支持键盘方向键/WASD控制、持续自动移动、反向限制、吃食增长计分、边界/自身碰撞结束、游戏结束后重新开始。DEV模式提供window.__snakeTest测试钩子(step/setFood/getState)用于确定性验证。
+
+非目标：
+- —
+
+## 验证环境
+
+Vite dev server (http://127.0.0.1:5175) Vite v5.4.21, React 18, TypeScript；纯前端单机游戏，无后端数据，浏览器内存状态
+
+## 验证检查
+
+| 检查项 | 类型 | 状态 | 证据 |
+|---|---|---|---|
+| QA-01 | browser-ui | passed | Restarted game via UI button and immediately fixed food at (12,10) using window.__snakeTest.setFood to pause auto-loop. Snake started at initial position [(10,10),(9,10),(8,10)] direction RIGHT, score 0. Called step() twice: first step moved head to (11,10), second step moved head to (12,10) and ate food. getState() confirmed snake grew from 3 to 4 segments [(12,10),(11,10),(10,10),(9,10)], score increased from 0 to 1, new food spawned at random blank position (1,14), gameState remained running.<br>AC-01: Snake ate food, body grew from 3 to 4 segments, score increased from 0 to 1, new food appeared at blank position (1,14), gameState running (passed) |
+| QA-02 | browser-ui | passed | After QA-01 (snake at head x=12, score 1, running), stepped 8 times RIGHT. getState() confirmed head reached x=19 then 8th step triggered boundary collision (x=20 out of bounds), gameState became 'over', score remained 1. UI snapshot showed '得分: 1' and '游戏结束' text with '重新开始' button visible.<br>AC-02: Snake hit right boundary, gameState became 'over', UI displayed '得分: 1' and '游戏结束' with restart button (passed) |
+| QA-03 | browser-ui | passed | After game over (QA-02), clicked '重新开始' button via batch with eval. getState() immediately confirmed reset: snake=[(10,10),(9,10),(8,10)] (3 segments), score=0, gameState='running'. Then set food at (5,10) to pause, pressed ArrowUp, called step(): getState() confirmed snake head moved from (10,10) to (10,9) with direction UP, proving direction control works after restart. UI text showed '得分: 0' and '进行中'.<br>AC-03: After restart: snake reset to 3 segments at initial position, score 0, gameState running. Direction control (ArrowUp) worked, snake moved upward to (10,9). UI showed '得分: 0' and '进行中'. (passed) |
+
+## 验收覆盖
+
+| 验收项 | 结果 | 证据 |
+|---|---|---|
+| AC-01 | met | QA-01 |
+| AC-02 | met | QA-02 |
+| AC-03 | met | QA-03 |
+
+## 缺陷
+
+- —
+
+## 未执行项
+
+- —
+
+## 剩余风险
+
+- —
+
+<!-- structured-report:v1
+{"decision":"pass","summary":{"objective":"验证贪吃蛇游戏的3项验收场景：方向控制移动吃食增长得分、碰撞结束显示最终得分、游戏结束后可重新开始","changedBehavior":"React 18 + Vite + Canvas 2D 贪吃蛇游戏，支持键盘方向键/WASD控制、持续自动移动、反向限制、吃食增长计分、边界/自身碰撞结束、游戏结束后重新开始。DEV模式提供window.__snakeTest测试钩子(step/setFood/getState)用于确定性验证。","nonGoals":[],"riskLabels":[]},"environment":{"name":"Vite dev server (http://127.0.0.1:5175)","version":"Vite v5.4.21, React 18, TypeScript","dataProfile":"纯前端单机游戏，无后端数据，浏览器内存状态"},"verification":[{"checkId":"QA-01","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-01","kind":"interaction","action":"开始游戏后，通过方向输入控制蛇朝食物方向移动并吃到食物。","expected":"蛇身长度增加一节，分数增加，游戏区域内在空白位置出现新的食物。"}],"evidence":"Restarted game via UI button and immediately fixed food at (12,10) using window.__snakeTest.setFood to pause auto-loop. Snake started at initial position [(10,10),(9,10),(8,10)] direction RIGHT, score 0. Called step() twice: first step moved head to (11,10), second step moved head to (12,10) and ate food. getState() confirmed snake grew from 3 to 4 segments [(12,10),(11,10),(10,10),(9,10)], score increased from 0 to 1, new food spawned at random blank position (1,14), gameState remained running.","observation":{"method":"browser","actor":"expert","reference":"agent_browser eval window.__snakeTest step/setFood/getState on http://127.0.0.1:5175"},"assertions":[{"requirementId":"AC-01","kind":"interaction","action":"开始游戏后，通过方向输入控制蛇朝食物方向移动并吃到食物。","expected":"蛇身长度增加一节，分数增加，游戏区域内在空白位置出现新的食物。","actual":"Snake ate food, body grew from 3 to 4 segments, score increased from 0 to 1, new food appeared at blank position (1,14), gameState running","status":"passed"}]},{"checkId":"QA-02","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-02","kind":"interaction","action":"控制蛇朝边界移动，使蛇头撞到边界（或绕行后使蛇头撞到自身）。","expected":"游戏停止移动，界面显示游戏结束与最终得分。"}],"evidence":"After QA-01 (snake at head x=12, score 1, running), stepped 8 times RIGHT. getState() confirmed head reached x=19 then 8th step triggered boundary collision (x=20 out of bounds), gameState became 'over', score remained 1. UI snapshot showed '得分: 1' and '游戏结束' text with '重新开始' button visible.","observation":{"method":"browser","actor":"expert","reference":"agent_browser eval step x8 + getState + snapshot on http://127.0.0.1:5175"},"assertions":[{"requirementId":"AC-02","kind":"interaction","action":"控制蛇朝边界移动，使蛇头撞到边界（或绕行后使蛇头撞到自身）。","expected":"游戏停止移动，界面显示游戏结束与最终得分。","actual":"Snake hit right boundary, gameState became 'over', UI displayed '得分: 1' and '游戏结束' with restart button","status":"passed"}]},{"checkId":"QA-03","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-03","kind":"interaction","action":"在游戏结束状态下触发重新开始操作。","expected":"进入新的游戏局面，蛇恢复初始长度、分数归零，可继续方向控制与移动。"}],"evidence":"After game over (QA-02), clicked '重新开始' button via batch with eval. getState() immediately confirmed reset: snake=[(10,10),(9,10),(8,10)] (3 segments), score=0, gameState='running'. Then set food at (5,10) to pause, pressed ArrowUp, called step(): getState() confirmed snake head moved from (10,10) to (10,9) with direction UP, proving direction control works after restart. UI text showed '得分: 0' and '进行中'.","observation":{"method":"browser","actor":"expert","reference":"agent_browser batch click+eval+press+eval on http://127.0.0.1:5175"},"assertions":[{"requirementId":"AC-03","kind":"interaction","action":"在游戏结束状态下触发重新开始操作。","expected":"进入新的游戏局面，蛇恢复初始长度、分数归零，可继续方向控制与移动。","actual":"After restart: snake reset to 3 segments at initial position, score 0, gameState running. Direction control (ArrowUp) worked, snake moved upward to (10,9). UI showed '得分: 0' and '进行中'.","status":"passed"}]}],"coverage":{"acceptance":"AC-01: 玩家能用方向控制让蛇移动，蛇吃到食物后身体增长一节、得分增加，并出现新的食物。; AC-02: 蛇头碰到边界或自身时游戏结束，并显示最终得分。; AC-03: 游戏结束后，玩家可启动一局新的游戏，新游戏初始为短蛇、零分。","mandatoryAcceptance":[{"id":"AC-01","source":"requirements.md#AC-01","surface":"user-interface","status":"met","checkIds":["QA-01"],"evidenceKinds":["interaction"],"evidence":"QA-01 passed: snake moved RIGHT, ate fixed food at (12,10), grew from 3 to 4 segments, score 0→1, new food spawned at blank position"},{"id":"AC-02","source":"requirements.md#AC-02","surface":"user-interface","status":"met","checkIds":["QA-02"],"evidenceKinds":["interaction"],"evidence":"QA-02 passed: snake hit right boundary, gameState 'over', UI displayed final score 1 and '游戏结束'"},{"id":"AC-03","source":"requirements.md#AC-03","surface":"user-interface","status":"met","checkIds":["QA-03"],"evidenceKinds":["interaction"],"evidence":"QA-03 passed: after game over, restart reset snake to 3 segments, score 0, gameState running; direction control and movement confirmed"}],"riskLabels":[],"verificationTypes":["browser-ui"]},"defects":[],"skippedChecks":[],"residualRisks":[],"baselineUpdates":[]}
+-->
