@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 15,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-26T10:24:59.340Z"
+  "updatedAt": "2026-10-26T10:29:31.417Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000054/requirements.md",
+      "sha256": "sha256:a9abec4636b2b1cb58cd6d362bf515c873a34088b34d281171e24b5de6a25496"
+    },
+    "reason": "需求描述的是一个纯前端贪吃蛇游戏：网格移动、吃食物增长、碰撞结束、得分显示、可重启，所有交互均在浏览器界面内完成。需求未提及任何服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备数据共享，游戏状态在内存中维护即可，无需持久化。",
+    "evidence": {
+      "supporting": [
+        "AC-01/02/03 均为用户界面交互验收，证据类型为 runtime-render + interaction，不涉及 API 或后台",
+        "需求 2.2-2.6 描述的移动、食物、碰撞、得分、状态流转全部在浏览器内运行",
+        "需求第8行明确未规定技术栈，且未提及任何服务端能力要求",
+        "需求未要求最高分跨设备同步或用户登录，无服务端权威数据需求"
+      ],
+      "excluding": [
+        "需求无服务端权威数据要求——游戏状态在浏览器内存中维护",
+        "需求无认证/权限要求——单用户本地游戏",
+        "需求无后台任务要求——游戏循环在前端运行",
+        "需求无外部服务集成要求——不调用任何外部 API",
+        "需求无跨用户/设备数据共享要求——无多人模式或数据同步"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-26T10:28:41.453Z",
+    "sha256": "sha256:e4dc2b603332e764f53ecdb1e574a3eddf504e0385078a2ee1f6b06c8c4126f0"
+  }
 }

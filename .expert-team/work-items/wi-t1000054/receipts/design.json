@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:81d1fe980b0db9664494be5783b406d702b18ed3c07563469ea29fee029a7048",
+  "createdAt": "2026-10-26T10:29:31.417Z",
+  "timing": {
+    "startedAt": "2026-10-26T10:28:23.678Z",
+    "completedAt": "2026-10-26T10:29:31.417Z",
+    "durationMs": 67739
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000054/architecture-baseline.md",
+      "bytes": 4581,
+      "sha256": "sha256:b464b510cd8de90beeceab710b60eb8493cce78b2595659560e2ae8751b92ad5",
+      "role": "primary",
+      "purpose": "贪吃蛇游戏简单前端架构基线：应用类型、页面交互范围、数据归属、实现入口、核心技术决策、可重复验证方式",
+      "title": "贪吃蛇游戏 — 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:e4dc2b603332e764f53ecdb1e574a3eddf504e0385078a2ee1f6b06c8c4126f0",
+        "path": ".expert-team/work-items/wi-t1000054/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
