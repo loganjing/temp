@@ -208,36 +208,36 @@ export async function listTickets(
     pageSize: number
   },
 ): Promise<{ items: TicketListItem[]; total: number; page: number; pageSize: number }> {
-  const conditions: string[] = ['company_id = ?']
+  const conditions: string[] = ['t.company_id = ?']
   const values: unknown[] = [params.companyId]
 
   if (params.status) {
-    conditions.push('status = ?')
+    conditions.push('t.status = ?')
     values.push(params.status)
   }
   if (params.category) {
-    conditions.push('category = ?')
+    conditions.push('t.category = ?')
     values.push(params.category)
   }
   if (params.slaPriority) {
-    conditions.push('sla_priority = ?')
+    conditions.push('t.sla_priority = ?')
     values.push(params.slaPriority)
   }
   if (params.groupId) {
-    conditions.push('group_id = ?')
+    conditions.push('t.group_id = ?')
     values.push(params.groupId)
   }
   if (params.search) {
-    conditions.push('(title LIKE ? OR CAST(id AS TEXT) LIKE ?)')
+    conditions.push('(t.title LIKE ? OR CAST(t.id AS TEXT) LIKE ?)')
     values.push(`%${params.search}%`, `%${params.search}%`)
   }
 
   const where = conditions.join(' AND ')
-  const orderBy = params.sortBy === 'slaPriority' ? 'sla_priority DESC' : 'created_at DESC'
+  const orderBy = params.sortBy === 'slaPriority' ? 't.sla_priority DESC' : 't.created_at DESC'
   const offset = (params.page - 1) * params.pageSize
 
   const countRow = await db.queryOne<{ count: number }>({
-    text: `SELECT COUNT(*) AS count FROM tickets WHERE ${where}`,
+    text: `SELECT COUNT(*) AS count FROM tickets t WHERE ${where}`,
     params: values,
   })
   const total = countRow?.count ?? 0

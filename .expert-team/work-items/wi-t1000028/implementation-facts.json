@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "attempts": [
     {
       "attempt": 1,
@@ -49,7 +49,57 @@
       "createdAt": "2026-10-23T11:34:30.096Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T01:T01:2",
+      "planId": "plan:b32fa4bc-ceb3-4fb2-85f2-629d43c78ec0",
+      "taskId": "T01",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEFECT-001",
+        "DEFECT-002"
+      ],
+      "findings": [
+        {
+          "id": "DEFECT-001",
+          "taskId": "T01",
+          "severity": "blocking",
+          "environment": "local-dev (Node 24, SQLite, Hono backend, Vite frontend on 127.0.0.1:5177)",
+          "steps": [
+            "Start backend with isolated QA database (DB_PATH=/tmp/qa-verify-tickets.sqlite, QA_RUN_ID=qa-verify-1792761453)",
+            "Login as admin (admin-qa-verify-1792761453@comp-a.test)",
+            "Call GET /api/tickets or open workbench page in browser"
+          ],
+          "expected": "Workbench displays ticket list; GET /api/tickets returns 200 with items array",
+          "actual": "GET /api/tickets returns 500 { error: { code: INTERNAL_ERROR } }; workbench shows 'Internal server error' labels on all filter controls and a retry button",
+          "problem": "listTickets SQL query in ticket-service.ts:211-253 uses bare 'company_id' in WHERE clause conditions. When the query joins tickets table (t) with users table (u) on line 246-249, both tables have a 'company_id' column, making the reference ambiguous. SQLite throws 'ambiguous column name: company_id'.",
+          "requiredChange": "Qualify all column references in the WHERE conditions (lines 211-233) with 't.' prefix, e.g. 't.company_id = ?' instead of 'company_id = ?'. Similarly qualify 'status', 'category', 'sla_priority', 'group_id' as 't.status', 't.category', 't.sla_priority', 't.group_id'.",
+          "acceptanceEvidence": "Not yet retested - fix required from T01 development owner"
+        },
+        {
+          "id": "DEFECT-002",
+          "taskId": "T01",
+          "severity": "blocking",
+          "environment": "local-dev (Node 24, SQLite, Hono backend, Vite frontend on 127.0.0.1:5177)",
+          "steps": [
+            "Login as admin via POST /api/auth/login",
+            "Check stored user object in localStorage",
+            "Navigate to /admin, /stats, /audit-logs"
+          ],
+          "expected": "Admin user can access management, statistics, and audit log pages; navigation shows admin-only links (管理后台, 统计分析, 操作日志)",
+          "actual": "Login response returns { roles: ['admin'] } but frontend AuthUser type expects { role: 'admin', companyName: string, department: string }. Stored user has no 'role' field (undefined), so AppLayout's user?.role === 'admin' check fails and admin-only nav items are hidden. RequireAdmin component redirects /admin, /stats, /audit-logs to /workbench.",
+          "problem": "Backend login endpoint (routes.ts:73-83) returns { roles: string[] } without roleName, companyName, or department. Frontend (hooks/types.ts:13-21) expects { role: string, companyName: string, department: string }. The API contract between backend and frontend is mismatched.",
+          "requiredChange": "Backend login response should map roles[0] to a 'role' field (or frontend should read from roles array), and include companyName and department in the user response object. Update either routes.ts login handler or frontend AuthUser type and useAuth/AppLayout to use the correct field names.",
+          "acceptanceEvidence": "Not yet retested - fix required from T01/T02 development owner"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-23T13:26:01.871Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -267,6 +317,66 @@
         }
       },
       "createdAt": "2026-10-23T11:34:30.096Z"
+    },
+    {
+      "requestId": "verification:4:repair:T01",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T01:T01:2",
+          "planId": "plan:b32fa4bc-ceb3-4fb2-85f2-629d43c78ec0",
+          "taskId": "T01",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEFECT-001",
+            "DEFECT-002"
+          ],
+          "findings": [
+            {
+              "id": "DEFECT-001",
+              "taskId": "T01",
+              "severity": "blocking",
+              "environment": "local-dev (Node 24, SQLite, Hono backend, Vite frontend on 127.0.0.1:5177)",
+              "steps": [
+                "Start backend with isolated QA database (DB_PATH=/tmp/qa-verify-tickets.sqlite, QA_RUN_ID=qa-verify-1792761453)",
+                "Login as admin (admin-qa-verify-1792761453@comp-a.test)",
+                "Call GET /api/tickets or open workbench page in browser"
+              ],
+              "expected": "Workbench displays ticket list; GET /api/tickets returns 200 with items array",
+              "actual": "GET /api/tickets returns 500 { error: { code: INTERNAL_ERROR } }; workbench shows 'Internal server error' labels on all filter controls and a retry button",
+              "problem": "listTickets SQL query in ticket-service.ts:211-253 uses bare 'company_id' in WHERE clause conditions. When the query joins tickets table (t) with users table (u) on line 246-249, both tables have a 'company_id' column, making the reference ambiguous. SQLite throws 'ambiguous column name: company_id'.",
+              "requiredChange": "Qualify all column references in the WHERE conditions (lines 211-233) with 't.' prefix, e.g. 't.company_id = ?' instead of 'company_id = ?'. Similarly qualify 'status', 'category', 'sla_priority', 'group_id' as 't.status', 't.category', 't.sla_priority', 't.group_id'.",
+              "acceptanceEvidence": "Not yet retested - fix required from T01 development owner"
+            },
+            {
+              "id": "DEFECT-002",
+              "taskId": "T01",
+              "severity": "blocking",
+              "environment": "local-dev (Node 24, SQLite, Hono backend, Vite frontend on 127.0.0.1:5177)",
+              "steps": [
+                "Login as admin via POST /api/auth/login",
+                "Check stored user object in localStorage",
+                "Navigate to /admin, /stats, /audit-logs"
+              ],
+              "expected": "Admin user can access management, statistics, and audit log pages; navigation shows admin-only links (管理后台, 统计分析, 操作日志)",
+              "actual": "Login response returns { roles: ['admin'] } but frontend AuthUser type expects { role: 'admin', companyName: string, department: string }. Stored user has no 'role' field (undefined), so AppLayout's user?.role === 'admin' check fails and admin-only nav items are hidden. RequireAdmin component redirects /admin, /stats, /audit-logs to /workbench.",
+              "problem": "Backend login endpoint (routes.ts:73-83) returns { roles: string[] } without roleName, companyName, or department. Frontend (hooks/types.ts:13-21) expects { role: string, companyName: string, department: string }. The API contract between backend and frontend is mismatched.",
+              "requiredChange": "Backend login response should map roles[0] to a 'role' field (or frontend should read from roles array), and include companyName and department in the user response object. Update either routes.ts login handler or frontend AuthUser type and useAuth/AppLayout to use the correct field names.",
+              "acceptanceEvidence": "Not yet retested - fix required from T01/T02 development owner"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-23T13:26:01.871Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-23T13:26:01.871Z"
     }
   ]
 }

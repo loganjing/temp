@@ -63,6 +63,11 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     }
     const roles = await platform.permissionKit.getRoles(String(user.id))
     const effectiveRoles = roles.length > 0 ? roles : [user.role]
+    const role = effectiveRoles[0] ?? user.role
+    const company = await platform.db.queryOne<{ name: string }>({
+      text: 'SELECT name FROM companies WHERE id = ?',
+      params: [String(user.company_id)],
+    })
     const token = platform.auth.signToken({
       userId: String(user.id),
       companyId: String(user.company_id),
@@ -77,7 +82,9 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
         name: user.name,
         email: user.email,
         companyId: String(user.company_id),
-        roles: effectiveRoles,
+        role,
+        companyName: company?.name ?? String(user.company_id),
+        department: user.department ?? '',
       },
     })
   })
