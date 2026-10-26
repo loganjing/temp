@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T07:32:00.280Z"
+  "updatedAt": "2026-10-26T07:38:16.557Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000049/requirements.md",
+      "sha256": "sha256:dbff4661e8da08d438f47f86d94306c86bc05c9c90bf2b8216da33dee791aaa3"
+    },
+    "reason": "需求描述的贪吃蛇游戏全部交互行为在浏览器内完成，不涉及服务端权威数据、认证、后台任务、外部服务或跨设备共享；游戏状态（蛇、食物、分数）可保存在浏览器内存中，重新开始时重置即可。所有验收场景均为用户界面交互行为，证据类型为 interaction 和 runtime-render。需求范围外明确排除联机对战、排行榜等需要服务端能力的扩展。",
+    "evidence": {
+      "supporting": [
+        "需求描述的是经典贪吃蛇游戏，全部行为（方向控制、食物增长、碰撞结束、重新开始）均在浏览器内的游戏区域中完成",
+        "所有验收场景（AC-01 至 AC-04）均为用户界面交互行为，证据类型为 interaction 和 runtime-render，不涉及任何 API 或后端调用",
+        "游戏状态（蛇身位置、食物、分数、游戏状态）均可保存在浏览器内存中，重新开始时重置即可",
+        "需求范围外明确排除联机对战、排行榜、多关卡等需要服务端能力"
+      ],
+      "excluding": [
+        "需求范围外明确声明联机对战、排行榜、多关卡、难度分级等扩展能力均未规定，不涉及服务端或共享数据",
+        "需求未提及任何服务端 API、认证/权限、后台任务或外部服务集成",
+        "分数仅需在游戏进行中显示，不要求跨设备同步或持久化到服务端"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-26T07:37:51.510Z",
+    "sha256": "sha256:613cf768c546adebaddb5acff210cfd93d075bc46024ef239ee827ba81237739"
+  }
 }
