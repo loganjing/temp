@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:b09fdb1477e4b1dfbf023a97a1c53db3d3c7b4b72d92d93df112b9d8c4624a4f",
+  "createdAt": "2026-10-26T12:34:29.322Z",
+  "timing": {
+    "startedAt": "2026-10-26T12:33:48.878Z",
+    "completedAt": "2026-10-26T12:34:29.322Z",
+    "durationMs": 40444
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000055/architecture-baseline.md",
+      "bytes": 2897,
+      "sha256": "sha256:a2f53841e2591e670c357ee50d9002062f0c830b2beff0551031d8731082b16e",
+      "role": "primary",
+      "purpose": "贪吃蛇游戏架构基线，描述页面交互范围、浏览器状态归属、React/Vite+Canvas 2D 实现入口、游戏循环与确定性验证支持",
+      "title": "架构基线：贪吃蛇游戏（175-snake）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:e312552735ca44296f89314d90433aab2f74a6bd5fe4af3b74fe843af039691d",
+        "path": ".expert-team/work-items/wi-t1000055/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

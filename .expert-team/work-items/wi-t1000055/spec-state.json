@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 15,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-26T12:31:47.081Z"
+  "updatedAt": "2026-10-26T12:34:29.322Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000055/requirements.md",
+      "sha256": "sha256:c8c4c68ae0582bcf2f6e5e728e27872924b5f3fff9e1211d10902ace430e70a1"
+    },
+    "reason": "贪吃蛇游戏的所有核心行为（方向控制、持续移动、食物与增长、碰撞结束、计分、重新开始）均为纯浏览器交互，3 条验收场景全部为用户界面交互类型。需求未要求服务端权威数据、认证/权限、后台任务、外部服务或跨用户/设备数据共享，使用浏览器内状态即可满足全部验收条件。",
+    "evidence": {
+      "supporting": [
+        "需求描述的全部行为（方向控制、持续移动、食物增长、碰撞结束、计分、重新开始）均为纯浏览器交互",
+        "3 条验收场景全部为用户界面交互类型，证据类型为 interaction，不涉及 API 或后台",
+        "需求明确标注游戏区域大小、移动速度、视觉风格等均为未规定事项，由实现阶段决定，无服务端约束",
+        "贪吃蛇是经典单机游戏，游戏逻辑完全在客户端闭环完成"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据——所有游戏状态（蛇身、食物、分数、碰撞）均在浏览器内计算",
+        "需求未要求认证/权限——贪吃蛇是单机游戏，无用户登录或多用户区分",
+        "需求未要求后台任务——游戏循环由浏览器 requestAnimationFrame 驱动，无需服务端调度",
+        "需求未要求外部服务集成——无第三方 API、无外部数据源",
+        "需求未要求跨用户/跨设备数据共享——分数仅在当前会话内有效，不承诺持久化或同步"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-26T12:34:03.233Z",
+    "sha256": "sha256:e312552735ca44296f89314d90433aab2f74a6bd5fe4af3b74fe843af039691d"
+  }
 }
