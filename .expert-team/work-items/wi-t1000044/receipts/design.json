@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:fbd95cfd1601dc8a0dbde7f7bcdeedca55326198c28ee2d106d7ea39135460a6",
+  "createdAt": "2026-10-26T03:26:48.994Z",
+  "timing": {
+    "startedAt": "2026-10-26T03:26:09.312Z",
+    "completedAt": "2026-10-26T03:26:48.994Z",
+    "durationMs": 39682
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000044/architecture-baseline.md",
+      "bytes": 2006,
+      "sha256": "sha256:b490b552eb79eae9b60be8b7be8ad252b6088d30f28495e98d509ce01e28e99b",
+      "role": "primary",
+      "title": "166-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-01",
+      "status": "covered-by-design"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:4f71ea56ccd4caf8afec5b255842e5bc2f39e5a9fbccb26db7d2f0b1fb0a3cf4",
+        "path": ".expert-team/work-items/wi-t1000044/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

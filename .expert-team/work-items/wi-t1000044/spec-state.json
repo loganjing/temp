@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T03:23:55.092Z"
+  "updatedAt": "2026-10-26T03:26:48.994Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000044/requirements.md",
+      "sha256": "sha256:91d57b583562c2ce007fd676fd895d6527879f59669484ce55542149ff4b8623"
+    },
+    "reason": "需求仅为在浏览器页面实时显示本地时分秒并自动更新，无服务端权威数据、认证/权限、后台任务、外部服务、跨用户/设备共享等能力要求；时间来自浏览器本地系统时钟，UI 自行渲染即可，属于纯前端单页应用。",
+    "evidence": {
+      "supporting": [
+        "需求目标：做页面实时显示当前时分秒，入口类型为用户界面",
+        "核心行为：时间来自本地系统时钟，页面自行渲染并自动更新，无需用户交互",
+        "验收场景 AC-01 验证动作为打开页面观察时间是否一致并自动更新，证据类型 runtime-render",
+        "需求全文未提及服务端 API、数据库持久化、用户认证、后台任务、外部系统集成或跨用户/设备数据共享"
+      ],
+      "excluding": [
+        "无服务端权威数据需求——时间取自浏览器本地时钟，无需服务端校时或存储",
+        "无数据库——无需持久化任何业务对象，刷新后重新读取系统时钟即可",
+        "无认证/权限——无用户概念，无角色或访问控制",
+        "无后台任务——无定时批处理、队列或异步服务端任务",
+        "无外部服务集成——不调用第三方 API 或外部数据源",
+        "无跨用户/设备共享——时间显示为每个浏览器本地实时值，无共享状态"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-26T03:26:27.790Z",
+    "sha256": "sha256:4f71ea56ccd4caf8afec5b255842e5bc2f39e5a9fbccb26db7d2f0b1fb0a3cf4"
+  }
 }
