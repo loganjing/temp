@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:4fe6abb4c88e8b73ca4cb2326643fbb747e73b9da0afd9ad49ba2eaff52c9185",
+  "createdAt": "2026-10-26T05:38:40.018Z",
+  "timing": {
+    "startedAt": "2026-10-26T05:37:45.181Z",
+    "completedAt": "2026-10-26T05:38:40.018Z",
+    "durationMs": 54837
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000046/architecture-baseline.md",
+      "bytes": 3777,
+      "sha256": "sha256:b8718676ee327421551644682a91c9130dde090edb5b39e04fb1031d2d3606ab",
+      "role": "primary",
+      "purpose": "compact 路线架构基线：React+Vite SPA + localStorage，单页面番茄钟倒计时、当日专注记录、累计时长与热力图，无服务端",
+      "title": "架构基线：日常专注时段记录系统（168-timeling）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements-source",
+      "status": "passed"
+    },
+    {
+      "checkId": "route-simple-frontend",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:70d6ce8ffdd9d348ca76a94780e255ea997c079495dc2f06e4b2a13b7a0ece80",
+        "path": ".expert-team/work-items/wi-t1000046/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

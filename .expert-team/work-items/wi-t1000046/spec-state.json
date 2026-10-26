@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T03:28:07.741Z"
+  "updatedAt": "2026-10-26T05:38:40.018Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000046/requirements.md",
+      "sha256": "sha256:e91632a9e92a799bca0e9e76ad0cbade15b666557d9e7dd76af636ab9b272fba"
+    },
+    "reason": "该应用为纯单页面番茄钟倒计时与当日专注记录系统：所有功能（番茄钟循环、自动记录当日列表、累计专注时长、当日热力图）均可在浏览器内完成，无需服务端权威数据、认证、后台任务、外部集成或跨用户/设备共享数据。需求基线明确将跨天/刷新持久化排除在基线之外，最小可观察结果为单页面会话内的当日记录。",
+    "evidence": {
+      "supporting": [
+        "requirements.md 第9行：单页面应用",
+        "requirements.md 第44行：单页面会话内的当日记录为最小可观察结果；跨天或刷新后保留历史未纳入基线",
+        "requirements.md 第5行：番茄钟倒计时驱动专注与休息循环，自动记录到当日列表——所有逻辑在浏览器内运行即可完成",
+        "requirements.md 第32-34行：累计专注时长 = 当日已完成番茄钟数量 × 25 分钟，纯前端计算",
+        "requirements.md 第37-39行：热力图按当日时间区间分桶展示，纯前端渲染",
+        "三组验收场景（AC-01~03）入口类型均为用户界面，证据类型为 interaction/runtime-render/visual-style，无服务端 API 验证"
+      ],
+      "excluding": [
+        "需求未提及服务端权威数据存储（requirements.md 第44行明确：单页面会话内的当日记录为最小可观察结果，跨天/刷新后保留历史未纳入基线）",
+        "需求未提及认证/权限或跨用户/跨设备共享数据",
+        "需求未提及后台任务、外部服务集成或第三方 API 调用",
+        "需求未提及服务端持久化或权威数据库"
+      ],
+      "unresolved": [
+        "用户未指定数据跨天持久化方案（requirements.md 第44行：跨天或刷新后保留历史未纳入基线），当前基线仅需会话内当日记录"
+      ]
+    },
+    "decidedAt": "2026-10-26T05:38:04.537Z",
+    "sha256": "sha256:70d6ce8ffdd9d348ca76a94780e255ea997c079495dc2f06e4b2a13b7a0ece80"
+  }
 }
