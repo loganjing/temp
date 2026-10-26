@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000046",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "168-timeling\n\n做一个日常记录专注时段的系统  \n单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。",
+  "request": "168-timeling\n\n做一个日常记录专注时段的系统  \n单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-26T03:27:35.183Z"
+}

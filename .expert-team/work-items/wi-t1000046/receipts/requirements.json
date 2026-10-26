@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:0a15ec1cbf0d71228515625e8e0e521db2fd1b24ee508894a01fba617a010152",
+  "createdAt": "2026-10-26T03:28:07.741Z",
+  "timing": {
+    "startedAt": "2026-10-26T03:27:35.360Z",
+    "completedAt": "2026-10-26T03:28:07.741Z",
+    "durationMs": 32381
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000046/requirements.md",
+      "bytes": 3911,
+      "sha256": "sha256:e91632a9e92a799bca0e9e76ad0cbade15b666557d9e7dd76af636ab9b272fba",
+      "role": "requirements",
+      "purpose": "需求基线文档",
+      "title": "需求基线：日常专注时段记录系统（168-timeling）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-01",
+      "status": "defined"
+    },
+    {
+      "checkId": "AC-02",
+      "status": "defined"
+    },
+    {
+      "checkId": "AC-03",
+      "status": "defined"
+    }
+  ]
+}
