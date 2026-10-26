@@ -15,6 +15,11 @@
       "startedAt": "2026-10-26T10:31:02.030Z",
       "completedAt": "2026-10-26T10:38:43.174Z",
       "durationMs": 461144
+    },
+    "verification": {
+      "startedAt": "2026-10-26T12:17:02.162Z",
+      "completedAt": "2026-10-26T12:24:51.454Z",
+      "durationMs": 469292
     }
   }
 }

@@ -1,0 +1,200 @@
+{
+  "decision": "pass",
+  "summary": {
+    "objective": "验证贪吃蛇游戏的三项验收标准：移动吃食物增长得分、碰撞结束显示最终得分、游戏结束后可重新开始",
+    "changedBehavior": "贪吃蛇游戏 SPA 完整实现：网格移动、方向控制(禁止180°反向)、吃食物增长、碰撞结束、得分显示、重新开始",
+    "nonGoals": [],
+    "riskLabels": []
+  },
+  "environment": {
+    "name": "Vite dev server (React 18 + TypeScript)",
+    "version": "snake-game 1.0.0 / Vite 5.4.21",
+    "dataProfile": "无数据持久化，浏览器内存状态，开发环境测试控制入口 window.__snakeTest"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "启动游戏，使用方向控制让蛇朝食物方向移动并吃到食物。",
+          "expected": "吃到食物后蛇身体增长一节，得分增加，网格内出现新的食物。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "启动游戏，使用方向控制让蛇朝食物方向移动并吃到食物。",
+          "expected": "吃到食物后蛇身体增长一节，得分增加，网格内出现新的食物。"
+        }
+      ],
+      "evidence": "通过 window.__snakeTest.setFood(11,10) 将食物固定到蛇头右侧一格，调用 step() 单步推进后，蛇身从 3 节增长到 4 节 [{11,10},{10,10},{9,10},{8,10}]，得分从 0 增至 1，新食物在 (7,12) 生成。UI 文本显示 '得分: 1' 和 '进行中'。另按 ArrowDown 方向键后蛇方向从 RIGHT 变为 DOWN，头部从 (12,10) 移至 (12,11)，验证了方向控制交互。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5174/ — setFood(11,10)+step() 验证吃食物增长；press ArrowDown + step() 验证方向控制"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "启动游戏，使用方向控制让蛇朝食物方向移动并吃到食物。",
+          "expected": "吃到食物后蛇身体增长一节，得分增加，网格内出现新的食物。",
+          "actual": "Canvas 渲染更新：得分显示从 0 变为 1，蛇身从 3 节增长到 4 节，新食物在网格内生成",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "启动游戏，使用方向控制让蛇朝食物方向移动并吃到食物。",
+          "expected": "吃到食物后蛇身体增长一节，得分增加，网格内出现新的食物。",
+          "actual": "方向键 ArrowDown 被接受，蛇方向从 RIGHT 变为 DOWN，蛇移动并吃到固定位置食物后身体增长、得分增加",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "启动游戏，操控蛇撞向边界（或绕圈撞向自身）。",
+          "expected": "游戏立即结束，画面展示结束信息与最终得分，蛇不再移动。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "启动游戏，操控蛇撞向边界（或绕圈撞向自身）。",
+          "expected": "游戏立即结束，画面展示结束信息与最终得分，蛇不再移动。"
+        }
+      ],
+      "evidence": "蛇朝下方连续 step() 9 次后，头部从 y=11 到达 y=19，第 10 次 step 触发边界碰撞 (y=20 >= GRID_SIZE=20)，gameState 切换为 'over'，蛇停在最后有效位置。UI 显示 '游戏结束' 和最终 '得分: 1'。游戏结束后再调用 step() 蛇不移动，确认蛇停止移动。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5174/ — 9 次 step() 向下移动到边界 + 1 次 step 触发碰撞结束"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "启动游戏，操控蛇撞向边界（或绕圈撞向自身）。",
+          "expected": "游戏立即结束，画面展示结束信息与最终得分，蛇不再移动。",
+          "actual": "画面显示 '游戏结束' 遮罩与最终 '得分: 1'，蛇不再移动",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "启动游戏，操控蛇撞向边界（或绕圈撞向自身）。",
+          "expected": "游戏立即结束，画面展示结束信息与最终得分，蛇不再移动。",
+          "actual": "蛇头到达 y=20 边界后 gameState 立即切换为 'over'，后续 step() 不再推进蛇位置",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "触发游戏结束后，使用提供的重新开始操作启动新一局。",
+          "expected": "蛇回到初始位置和初始方向，得分归零，网格内出现初始食物，蛇开始移动。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "触发游戏结束后，使用提供的重新开始操作启动新一局。",
+          "expected": "蛇回到初始位置和初始方向，得分归零，网格内出现初始食物，蛇开始移动。"
+        }
+      ],
+      "evidence": "游戏结束后点击 '重新开始' 按钮，通过 wait --fn 捕获到重启后初始状态：gameState='running'，snake[0]=(10,10) 为初始位置，score=0，food!==null（食物已生成），direction=RIGHT 为初始方向。蛇随即开始自动移动并在约 1.5 秒后再次撞墙结束，进一步确认游戏已重启并恢复移动。UI 文本显示 '得分: 0'。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "http://127.0.0.1:5174/ — click 重新开始 + wait --fn 验证初始状态快照"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "触发游戏结束后，使用提供的重新开始操作启动新一局。",
+          "expected": "蛇回到初始位置和初始方向，得分归零，网格内出现初始食物，蛇开始移动。",
+          "actual": "重启后 gameState='running'，蛇回到初始位置 (10,10)，得分归零，食物已生成",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "触发游戏结束后，使用提供的重新开始操作启动新一局。",
+          "expected": "蛇回到初始位置和初始方向，得分归零，网格内出现初始食物，蛇开始移动。",
+          "actual": "点击重新开始按钮后游戏从 'over' 恢复为 'running'，蛇以初始方向 RIGHT 开始移动",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 蛇能持续移动，玩家可通过方向输入改变蛇的行进方向，吃到食物后蛇身体增长且得分增加。; AC-02: 蛇头碰到边界或自身身体时游戏结束，显示结束状态与最终得分，蛇停止移动。; AC-03: 游戏结束后，玩家可通过操作重新开始一局新游戏，新一局开始时蛇、得分和食物重置为初始状态。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-01 passed: setFood(11,10)+step() 验证蛇吃到食物后身体增长(3→4节)、得分增加(0→1)、新食物生成；ArrowDown 方向键验证方向控制有效"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-02 passed: 蛇向边界移动触发碰撞后 gameState='over'，UI 显示结束信息和最终得分，蛇停止移动"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "runtime-render",
+          "interaction"
+        ],
+        "evidence": "QA-03 passed: 点击重新开始后 wait --fn 捕获 gameState='running'、snake[0]=(10,10)、score=0、food!==null、direction=RIGHT，蛇开始移动"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [],
+  "baselineUpdates": []
+}
