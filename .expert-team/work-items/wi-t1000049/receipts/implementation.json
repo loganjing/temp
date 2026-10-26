@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:34abde0125f7cbeffad738b7e09fa2e5a986b778ab69cfbfd6ad4b541c411b58",
+  "createdAt": "2026-10-26T07:49:55.097Z",
+  "timing": {
+    "startedAt": "2026-10-26T07:46:31.764Z",
+    "completedAt": "2026-10-26T07:49:55.097Z",
+    "durationMs": 203333
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000049/implementation-report.md",
+      "bytes": 4971,
+      "sha256": "sha256:932bb758b1261dc833df658d837fbbb602c8723ea6d7b24995e21acb8a6b228e",
+      "role": "implementation-report",
+      "purpose": "贪吃蛇游戏实现报告，覆盖变更行为、调用链、实现范围、AC对照、开发验证证据和遗留风险",
+      "title": "贪吃蛇游戏 实现报告"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "unit-tests",
+      "status": "passed"
+    },
+    {
+      "checkId": "production-build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:613cf768c546adebaddb5acff210cfd93d075bc46024ef239ee827ba81237739",
+        "path": ".expert-team/work-items/wi-t1000049/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
