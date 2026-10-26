@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:6d077fcfc7616105c07c1b46e85b33d75204676dbd9433dbab610f993edda771",
+  "createdAt": "2026-10-26T12:39:41.745Z",
+  "timing": {
+    "startedAt": "2026-10-26T12:35:23.369Z",
+    "completedAt": "2026-10-26T12:39:41.744Z",
+    "durationMs": 258375
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000055/implementation-report.md",
+      "bytes": 6272,
+      "sha256": "sha256:49cea93137694910843b993eb33dfc6921e44d2493495ef349c0a2446ceb0659",
+      "role": "implementation-report",
+      "purpose": "贪吃蛇游戏实现报告，覆盖调用链、实现范围、验证证据和 QA 交接信息",
+      "title": "实现报告：贪吃蛇游戏（175-snake）"
+    }
+  ],
+  "url": "http://localhost:5175/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "unit-test",
+      "status": "passed"
+    },
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "dev-server",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:e312552735ca44296f89314d90433aab2f74a6bd5fe4af3b74fe843af039691d",
+        "path": ".expert-team/work-items/wi-t1000055/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
