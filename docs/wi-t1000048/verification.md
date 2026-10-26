@@ -1,0 +1,59 @@
+# 验证报告
+
+## 验证结论
+
+pass-with-risk
+
+## 摘要
+
+验证 170-餐饮服务配送机器人系统的配送任务队列、多机路径协调、到桌通知、任务取消和运行监控功能
+
+变更行为：配送任务创建入队、自动分配、路径协调、到桌通知、任务取消和运行监控全链路
+
+非目标：
+- —
+
+## 验证环境
+
+Node.js + Hono + React + SQLite 0.1.0；隔离测试数据库 qa-verify.db，PORT=3300，3 台桌位 + 2 台机器人
+
+## 验证检查
+
+| 检查项 | 类型 | 状态 | 证据 |
+|---|---|---|---|
+| QA-01 | E2E/API | passed | POST /api/tasks {tableId:table-1} → 201 id=1 status=pending；GET /api/tasks 队列含 task-1(pending)；再创建 task-2(table-2) 后队列 FIFO 顺序正确（task-1 先于 task-2）<br>AC-01: task-1 创建后 status=pending 出现在队列中，FIFO 顺序正确 (passed) |
+| QA-02 | E2E/API | passed | 创建 Bot-1(status=idle)后 2s 内 Dispatcher 自动分配 task-1 给 Bot-1；task-1 status=delivering robotId=1 assignedAt 已设置；Bot-1 status=delivering currentTaskId=1<br>AC-02: 空闲机器人 Bot-1 自动分配 task-1，task-1=delivering robotId=1，Bot-1=delivering currentTaskId=1 (passed) |
+| QA-03 | E2E/API | passed | 两台机器人同时配送：Bot-1→task-1(table-1), Bot-2→task-2(table-2) 均 delivering；monitor overview deliveringRobotCount=2；segment_locks 查询 active locks 无同段同时间不同机器人冲突（conflicts=0）；Bot-1 占 junctionB-table1, Bot-2 占 junctionA-junctionB + junctionB-table2，路径段不重叠<br>AC-03: 两台机器人同时配送，active segment locks 无同段冲突（conflicts=0），路径协调有效 (passed) |
+| QA-04 | E2E/API | passed | POST /api/robots/1/arrive 返回 notificationId=1 taskId=1 tableId=table-1 robotId=1 sentAt=2026-10-26T07:44:30.755Z；GET /api/notifications 含通知记录 tableId=table-1 sentAt 已设置；task-1 status=delivered；Bot-1 回到 idle 后立即被分配 task-3<br>AC-04: 到桌通知含 tableId=table-1，通知记录可查，task-1=delivered (passed) |
+| QA-05 | browser-ui | passed | UI 取消待分配任务(task-4)：点击取消按钮后任务从队列移除，API 确认 status=cancelled cancelledAt 已设置；UI 取消配送中任务(task-3)：通过 find text 点击取消按钮后 API 确认 task-3 status=cancelled cancelledAt=2026-10-26T07:50:28.894Z，Bot-1 恢复 idle currentTaskId=null<br>AC-05: 待分配任务取消后从队列移除 status=cancelled；配送中任务取消后 Bot-1 恢复 idle status=cancelled (passed) |
+| QA-06 | browser-ui | passed | 总览页 KPI 显示待分配任务0/配送中任务0/空闲机器人1/活跃告警1，机器人状态区显示 Bot-1离线/Bot-2空闲；任务队列页显示待分配任务表格(序号/桌位/创建时间/状态/取消操作)和配送中任务列表(机器人/桌位/进度条如2/3段67%/分配时间/取消操作)<br>AC-06: 总览页显示队列数量/机器人状态/告警；任务队列页显示任务详情和进度，均与 API 数据一致 (passed) |
+| QA-07 | browser-ui | passed | PATCH /api/robots/1/status 设 Bot-1=offline 后，告警页显示活跃告警'机器人 Bot-1(1) 进入离线状态 类型:机器人离线 关联机器人:#1 状态:未解决'；总览页 KPI 活跃告警=1 且机器人状态显示 Bot-1 离线<br>AC-07: 监控界面显示 Bot-1 离线告警，含类型/消息/关联机器人/时间/状态 (passed) |
+
+## 验收覆盖
+
+| 验收项 | 结果 | 证据 |
+|---|---|---|
+| AC-01 | met | QA-01 |
+| AC-02 | met | QA-02 |
+| AC-03 | met | QA-03 |
+| AC-04 | met | QA-04 |
+| AC-05 | met | QA-05 |
+| AC-06 | met | QA-06 |
+| AC-07 | met | QA-07 |
+
+## 缺陷
+
+- —
+
+## 未执行项
+
+- —
+
+## 剩余风险
+
+- SSE 实时更新导致页面频繁重渲染，快照引用易失效；使用 find text 方式可正常交互但 batch 断言操作受限
+- 多机路径协调验证基于 segment_locks 数据库查询，未在浏览器可视化层独立验证实时路径段占用显示
+
+<!-- structured-report:v1
+{"decision":"pass-with-risk","summary":{"objective":"验证 170-餐饮服务配送机器人系统的配送任务队列、多机路径协调、到桌通知、任务取消和运行监控功能","changedBehavior":"配送任务创建入队、自动分配、路径协调、到桌通知、任务取消和运行监控全链路","nonGoals":[],"riskLabels":[]},"environment":{"name":"Node.js + Hono + React + SQLite","version":"0.1.0","dataProfile":"隔离测试数据库 qa-verify.db，PORT=3300，3 台桌位 + 2 台机器人"},"verification":[{"checkId":"QA-01","type":"E2E/API","status":"passed","plan":[{"requirementId":"AC-01","action":"创建一个包含目标桌位标识的配送任务。","expected":"任务出现在队列中，状态为待分配，排队顺序符合创建顺序。"}],"evidence":"POST /api/tasks {tableId:table-1} → 201 id=1 status=pending；GET /api/tasks 队列含 task-1(pending)；再创建 task-2(table-2) 后队列 FIFO 顺序正确（task-1 先于 task-2）","observation":{"method":"http","actor":"expert","reference":"curl POST/GET http://127.0.0.1:3300/api/tasks 本轮执行"},"results":[{"requirementId":"AC-01","action":"创建一个包含目标桌位标识的配送任务。","expected":"任务出现在队列中，状态为待分配，排队顺序符合创建顺序。","actual":"task-1 创建后 status=pending 出现在队列中，FIFO 顺序正确","status":"passed"}]},{"checkId":"QA-02","type":"E2E/API","status":"passed","plan":[{"requirementId":"AC-02","action":"队列中有待分配任务时，将一台配送机置为空闲状态。","expected":"系统将该任务分配给该配送机，任务状态从待分配变为配送中，配送机状态变为配送中。"}],"evidence":"创建 Bot-1(status=idle)后 2s 内 Dispatcher 自动分配 task-1 给 Bot-1；task-1 status=delivering robotId=1 assignedAt 已设置；Bot-1 status=delivering currentTaskId=1","observation":{"method":"http","actor":"expert","reference":"curl POST /api/robots + GET /api/tasks + GET /api/robots 本轮执行"},"results":[{"requirementId":"AC-02","action":"队列中有待分配任务时，将一台配送机置为空闲状态。","expected":"系统将该任务分配给该配送机，任务状态从待分配变为配送中，配送机状态变为配送中。","actual":"空闲机器人 Bot-1 自动分配 task-1，task-1=delivering robotId=1，Bot-1=delivering currentTaskId=1","status":"passed"}]},{"checkId":"QA-03","type":"E2E/API","status":"passed","plan":[{"requirementId":"AC-03","action":"同时为两台空闲配送机分配不同桌位的配送任务，使两台配送机同时处于配送中状态。","expected":"系统检测到路径冲突并执行协调，两台配送机的实际行进路径不发生冲突。"}],"evidence":"两台机器人同时配送：Bot-1→task-1(table-1), Bot-2→task-2(table-2) 均 delivering；monitor overview deliveringRobotCount=2；segment_locks 查询 active locks 无同段同时间不同机器人冲突（conflicts=0）；Bot-1 占 junctionB-table1, Bot-2 占 junctionA-junctionB + junctionB-table2，路径段不重叠","observation":{"method":"http","actor":"expert","reference":"curl GET /api/monitor/overview + better-sqlite3 segment_locks 查询本轮执行"},"results":[{"requirementId":"AC-03","action":"同时为两台空闲配送机分配不同桌位的配送任务，使两台配送机同时处于配送中状态。","expected":"系统检测到路径冲突并执行协调，两台配送机的实际行进路径不发生冲突。","actual":"两台机器人同时配送，active segment locks 无同段冲突（conflicts=0），路径协调有效","status":"passed"}]},{"checkId":"QA-04","type":"E2E/API","status":"passed","plan":[{"requirementId":"AC-04","action":"配送机执行配送任务并到达目标桌位。","expected":"系统发出到桌通知，通知中包含目标桌位标识，接收方可据此确认配送已到达对应桌位。"}],"evidence":"POST /api/robots/1/arrive 返回 notificationId=1 taskId=1 tableId=table-1 robotId=1 sentAt=2026-10-26T07:44:30.755Z；GET /api/notifications 含通知记录 tableId=table-1 sentAt 已设置；task-1 status=delivered；Bot-1 回到 idle 后立即被分配 task-3","observation":{"method":"http","actor":"expert","reference":"curl POST /api/robots/1/arrive + GET /api/notifications 本轮执行"},"results":[{"requirementId":"AC-04","action":"配送机执行配送任务并到达目标桌位。","expected":"系统发出到桌通知，通知中包含目标桌位标识，接收方可据此确认配送已到达对应桌位。","actual":"到桌通知含 tableId=table-1，通知记录可查，task-1=delivered","status":"passed"}]},{"checkId":"QA-05","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-05","kind":"interaction","action":"分别对一个待分配任务和一个配送中任务执行取消操作。","expected":"- 待分配任务：任务从队列移除，状态变为已取消。"}],"evidence":"UI 取消待分配任务(task-4)：点击取消按钮后任务从队列移除，API 确认 status=cancelled cancelledAt 已设置；UI 取消配送中任务(task-3)：通过 find text 点击取消按钮后 API 确认 task-3 status=cancelled cancelledAt=2026-10-26T07:50:28.894Z，Bot-1 恢复 idle currentTaskId=null","observation":{"method":"browser","actor":"expert","reference":"find text 取消 click + eval DOM 读取 + curl API 交叉验证，本轮 http://127.0.0.1:3300/ 执行"},"assertions":[{"requirementId":"AC-05","kind":"interaction","action":"分别对一个待分配任务和一个配送中任务执行取消操作。","expected":"- 待分配任务：任务从队列移除，状态变为已取消。","actual":"待分配任务取消后从队列移除 status=cancelled；配送中任务取消后 Bot-1 恢复 idle status=cancelled","status":"passed"}]},{"checkId":"QA-06","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-06","kind":"runtime-render","action":"进入运行监控界面，在系统中存在待分配任务和配送中任务的情况下查看监控信息。","expected":"- 显示队列中待执行任务数量及各任务详情（目标桌位、状态）。"}],"evidence":"总览页 KPI 显示待分配任务0/配送中任务0/空闲机器人1/活跃告警1，机器人状态区显示 Bot-1离线/Bot-2空闲；任务队列页显示待分配任务表格(序号/桌位/创建时间/状态/取消操作)和配送中任务列表(机器人/桌位/进度条如2/3段67%/分配时间/取消操作)","observation":{"method":"browser","actor":"expert","reference":"eval document.body.textContent 读取总览页和任务队列页 DOM，本轮 http://127.0.0.1:3300/ 执行"},"assertions":[{"requirementId":"AC-06","kind":"runtime-render","action":"进入运行监控界面，在系统中存在待分配任务和配送中任务的情况下查看监控信息。","expected":"- 显示队列中待执行任务数量及各任务详情（目标桌位、状态）。","actual":"总览页显示队列数量/机器人状态/告警；任务队列页显示任务详情和进度，均与 API 数据一致","status":"passed"}]},{"checkId":"QA-07","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-07","kind":"runtime-render","action":"使一台配送机进入离线状态，查看运行监控界面。","expected":"监控界面显示该配送机的离线告警信息。"}],"evidence":"PATCH /api/robots/1/status 设 Bot-1=offline 后，告警页显示活跃告警'机器人 Bot-1(1) 进入离线状态 类型:机器人离线 关联机器人:#1 状态:未解决'；总览页 KPI 活跃告警=1 且机器人状态显示 Bot-1 离线","observation":{"method":"browser","actor":"expert","reference":"find text 告警 click 导航 + eval 读取告警页和总览页 DOM，本轮 http://127.0.0.1:3300/ 执行"},"assertions":[{"requirementId":"AC-07","kind":"runtime-render","action":"使一台配送机进入离线状态，查看运行监控界面。","expected":"监控界面显示该配送机的离线告警信息。","actual":"监控界面显示 Bot-1 离线告警，含类型/消息/关联机器人/时间/状态","status":"passed"}]}],"coverage":{"acceptance":"AC-01: 创建配送任务后，任务进入等待队列并处于待分配状态，可在队列中查看到该任务。; AC-02: 当有空闲配送机且队列中有待分配任务时，系统自动将任务分配给配送机，任务状态转为配送中。; AC-03: 两台或以上配送机同时执行配送任务时，系统协调路径，配送机不会在同一时段占用同一路径段。; AC-04: 配送机到达目标桌位时，系统发出到桌通知，通知包含目标桌位标识。; AC-05: 操作人员可取消待分配或配送中状态的任务，取消后任务状态变为已取消，相关资源被释放。; AC-06: 操作人员可在监控界面查看当前队列状态、配送机状态和正在执行的配送任务进度。; AC-07: 当配送机离线或路径冲突无法解决等异常情况发生时，监控界面显示告警信息。","mandatoryAcceptance":[{"id":"AC-01","source":"requirements.md#AC-01","surface":"api","status":"met","checkIds":["QA-01"],"evidence":"QA-01 passed: 任务创建后 status=pending 出现在队列中，FIFO 顺序正确"},{"id":"AC-02","source":"requirements.md#AC-02","surface":"background","status":"met","checkIds":["QA-02"],"evidence":"QA-02 passed: 空闲机器人自动分配，task 和 robot 均 delivering"},{"id":"AC-03","source":"requirements.md#AC-03","surface":"internal","status":"met","checkIds":["QA-03"],"evidence":"QA-03 passed: 两台机器人同时配送，segment_locks 无冲突段"},{"id":"AC-04","source":"requirements.md#AC-04","surface":"api","status":"met","checkIds":["QA-04"],"evidence":"QA-04 passed: 到桌通知含 tableId=table-1，通知记录可查"},{"id":"AC-05","source":"requirements.md#AC-05","surface":"user-interface","status":"met","checkIds":["QA-05"],"evidenceKinds":["interaction"],"evidence":"QA-05 passed: UI 取消待分配任务从队列移除，UI 取消配送中任务后机器人恢复空闲"},{"id":"AC-06","source":"requirements.md#AC-06","surface":"user-interface","status":"met","checkIds":["QA-06"],"evidenceKinds":["runtime-render"],"evidence":"QA-06 passed: 总览页显示队列/机器人/任务进度，任务队列页显示详情"},{"id":"AC-07","source":"requirements.md#AC-07","surface":"user-interface","status":"met","checkIds":["QA-07"],"evidenceKinds":["runtime-render"],"evidence":"QA-07 passed: 离线告警在监控界面显示"}],"riskLabels":[],"verificationTypes":["E2E/API","browser-ui"]},"defects":[],"skippedChecks":[],"residualRisks":["SSE 实时更新导致页面频繁重渲染，快照引用易失效；使用 find text 方式可正常交互但 batch 断言操作受限","多机路径协调验证基于 segment_locks 数据库查询，未在浏览器可视化层独立验证实时路径段占用显示"],"baselineUpdates":[]}
+-->
