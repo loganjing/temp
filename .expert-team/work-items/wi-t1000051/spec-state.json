@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 15,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-26T07:41:42.078Z"
+  "updatedAt": "2026-10-26T07:58:54.868Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000051/requirements.md",
+      "sha256": "sha256:e12e520261142d2bc621461daf21b283ba46294d7d445b800cc456c156574221"
+    },
+    "reason": "工单系统需求明确要求服务端权威能力：多用户角色（提交人/处理人/管理员）共享同一数据源；工单按公司隔离需要服务端权限控制而非浏览器本地存储；邮件通知是外部服务集成；统计分析仪表盘需要服务端聚合计算（工单量、平均响应时间、满意度、热点问题）；操作日志需持久化跨会话审计；业务组配置与分类自动分配规则是服务端业务逻辑。这些能力无法用 simple-frontend（localStorage）路线满足。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单按公司隔离：需要服务端授权控制，A公司用户不能看到B公司工单，不能仅靠 localStorage",
+        "AC-10 工单完成发送邮件通知：外部服务集成是服务端能力",
+        "AC-12 统计仪表盘聚合工单量/平均响应时间/满意度/热点问题：需要服务端聚合计算",
+        "AC-06/07 管理员配置业务组与分类自动分配规则：服务端持久化业务逻辑",
+        "AC-14 操作日志记录：跨会话审计日志需服务端持久化",
+        "AC-02 多轮回复与 AC-08 转派：多用户跨会话共享数据"
+      ],
+      "excluding": [
+        "无任何证据表明该系统可纯前端运行——所有核心功能均需服务端支持"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-26T07:49:17.525Z",
+    "sha256": "sha256:1ccfb8d08cfae5a1069ece0afe85fc08e0871323fffcf1197fdd5203c42633fa"
+  }
 }

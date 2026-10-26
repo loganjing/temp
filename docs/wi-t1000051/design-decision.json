@@ -1,0 +1,31 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000051/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "Architecture baseline: tech stack, CommonApp modules, module boundaries, data model, UI baseline"
+    },
+    {
+      "path": "docs/wi-t1000051/technical-contract.md",
+      "role": "supporting",
+      "purpose": "Technical contract: entity ID types, API endpoint definitions, error and pagination conventions"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design:markers",
+      "status": "passed"
+    }
+  ],
+  "evidence": [
+    "workspace-init succeeded: planDigest=sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17, scaffoldDigest=sha256:84d0423e89974711a1c208ba3506d09976497a7a1d52db900c365d4d342e4eda",
+    "platform-baseline.json verified: packageRoot=app/ticket-system, modules=[dbkit,authkit,userkit,permissionkit,auditkit,emailkit]",
+    "app/ticket-system/AGENTS.md exists",
+    "All init checks passed: bootstrap-schema, module-distribution-files, scaffold-assets, source-layout-map, generated-scaffold-contract, npm install, npm run build, npm run test, workspace-merge"
+  ]
+}
