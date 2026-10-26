@@ -1,0 +1,14 @@
+{
+  "mode": "design",
+  "decision": "ready",
+  "status": "completed",
+  "artifacts": [
+    { "path": "docs/wi-t1000048/architecture-baseline.md", "role": "primary", "purpose": "系统架构基线文档，定义整体方案、模块边界、数据模型、UI基线和运行约定" },
+    { "path": "docs/wi-t1000048/technical-contract.md", "role": "supporting", "purpose": "前后端 API 契约定义，包含所有接口的请求/响应字段、错误码和实体 ID 对照" }
+  ],
+  "residualRisks": [
+    "路径图拓扑为设计假设（需求未规定餐厅布局），实现阶段需确认初始路径图合理性",
+    "SSE 连接在网络不稳定时可能断开，需前端自动重连",
+    "Dispatcher 轮询间隔（1 秒）在极高并发下可能有延迟，当前需求规模下足够"
+  ]
+}

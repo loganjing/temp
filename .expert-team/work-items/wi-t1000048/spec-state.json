@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T06:15:48.094Z"
+  "updatedAt": "2026-10-26T06:29:37.833Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000048/requirements.md",
+      "sha256": "sha256:dd8f234101536a275daac1faf7200a557d1cfc96b22bea8f3803846d4dd4d526"
+    },
+    "reason": "餐饮配送机器人系统需要服务端权威数据管理多台配送机的共享任务队列、实时状态和路径协调。系统包含后台自动任务分配（空闲配送机自动从队列取任务）、多机路径冲突检测与协调、跨设备实时监控等能力，这些都需要服务端权威状态、后台任务和跨设备/跨用户共享数据，无法用浏览器 localStorage 满足。",
+    "evidence": {
+      "supporting": [
+        "AC-02 明确标注入口类型为'后台任务'——空闲配送机出现时系统自动分配队列任务，需要服务端后台调度",
+        "AC-03 多台配送机同时运行时需要路径冲突检测与协调，这要求跨设备共享的路径状态和实时协调能力",
+        "AC-06 运行监控需要查看队列状态、配送机状态和任务进度，操作人员与配送机是不同终端，需要共享数据",
+        "AC-07 异常告警需要监控配送机离线等状态，这是跨设备状态感知",
+        "需求 4.2 路径协调要求'行进过程中如出现新的冲突风险，系统持续协调'，需要服务端持续运行的协调逻辑",
+        "需求 4.4 配送中取消需要释放路径资源给后续任务使用，资源管理需要权威共享状态"
+      ],
+      "excluding": [
+        "需求未要求认证/权限角色体系（未规定事项第8条）",
+        "需求未要求外部服务集成"
+      ],
+      "unresolved": [
+        "通知传递方式未规定（需求未规定事项第3条），不影响架构分类",
+        "配送机型号、数量上限和技术规格未规定（未规定事项第1条），设计将做合理假设",
+        "餐厅物理布局和路径地图形式未规定（未规定事项第2条），设计将定义路径模型抽象"
+      ]
+    },
+    "decidedAt": "2026-10-26T06:25:22.888Z",
+    "sha256": "sha256:9efe4d190d106a40567fba37fd260eaacb9ba915a33aa75e78776bb462245132"
+  }
 }

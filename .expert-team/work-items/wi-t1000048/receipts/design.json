@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:36026e653c198dacca78abd2b40be20505f02e300eb9071ece1c74af9414a4ef",
+  "createdAt": "2026-10-26T06:29:37.833Z",
+  "timing": {
+    "startedAt": "2026-10-26T06:25:00.512Z",
+    "completedAt": "2026-10-26T06:29:37.833Z",
+    "durationMs": 277321
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000048/architecture-baseline.md",
+      "bytes": 14654,
+      "sha256": "sha256:ab5716535495b8a7200a5ba7a5de2517bd95734745d67fdb1f1ae7cb02469313",
+      "role": "primary",
+      "purpose": "系统架构基线文档，定义整体方案、模块边界、数据模型、UI基线和运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000048/technical-contract.md",
+      "bytes": 9478,
+      "sha256": "sha256:c002cf7c6d952bae2c914e5234be41a47906e02735857b3d870adefac8771502",
+      "role": "supporting",
+      "purpose": "前后端API契约定义，包含所有接口的请求/响应字段、错误码和实体ID对照",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "design-markers-present",
+      "status": "passed"
+    },
+    {
+      "checkId": "classification-fullstack-complex",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:9efe4d190d106a40567fba37fd260eaacb9ba915a33aa75e78776bb462245132",
+        "path": ".expert-team/work-items/wi-t1000048/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
