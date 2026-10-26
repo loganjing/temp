@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:b7110feb45f1f323aa7211f85f6d1de02646103e3c262dd7c0f8c9fed2ffb011",
+  "createdAt": "2026-10-26T03:26:51.293Z",
+  "timing": {
+    "startedAt": "2026-10-26T03:26:13.522Z",
+    "completedAt": "2026-10-26T03:26:51.292Z",
+    "durationMs": 37770
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000045/architecture-baseline.md",
+      "bytes": 2470,
+      "sha256": "sha256:f64ff9e897e575b11a1424f061cd64e842c8a78f7b8571139603a87a1b2f2121",
+      "role": "primary",
+      "purpose": "simple-frontend 架构基线，定义教师 CRUD 单页应用范围、localStorage 数据归属与 React/Vite 实现入口",
+      "title": "教师管理系统架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:93e2b9d0b38813441c404756f77c9f49840683463b33d03b3aced197ca62cee7",
+        "path": ".expert-team/work-items/wi-t1000045/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

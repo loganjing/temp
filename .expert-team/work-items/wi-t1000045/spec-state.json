@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 14,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "deliveryProfile": "standard",
   "graphRevision": 5,
   "graphHash": "sha256:9c3f304cfbb65de471791c872bf851dad3a7099e6db2e677caa20833d98192dd",
-  "updatedAt": "2026-10-26T03:24:49.584Z"
+  "updatedAt": "2026-10-26T03:26:51.293Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000045/requirements.md",
+      "sha256": "sha256:e94aa118b04638aa446af77c845ca95b1d9d2aa5b20cfffcec8979e51bf0cc08"
+    },
+    "reason": "这是一个单用户教师记录 CRUD 应用，全部验收场景均为用户界面交互，需求未要求服务端权威数据、认证、后台任务、外部集成或跨用户共享。按照系统设计路由规则，无明确服务端能力要求时默认 simple-frontend，使用浏览器 localStorage 承载，不承诺跨设备/跨用户同步。",
+    "evidence": {
+      "supporting": [
+        "需求为单用户教师记录增删改查，五字段全部为本地展示字段",
+        "三个 AC 均为用户界面交互验证（入口类型：用户界面），无服务端 API 验证场景",
+        "需求未规定服务端能力、数据权威边界、认证、后台任务或外部集成",
+        "需求未规定事项明确将持久化方式、权限控制、列表排序分页均保持未规定",
+        "需求范围与 simple-frontend 默认 localStorage 承载方式一致"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据或数据库（未规定事项：数据持久化方式未规定）",
+        "需求未要求认证/权限控制（未规定事项明确未规定）",
+        "需求未要求跨用户/跨设备数据共享或同步",
+        "需求未要求后台任务、定时作业或异步处理",
+        "需求未要求外部服务集成或第三方调用"
+      ],
+      "unresolved": [
+        "需求未明确要求刷新/重开页面后数据持久化，但 simple-frontend 默认 localStorage 可满足且不超出范围"
+      ]
+    },
+    "decidedAt": "2026-10-26T03:26:29.055Z",
+    "sha256": "sha256:93e2b9d0b38813441c404756f77c9f49840683463b33d03b3aced197ca62cee7"
+  }
 }
