@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:7cd267af397546300ffcbae5eb10942563dc86b3a2949a68d96005307af3c032",
+  "createdAt": "2026-10-26T10:38:43.175Z",
+  "timing": {
+    "startedAt": "2026-10-26T10:31:02.030Z",
+    "completedAt": "2026-10-26T10:38:43.174Z",
+    "durationMs": 461144
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000054/implementation-report.md",
+      "bytes": 7105,
+      "sha256": "sha256:46964487b8e2b47b9fe0311cebcfe7c512831d50e43396fb5eedacbb97e0d824",
+      "role": "implementation-report",
+      "purpose": "实现报告：变更行为、调用链、业务规则、测试控制入口、开发验证证据与遗留风险",
+      "title": "贪吃蛇游戏 — 实现报告"
+    },
+    {
+      "path": "src/game/engine.ts",
+      "bytes": 3878,
+      "sha256": "sha256:ee577d98c0d7d3245e8ab1423b58505c08b1edac87a8ce59a14b6b5260ff2377",
+      "role": "source",
+      "purpose": "游戏引擎纯函数：createInitialState、changeDirection、tick、spawnFood、setFoodOverride、getStateSnapshot"
+    },
+    {
+      "path": "src/game/types.ts",
+      "bytes": 684,
+      "sha256": "sha256:f9803af26a0e5560de95e33f7d2128e3441343f5cd458e45aec654d7e643d75f",
+      "role": "source",
+      "purpose": "类型定义：Point、Direction、GameState、SnakeState、TestControl"
+    },
+    {
+      "path": "src/game/constants.ts",
+      "bytes": 629,
+      "sha256": "sha256:6f2449ef1f76297d969251472f6974a4d60ccf9b05a7bf1ebbad2b904ece9139",
+      "role": "source",
+      "purpose": "游戏常量：网格尺寸、tick间隔、初始蛇身、方向增量、反向映射"
+    },
+    {
+      "path": "src/hooks/useSnakeGame.ts",
+      "bytes": 4587,
+      "sha256": "sha256:2cb016f7dbb956bf77dcb1f28b3bdf51d5fbb97b2986ebdbd084e840a3df35ee",
+      "role": "source",
+      "purpose": "React Hook：rAF游戏循环、键盘事件、Canvas渲染、测试控制入口"
+    },
+    {
+      "path": "src/App.tsx",
+      "bytes": 1062,
+      "sha256": "sha256:8a4578316a798eb40ba7674d8204721ed63a5a73020fa6bf5a221b5698925e61",
+      "role": "source",
+      "purpose": "主组件：得分显示、Canvas画布、重启按钮、操作提示"
+    },
+    {
+      "path": "src/main.tsx",
+      "bytes": 237,
+      "sha256": "sha256:2ed12a1457cd60b31c0f44f3ea59b8bbc2ddd4a49add3165228d093878fb7c24",
+      "role": "source",
+      "purpose": "React挂载入口"
+    },
+    {
+      "path": "tests/game/engine.test.ts",
+      "bytes": 9835,
+      "sha256": "sha256:cfae525aadca52c3357eb86cdedec1b2d739390f38eb83443d72eb44747059b5",
+      "role": "test",
+      "purpose": "引擎纯函数单元测试（22项）"
+    },
+    {
+      "path": "index.html",
+      "bytes": 299,
+      "sha256": "sha256:640dfaac3a4b01551a8b5386669f849d9761550dbd4dde636acf75e5391fa072",
+      "role": "config",
+      "purpose": "SPA HTML入口",
+      "title": "贪吃蛇"
+    },
+    {
+      "path": "package.json",
+      "bytes": 531,
+      "sha256": "sha256:669c62fb4a7d206dffaf90ff5919f6cc10a480a45311c1a09fa26cc2ba9dd5d7",
+      "role": "config",
+      "purpose": "依赖与脚本定义"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 265,
+      "sha256": "sha256:1a3d95aaf5245033b952af578175dbeeeb75d8dc336d9bdfb6780733dc3ad46b",
+      "role": "config",
+      "purpose": "Vite构建与Vitest测试配置"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 605,
+      "sha256": "sha256:c449ff6344ade15a3c69c03a53cca0119d7bed1143f8f6a5d06c616cd5b189df",
+      "role": "config",
+      "purpose": "TypeScript编译配置"
+    },
+    {
+      "path": "src/index.css",
+      "bytes": 978,
+      "sha256": "sha256:8f4deed514e44e53691412174b0f251cc6d1e6a652ebc29eac2927bc7d384df9",
+      "role": "source",
+      "purpose": "页面布局与样式"
+    }
+  ],
+  "url": "http://localhost:5174/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "unit-tests",
+      "status": "passed"
+    },
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:e4dc2b603332e764f53ecdb1e574a3eddf504e0385078a2ee1f6b06c8c4126f0",
+        "path": ".expert-team/work-items/wi-t1000054/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

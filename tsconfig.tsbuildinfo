@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/game/constants.ts","./src/game/engine.ts","./src/game/types.ts","./src/hooks/usesnakegame.ts","./tests/game/engine.test.ts"],"version":"5.9.3"}
