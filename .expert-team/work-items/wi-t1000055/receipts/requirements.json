@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:c427bee3df1923d917fd7726b16386631bd697fa4b86217d65b8e68be4d34412",
+  "createdAt": "2026-10-26T12:31:47.081Z",
+  "timing": {
+    "startedAt": "2026-10-26T12:31:16.239Z",
+    "completedAt": "2026-10-26T12:31:47.080Z",
+    "durationMs": 30841
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000055/requirements.md",
+      "bytes": 2839,
+      "sha256": "sha256:c8c4c68ae0582bcf2f6e5e728e27872924b5f3fff9e1211d10902ace430e70a1",
+      "role": "requirements",
+      "purpose": "贪吃蛇游戏需求基线，含目标、核心行为规则与3条验收场景",
+      "title": "需求文档：贪吃蛇游戏（175-snake）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-01",
+      "status": "pending-implementation"
+    },
+    {
+      "checkId": "AC-02",
+      "status": "pending-implementation"
+    },
+    {
+      "checkId": "AC-03",
+      "status": "pending-implementation"
+    }
+  ]
+}

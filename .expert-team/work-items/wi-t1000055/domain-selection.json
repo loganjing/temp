@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "decisionId": "domain-selection:general-application-development:f4a891611b53",
+  "teamId": "general-application-development",
+  "domainPack": {
+    "id": "general-application-development",
+    "revision": 27
+  },
+  "spec": {
+    "id": "general-application-development-spec",
+    "revision": 15
+  },
+  "policy": {
+    "id": "general-application-development",
+    "revision": 9
+  },
+  "source": "user",
+  "inputHash": "sha256:f4a891611b53ed09675686288919b74e7ed70d6c1ca4ed1666bceedb63b026c3",
+  "createdAt": "2026-10-26T12:31:15.882Z"
+}
