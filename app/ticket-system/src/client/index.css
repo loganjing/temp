@@ -12,6 +12,9 @@
   --accent: #1458a6;
   --danger: #a32323;
   --success: #17643c;
+  --sidebar: #1a2530;
+  --sidebar-text: #c5d0db;
+  --sidebar-active: #243340;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
@@ -24,15 +27,18 @@
     --accent: #8abaff;
     --danger: #ff9b9b;
     --success: #8fe0b3;
+    --sidebar: #0d1117;
+    --sidebar-text: #8b98a5;
+    --sidebar-active: #1a2330;
   }
 }
 * { box-sizing: border-box; }
 body { min-width: 320px; min-height: 100vh; margin: 0; color: var(--text); background: var(--page); }
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button { min-height: 40px; padding: 0.5rem 0.85rem; color: white; background: var(--accent); border: 1px solid var(--accent); border-radius: 6px; cursor: pointer; }
 button:disabled { opacity: 0.6; cursor: wait; }
 button.secondary { color: var(--text); background: var(--surface); border-color: var(--border); }
-input, select { width: 100%; min-height: 40px; padding: 0.5rem 0.65rem; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+input, select, textarea { width: 100%; min-height: 40px; padding: 0.5rem 0.65rem; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
 label { display: grid; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; }
 .shell { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
 .auth-shell { min-height: 100vh; display: grid; place-items: center; }
@@ -58,8 +64,53 @@ td strong, .subtext { display: block; max-width: 260px; overflow: hidden; text-o
 .reset-form { display: grid; gap: 0.4rem; }
 .error { color: var(--danger); }
 .success { color: var(--success); }
+.empty { color: var(--muted); padding: 1rem 0; text-align: center; }
+
+/* App shell layout */
+.app-shell { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; min-width: 220px; background: var(--sidebar); color: var(--sidebar-text); padding: 1rem 0; display: flex; flex-direction: column; gap: 1rem; }
+.logo { color: #fff; font-size: 1.1rem; padding: 0 1.25rem; margin: 0; }
+.sidebar nav { display: flex; flex-direction: column; gap: 0.15rem; }
+.nav-item { background: transparent; border: none; color: var(--sidebar-text); text-align: left; padding: 0.6rem 1.25rem; border-radius: 0; min-height: 40px; cursor: pointer; }
+.nav-item:hover { background: var(--sidebar-active); color: #fff; }
+.nav-item.active { background: var(--sidebar-active); color: #fff; border-left: 3px solid var(--accent); }
+.main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.content { padding: 1.25rem 1.5rem 2rem; flex: 1; }
+
+/* Ticket detail layout */
+.ticket-detail { display: grid; grid-template-columns: 1fr 320px; gap: 1rem; }
+.detail-main { display: grid; gap: 1rem; }
+.detail-side { display: grid; gap: 1rem; align-content: start; }
+@media (max-width: 1024px) { .ticket-detail { grid-template-columns: 1fr; } }
+
+/* Ticket meta */
+.ticket-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; background: var(--accent); color: #fff; }
+
+/* Replies */
+.replies { display: grid; gap: 0.75rem; }
+.reply-item { padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--page); }
+.reply-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; }
+.reply-header .subtext { display: inline; margin-top: 0; }
+
+/* Submitter info panel */
+.submitter-info { display: grid; gap: 0.6rem; }
+.submitter-info > div { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+/* History tickets */
+.history-tickets { display: grid; gap: 0.5rem; }
+.history-item { display: grid; gap: 0.15rem; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; }
+
+/* Clickable table rows */
+tr.clickable { cursor: pointer; }
+tr.clickable:hover { background: var(--page); }
+
 @media (max-width: 680px) {
   .shell { width: min(100% - 1rem, 1200px); padding-top: 1rem; }
   .topbar, .section-heading { align-items: stretch; flex-direction: column; }
   .search { width: 100%; }
+  .app-shell { flex-direction: column; }
+  .sidebar { width: 100%; min-width: 100%; }
+  .sidebar nav { flex-direction: row; flex-wrap: wrap; }
+  .nav-item { flex: 1; text-align: center; }
 }

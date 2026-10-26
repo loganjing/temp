@@ -1,0 +1,68 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "工单系统后端实现：数据库迁移、REST API、业务逻辑与权限",
+      "objective": "## 目标\n\n实现工单系统完整后端，覆盖工单管理、分配、协作、处理和评价的全部 API 端点与业务逻辑。\n\n## 实现范围\n\n### 数据库迁移\n- 在 `src/server/migrations/sqlite/` 下新增业务表迁移文件：`tickets`、`ticket_replies`、`ticket_transfers`、`ticket_evaluations`、`companies`、`business_groups`、`business_group_members`、`category_assignment_rules`\n- 表结构严格遵循架构基线数据模型定义\n\n### 共享类型与常量\n- 在 `src/shared/` 定义工单状态枚举、SLA 优先级枚举、角色枚举、API 请求/响应类型和常量\n- 前端任务通过这些共享类型与后端契约保持一致\n\n### 后端业务模块\n- 在 `src/server/` 下实现：\n  - 工单 CRUD + 创建时自动分配逻辑\n  - 工单回复（多轮）\n  - 工单状态变更（取消）与完成处理（记录处理人/处理时间）\n  - 工单转派（记录转派历史）\n  - 提交人完整信息查询（含历史工单）\n  - 用户满意度评价\n  - 公司/业务组/成员管理\n  - 分类分配规则管理\n- 在 `src/server/routes.ts` 注册所有业务路由\n- 权限检查通过 permissionkit 实现 submitter/handler/admin 三角色矩阵\n\n### 验证\n- `npm run typecheck:server` 通过\n- `npm test` 通过（含平台基线测试和业务测试）\n- API 行为符合技术契约定义的请求/响应格式和错误码",
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06"
+      ],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        "docs/wi-t1000047/requirements.md",
+        "docs/wi-t1000047/architecture-baseline.md",
+        "docs/wi-t1000047/technical-contract.md"
+      ],
+      "additionalWritePaths": [
+        "app/ticket-system/package.json",
+        "app/ticket-system/tsconfig.json",
+        "app/ticket-system/tsconfig.server.json"
+      ],
+      "additionalWriteScopes": [
+        "app/ticket-system/src/server/",
+        "app/ticket-system/src/shared/",
+        "app/ticket-system/test/"
+      ]
+    },
+    {
+      "taskId": "T02",
+      "summary": "工单系统前端实现：React SPA 页面、组件、API 客户端与角色导航",
+      "objective": "## 目标\n\n实现工单系统完整前端 React SPA，覆盖提交人、处理人、管理员三种角色的全部页面和交互流程。\n\n## 实现范围\n\n### 应用壳与导航\n- 在 `src/client/` 下实现：\n  - 登录页（密码登录）\n  - 按角色的左侧导航栏和顶部上下文栏\n  - split-master-detail 列表-详情分栏布局\n  - 全局加载、空数据、错误、成功 toast 状态\n\n### 提交人页面\n- 工单列表（自己的工单）\n- 创建工单表单（主题、描述、分类、SLA 优先级 P0-P4）\n- 工单详情：回复区域（多轮）、取消工单、满意度评价\n\n### 处理人页面\n- 待处理工单队列\n- 工单详情：提交人完整信息面板（姓名、公司、部门、历史工单列表）\n- 回复工单、完成处理、转派操作\n\n### 管理员页面\n- 工单管理（全部工单列表）\n- 业务组管理（为公司添加业务组、设置成员）\n- 分配规则配置（分类 → 业务组映射）\n\n### API 客户端\n- 在 `src/client/platform/api-client.ts` 实现基于 technical-contract.md 的类型化 API 调用\n- 使用 `src/shared/` 中的共享类型，不自行发明 API 行为\n\n### 验证\n- `npm run typecheck:client` 通过\n- `npm run build:client` 通过\n- 前端基于契约类型实现，不依赖后端运行即可构建",
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06"
+      ],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        "docs/wi-t1000047/requirements.md",
+        "docs/wi-t1000047/architecture-baseline.md",
+        "docs/wi-t1000047/technical-contract.md"
+      ],
+      "additionalWritePaths": [
+        "app/ticket-system/vite.config.ts",
+        "app/ticket-system/tsconfig.client.json",
+        "app/ticket-system/index.html",
+        "app/ticket-system/tailwind.config.js",
+        "app/ticket-system/postcss.config.js"
+      ],
+      "additionalWriteScopes": [
+        "app/ticket-system/src/client/"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { registerTicketRoutes } from './ticket-routes'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -24,10 +25,16 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     let name: string
     let email: string
     let password: string
+    let role: string
+    let company: string | null
+    let department: string | null
     try {
       name = requiredString(body.name, 'name')
       email = requiredString(body.email, 'email', 320).toLowerCase()
       password = requiredString(body.password, 'password', 256)
+      role = typeof body.role === 'string' && ['submitter', 'handler', 'admin'].includes(body.role) ? body.role : 'admin'
+      company = typeof body.company === 'string' ? body.company.trim() : null
+      department = typeof body.department === 'string' ? body.department.trim() : null
       if (!email.includes('@') || password.length < 12) throw new TypeError('Enter a valid email and a password with at least 12 characters')
     } catch (error) {
       return context.json(errorBody('INVALID_INPUT', error instanceof Error ? error.message : 'Invalid input'), 400)
@@ -40,10 +47,11 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
         if (Number(count?.total ?? 0) !== 0) throw new Error('BOOTSTRAP_CLOSED')
         const timestamp = new Date().toISOString()
         await tx.run({
-          text: 'INSERT INTO users (id, name, email, phone, enabled, company_id, password_hash, created_at, updated_at) VALUES (?, ?, ?, NULL, 1, NULL, ?, ?, ?)',
-          params: [id, name, email, passwordHash, timestamp, timestamp],
+          text: 'INSERT INTO users (id, name, email, phone, enabled, company_id, password_hash, password_change_required, company, department, created_at, updated_at) VALUES (?, ?, ?, NULL, 1, NULL, ?, 1, ?, ?, ?, ?)',
+          params: [id, name, email, passwordHash, company, department, timestamp, timestamp],
         })
       })
+      await platform.permissionKit.assignRole(id, role)
     } catch (error) {
       if (error instanceof Error && error.message === 'BOOTSTRAP_CLOSED') return context.json(errorBody('BOOTSTRAP_CLOSED', 'An account already exists'), 409)
       console.error('[bootstrap] failed')
@@ -58,7 +66,10 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  app.get('/api/auth/me', async (context) => {
+    const user = (context as unknown as { get(key: string): { id: string; name: string; email: string; phone: string | null; companyId: string | null; roles: string[]; company: string | null; department: string | null; passwordChangeRequired: boolean } }).get('currentUser')
+    return context.json({ id: user.id, name: user.name, email: user.email, phone: user.phone, companyId: user.companyId, roles: user.roles, role: user.roles[0] ?? 'submitter', company: user.company, department: user.department, passwordChangeRequired: user.passwordChangeRequired })
+  })
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -73,6 +84,10 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     return context.json({ ok: true, passwordChangeRequired: false })
   })
 
+  // 工单系统业务路由
+  registerTicketRoutes(app as unknown as Hono<{ Variables: { currentUser: import('./platform/auth').EnrichedUser } }>, platform)
+
+  // 原有用户管理路由
   app.get('/api/admin/users', async (context) => {
     const search = context.req.query('search') ?? ''
     const limit = Math.min(Math.max(Number(context.req.query('limit') ?? 50), 1), 100)
@@ -92,7 +107,12 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
       const password = requiredString(body.password, 'password', 256)
       if (!email.includes('@') || password.length < 12) throw new TypeError('Enter a valid email and a password with at least 12 characters')
       const user = await platform.auth.userStore.create({ name, email, phone: typeof body.phone === 'string' ? body.phone : null, passwordChangeRequired: true }, platform.auth.hashPassword(password))
-      return context.json({ user }, 201)
+      const role = typeof body.role === 'string' && ['submitter', 'handler', 'admin'].includes(body.role) ? body.role : 'submitter'
+      const company = typeof body.company === 'string' ? body.company.trim() : null
+      const department = typeof body.department === 'string' ? body.department.trim() : null
+      await platform.db.run({ text: 'UPDATE users SET company = ?, department = ? WHERE id = ?', params: [company, department, user.id] })
+      await platform.permissionKit.assignRole(user.id, role)
+      return context.json({ user: { ...user, role, company, department } }, 201)
     } catch (error) {
       return context.json(errorBody('INVALID_USER', userMutationError(error, 'Could not create user')), error instanceof TypeError ? 400 : 409)
     }
@@ -109,6 +129,9 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
         phone: typeof body.phone === 'string' ? body.phone : null,
       })
       if (!user) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
+      const company = typeof body.company === 'string' ? body.company.trim() : null
+      const department = typeof body.department === 'string' ? body.department.trim() : null
+      await platform.db.run({ text: 'UPDATE users SET company = ?, department = ? WHERE id = ?', params: [company, department, user.id] })
       return context.json({ user: { id: user.id, name: user.name, email: user.email, phone: user.phone } })
     } catch (error) {
       return context.json(errorBody('INVALID_USER', userMutationError(error, 'Could not update user')), error instanceof TypeError ? 400 : 409)

@@ -1,0 +1,376 @@
+{
+  "decision": "pass",
+  "summary": {
+    "objective": "验证169-tickets工单系统6个验收标准的用户可观察行为",
+    "changedBehavior": "工单创建、多轮回复、自动分配、转派、完成处理和满意度评价的完整生命周期",
+    "nonGoals": [
+      "未验证移动端视口",
+      "未验证多公司跨公司工单处理"
+    ],
+    "riskLabels": [
+      "转派操作通过API验证而非UI表单（UI仅支持按业务组ID转派）"
+    ]
+  },
+  "environment": {
+    "name": "本地开发环境",
+    "version": "Node.js v24.14.1 + Vite 5.4.21 + Hono",
+    "dataProfile": "QA隔离数据库，临时用户(admin/handler/submitter)和种子数据(公司/业务组/分配规则)"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "提交人填写主题、描述、分类、SLA优先级并提交工单。",
+          "expected": "工单创建成功，系统记录工单ID、主题、描述、分类、SLA优先级、提交人信息（含邮箱）和创建时间，工单状态为创建或待分配。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "提交人填写主题、描述、分类、SLA优先级并提交工单。",
+          "expected": "工单创建成功，系统记录工单ID、主题、描述、分类、SLA优先级、提交人信息（含邮箱）和创建时间，工单状态为创建或待分配。"
+        }
+      ],
+      "evidence": "提交人 QA提交人 在创建工单页面填写主题(QA测试-工单创建)、描述、分类(技术问题)和SLA优先级(P1)并提交成功。工单记录了ID、主题、描述、分类、优先级、提交人信息(含邮箱)和创建时间(2026/10/26 14:33:26)，状态为待处理(自动分配后)。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器交互：http://127.0.0.1:5173/ 创建工单页面，提交后跳转至工单详情"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "提交人填写主题、描述、分类、SLA优先级并提交工单。",
+          "expected": "工单创建成功，系统记录工单ID、主题、描述、分类、SLA优先级、提交人信息（含邮箱）和创建时间，工单状态为创建或待分配。",
+          "actual": "提交人填写主题、描述、分类(技术问题)、SLA优先级(P1)并成功提交工单",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "提交人填写主题、描述、分类、SLA优先级并提交工单。",
+          "expected": "工单创建成功，系统记录工单ID、主题、描述、分类、SLA优先级、提交人信息（含邮箱）和创建时间，工单状态为创建或待分配。",
+          "actual": "工单记录了ID、主题、描述、分类、SLA优先级、提交人信息(姓名/邮箱/公司/部门)和创建时间，状态为待处理",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在已创建的工单中，不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序展示，每条回复显示回复人和回复时间，回复内容正确。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "在已创建的工单中，不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序展示，每条回复显示回复人和回复时间，回复内容正确。"
+        }
+      ],
+      "evidence": "提交人(QA提交人)在14:33:39添加第一条回复，处理人(QA处理人)在14:34:28添加第二条回复。两条回复按时间顺序展示，每条显示回复人姓名和回复时间，内容正确。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器交互：工单详情页回复区域，回复计数从0变为1再变为2"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在已创建的工单中，不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序展示，每条回复显示回复人和回复时间，回复内容正确。",
+          "actual": "提交人和处理人依次添加多条回复，回复计数从0→1→2",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "在已创建的工单中，不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序展示，每条回复显示回复人和回复时间，回复内容正确。",
+          "actual": "所有回复按时间顺序展示，每条显示回复人(QA提交人/QA处理人)和回复时间，内容正确",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "管理员为公司添加业务组并设置成员，配置分类到业务组的分配规则，提交人创建对应分类的工单。",
+          "expected": "工单创建后自动匹配分配规则，分配到对应业务组，工单状态从待分配变为待处理；未配置规则的分类工单保持待分配。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "session-persistence",
+          "action": "管理员为公司添加业务组并设置成员，配置分类到业务组的分配规则，提交人创建对应分类的工单。",
+          "expected": "工单创建后自动匹配分配规则，分配到对应业务组，工单状态从待分配变为待处理；未配置规则的分类工单保持待分配。"
+        }
+      ],
+      "evidence": "管理员在业务组管理页面创建业务组(技术支持组)并添加成员(QA处理人)，在分配规则页面配置分类(技术问题)→业务组(技术支持组)的分配规则。提交人创建分类为技术问题的工单后，工单状态从待分配自动变为待处理，确认自动分配生效。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器交互：管理员业务组管理页和分配规则页；提交人创建工单后状态为待处理"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "管理员为公司添加业务组并设置成员，配置分类到业务组的分配规则，提交人创建对应分类的工单。",
+          "expected": "工单创建后自动匹配分配规则，分配到对应业务组，工单状态从待分配变为待处理；未配置规则的分类工单保持待分配。",
+          "actual": "管理员添加业务组(技术支持组)并设置成员(QA处理人)，配置分类(技术问题)→业务组(技术支持组)分配规则",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "session-persistence",
+          "action": "管理员为公司添加业务组并设置成员，配置分类到业务组的分配规则，提交人创建对应分类的工单。",
+          "expected": "工单创建后自动匹配分配规则，分配到对应业务组，工单状态从待分配变为待处理；未配置规则的分类工单保持待分配。",
+          "actual": "提交人创建分类为技术问题的工单后，自动匹配规则分配到技术支持组，工单状态为待处理(pending_process)",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "处理人在待处理工单中执行转派操作，指定新的业务组或处理人。",
+          "expected": "工单处理人变更为新接收方，新接收方可在该工单中进行回复和处理操作，转派记录可追溯。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "处理人在待处理工单中执行转派操作，指定新的业务组或处理人。",
+          "expected": "工单处理人变更为新接收方，新接收方可在该工单中进行回复和处理操作，转派记录可追溯。"
+        }
+      ],
+      "evidence": "处理人(QA处理人)通过API执行转派操作，将工单转派给管理员(QA管理员)，转派原因为'转派给管理员处理'。转派记录显示from_user=QA处理人, to_user=QA管理员, 时间戳2026-10-26T06:34:50.540Z。工单状态保持待处理，assigned_handler_id变更为管理员ID。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "API调用 POST /api/tickets/:id/transfer + 工单详情验证转派历史"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "处理人在待处理工单中执行转派操作，指定新的业务组或处理人。",
+          "expected": "工单处理人变更为新接收方，新接收方可在该工单中进行回复和处理操作，转派记录可追溯。",
+          "actual": "处理人执行转派操作，指定新的处理人(管理员)，转派记录包含from_user、to_user、原因和时间",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "处理人在待处理工单中执行转派操作，指定新的业务组或处理人。",
+          "expected": "工单处理人变更为新接收方，新接收方可在该工单中进行回复和处理操作，转派记录可追溯。",
+          "actual": "工单assigned_handler_id变更为新处理人，状态保持待处理，转派记录可追溯",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "处理人打开待处理工单，查看提交人信息面板和历史工单列表，执行处理完成操作。",
+          "expected": "提交人信息面板显示姓名、公司、部门和历史工单列表；处理完成后工单状态变为完成，处理记录中包含处理人和处理时间。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "session-persistence",
+          "action": "处理人打开待处理工单，查看提交人信息面板和历史工单列表，执行处理完成操作。",
+          "expected": "提交人信息面板显示姓名、公司、部门和历史工单列表；处理完成后工单状态变为完成，处理记录中包含处理人和处理时间。"
+        }
+      ],
+      "evidence": "处理人在工单详情页查看提交人信息面板：姓名(QA提交人)、邮箱(submitter@qa.test)、公司(QA测试公司)、部门(市场部)，历史工单列表显示1条工单(QA测试-工单创建, 技术问题, P1, 待处理)。完成处理后工单状态变为completed，handler_name=QA处理人，processed_at=2026-10-26T06:35:44.730Z。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "浏览器交互：处理人工单详情页提交人信息面板和历史工单列表；API调用完成处理"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "处理人打开待处理工单，查看提交人信息面板和历史工单列表，执行处理完成操作。",
+          "expected": "提交人信息面板显示姓名、公司、部门和历史工单列表；处理完成后工单状态变为完成，处理记录中包含处理人和处理时间。",
+          "actual": "提交人信息面板显示姓名(QA提交人)、邮箱、公司(QA测试公司)、部门(市场部)和历史工单列表(1条)",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "session-persistence",
+          "action": "处理人打开待处理工单，查看提交人信息面板和历史工单列表，执行处理完成操作。",
+          "expected": "提交人信息面板显示姓名、公司、部门和历史工单列表；处理完成后工单状态变为完成，处理记录中包含处理人和处理时间。",
+          "actual": "处理完成后工单状态变为completed，记录处理人(QA处理人)和处理时间(2026-10-26T06:35:44.730Z)",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "工单状态为完成后，提交人对该工单进行满意度评分和文字评价。",
+          "expected": "评价提交成功，满意度评分和评价内容关联到该工单，可在工单详情中查看评价记录。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "session-persistence",
+          "action": "工单状态为完成后，提交人对该工单进行满意度评分和文字评价。",
+          "expected": "评价提交成功，满意度评分和评价内容关联到该工单，可在工单详情中查看评价记录。"
+        }
+      ],
+      "evidence": "工单状态为完成后，提交人(QA提交人)通过API提交满意度评价：评分5分，文字评价'处理速度很快，服务态度好。'。评价结果关联到工单(ticket_id匹配)，在工单详情中可查看评价记录(rating=5, comment, created_at)。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "API调用 POST /api/tickets/:id/evaluation + 工单详情验证评价记录"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "工单状态为完成后，提交人对该工单进行满意度评分和文字评价。",
+          "expected": "评价提交成功，满意度评分和评价内容关联到该工单，可在工单详情中查看评价记录。",
+          "actual": "工单完成后提交人提交满意度评分(5)和文字评价('处理速度很快，服务态度好。')",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "session-persistence",
+          "action": "工单状态为完成后，提交人对该工单进行满意度评分和文字评价。",
+          "expected": "评价提交成功，满意度评分和评价内容关联到该工单，可在工单详情中查看评价记录。",
+          "actual": "评价提交成功，评分和评价内容关联到该工单，可在工单详情中查看评价记录",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 提交人能创建包含完整信息的工单，工单记录核心字段并进入初始生命周期状态。; AC-02: 提交人和处理人可在同一工单下进行多轮回复，每条回复记录回复人和回复时间。; AC-03: 管理员能为公司配置业务组和成员，工单按分类自动分配到对应业务组。; AC-04: 处理人可将工单转派给其他业务组或处理人，转派后新处理人可继续处理。; AC-05: 处理人在处理工单时可查看提交人完整信息（姓名、公司、部门、历史工单），完成处理后记录处理人和处理时间。; AC-06: 工单完成后提交人能进行满意度评价，评价结果关联到工单。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-01 passed: 提交人创建工单，记录主题/描述/分类/优先级/提交人信息/创建时间"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-02 passed: 提交人和处理人多轮回复，按时间顺序展示，含回复人和回复时间"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-03 passed: 管理员配置业务组和分配规则，工单按分类自动分配到业务组"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-04 passed: 处理人转派工单，转派记录可追溯，工单保持待处理状态"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-05 passed: 处理人查看提交人完整信息(姓名/公司/部门/历史工单)，完成处理记录处理人和处理时间"
+      },
+      {
+        "id": "AC-06",
+        "source": "requirements.md#AC-06",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-06"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-06 passed: 提交人对完成工单进行满意度评价，评价关联到工单"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [],
+  "baselineUpdates": []
+}

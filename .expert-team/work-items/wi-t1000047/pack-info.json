@@ -715,7 +715,10 @@
     }
   ],
   "executionStageIds": [
-    "design"
+    "requirements",
+    "design",
+    "implementation",
+    "verification"
   ],
   "failureMappings": [
     {
