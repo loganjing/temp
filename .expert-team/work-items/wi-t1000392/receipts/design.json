@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:53a22bd5fb37db62c6925ebe374e9d5b7a30bf4950ac711c6ad0f537a7a4435b",
+  "createdAt": "2026-10-27T10:54:02.111Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:43:54.809Z",
+    "completedAt": "2026-10-27T10:54:02.111Z",
+    "durationMs": 607302
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000392/architecture-baseline.md",
+      "bytes": 19361,
+      "sha256": "sha256:b762473836af383e874abb56080c2428038119b903529b680fdc4339dccb796e",
+      "role": "primary",
+      "purpose": "系统架构基线文档，包含技术栈、CommonApp 模块选择、UI 全局基线、模块边界与接口摘要、数据库模型、外部集成、运行配置和验收可重复性",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000392/technical-contract.md",
+      "bytes": 15203,
+      "sha256": "sha256:b34ec5cfb93ca5a665a7c76cc6ab57192b22889cbe15e67e6367e49296421e1f",
+      "role": "supporting",
+      "purpose": "字段级 API 技术契约，包含实体 ID 对照表、全部 API 接口定义、通用错误格式",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:a7657baa162b994ed0f97b5fb7bfa261ba7309479e3f70114edf15e2dbab3da9",
+        "path": ".expert-team/work-items/wi-t1000392/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

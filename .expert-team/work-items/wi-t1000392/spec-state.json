@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-27T10:40:31.798Z"
+  "updatedAt": "2026-10-27T10:54:02.111Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000392/requirements.md",
+      "sha256": "sha256:3c69ea5aacc9d51983aeeb2f90d7792f43d65788f2b1988740976616b7347924"
+    },
+    "reason": "工单系统需求明确要求多公司数据隔离、跨用户/跨设备共享工单数据、基于角色的数据访问权限、邮件通知外部集成、自动分类分配规则的后台逻辑、以及跨公司/部门的统计分析聚合，这些能力都需要服务端权威数据、认证权限和外部服务集成，无法由纯前端 localStorage 方案承载。",
+    "evidence": {
+      "supporting": [
+        "工单按公司隔离（AC-03）：需要服务端权威数据和权限控制，多用户跨设备共享同一数据源",
+        "多用户协作：提交人创建工单、处理人处理和转派工单（AC-06）、用户评价（AC-09），属于跨用户共享数据",
+        "邮件通知（AC-08）：工单完成时发送邮件给提交人，需要外部服务集成",
+        "自动分配规则（AC-05）：按分类自动分配到业务组，需要服务端后台逻辑",
+        "操作日志（AC-13）：记录创建、分配、转派、处理等操作，需要服务端持久化共享日志",
+        "统计分析（AC-10、AC-11）：按公司/部门维度统计工单分布，仪表盘展示工单量、平均响应时间等运营指标，需要服务端聚合计算"
+      ],
+      "excluding": [
+        "simple-frontend 路线不适用：需求要求多公司数据隔离和跨用户共享工单数据，localStorage 无法实现",
+        "邮件通知（AC-08）需要服务端外部服务集成，浏览器端无法独立完成",
+        "自动分类分配规则（AC-05）需要服务端逻辑匹配，前端无法独立完成",
+        "统计分析仪表盘（AC-10、AC-11）需要服务端聚合跨公司、跨部门的工单数据"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-27T10:44:15.216Z",
+    "sha256": "sha256:a7657baa162b994ed0f97b5fb7bfa261ba7309479e3f70114edf15e2dbab3da9"
+  }
 }

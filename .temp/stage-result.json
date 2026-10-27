@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000392/architecture-baseline.md",
+      "sha256": "sha256:b762473836af383e874abb56080c2428038119b903529b680fdc4339dccb796e",
+      "role": "primary",
+      "purpose": "系统架构基线文档"
+    },
+    {
+      "path": "docs/wi-t1000392/technical-contract.md",
+      "sha256": "sha256:b34ec5cfb93ca5a665a7c76cc6ab57192b22889cbe15e67e6367e49296421e1f",
+      "role": "supporting",
+      "purpose": "字段级 API 技术契约"
+    }
+  ],
+  "mode": "design",
+  "decision": "ready",
+  "internalArtifacts": ["workspace-bootstrap.json"],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planDigest": "sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+      "planSha256": "sha256:5acdd13596a905b15a206a9093fd8452c834f151ba9719bb3a3b4b2bce923a00",
+      "scaffoldDigest": "sha256:b501cbac19f784a8ef9e6ec9a00ccee8b3a8b0822832b51c35877df5bbe0df7c",
+      "packageRoot": "app/ticket-system"
+    }
+  ],
+  "blockers": [],
+  "openQuestions": [],
+  "residualRisks": []
+}
