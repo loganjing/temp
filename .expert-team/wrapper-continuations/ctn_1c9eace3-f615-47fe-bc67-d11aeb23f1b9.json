@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_1c9eace3-f615-47fe-bc67-d11aeb23f1b9",
+  "workItemId": "wi-t1000388",
+  "workspaceRealpath": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/荆龙刚的测试/.lingee-task-worktrees/wi-t1000388",
+  "target": "workflow",
+  "operation": "complete",
+  "fixedArguments": {
+    "--workspace": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/荆龙刚的测试/.lingee-task-worktrees/wi-t1000388",
+    "--work-item": "wi-t1000388",
+    "--action": "verification",
+    "--expected-revision": 3,
+    "--verification-json": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/荆龙刚的测试/.lingee-task-worktrees/wi-t1000388/docs/wi-t1000388/verification.json",
+    "--result-status": "completed"
+  },
+  "requiredInputs": {},
+  "status": "pending",
+  "createdAt": "2026-10-27T11:44:55.469Z",
+  "consumedAt": null
+}

@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "190-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451045008216064\",\"code\":\"T1000388\",\"title\":\"190-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
   "request": "190-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451045008216064\",\"code\":\"T1000388\",\"title\":\"190-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-27T10:25:18.090Z"
+  "revision": 1,
+  "createdAt": "2026-10-27T10:25:18.090Z",
+  "completedAt": "2026-10-27T11:48:35.496Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:0f8bef99189ccb195d36b76350239fcc7b94c530210446c92284dc13cec1c6ca",
+    "completedAt": "2026-10-27T11:48:35.496Z"
+  },
+  "updatedAt": "2026-10-27T11:48:35.496Z"
 }
