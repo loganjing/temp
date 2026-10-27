@@ -2,14 +2,39 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-27T11:56:30.249Z"
+  "updatedAt": "2026-10-27T12:03:41.492Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000396/requirements.md",
+      "sha256": "sha256:e538c5a9074fa66ed189a3bc67b4fc303738905f54dd99c0c4d7530d1478042d"
+    },
+    "reason": "需求明确要求微信小程序访客端 + 独立后端服务 + 数据库持久化，审批人员通过移动端 Web 审批系统跨设备/跨用户读取同一数据源。存在服务端权威数据（数据库）、跨用户共享（访客提交 → 审批人员审核）、跨设备访问（小程序 + 移动端 Web），符合 fullstack-complex 路由条件。",
+    "evidence": {
+      "supporting": [
+        "需求第6节明确要求'访客信息需记录到数据库'，且'审批操作结果需持久化'——需要服务端权威数据库",
+        "需求第2节定义访客（微信小程序）与审批人员（移动端 Web）两个角色/两个入口，属跨用户共享数据",
+        "需求第4节核心流程：访客在小程序提交申请→审批人员在移动端查看并审核→状态写回数据库，属跨设备协同",
+        "微信小程序需要后端 API 提供登记提交和查询接口，无法用 localStorage 满足跨设备数据一致性",
+        "用户原始描述明确包含'后端和数据库去记录访客人员'和'审批后端系统'"
+      ],
+      "excluding": [
+        "无任何证据表明服务端、数据库、跨用户/跨设备能力可省略"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-27T11:58:04.593Z",
+    "sha256": "sha256:5e262237e98368527d21133d0a6ec4114c4b021ea54554be4191310e7f81132a"
+  }
 }

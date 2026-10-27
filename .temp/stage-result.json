@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000396/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "访客系统整体架构、技术栈、模块边界、数据模型、UI 基线和运行约定"
+    },
+    {
+      "path": "docs/wi-t1000396/technical-contract.md",
+      "role": "supporting",
+      "purpose": "API 字段级契约、实体 ID 对照、错误格式、字段命名映射"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "design-markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-coverage",
+      "status": "passed"
+    }
+  ],
+  "evidence": [
+    "workspace-init 返回 planDigest sha256:e0f3dcb9c182257df9795d1a9a43fff6ea5d59a2e483bca11c50db084ec6b354，scaffoldDigest sha256:1e44e2986912f21bb3c484f6ffac744a2a5088c3148e0a9a0b326ca6651f63e7，packageRoot app/guest-visitor",
+    "platform-baseline.json 可读取，modules.dbkit.status=wired",
+    "app/guest-visitor/AGENTS.md 存在",
+    "architecture-baseline.md 包含 system-design:scope 和 system-design:architecture-boundaries 标记",
+    "technical-contract.md 定义全部 5 个 API 端点的字段级契约"
+  ]
+}

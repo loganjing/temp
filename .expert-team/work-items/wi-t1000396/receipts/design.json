@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:eb260d975d54f2f6d94b8c824406e0830c0b4651622b7bdda3fa29f8a4b52508",
+  "createdAt": "2026-10-27T12:03:41.492Z",
+  "timing": {
+    "startedAt": "2026-10-27T11:57:49.318Z",
+    "completedAt": "2026-10-27T12:03:41.492Z",
+    "durationMs": 352174
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000396/architecture-baseline.md",
+      "bytes": 8144,
+      "sha256": "sha256:043b5ae6a5ee9c97980fb821cb461a12aaa02368462453c43b9bb3c56c209ef5",
+      "role": "primary",
+      "purpose": "访客系统整体架构、技术栈、模块边界、数据模型、UI 基线和运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000396/technical-contract.md",
+      "bytes": 6573,
+      "sha256": "sha256:27d0a2c91d27b669707c3efc66e7a3c22582791920f72ff49efa584caf8f426a",
+      "role": "supporting",
+      "purpose": "API 字段级契约、实体 ID 对照、错误格式、字段命名映射",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "design-markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:5e262237e98368527d21133d0a6ec4114c4b021ea54554be4191310e7f81132a",
+        "path": ".expert-team/work-items/wi-t1000396/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
