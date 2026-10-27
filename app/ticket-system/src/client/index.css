@@ -63,3 +63,76 @@ td strong, .subtext { display: block; max-width: 260px; overflow: hidden; text-o
   .topbar, .section-heading { align-items: stretch; flex-direction: column; }
   .search { width: 100%; }
 }
+
+/* ---- 工单系统前端扩展 ---- */
+.muted { color: var(--muted); }
+.preserve-lines { white-space: pre-wrap; word-break: break-word; }
+
+textarea { width: 100%; min-height: 40px; padding: 0.5rem 0.65rem; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; resize: vertical; }
+
+/* 应用壳：左侧导航 + 顶部上下文栏 + 主工作区 */
+.app-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+.sidebar { display: flex; flex-direction: column; gap: 0.25rem; padding: 1rem 0.75rem; background: var(--surface); border-right: 1px solid var(--border); }
+.sidebar-brand { font-weight: 700; padding: 0.5rem 0.65rem 1rem; color: var(--accent); }
+.nav-link { padding: 0.6rem 0.75rem; border-radius: 6px; color: var(--text); text-decoration: none; }
+.nav-link:hover { background: var(--page); }
+.nav-link.active { background: var(--accent); color: white; }
+.app-main { display: flex; flex-direction: column; min-width: 0; }
+.app-main .topbar { padding: 1.25rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); margin-bottom: 0; }
+.app-main > .topbar + * { padding: 1.5rem; }
+
+/* 分栏工作台 */
+.split-layout { display: grid; grid-template-columns: minmax(320px, 380px) 1fr; gap: 1rem; }
+.split-list, .split-detail { min-width: 0; }
+.filter-bar { display: grid; gap: 0.5rem; margin-bottom: 0.75rem; }
+.filter-bar label { font-size: 0.8rem; }
+.ticket-queue { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; max-height: 70vh; overflow-y: auto; }
+.queue-item { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto; gap: 0.1rem 0.5rem; width: 100%; text-align: left; padding: 0.6rem 0.65rem; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--text); cursor: pointer; min-height: 0; }
+.queue-item:hover { background: var(--page); }
+.queue-item.active { border-color: var(--accent); background: var(--page); }
+.queue-priority { grid-row: 1; grid-column: 1; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+.queue-subject { grid-row: 1; grid-column: 2; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.queue-item .muted { grid-column: 1 / -1; font-size: 0.8rem; }
+.queue-meta { margin: 0.5rem 0 0; font-size: 0.8rem; }
+
+/* 工单详情 */
+.ticket-detail { display: grid; gap: 1rem; }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 0.75rem; }
+.detail-grid dt { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.2rem; }
+.detail-grid dd { margin: 0; }
+.reply-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.75rem; }
+.reply-list li { padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; }
+.reply-list p { margin: 0.25rem 0; }
+.rating-row { display: flex; gap: 0.4rem; }
+.rating-btn { min-width: 44px; }
+.rating-btn.active { background: var(--accent); }
+
+/* 仪表盘 */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.kpi { display: grid; gap: 0.2rem; padding: 0.85rem; border: 1px solid var(--border); border-radius: 8px; background: var(--page); }
+.kpi-value { font-size: 1.5rem; font-weight: 700; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; }
+.dashboard-grid h3, .ticket-detail h3 { margin: 0 0 0.5rem; }
+
+.payload-cell { display: block; max-width: 360px; overflow: auto; font-size: 0.8rem; word-break: break-all; }
+
+/* 骨架屏 */
+.skeleton { display: grid; gap: 0.5rem; }
+.skeleton-line { height: 0.9rem; border-radius: 4px; background: linear-gradient(90deg, var(--border), var(--page), var(--border)); background-size: 200% 100%; animation: skeleton-shimmer 1.2s infinite; }
+@keyframes skeleton-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* 空数据 */
+.empty-state { padding: 1.5rem; text-align: center; color: var(--muted); }
+.empty-state p { margin: 0.25rem 0; }
+
+/* Toast */
+.toast-stack { position: fixed; right: 1rem; bottom: 1rem; display: grid; gap: 0.5rem; z-index: 50; }
+.toast { padding: 0.7rem 0.9rem; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.12); max-width: 360px; }
+.toast-error { border-color: var(--danger); color: var(--danger); }
+.toast-success { border-color: var(--success); color: var(--success); }
+
+@media (max-width: 900px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--border); }
+  .split-layout { grid-template-columns: 1fr; }
+}

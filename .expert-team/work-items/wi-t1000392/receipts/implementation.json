@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:2e2b2a4951fed606a90e12cadee1f34ce3a332963f23ff69db176b78a83f0327",
+  "createdAt": "2026-10-27T12:25:48.298Z",
+  "timing": {
+    "startedAt": "2026-10-27T11:56:09.199Z",
+    "completedAt": "2026-10-27T12:25:48.298Z",
+    "durationMs": 1779099
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000392/implementation-report.md",
+      "bytes": 7575,
+      "sha256": "sha256:b726d5285a2d5399bb61eea330ee5b1dff7b3a0d530fc1f05e2834256ef5c683",
+      "role": "primary",
+      "purpose": "工单系统开发实现报告，涵盖后端和前端两个并行任务的产出、验证结果和验收场景覆盖",
+      "title": "实现报告"
+    },
+    {
+      "path": "app/ticket-system/src/server/",
+      "bytes": 78697,
+      "sha256": "sha256:52f9bcbe780ade82ea58149dd559ab1ba46260f67a1959fb2f08636aebb2bc41",
+      "role": "implementation",
+      "purpose": "后端实现：数据库迁移、平台模块绑定、全部 API 路由和服务层"
+    },
+    {
+      "path": "app/ticket-system/src/shared/",
+      "bytes": 5645,
+      "sha256": "sha256:bf4fcc2523f00871df7e54e9a50aa41ce59798ea8e1e7a8d0316561126c9c40e",
+      "role": "implementation",
+      "purpose": "共享 TypeScript 类型定义"
+    },
+    {
+      "path": "app/ticket-system/src/client/",
+      "bytes": 68108,
+      "sha256": "sha256:0bb932c7676c4b1e576eca8b1aa348b20b0104a695ee6608a5b7417c5b264e68",
+      "role": "implementation",
+      "purpose": "前端实现：工单工作台、详情、创建、仪表盘、管理页面和审计日志"
+    },
+    {
+      "path": "app/ticket-system/test/",
+      "bytes": 36376,
+      "sha256": "sha256:c43bd015f6fcec506efc0ad471d16e3edf94288651d4f0230d0bd8f054a3ad47",
+      "role": "implementation",
+      "purpose": "API 集成测试与 QA fixture"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "evidence": "server + client TypeScript 类型检查均无错误"
+    },
+    {
+      "checkId": "test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0,
+      "evidence": "17 测试，16 通过，1 skip（平台基线），0 失败"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0,
+      "evidence": "Vite 构建成功，45 模块转换，dist 产出正常"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:a7657baa162b994ed0f97b5fb7bfa261ba7309479e3f70114edf15e2dbab3da9",
+        "path": ".expert-team/work-items/wi-t1000392/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

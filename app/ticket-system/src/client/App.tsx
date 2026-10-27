@@ -1,9 +1,25 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
-import UsersPage from './admin/UsersPage'
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom'
+import { apiRequest, authApi } from './platform/api-client'
+import { ToastProvider } from './platform/ui'
+import type { CurrentUser } from './platform/types'
+import WorkbenchPage from './tickets/WorkbenchPage'
+import CreateTicketPage from './tickets/CreateTicketPage'
+import DashboardPage from './tickets/DashboardPage'
+import ManagementPage from './admin/ManagementPage'
+import AuditLogPage from './admin/AuditLogPage'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
 type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+
+type LoginUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
+
+const NAV_ITEMS = [
+  { to: '/', label: '工单工作台 / Workbench', end: true },
+  { to: '/tickets/new', label: '创建工单 / Create', end: false },
+  { to: '/dashboard', label: '统计仪表盘 / Dashboard', end: false },
+  { to: '/admin', label: '管理 / Admin', end: false },
+  { to: '/audit-logs', label: '审计日志 / Audit logs', end: false },
+]
 
 export default function App() {
   const [state, setState] = useState<BootstrapState>('checking')
@@ -39,9 +55,10 @@ export default function App() {
         setState('login')
         setError('账户已创建，请登录 / Account created. Please sign in.')
       } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
+        const result = await apiRequest<{ token: string; user: LoginUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
         localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
+        const me = await apiRequest<CurrentUser>('/api/auth/me')
+        setUser(me)
         setState('authenticated')
       }
     } catch (cause) {
@@ -66,7 +83,15 @@ export default function App() {
     }
   }
 
+  const signOut = async () => {
+    try { await authApi.logout() } catch { /* 忽略登出失败 */ }
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
+  }
+
   if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
+
   if (state === 'required' || state === 'login') return (
     <main className="shell auth-shell">
       <section className="card auth-card">
@@ -82,7 +107,9 @@ export default function App() {
       </section>
     </main>
   )
+
   if (!user) return null
+
   if (user.passwordChangeRequired) return (
     <main className="shell auth-shell">
       <section className="card auth-card">
@@ -96,13 +123,42 @@ export default function App() {
       </section>
     </main>
   )
+
+  const displayName = user.displayName ?? user.name ?? user.email
+
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <ToastProvider>
+      <BrowserRouter>
+        <div className="app-shell">
+          <nav className="sidebar" aria-label="主导航 / Primary">
+            <div className="sidebar-brand">工单系统 / Tickets</div>
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="app-main">
+            <header className="topbar">
+              <div><h1>工单系统 / Ticket System</h1><p title={user.email}>{displayName} · {user.email}</p></div>
+              <button className="secondary" onClick={() => void signOut()}>退出 / Sign out</button>
+            </header>
+            <Routes>
+              <Route path="/" element={<WorkbenchPage user={user} />} />
+              <Route path="/tickets/new" element={<CreateTicketPage />} />
+              <Route path="/dashboard" element={<DashboardPage user={user} />} />
+              <Route path="/admin" element={<ManagementPage />} />
+              <Route path="/audit-logs" element={<AuditLogPage />} />
+              <Route path="*" element={<WorkbenchPage user={user} />} />
+            </Routes>
+          </div>
+        </div>
+      </BrowserRouter>
+    </ToastProvider>
   )
 }
