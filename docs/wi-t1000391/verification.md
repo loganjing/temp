@@ -1,0 +1,51 @@
+# 验证报告
+
+## 验证结论
+
+pass
+
+## 摘要
+
+验证贪吃蛇游戏的三条验收标准：方向控制吃食物增长得分、撞墙游戏结束显示分数、游戏结束后重新开始。
+
+变更行为：贪吃蛇游戏核心行为：蛇自动移动、键盘控制方向、吃食物增长得分、撞墙/撞自身结束、重新开始重置状态。
+
+非目标：
+- 移动端视口验证（需求未要求）
+- API/安全检查（纯前端应用无服务端）
+
+## 验证环境
+
+Vite dev server (React 18 + Vite 5) snake-game@1.0.0；无数据持久化，单局内存状态
+
+## 验证检查
+
+| 检查项 | 类型 | 状态 | 证据 |
+|---|---|---|---|
+| QA-01 | browser-ui | passed | 通过测试钩子 pauseAutoTick→setSnake([{x:5,y:5},{x:4,y:5}])→setFood(6,5)→setDirection('RIGHT')→step() 验证：蛇头从(5,5)移动到(6,5)吃到食物，蛇身长度从2增长到3，分数从0变为1，状态保持running。页面显示"分数1"与状态一致。<br>AC-01: 通过 setDirection('RIGHT') 设置方向并 step() 推进一个 tick，蛇头从(5,5)移动到(6,5)吃到食物，蛇身长度从2增长到3，游戏继续运行(status=running)。 (passed)<br>AC-01: step() 后 getState() 返回 score=1、snake.length=3、status=running；页面文本显示"分数1"，分数渲染与状态一致。 (passed) |
+| QA-02 | browser-ui | passed | 通过测试钩子 pauseAutoTick→setSnake([{x:19,y:5},{x:18,y:5},{x:17,y:5}])→setDirection('RIGHT')→step() 验证：蛇头在(19,5)向右移动越界(≥cols=20)，状态变为game-over。页面显示"游戏结束"和"最终得分：0"，以及"重新开始"按钮。<br>AC-02: setSnake 蛇头置于(19,5)即右边界，setDirection('RIGHT')后 step()，蛇头越界(x=20≥cols=20)，status 从 running 变为 game-over，蛇停止移动。 (passed)<br>AC-02: 页面快照显示"游戏结束"、"最终得分：0"和"重新开始"按钮，游戏结束状态及最终分数正确渲染。 (passed) |
+| QA-03 | browser-ui | passed | 在 game-over 状态下调用 reset() 验证：状态从 game-over 恢复为 running，分数归零(0)，蛇身恢复初始长度(3)，蛇头回到网格中央(10,10)，方向重置为 RIGHT。页面不再显示游戏结束UI，显示"分数0"。<br>AC-03: game-over 状态下调用 reset()，getState() 返回 status=running、score=0、snake.length=3、snakeHead=(10,10)、direction=RIGHT，游戏区域重置并恢复移动。 (passed)<br>AC-03: reset() 后页面文本显示"分数0"，不再显示"游戏结束"和"最终得分"，游戏结束覆盖层消失，分数和蛇身恢复初始渲染。 (passed) |
+
+## 验收覆盖
+
+| 验收项 | 结果 | 证据 |
+|---|---|---|
+| AC-01 | met | QA-01 |
+| AC-02 | met | QA-02 |
+| AC-03 | met | QA-03 |
+
+## 缺陷
+
+- —
+
+## 未执行项
+
+- —
+
+## 剩余风险
+
+- —
+
+<!-- structured-report:v1
+{"decision":"pass","summary":{"objective":"验证贪吃蛇游戏的三条验收标准：方向控制吃食物增长得分、撞墙游戏结束显示分数、游戏结束后重新开始。","changedBehavior":"贪吃蛇游戏核心行为：蛇自动移动、键盘控制方向、吃食物增长得分、撞墙/撞自身结束、重新开始重置状态。","nonGoals":["移动端视口验证（需求未要求）","API/安全检查（纯前端应用无服务端）"],"riskLabels":[]},"environment":{"name":"Vite dev server (React 18 + Vite 5)","version":"snake-game@1.0.0","dataProfile":"无数据持久化，单局内存状态","configuration":"http://127.0.0.1:5176/，DEV 模式启用 window.__snakeGame 测试钩子"},"verification":[{"checkId":"QA-01","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-01","kind":"interaction","action":"启动游戏并使用方向控制操作蛇吃到至少一个食物。","expected":"蛇身长度增加一节，分数相应增加，游戏继续进行。"},{"requirementId":"AC-01","kind":"runtime-render","action":"启动游戏并使用方向控制操作蛇吃到至少一个食物。","expected":"蛇身长度增加一节，分数相应增加，游戏继续进行。"}],"evidence":"通过测试钩子 pauseAutoTick→setSnake([{x:5,y:5},{x:4,y:5}])→setFood(6,5)→setDirection('RIGHT')→step() 验证：蛇头从(5,5)移动到(6,5)吃到食物，蛇身长度从2增长到3，分数从0变为1，状态保持running。页面显示\"分数1\"与状态一致。","testStrategy":{"traits":["auto-clock","randomness"],"mode":"controlled","control":"pauseAutoTick() → setSnake([{x:5,y:5},{x:4,y:5}]) → setFood(6,5) → setDirection('RIGHT') → step() → getState()","reset":"reset()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser eval at http://127.0.0.1:5176/ — setSnake+setFood+setDirection+step, getState before/after, page text readback"},"assertions":[{"requirementId":"AC-01","kind":"interaction","action":"启动游戏并使用方向控制操作蛇吃到至少一个食物。","expected":"蛇身长度增加一节，分数相应增加，游戏继续进行。","actual":"通过 setDirection('RIGHT') 设置方向并 step() 推进一个 tick，蛇头从(5,5)移动到(6,5)吃到食物，蛇身长度从2增长到3，游戏继续运行(status=running)。","status":"passed"},{"requirementId":"AC-01","kind":"runtime-render","action":"启动游戏并使用方向控制操作蛇吃到至少一个食物。","expected":"蛇身长度增加一节，分数相应增加，游戏继续进行。","actual":"step() 后 getState() 返回 score=1、snake.length=3、status=running；页面文本显示\"分数1\"，分数渲染与状态一致。","status":"passed"}]},{"checkId":"QA-02","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-02","kind":"interaction","action":"操作蛇使其撞向墙壁或自身。","expected":"蛇停止移动，显示游戏结束状态及最终分数。"},{"requirementId":"AC-02","kind":"runtime-render","action":"操作蛇使其撞向墙壁或自身。","expected":"蛇停止移动，显示游戏结束状态及最终分数。"}],"evidence":"通过测试钩子 pauseAutoTick→setSnake([{x:19,y:5},{x:18,y:5},{x:17,y:5}])→setDirection('RIGHT')→step() 验证：蛇头在(19,5)向右移动越界(≥cols=20)，状态变为game-over。页面显示\"游戏结束\"和\"最终得分：0\"，以及\"重新开始\"按钮。","testStrategy":{"traits":["auto-clock"],"mode":"controlled","control":"pauseAutoTick() → setSnake([{x:19,y:5}]) → setDirection('RIGHT') → step() → getState()","reset":"reset()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser eval at http://127.0.0.1:5176/ — setSnake at edge+setDirection+step, getState, snapshot readback"},"assertions":[{"requirementId":"AC-02","kind":"interaction","action":"操作蛇使其撞向墙壁或自身。","expected":"蛇停止移动，显示游戏结束状态及最终分数。","actual":"setSnake 蛇头置于(19,5)即右边界，setDirection('RIGHT')后 step()，蛇头越界(x=20≥cols=20)，status 从 running 变为 game-over，蛇停止移动。","status":"passed"},{"requirementId":"AC-02","kind":"runtime-render","action":"操作蛇使其撞向墙壁或自身。","expected":"蛇停止移动，显示游戏结束状态及最终分数。","actual":"页面快照显示\"游戏结束\"、\"最终得分：0\"和\"重新开始\"按钮，游戏结束状态及最终分数正确渲染。","status":"passed"}]},{"checkId":"QA-03","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-03","kind":"interaction","action":"在游戏结束状态下触发重新开始。","expected":"游戏区域重置，蛇恢复初始长度与位置，分数归零，蛇开始移动。"},{"requirementId":"AC-03","kind":"runtime-render","action":"在游戏结束状态下触发重新开始。","expected":"游戏区域重置，蛇恢复初始长度与位置，分数归零，蛇开始移动。"}],"evidence":"在 game-over 状态下调用 reset() 验证：状态从 game-over 恢复为 running，分数归零(0)，蛇身恢复初始长度(3)，蛇头回到网格中央(10,10)，方向重置为 RIGHT。页面不再显示游戏结束UI，显示\"分数0\"。","testStrategy":{"traits":["auto-clock"],"mode":"controlled","control":"pauseAutoTick() → setSnake([{x:19,y:5}]) → setDirection('RIGHT') → step() → reset() → getState()","reset":"reset()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser eval at http://127.0.0.1:5176/ — reset+getState before/after, page text readback"},"assertions":[{"requirementId":"AC-03","kind":"interaction","action":"在游戏结束状态下触发重新开始。","expected":"游戏区域重置，蛇恢复初始长度与位置，分数归零，蛇开始移动。","actual":"game-over 状态下调用 reset()，getState() 返回 status=running、score=0、snake.length=3、snakeHead=(10,10)、direction=RIGHT，游戏区域重置并恢复移动。","status":"passed"},{"requirementId":"AC-03","kind":"runtime-render","action":"在游戏结束状态下触发重新开始。","expected":"游戏区域重置，蛇恢复初始长度与位置，分数归零，蛇开始移动。","actual":"reset() 后页面文本显示\"分数0\"，不再显示\"游戏结束\"和\"最终得分\"，游戏结束覆盖层消失，分数和蛇身恢复初始渲染。","status":"passed"}]}],"coverage":{"acceptance":"AC-01: 玩家能通过方向控制改变蛇的移动方向，吃到食物后蛇身增长且分数增加。; AC-02: 蛇头触及边界或自身时游戏结束，并显示最终得分。; AC-03: 游戏结束后玩家能重新开始一局新游戏，蛇恢复初始长度，分数归零。","mandatoryAcceptance":[{"id":"AC-01","source":"requirements.md#AC-01","surface":"user-interface","status":"met","checkIds":["QA-01"],"evidenceKinds":["interaction","runtime-render"],"evidence":"QA-01 通过：蛇吃食物后蛇身长度从2增长到3，分数从0变为1，游戏继续运行；页面分数显示与状态一致。"},{"id":"AC-02","source":"requirements.md#AC-02","surface":"user-interface","status":"met","checkIds":["QA-02"],"evidenceKinds":["interaction","runtime-render"],"evidence":"QA-02 通过：蛇头越界后状态变为 game-over，页面显示游戏结束和最终得分0及重新开始按钮。"},{"id":"AC-03","source":"requirements.md#AC-03","surface":"user-interface","status":"met","checkIds":["QA-03"],"evidenceKinds":["interaction","runtime-render"],"evidence":"QA-03 通过：reset() 后状态恢复为 running、分数归零、蛇身恢复初始长度3和中央位置，页面游戏结束UI消失。"}],"riskLabels":[],"verificationTypes":["browser-ui"]},"defects":[],"skippedChecks":[],"residualRisks":[],"baselineUpdates":[],"testStrategyVersion":1}
+-->
