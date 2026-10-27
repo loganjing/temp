@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:1cbc1d28b89ab80736afc136e3a61475df75d5eb1ae1406254c1d54731c340c4",
+  "createdAt": "2026-10-27T10:39:35.536Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:38:54.507Z",
+    "completedAt": "2026-10-27T10:39:35.536Z",
+    "durationMs": 41029
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000388/architecture-baseline.md",
+      "bytes": 1911,
+      "sha256": "sha256:420012d28d2c100fc2fb5d5c53acabb324fa729cd582b8f771bf9bf52377b87c",
+      "role": "primary",
+      "purpose": "190-clock 简单前端架构基线，定义单页时钟的页面范围、数据归属、实现入口与验证方式",
+      "title": "190-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-sha256",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:d1040c7b98572fc74089ff96ad4e6d62ce3736c4dc3a53f88d34306f79b7733d",
+        "path": ".expert-team/work-items/wi-t1000388/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

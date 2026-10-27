@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-27T10:25:51.400Z"
+  "updatedAt": "2026-10-27T10:39:35.536Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000388/requirements.md",
+      "sha256": "sha256:698d6c731d5a54656798882d04294e5f4c74bc6834ce01889b3d1d5ab3ca98ea"
+    },
+    "reason": "批准需求仅要求页面实时显示当前时分秒并每秒自动更新，所有行为在浏览器端完成：用 JavaScript 定时器读取本地系统时间并更新 DOM 即可实现。无需服务端权威数据、数据库、认证/权限、后台任务、外部服务集成或跨用户/设备共享数据，因此走精简前端路线。",
+    "evidence": {
+      "supporting": [
+        "需求核心行为：页面打开后立即显示当前时间的时分秒，每秒自动更新（requirements.md 核心行为 1-2）",
+        "验收 AC-01 入口类型为用户界面，验证动作为打开页面观察时间持续变化，证据类型为 runtime-render/interaction，纯前端可观察",
+        "未规定任何服务端、数据库、认证、后台任务或外部集成能力（requirements.md 未规定章节）"
+      ],
+      "excluding": [
+        "无服务端权威数据要求——时间来源为浏览器本地系统时间",
+        "无认证/权限要求",
+        "无后台任务或异步服务端处理要求",
+        "无跨用户/设备共享数据要求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-27T10:39:03.743Z",
+    "sha256": "sha256:d1040c7b98572fc74089ff96ad4e6d62ce3736c4dc3a53f88d34306f79b7733d"
+  }
 }
