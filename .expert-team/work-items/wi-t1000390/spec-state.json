@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-27T10:40:21.087Z"
+  "updatedAt": "2026-10-27T10:44:54.504Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000390/requirements.md",
+      "sha256": "sha256:d33aee88398c837aa7a87938954765abdcee28cacf08e1175f584af880e29451"
+    },
+    "reason": "需求明确要求单页面应用，所有功能（番茄钟倒计时、当日记录列表、累计专注时长、专注热力图）均为浏览器端交互与渲染；推荐基线仅使用 localStorage 按日期键保存当日数据以满足刷新后可读性，不涉及服务端权威数据、认证、后台任务、外部服务或跨用户/设备共享。需求第5节显式排除了跨天数据、用户账户与多设备同步。因此属于 simple-frontend 路线。",
+    "evidence": {
+      "supporting": [
+        "需求第2节明确为单页面应用，所有交互在一个页面内完成",
+        "需求第4节推荐使用浏览器 localStorage 按日期键保存当日数据，不指定服务端存储",
+        "番茄钟倒计时（25分钟专注+5分钟休息）为纯前端计时器逻辑",
+        "当日记录列表、累计专注时长、专注热力图均为前端渲染展示",
+        "需求第5节明确排除跨天数据保留、用户账户与多设备同步、番茄钟时长自定义"
+      ],
+      "excluding": [
+        "需求第5节明确排除跨天数据保留、用户账户与多设备同步，无共享数据需求",
+        "需求第4节明确不指定服务端存储，仅用浏览器 localStorage 按日期键保存当日数据",
+        "无认证/权限需求：用户未提及用户账户，单设备使用",
+        "无后台任务需求：番茄钟倒计时为前端定时器，无服务端调度",
+        "无外部服务集成需求：系统自包含，不调用第三方 API"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-27T10:44:04.540Z",
+    "sha256": "sha256:8c9c9ff014098d2f587186127b9bacef7f7bf20c1253169104553b727f49105e"
+  }
 }

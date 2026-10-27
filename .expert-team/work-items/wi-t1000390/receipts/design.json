@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:b3ab2d32dd0791417730395c8e2076753c41c0349c44e36322fe230cbe783a78",
+  "createdAt": "2026-10-27T10:44:54.504Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:43:50.505Z",
+    "completedAt": "2026-10-27T10:44:54.504Z",
+    "durationMs": 63999
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000390/architecture-baseline.md",
+      "bytes": 6506,
+      "sha256": "sha256:c664660570f4a85cade70475ae7095dccf78b85959cd3d5cb46ffc39d3eda89f",
+      "role": "primary",
+      "purpose": "Timeling 专注时段记录系统的架构基线，确定 React/Vite SPA 单页面技术路线、页面交互范围、番茄钟状态机、localStorage 数据归属与持久化方案、以及涉及定时器的验收可重复验证方式",
+      "title": "架构基线：Timeling 专注时段记录系统"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-reference",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-fullstack-artifacts",
+      "status": "passed"
+    },
+    {
+      "checkId": "testability-control",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:8c9c9ff014098d2f587186127b9bacef7f7bf20c1253169104553b727f49105e",
+        "path": ".expert-team/work-items/wi-t1000390/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
