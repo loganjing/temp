@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:53f851fc8610a86b2e290a79e9d31273cebd300be41c46bf4acb4752b638b721",
+  "createdAt": "2026-10-27T10:40:21.086Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:39:07.837Z",
+    "completedAt": "2026-10-27T10:40:21.086Z",
+    "durationMs": 73249
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000390/requirements.md",
+      "bytes": 5118,
+      "sha256": "sha256:d33aee88398c837aa7a87938954765abdcee28cacf08e1175f584af880e29451",
+      "role": "requirements",
+      "purpose": "专注时段记录系统的需求基线文档，含目标、核心行为、推荐基线、未规定事项和 4 条验收场景",
+      "title": "需求文档：Timeling 专注时段记录系统"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-goals-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-traceable-to-goals",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-fabricated-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "complexity-proportionate",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-action-not-locked",
+      "status": "passed"
+    }
+  ]
+}
