@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:a7ca97b4326c48ce7de892b4c33c7cde7b84005041ca9b6af0e8a9b0510234f8",
+  "createdAt": "2026-10-27T10:27:03.565Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:26:00.930Z",
+    "completedAt": "2026-10-27T10:27:03.565Z",
+    "durationMs": 62635
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000389/requirements.md",
+      "bytes": 2924,
+      "sha256": "sha256:44b0de75f16b6e1a923c9b076937fb28df9e57c1d8fb6ce4f82eb8dbf29c7196",
+      "role": "requirements",
+      "purpose": "教师管理系统需求文档，覆盖增删改查核心目标与验收场景",
+      "title": "教师管理系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "core-goal-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-coverage",
+      "status": "passed"
+    }
+  ]
+}

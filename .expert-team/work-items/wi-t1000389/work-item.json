@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000389",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "191-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451227913424896\",\"code\":\"T1000389\",\"title\":\"191-teachers\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
+  "request": "191-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451227913424896\",\"code\":\"T1000389\",\"title\":\"191-teachers\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-27T10:26:00.731Z"
+}
