@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-27T10:27:03.565Z"
+  "updatedAt": "2026-10-27T10:40:27.943Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000389/requirements.md",
+      "sha256": "sha256:44b0de75f16b6e1a923c9b076937fb28df9e57c1d8fb6ce4f82eb8dbf29c7196"
+    },
+    "reason": "需求描述的是一个单用户教师信息增删改查应用，验收场景仅要求在用户界面上完成增、查、改、删并读回数据。需求第3节明确列出用户角色与权限、部署平台/技术栈/存储方案、数据持久化周期与存储介质均未规定，没有任何服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备共享数据的明确要求。符合单用户 CRUD 应用默认走 simple-frontend 的分类规则，使用浏览器 localStorage 即可满足全部验收场景。",
+    "evidence": {
+      "supporting": [
+        "需求2.2节四个功能行为均为用户界面内的增删改查操作，无服务端能力要求",
+        "需求第3节明确：用户角色与权限未规定，无认证需求",
+        "需求第3节明确：部署平台、技术栈、存储方案未规定，无服务端部署约束",
+        "需求第3节明确：数据持久化周期与存储介质未规定，无跨设备/跨用户同步要求",
+        "三个验收场景(AC-01/02/03)均以用户界面交互和列表读回为验证动作，证据类型为 interaction 和 runtime-render，无服务端验证要求"
+      ],
+      "excluding": [
+        "需求中无服务端权威数据库的明确要求",
+        "需求中无认证/权限的明确要求",
+        "需求中无后台任务或外部服务集成的明确要求",
+        "需求中无跨用户/跨设备共享数据的明确要求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-27T10:39:56.196Z",
+    "sha256": "sha256:ea641b11691ce2a07418bcd08f46fee79c6b6d24b1daac9081e95903878d5b7f"
+  }
 }
