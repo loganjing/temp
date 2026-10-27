@@ -1,0 +1,55 @@
+# 验证报告
+
+## 验证结论
+
+pass
+
+## 摘要
+
+验证 Timeling 专注时段记录系统的四项验收条件：番茄钟完成自动记录、累计专注时长、专注热力图、刷新后数据保留
+
+变更行为：番茄钟专注倒计时归零时自动向当日列表追加记录，页面上方累计专注时长和下方热力图实时更新，localStorage 按日期键持久化使刷新后数据完整保留
+
+非目标：
+- 跨天数据查看与汇总
+- 番茄钟时长自定义
+- 用户账户与多设备同步
+- 服务端存储与外部集成
+
+## 验证环境
+
+Vite 开发服务器 Vite 5.4.21 / React 18.3.1 / TypeScript 5.6；浏览器 localStorage 按日期键，开发环境 window.__TIMELING_TEST__ 测试控制加速番茄钟完成
+
+## 验证检查
+
+| 检查项 | 类型 | 状态 | 证据 |
+|---|---|---|---|
+| QA-01 | browser-ui | passed | 启动专注倒计时并调用 fastForwardFocus 后，当日记录列表自动新增 #1（19:49, 25分钟）；完成第二个后新增 #2（19:50, 25分钟），列表按倒序排列。<br>AC-01: 专注完成后当日记录列表出现 #1 19:49 25分钟，第二次完成后出现 #2 19:50 25分钟 (passed)<br>AC-01: 点击开始专注启动倒计时，fastForwardFocus 触发完成后列表自动新增记录，包含完成时间和专注时长 25 分钟 (passed) |
+| QA-02 | browser-ui | passed | 第一个专注完成后累计显示 25 分钟（1×25），第二个完成后显示 50 分钟（2×25），随完成数量实时更新。<br>AC-02: 第一次完成后今日累计专注显示 25分钟，第二次完成后显示 50分钟 (passed)<br>AC-02: 累计时长随番茄钟完成从 0 → 25 → 50 递增，等于完成数量 × 25 分钟 (passed) |
+| QA-03 | browser-ui | passed | 热力图 24 格按小时展示，19 时格子背景 rgb(234,88,12) 深于无专注格子 rgb(243,244,246)；第一个完成后 19 时计数 1，第二个后计数 2。<br>AC-03: 热力图展示 24 个小时格子，19 时格子显示计数 1 后增至 2，其他时段无计数标记 (passed)<br>AC-03: 19 时格子背景 rgb(234,88,12) 深橙，无专注格子 rgb(243,244,246) 浅灰，颜色深浅反映专注强度 (passed) |
+| QA-04 | browser-ui | passed | 完成两个番茄钟后刷新页面，累计仍为 50 分钟、2 条记录（#2 19:50, #1 19:49）、热力图 19 时计数 2，与刷新前一致。<br>AC-04: 刷新后累计 50 分钟、记录列表 #2/#1 完整保留、热力图 19 时计数 2，与刷新前一致 (passed) |
+
+## 验收覆盖
+
+| 验收项 | 结果 | 证据 |
+|---|---|---|
+| AC-01 | met | QA-01 |
+| AC-02 | met | QA-02 |
+| AC-03 | met | QA-03 |
+| AC-04 | met | QA-04 |
+
+## 缺陷
+
+- —
+
+## 未执行项
+
+- —
+
+## 剩余风险
+
+- —
+
+<!-- structured-report:v1
+{"decision":"pass","summary":{"objective":"验证 Timeling 专注时段记录系统的四项验收条件：番茄钟完成自动记录、累计专注时长、专注热力图、刷新后数据保留","changedBehavior":"番茄钟专注倒计时归零时自动向当日列表追加记录，页面上方累计专注时长和下方热力图实时更新，localStorage 按日期键持久化使刷新后数据完整保留","nonGoals":["跨天数据查看与汇总","番茄钟时长自定义","用户账户与多设备同步","服务端存储与外部集成"],"riskLabels":[]},"environment":{"name":"Vite 开发服务器","version":"Vite 5.4.21 / React 18.3.1 / TypeScript 5.6","dataProfile":"浏览器 localStorage 按日期键，开发环境 window.__TIMELING_TEST__ 测试控制加速番茄钟完成"},"verification":[{"checkId":"QA-01","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-01","kind":"runtime-render","action":"打开页面，启动番茄钟专注倒计时，等待其完成（或以可重复的方式触发完成）。","expected":"当日记录列表中出现一条新的专注时段记录，记录包含完成时间和专注时长。"},{"requirementId":"AC-01","kind":"interaction","action":"打开页面，启动番茄钟专注倒计时，等待其完成（或以可重复的方式触发完成）。","expected":"当日记录列表中出现一条新的专注时段记录，记录包含完成时间和专注时长。"}],"evidence":"启动专注倒计时并调用 fastForwardFocus 后，当日记录列表自动新增 #1（19:49, 25分钟）；完成第二个后新增 #2（19:50, 25分钟），列表按倒序排列。","testStrategy":{"traits":["scheduled-task","long-state-path"],"mode":"controlled","control":"window.__TIMELING_TEST__.fastForwardFocus()","reset":"window.__TIMELING_TEST__.clearTodaySessions()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser batch 点击开始专注+fastForwardFocus+wait 休息中+get text 两次专注完成后的页面文本"},"assertions":[{"requirementId":"AC-01","kind":"runtime-render","action":"打开页面，启动番茄钟专注倒计时，等待其完成（或以可重复的方式触发完成）。","expected":"当日记录列表中出现一条新的专注时段记录，记录包含完成时间和专注时长。","actual":"专注完成后当日记录列表出现 #1 19:49 25分钟，第二次完成后出现 #2 19:50 25分钟","status":"passed"},{"requirementId":"AC-01","kind":"interaction","action":"打开页面，启动番茄钟专注倒计时，等待其完成（或以可重复的方式触发完成）。","expected":"当日记录列表中出现一条新的专注时段记录，记录包含完成时间和专注时长。","actual":"点击开始专注启动倒计时，fastForwardFocus 触发完成后列表自动新增记录，包含完成时间和专注时长 25 分钟","status":"passed"}]},{"checkId":"QA-02","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-02","kind":"runtime-render","action":"完成一个专注番茄钟后，查看页面上方的累计专注时长。","expected":"累计专注时长等于已完成专注番茄钟数量 × 25 分钟，随完成数量实时更新。"},{"requirementId":"AC-02","kind":"interaction","action":"完成一个专注番茄钟后，查看页面上方的累计专注时长。","expected":"累计专注时长等于已完成专注番茄钟数量 × 25 分钟，随完成数量实时更新。"}],"evidence":"第一个专注完成后累计显示 25 分钟（1×25），第二个完成后显示 50 分钟（2×25），随完成数量实时更新。","testStrategy":{"traits":["scheduled-task","long-state-path"],"mode":"controlled","control":"window.__TIMELING_TEST__.fastForwardFocus()","reset":"window.__TIMELING_TEST__.clearTodaySessions()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser get text 两次专注完成后的累计时长文本"},"assertions":[{"requirementId":"AC-02","kind":"runtime-render","action":"完成一个专注番茄钟后，查看页面上方的累计专注时长。","expected":"累计专注时长等于已完成专注番茄钟数量 × 25 分钟，随完成数量实时更新。","actual":"第一次完成后今日累计专注显示 25分钟，第二次完成后显示 50分钟","status":"passed"},{"requirementId":"AC-02","kind":"interaction","action":"完成一个专注番茄钟后，查看页面上方的累计专注时长。","expected":"累计专注时长等于已完成专注番茄钟数量 × 25 分钟，随完成数量实时更新。","actual":"累计时长随番茄钟完成从 0 → 25 → 50 递增，等于完成数量 × 25 分钟","status":"passed"}]},{"checkId":"QA-03","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-03","kind":"runtime-render","action":"完成至少一个专注番茄钟后，查看页面下方的热力图。","expected":"热力图展示当日各时段的专注分布，完成专注番茄钟的时段在热力图中有对应的可视化标记（颜色深度高于无专注的时段）。"},{"requirementId":"AC-03","kind":"visual-style","action":"完成至少一个专注番茄钟后，查看页面下方的热力图。","expected":"热力图展示当日各时段的专注分布，完成专注番茄钟的时段在热力图中有对应的可视化标记（颜色深度高于无专注的时段）。"}],"evidence":"热力图 24 格按小时展示，19 时格子背景 rgb(234,88,12) 深于无专注格子 rgb(243,244,246)；第一个完成后 19 时计数 1，第二个后计数 2。","testStrategy":{"traits":["scheduled-task","long-state-path"],"mode":"controlled","control":"window.__TIMELING_TEST__.fastForwardFocus()","reset":"window.__TIMELING_TEST__.clearTodaySessions()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser eval 热力图格子计算样式 + get text 热力图计数"},"assertions":[{"requirementId":"AC-03","kind":"runtime-render","action":"完成至少一个专注番茄钟后，查看页面下方的热力图。","expected":"热力图展示当日各时段的专注分布，完成专注番茄钟的时段在热力图中有对应的可视化标记（颜色深度高于无专注的时段）。","actual":"热力图展示 24 个小时格子，19 时格子显示计数 1 后增至 2，其他时段无计数标记","status":"passed"},{"requirementId":"AC-03","kind":"visual-style","action":"完成至少一个专注番茄钟后，查看页面下方的热力图。","expected":"热力图展示当日各时段的专注分布，完成专注番茄钟的时段在热力图中有对应的可视化标记（颜色深度高于无专注的时段）。","actual":"19 时格子背景 rgb(234,88,12) 深橙，无专注格子 rgb(243,244,246) 浅灰，颜色深浅反映专注强度","status":"passed"}]},{"checkId":"QA-04","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-04","kind":"session-persistence","action":"完成至少一个专注番茄钟后，刷新页面。","expected":"刷新后当日记录列表和累计专注时长与刷新前一致，数据未丢失。"}],"evidence":"完成两个番茄钟后刷新页面，累计仍为 50 分钟、2 条记录（#2 19:50, #1 19:49）、热力图 19 时计数 2，与刷新前一致。","testStrategy":{"traits":["scheduled-task","long-state-path"],"mode":"controlled","control":"window.__TIMELING_TEST__.fastForwardFocus()","reset":"window.__TIMELING_TEST__.clearTodaySessions()","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"agent_browser open 刷新页面后 snapshot+get text 验证数据保留"},"assertions":[{"requirementId":"AC-04","kind":"session-persistence","action":"完成至少一个专注番茄钟后，刷新页面。","expected":"刷新后当日记录列表和累计专注时长与刷新前一致，数据未丢失。","actual":"刷新后累计 50 分钟、记录列表 #2/#1 完整保留、热力图 19 时计数 2，与刷新前一致","status":"passed"}]}],"coverage":{"acceptance":"AC-01: 用户启动专注倒计时后，倒计时正常进行；专注倒计时归零时，当日列表自动新增一条专注记录。; AC-02: 页面上方区域展示当日累计专注时长，且随完成的专注番茄钟数量增加。; AC-03: 页面下方区域以热力图展示当日各时段的专注分布，颜色深浅反映专注强度。; AC-04: 页面刷新后，当日记录列表和累计专注时长保持刷新前的状态。","mandatoryAcceptance":[{"id":"AC-01","source":"requirements.md#AC-01","surface":"user-interface","status":"met","checkIds":["QA-01"],"evidenceKinds":["runtime-render","interaction"],"evidence":"QA-01 通过：完成两个专注番茄钟后列表自动新增 #1(19:49,25分钟) 和 #2(19:50,25分钟)"},{"id":"AC-02","source":"requirements.md#AC-02","surface":"user-interface","status":"met","checkIds":["QA-02"],"evidenceKinds":["runtime-render","interaction"],"evidence":"QA-02 通过：累计从 0 → 25 → 50 分钟，等于完成数量 × 25"},{"id":"AC-03","source":"requirements.md#AC-03","surface":"user-interface","status":"met","checkIds":["QA-03"],"evidenceKinds":["runtime-render","visual-style"],"evidence":"QA-03 通过：19 时格子背景 rgb(234,88,12) 深于空格子 rgb(243,244,246)，计数 1→2"},{"id":"AC-04","source":"requirements.md#AC-04","surface":"user-interface","status":"met","checkIds":["QA-04"],"evidenceKinds":["session-persistence"],"evidence":"QA-04 通过：刷新后 50 分钟、2 条记录、热力图计数 2 均与刷新前一致"}],"riskLabels":[],"verificationTypes":["browser-ui"]},"defects":[],"skippedChecks":[],"residualRisks":[],"baselineUpdates":[],"testStrategyVersion":1}
+-->
