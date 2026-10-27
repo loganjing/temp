@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:782c75c82b4efd2865cbdcc534732fd1dc507be20e9ca8c8780d9ad66f577ea9",
+  "createdAt": "2026-10-27T10:25:51.400Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:25:18.271Z",
+    "completedAt": "2026-10-27T10:25:51.400Z",
+    "durationMs": 33129
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000388/requirements.md",
+      "bytes": 1411,
+      "sha256": "sha256:698d6c731d5a54656798882d04294e5f4c74bc6834ce01889b3d1d5ab3ca98ea",
+      "role": "requirements",
+      "purpose": "190-clock 需求基线文档，定义页面实时显示时分秒的目标、核心行为与验收条件",
+      "title": "190-clock 需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-goal-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-result",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    }
+  ]
+}

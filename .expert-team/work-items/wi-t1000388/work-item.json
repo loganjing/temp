@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000388",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "190-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451045008216064\",\"code\":\"T1000388\",\"title\":\"190-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
+  "request": "190-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451045008216064\",\"code\":\"T1000388\",\"title\":\"190-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-27T10:25:18.090Z"
+}
