@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:cd61d4ef61f37cb88622276497e796619263a8fa169512d8bed8a0161269c771",
+  "createdAt": "2026-10-27T10:47:47.504Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:46:57.639Z",
+    "completedAt": "2026-10-27T10:47:47.503Z",
+    "durationMs": 49864
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000391/architecture-baseline.md",
+      "bytes": 4447,
+      "sha256": "sha256:1073bad15a9cfab696f28e3c3c8a1c705999d58293f36a91c2546f07265bc622",
+      "role": "primary",
+      "purpose": "贪吃蛇游戏的架构基线文档，描述页面交互范围、技术栈与实现入口、浏览器状态归属、核心逻辑边界及验证可重复性说明。",
+      "title": "架构基线：贪吃蛇游戏（193-snake）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:edec9e0be45a94af7820ca253e36b47f76b688c48193a011a0ebe2bbd69028cc",
+        "path": ".expert-team/work-items/wi-t1000391/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

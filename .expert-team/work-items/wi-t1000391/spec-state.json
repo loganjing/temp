@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-27T10:39:39.191Z"
+  "updatedAt": "2026-10-27T10:47:47.504Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000391/requirements.md",
+      "sha256": "sha256:c2e183cc6d8f0892dce4b9a7e3bdc582e5f77789458e2b967b926900b46977a7"
+    },
+    "reason": "贪吃蛇游戏是一个纯客户端游戏：所有游戏逻辑（网格渲染、蛇移动、食物生成、碰撞检测、分数计算）均在浏览器内完成，无需服务端权威数据、认证、后台任务、外部服务或跨用户/设备数据共享。需求基线已明确排除排行榜等需要持久化的扩展功能，重新开始时分数归零表明数据仅在单局内存中有效。",
+    "evidence": {
+      "supporting": [
+        "需求描述的是经典贪吃蛇游戏，全部行为在浏览器网格内完成：移动、吃食物、增长、撞墙/撞自身结束",
+        "三条验收场景（AC-01/02/03）的入口类型均为用户界面，证据类型为 interaction + runtime-render，无服务端验证",
+        "游戏状态（蛇身、食物、分数）在单局内存中维护，重新开始时重置，不涉及持久化存储",
+        "用户未指定技术栈、平台、部署方式，需求基线明确排除排行榜等扩展功能"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据：分数在重新开始时归零（AC-03），无需跨会话持久化",
+        "需求未要求用户认证或权限控制",
+        "需求未要求后台任务或服务端计算",
+        "需求未要求外部服务集成或第三方接口",
+        "需求未要求跨用户或跨设备数据共享"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-27T10:47:11.244Z",
+    "sha256": "sha256:edec9e0be45a94af7820ca253e36b47f76b688c48193a011a0ebe2bbd69028cc"
+  }
 }
