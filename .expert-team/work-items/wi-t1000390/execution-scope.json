@@ -12,6 +12,12 @@
       "executionStageIds": [
         "design"
       ]
+    },
+    "ses_e8306bc15ffeZnkvRChXav06xg": {
+      "sessionId": "ses_e8306bc15ffeZnkvRChXav06xg",
+      "executionStageIds": [
+        "implementation"
+      ]
     }
   }
 }

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:a8b67afa398f61627a2de9e3bd7081ac7275470c2af5a6624ac24d86ef09f3eb",
+  "createdAt": "2026-10-27T10:52:24.372Z",
+  "timing": {
+    "startedAt": "2026-10-27T10:48:00.148Z",
+    "completedAt": "2026-10-27T10:52:24.372Z",
+    "durationMs": 264224
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000390/implementation-report.md",
+      "bytes": 6828,
+      "sha256": "sha256:4c8318a9917d9f17f7a0db820403e9d30ab6eb77f0d9fe780507ed56c45d24ac",
+      "role": "implementation-report",
+      "purpose": "实现报告：描述变更概述、调用链、实现范围、开发验证证据、QA交接信息与遗留风险",
+      "title": "实现报告：Timeling 专注时段记录系统"
+    }
+  ],
+  "url": "http://127.0.0.1:5174/",
+  "verification": [
+    {
+      "checkId": "typescript-typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "unit-tests",
+      "status": "passed"
+    },
+    {
+      "checkId": "production-build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:8c9c9ff014098d2f587186127b9bacef7f7bf20c1253169104553b727f49105e",
+        "path": ".expert-team/work-items/wi-t1000390/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
