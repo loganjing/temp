@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:a7e89bb359562da24aa178ccd9269c3edc4ed6c252e1fb2d76b9be4973e2d99f",
+  "createdAt": "2026-10-28T08:29:31.018Z",
+  "timing": {
+    "startedAt": "2026-10-28T08:26:29.858Z",
+    "completedAt": "2026-10-28T08:29:31.018Z",
+    "durationMs": 181160
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000439/implementation-report.md",
+      "bytes": 5212,
+      "sha256": "sha256:c74639939f5d1de64293866d5f7fb5975444302ff370a1d3a7f1db2c7e34a740",
+      "role": "implementation-report",
+      "purpose": "教师管理系统实现阶段交付报告",
+      "title": "实现报告 — 教师管理系统"
+    }
+  ],
+  "url": "http://localhost:5174/",
+  "verification": [
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:4cf9abe2b74d2a6761f165ccb04961f7ed27007901dd84fdcde2103c1977a77e",
+        "path": ".expert-team/work-items/wi-t1000439/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
