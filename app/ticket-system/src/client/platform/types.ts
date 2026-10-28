@@ -25,6 +25,7 @@ export interface CurrentUser {
   departmentId?: string | null
   role?: string
   passwordChangeRequired?: boolean
+  isAdmin?: boolean
 }
 
 export interface Category {

@@ -242,6 +242,14 @@ export function registerBusinessRoutes(app: Hono, platform: Platform) {
     return context.json(result, 201)
   })
 
+  app.get('/api/categories', async (context) => {
+    const ctx = await resolveProfile(context)
+    if (!ctx) return context.json(errorBody('FORBIDDEN', 'No ticket-system profile'), 403)
+    if (!(await requirePermission(ctx.user.id, 'ticket.view'))) return context.json(errorBody('FORBIDDEN', 'Missing ticket.view permission'), 403)
+    const result = await service.listCategories()
+    return context.json(result)
+  })
+
   // ===== 统计与工作台 =====
 
   app.get('/api/statistics/distribution', async (context) => {

@@ -1,0 +1,188 @@
+{
+  "checks": [
+    {
+      "checkId": "QA-01",
+      "status": "failed",
+      "evidence": "创建工单页面加载正常，包含主题、描述、分类下拉框和SLA优先级选择（P0-P4），但分类下拉框为空（仅显示'请选择'）。前端调用 GET /api/categories 获取分类列表，后端返回 404 NOT_FOUND，该端点未注册。无法选择分类，表单验证阻止提交，工单无法通过UI创建。后端 POST /api/tickets API 本身工作正常（通过API验证创建成功）。",
+      "assertions": [
+        {"planIndex": 0, "actual": "无法通过UI创建工单：分类下拉框为空，/api/categories端点缺失返回404，表单无法提交", "status": "failed"},
+        {"planIndex": 1, "actual": "创建工单页面渲染正常，字段完整（主题/描述/分类/SLA优先级P0-P4），但分类下拉框无数据", "status": "failed"}
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "status": "passed",
+      "evidence": "以处理人身份在工单详情中成功添加两条回复。回复列表显示回复人姓名、回复时间和回复内容，按时间顺序排列。第一条回复'已收到工单，正在排查网络问题'（处理人A, 20:38:20），第二条'网络已恢复，正在做最终确认'（处理人A, 20:38:27）。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: handler login at http://127.0.0.1:5175, ticket detail reply form interaction and reply-list render"},
+      "assertions": [
+        {"planIndex": 0, "actual": "两条回复通过UI成功提交并保存，POST /api/tickets/:id/replies 返回201", "status": "passed"},
+        {"planIndex": 1, "actual": "回复列表显示回复人（处理人A）、回复时间和内容，按时间顺序排列", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "status": "passed",
+      "evidence": "处理人（公司A）通过浏览器工作台仅看到公司A的工单。通过API验证：B公司提交人 GET /api/tickets 返回0条工单；B公司用户访问A公司工单返回404。后端基于user_profiles.company_id实现公司隔离。浏览器端提交人因无workbench.view权限无法查看工单列表，但公司隔离行为通过处理人视角和API验证确认有效。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: handler (company A) workbench view showing only company A tickets; API cross-check with company B user returning empty list and 404"},
+      "assertions": [
+        {"planIndex": 0, "actual": "B公司用户API请求返回0条工单，访问A公司工单返回404，公司隔离有效；处理人浏览器仅显示本公司工单", "status": "passed"},
+        {"planIndex": 1, "actual": "A公司处理人通过浏览器可见2条本公司工单，B公司用户通过API可见0条，互相隔离", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "status": "passed",
+      "evidence": "通过管理页面UI成功创建业务组'QA验证-测试组'，创建后立即出现在业务组列表中。点击'管理成员'按钮打开成员管理对话框，输入处理人用户ID并保存，成员数从0变为1。业务组列表正确显示组名、成员数和管理按钮。分类分配规则区域已有规则（网络问题→网络组）可见，但创建新规则时分类下拉框为空（/api/categories端点缺失）。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: admin login at http://127.0.0.1:5175/admin, business group creation form and member management dialog interaction"},
+      "assertions": [
+        {"planIndex": 0, "actual": "业务组通过UI创建成功，成员管理功能正常（添加成员后成员数更新）", "status": "passed"},
+        {"planIndex": 1, "actual": "业务组列表显示组名、成员数和管理按钮，新建组和成员变更实时反映", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "status": "failed",
+      "evidence": "无法通过UI验证自动分配：分类分配规则创建区域的分类下拉框为空（/api/categories端点缺失返回404），无法配置新规则；创建工单页面同样因分类下拉框为空无法提交工单。后端自动分配逻辑通过API验证正常：创建网络分类工单后自动匹配规则，状态变为pending_processing，分配到对应业务组。",
+      "assertions": [
+        {"planIndex": 0, "actual": "无法通过UI配置分类分配规则或创建工单触发自动分配，分类下拉框为空", "status": "failed"},
+        {"planIndex": 1, "actual": "UI无法展示自动分配效果，因工单创建被阻断", "status": "failed"}
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "status": "passed",
+      "evidence": "以处理人身份在工单详情中执行转派操作，选择目标业务组'运维支持组'并填写转派原因，点击转派按钮后toast提示'工单已转派'。工单列表中该工单的业务组从'网络组'更新为'运维支持组'，状态保持'待处理'。审计日志中记录ticket.transferred事件。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: handler login, ticket detail transfer form interaction, queue item updated with new group name"},
+      "assertions": [
+        {"planIndex": 0, "actual": "转派操作通过UI成功执行，POST /api/tickets/:id/transfer 返回200，工单业务组更新", "status": "passed"},
+        {"planIndex": 1, "actual": "工单列表显示新业务组名称，状态保持待处理，审计日志记录转派事件", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "status": "passed",
+      "evidence": "处理人工单详情中提交人信息区域正确显示：姓名（提交人A）、邮箱、公司（公司A）、部门（研发部），以及历史工单列表（2条工单，含主题/状态/优先级/创建时间）。GET /api/tickets/:id/submitter 返回完整提交人信息。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: handler login, ticket detail submitter profile section rendered with name/company/department/history tickets"},
+      "assertions": [
+        {"planIndex": 0, "actual": "提交人姓名、公司、部门和历史工单列表均正确显示在工单详情页", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-08",
+      "status": "passed",
+      "evidence": "处理人填写处理总结'网络故障已修复，确认恢复正常'并点击完成按钮，toast提示'工单已完成'。工单状态从'待处理'变为'完成'。服务器控制台输出邮件通知：[email] (console) to=提交人邮箱 subject=工单已完成，内容包含工单ID和处理人姓名。满意度评价区域出现（评分按钮1-5和备注输入框）。POST /api/tickets/:id/complete 返回200。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: handler login, complete ticket form interaction, status changed to completed, satisfaction rating section appeared"},
+      "assertions": [
+        {"planIndex": 0, "actual": "工单通过UI完成，状态变为完成，邮件通知发送至提交人邮箱（服务器控制台验证）", "status": "passed"},
+        {"planIndex": 1, "actual": "工单状态显示'完成'，满意度评价区域出现，处理记录保存", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-09",
+      "status": "failed",
+      "evidence": "满意度评价表单在工单详情页中存在（评分按钮1-5和备注输入框），后端 POST /api/tickets/:id/rating API工作正常（提交人提交评分5成功返回）。但提交人无法通过UI访问已完成工单的详情页面：工作台（/api/workbench/tickets）要求workbench.view权限，提交人不具备；前端无独立工单详情路由或'我的工单'页面。提交人无法在UI中执行满意度评价操作。",
+      "assertions": [
+        {"planIndex": 0, "actual": "评价表单存在且API正常，但提交人无法通过UI访问已完成工单详情执行评价操作", "status": "failed"}
+      ]
+    },
+    {
+      "checkId": "QA-10",
+      "status": "passed",
+      "evidence": "统计仪表盘页面工单分布区域支持按公司维度和部门维度切换。按公司维度显示公司A（2条工单：1待分配/1完成）；切换到部门维度显示研发部（2条工单：1待分配/1完成）。分布表格包含总数、创建、待分配、待处理、完成、取消列。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: admin login at /dashboard, distribution dimension selector switched between company and department, table rendered with correct data"},
+      "assertions": [
+        {"planIndex": 0, "actual": "按公司和部门维度均正确展示工单分布数据，维度切换正常", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-11",
+      "status": "passed",
+      "evidence": "仪表盘页面展示运营指标：工单总量(2)、待处理(1)、已完成(1)、平均响应时间(4.8分钟)、平均满意度(0.00)、优先级分布(P0=0/P1=1/P2=1/P3=0/P4=0)、热点问题分类(账号问题=1/网络问题=1)。所有指标数据与后端 GET /api/statistics/dashboard 返回一致。",
+      "observation": {"method": "browser", "actor": "expert", "reference": "browser session: admin login at /dashboard, KPI cards and charts rendered with total/pending/completed/avg-response/satisfaction/hot-categories data"},
+      "assertions": [
+        {"planIndex": 0, "actual": "仪表盘正确展示工单量、平均响应时间、满意度、热点问题和优先级分布等运营指标", "status": "passed"}
+      ]
+    },
+    {
+      "checkId": "QA-12",
+      "status": "failed",
+      "evidence": "工作台支持搜索（按主题关键词筛选有效）、优先级筛选（P0-P4）、业务组筛选、排序（优先级/创建时间）和方向（升序/降序）。但公司维度筛选不可用：前端代码中 isAdmin = user.role === 'admin'，而所有QA用户的系统角色为'user'（非'admin'），导致公司筛选输入框永不显示。后端API支持companyId参数并使用audit.view权限判断管理员身份，但前端未使用此权限判断。AC要求'可按公司维度筛选'未满足。",
+      "assertions": [
+        {"planIndex": 0, "actual": "搜索、优先级筛选、业务组筛选、排序功能正常，但公司维度筛选不可用（前端权限判断错误）", "status": "failed"},
+        {"planIndex": 1, "actual": "工单列表正确呈现待处理工单，筛选/搜索/排序结果正确，但缺少公司维度筛选", "status": "failed"}
+      ]
+    },
+    {
+      "checkId": "QA-13",
+      "status": "passed",
+      "evidence": "审计日志页面通过UI显示9条操作日志，包含：ticket.created(2)、ticket.assigned(1)、ticket.reply_added(2)、business_group.created(1)、ticket.transferred(1)、ticket.completed(1)、email.sent(1)。每条日志记录时间、事件类型、实体类型和ID、操作人姓名和ID、详情。支持按工单ID、事件类型、操作人ID筛选。GET /api/audit-logs 返回完整日志列表。",
+      "results": [
+        {"planIndex": 0, "actual": "操作日志记录了创建、分配、回复、转派、完成、邮件发送等全部操作类型，含操作人、时间和关联工单", "status": "passed"}
+      ]
+    }
+  ],
+  "coverage": [
+    {"id": "AC-01", "status": "not-met", "evidence": "QA-01 failed: 分类下拉框为空（/api/categories端点缺失），无法通过UI创建工单"},
+    {"id": "AC-02", "status": "met", "evidence": "QA-02 passed: 浏览器中两条回复成功添加，显示回复人、时间和内容"},
+    {"id": "AC-03", "status": "met", "evidence": "QA-03 passed: 处理人浏览器仅显示本公司工单，API交叉验证B公司用户不可见A公司工单"},
+    {"id": "AC-04", "status": "met", "evidence": "QA-04 passed: 浏览器中业务组创建和成员管理功能正常"},
+    {"id": "AC-05", "status": "not-met", "evidence": "QA-05 failed: 无法通过UI配置分类规则或创建工单触发自动分配"},
+    {"id": "AC-06", "status": "met", "evidence": "QA-06 passed: 浏览器中转派操作成功，业务组更新，日志记录"},
+    {"id": "AC-07", "status": "met", "evidence": "QA-07 passed: 浏览器中提交人完整信息正确显示"},
+    {"id": "AC-08", "status": "met", "evidence": "QA-08 passed: 浏览器中工单完成，邮件通知发送（服务器控制台验证）"},
+    {"id": "AC-09", "status": "not-met", "evidence": "QA-09 failed: 评价表单和API正常，但提交人无法通过UI访问已完成工单详情"},
+    {"id": "AC-10", "status": "met", "evidence": "QA-10 passed: 浏览器中按公司和部门维度正确展示工单分布"},
+    {"id": "AC-11", "status": "met", "evidence": "QA-11 passed: 浏览器中仪表盘展示全部运营指标"},
+    {"id": "AC-12", "status": "not-met", "evidence": "QA-12 failed: 搜索/筛选/排序正常，但公司维度筛选不可用"},
+    {"id": "AC-13", "status": "met", "evidence": "QA-13 passed: 审计日志记录全部操作类型、操作人、时间和关联工单"}
+  ],
+  "defects": [
+    {
+      "id": "DEF-001",
+      "taskId": "T01",
+      "severity": "blocking",
+      "environment": "Hono backend (Node.js 24 + SQLite)",
+      "steps": ["打开 http://127.0.0.1:5175/tickets/new 创建工单页面", "查看分类下拉框", "检查 GET /api/categories 返回 404 NOT_FOUND"],
+      "expected": "分类下拉框应显示种子数据中的分类（网络问题、账号问题），GET /api/categories 应返回 { items: Category[] }",
+      "actual": "分类下拉框为空（仅显示'请选择'），GET /api/categories 返回 {\"error\":{\"code\":\"NOT_FOUND\",\"message\":\"API route not found\"}}",
+      "problem": "后端 business-routes.ts 未注册 GET /api/categories 路由。实现报告声称已补齐但实际缺失。前端 api-client.ts 中 categoryApi.list() 调用 /api/categories。",
+      "requiredChange": "在 business-routes.ts 中添加 GET /api/categories 路由，查询 categories 表并返回 { items: Category[] }",
+      "acceptanceEvidence": "未修复"
+    },
+    {
+      "id": "DEF-002",
+      "taskId": "T02",
+      "severity": "major",
+      "environment": "React frontend (Vite + Tailwind CSS)",
+      "steps": ["以任意QA用户登录", "进入工单工作台 /", "查看筛选栏"],
+      "expected": "管理员角色用户应看到公司维度筛选输入框",
+      "actual": "公司维度筛选输入框不显示。前端 WorkbenchPage.tsx 中 isAdmin = user.role === 'admin'，但 /api/auth/me 返回的 role 是系统角色（所有QA用户为'user'），非应用角色。",
+      "problem": "前端使用 userkit 系统角色字段(user.role)判断管理员身份，而后端使用 permissionkit 的 audit.view 权限判断。两者不一致导致公司筛选永不显示。",
+      "requiredChange": "前端应使用 audit.view 权限或 /api/auth/me 返回的 roles 数组判断管理员身份，而非系统 role 字段",
+      "acceptanceEvidence": "未修复"
+    },
+    {
+      "id": "DEF-003",
+      "taskId": "T02",
+      "severity": "major",
+      "environment": "React frontend (Vite + Tailwind CSS)",
+      "steps": ["以提交人身份登录", "进入工单工作台 /", "尝试查看工单详情或已完成工单"],
+      "expected": "提交人应能查看自己的工单列表和详情，对已完成工单进行满意度评价",
+      "actual": "工作台调用 /api/workbench/tickets 要求 workbench.view 权限，提交人不具备。前端无独立工单详情路由或'我的工单'页面。提交人无法通过UI查看工单详情或执行满意度评价。",
+      "problem": "前端仅有 WorkbenchPage 一个入口查看工单，且该页面调用需要 handler/admin 权限的 workbench API。缺少提交人可访问的工单列表和详情页面。",
+      "requiredChange": "添加提交人可访问的'我的工单'列表页面和工单详情路由，或在工作台中为提交人调用 /api/tickets 而非 /api/workbench/tickets",
+      "acceptanceEvidence": "未修复"
+    }
+  ],
+  "summary": {
+    "objective": "验证工单系统（194-ticket）的13个验收场景，覆盖工单创建、回复、公司隔离、业务组配置、自动分配、转派、提交人信息、完成通知、满意度评价、统计分析、仪表盘、工作台和操作日志。",
+    "changedBehavior": "工单系统全栈应用（Hono后端+React前端+SQLite），包含工单CRUD、多轮回复、公司隔离、业务组管理、分类分配规则、转派协作、完成邮件通知、满意度评价、统计仪表盘和工作台。",
+    "nonGoals": ["不验证邮件真实投递（验证环境使用控制台输出替代SMTP）", "不验证模块自身能力（dbkit/authkit等）", "不验证移动端适配"],
+    "riskLabels": ["后端分类列表端点缺失阻断多个UI验收", "提交人UI入口缺失影响评价和工单查看", "前端权限判断与后端不一致"]
+  },
+  "environment": {
+    "name": "local-dev",
+    "version": "Node.js v24.14.1 + Hono 4.6 + React 18.3 + Vite 5.4 + SQLite",
+    "dataProfile": "QA seed: 2 companies (A/B), 2 departments, 4 users (submitterA/handlerA/adminA/submitterB), 2 business groups, 2 categories, 1 category assignment rule"
+  }
+}

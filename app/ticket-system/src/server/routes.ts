@@ -59,7 +59,11 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  app.get('/api/auth/me', async (context) => {
+    const user = (context as unknown as { get(key: string): unknown }).get('currentUser')
+    const isAdmin = await platform.permission.can(currentUserId(context), 'audit.view')
+    return context.json({ ...(user as object), isAdmin })
+  })
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string

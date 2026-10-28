@@ -251,6 +251,13 @@ export function createTicketService(deps: TicketServiceDeps) {
       return loadProfile(db, userId)
     },
 
+    async listCategories(): Promise<{ items: { id: string; name: string; description: string | null }[] }> {
+      const rows = await db.queryAll<{ id: string; name: string; description: string | null }>({
+        text: 'SELECT id, name, description FROM categories ORDER BY name',
+      })
+      return { items: rows }
+    },
+
     async createTicket(profile: UserProfile, input: CreateTicketRequest): Promise<ErrorResult | CreateTicketResponse> {
       const category = await db.queryOne<{ id: string }>({ text: 'SELECT id FROM categories WHERE id = ?', params: [input.categoryId] })
       if (!category) return { error: 'CATEGORY_NOT_FOUND' as const }

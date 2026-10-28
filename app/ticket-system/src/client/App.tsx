@@ -5,6 +5,7 @@ import { ToastProvider } from './platform/ui'
 import type { CurrentUser } from './platform/types'
 import WorkbenchPage from './tickets/WorkbenchPage'
 import CreateTicketPage from './tickets/CreateTicketPage'
+import MyTicketsPage from './tickets/MyTicketsPage'
 import DashboardPage from './tickets/DashboardPage'
 import ManagementPage from './admin/ManagementPage'
 import AuditLogPage from './admin/AuditLogPage'
@@ -16,6 +17,7 @@ type LoginUser = { id: string; name: string; email: string; passwordChangeRequir
 const NAV_ITEMS = [
   { to: '/', label: '工单工作台 / Workbench', end: true },
   { to: '/tickets/new', label: '创建工单 / Create', end: false },
+  { to: '/my-tickets', label: '我的工单 / My tickets', end: false },
   { to: '/dashboard', label: '统计仪表盘 / Dashboard', end: false },
   { to: '/admin', label: '管理 / Admin', end: false },
   { to: '/audit-logs', label: '审计日志 / Audit logs', end: false },
@@ -151,6 +153,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<WorkbenchPage user={user} />} />
               <Route path="/tickets/new" element={<CreateTicketPage />} />
+              <Route path="/my-tickets" element={<MyTicketsPage />} />
               <Route path="/dashboard" element={<DashboardPage user={user} />} />
               <Route path="/admin" element={<ManagementPage />} />
               <Route path="/audit-logs" element={<AuditLogPage />} />

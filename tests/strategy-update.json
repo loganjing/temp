@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {"checkId":"QA-01","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-02","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-03","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-04","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-05","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-06","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-07","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-08","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-09","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-10","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-11","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-12","status":"not-run","evidence":"testStrategy pending","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2}},
+    {"checkId":"QA-13","status":"not-run","evidence":"testStrategy pending"}
+  ]
+}

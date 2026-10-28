@@ -11,7 +11,7 @@ function formatTime(value: string): string {
 }
 
 export default function WorkbenchPage({ user }: { user: CurrentUser }) {
-  const isAdmin = user.role === 'admin'
+  const isAdmin = user.isAdmin ?? false
   const [search, setSearch] = useState('')
   const [priority, setPriority] = useState<'' | SlaPriority>('')
   const [groupId, setGroupId] = useState('')

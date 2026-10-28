@@ -13,10 +13,12 @@ export default function TicketDetail({
   ticket,
   groups,
   reload,
+  canManage = true,
 }: {
   ticket: TicketDetailType
   groups: BusinessGroup[]
   reload: () => Promise<void>
+  canManage?: boolean
 }) {
   const toast = useToast()
   const [reply, setReply] = useState('')
@@ -139,7 +141,7 @@ export default function TicketDetail({
         </form>
       </section>
 
-      {isPending && (
+      {canManage && isPending && (
         <section className="card">
           <h3>转派 / Transfer</h3>
           <form className="form-grid" onSubmit={submitTransfer}>
@@ -157,7 +159,7 @@ export default function TicketDetail({
         </section>
       )}
 
-      {isPending && (
+      {canManage && isPending && (
         <section className="card">
           <h3>完成工单 / Complete</h3>
           <p className="muted">完成后将向提交人发送邮件通知。/ The submitter will be notified by email.</p>
@@ -168,6 +170,7 @@ export default function TicketDetail({
         </section>
       )}
 
+      {canManage && (
       <section className="card">
         <div className="section-heading">
           <h3>提交人信息 / Submitter profile</h3>
@@ -204,6 +207,7 @@ export default function TicketDetail({
           </div>
         ) : null}
       </section>
+      )}
 
       {isCompleted && (
         <section className="card">

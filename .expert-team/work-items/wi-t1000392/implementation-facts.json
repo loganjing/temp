@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 8,
   "attempts": [
     {
       "attempt": 1,
@@ -101,7 +101,89 @@
       "createdAt": "2026-10-27T12:24:28.819Z"
     }
   ],
-  "repairs": [],
+  "repairs": [
+    {
+      "repairId": "verification:4:repair:T01:T01:2",
+      "planId": "plan:84767a46-c722-434e-864f-c1dff9b3bbcc",
+      "taskId": "T01",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEF-001"
+      ],
+      "findings": [
+        {
+          "id": "DEF-001",
+          "taskId": "T01",
+          "severity": "blocking",
+          "environment": "Hono backend (Node.js 24 + SQLite)",
+          "steps": [
+            "打开 http://127.0.0.1:5175/tickets/new 创建工单页面",
+            "查看分类下拉框",
+            "检查 GET /api/categories 返回 404 NOT_FOUND"
+          ],
+          "expected": "分类下拉框应显示种子数据中的分类（网络问题、账号问题），GET /api/categories 应返回 { items: Category[] }",
+          "actual": "分类下拉框为空（仅显示'请选择'），GET /api/categories 返回 {\"error\":{\"code\":\"NOT_FOUND\",\"message\":\"API route not found\"}}",
+          "problem": "后端 business-routes.ts 未注册 GET /api/categories 路由。实现报告声称已补齐但实际缺失。前端 api-client.ts 中 categoryApi.list() 调用 /api/categories。",
+          "requiredChange": "在 business-routes.ts 中添加 GET /api/categories 路由，查询 categories 表并返回 { items: Category[] }",
+          "acceptanceEvidence": "未修复"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-27T12:51:36.419Z"
+    },
+    {
+      "repairId": "verification:4:repair:T02:T02:2",
+      "planId": "plan:84767a46-c722-434e-864f-c1dff9b3bbcc",
+      "taskId": "T02",
+      "attempt": 2,
+      "kind": "qa-repair",
+      "sourceActionId": "verification",
+      "sourceReceiptId": "verification:4",
+      "findingIds": [
+        "DEF-002",
+        "DEF-003"
+      ],
+      "findings": [
+        {
+          "id": "DEF-002",
+          "taskId": "T02",
+          "severity": "major",
+          "environment": "React frontend (Vite + Tailwind CSS)",
+          "steps": [
+            "以任意QA用户登录",
+            "进入工单工作台 /",
+            "查看筛选栏"
+          ],
+          "expected": "管理员角色用户应看到公司维度筛选输入框",
+          "actual": "公司维度筛选输入框不显示。前端 WorkbenchPage.tsx 中 isAdmin = user.role === 'admin'，但 /api/auth/me 返回的 role 是系统角色（所有QA用户为'user'），非应用角色。",
+          "problem": "前端使用 userkit 系统角色字段(user.role)判断管理员身份，而后端使用 permissionkit 的 audit.view 权限判断。两者不一致导致公司筛选永不显示。",
+          "requiredChange": "前端应使用 audit.view 权限或 /api/auth/me 返回的 roles 数组判断管理员身份，而非系统 role 字段",
+          "acceptanceEvidence": "未修复"
+        },
+        {
+          "id": "DEF-003",
+          "taskId": "T02",
+          "severity": "major",
+          "environment": "React frontend (Vite + Tailwind CSS)",
+          "steps": [
+            "以提交人身份登录",
+            "进入工单工作台 /",
+            "尝试查看工单详情或已完成工单"
+          ],
+          "expected": "提交人应能查看自己的工单列表和详情，对已完成工单进行满意度评价",
+          "actual": "工作台调用 /api/workbench/tickets 要求 workbench.view 权限，提交人不具备。前端无独立工单详情路由或'我的工单'页面。提交人无法通过UI查看工单详情或执行满意度评价。",
+          "problem": "前端仅有 WorkbenchPage 一个入口查看工单，且该页面调用需要 handler/admin 权限的 workbench API。缺少提交人可访问的工单列表和详情页面。",
+          "requiredChange": "添加提交人可访问的'我的工单'列表页面和工单详情路由，或在工作台中为提交人调用 /api/tickets 而非 /api/workbench/tickets",
+          "acceptanceEvidence": "未修复"
+        }
+      ],
+      "status": "open",
+      "createdAt": "2026-10-27T12:51:36.435Z"
+    }
+  ],
   "blockers": [],
   "operations": [
     {
@@ -358,6 +440,109 @@
         }
       },
       "createdAt": "2026-10-27T12:24:28.819Z"
+    },
+    {
+      "requestId": "verification:4:repair:T01",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T01:T01:2",
+          "planId": "plan:84767a46-c722-434e-864f-c1dff9b3bbcc",
+          "taskId": "T01",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEF-001"
+          ],
+          "findings": [
+            {
+              "id": "DEF-001",
+              "taskId": "T01",
+              "severity": "blocking",
+              "environment": "Hono backend (Node.js 24 + SQLite)",
+              "steps": [
+                "打开 http://127.0.0.1:5175/tickets/new 创建工单页面",
+                "查看分类下拉框",
+                "检查 GET /api/categories 返回 404 NOT_FOUND"
+              ],
+              "expected": "分类下拉框应显示种子数据中的分类（网络问题、账号问题），GET /api/categories 应返回 { items: Category[] }",
+              "actual": "分类下拉框为空（仅显示'请选择'），GET /api/categories 返回 {\"error\":{\"code\":\"NOT_FOUND\",\"message\":\"API route not found\"}}",
+              "problem": "后端 business-routes.ts 未注册 GET /api/categories 路由。实现报告声称已补齐但实际缺失。前端 api-client.ts 中 categoryApi.list() 调用 /api/categories。",
+              "requiredChange": "在 business-routes.ts 中添加 GET /api/categories 路由，查询 categories 表并返回 { items: Category[] }",
+              "acceptanceEvidence": "未修复"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-27T12:51:36.419Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-27T12:51:36.419Z"
+    },
+    {
+      "requestId": "verification:4:repair:T02",
+      "actorId": "expert-team",
+      "operation": "reopen",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "repair": {
+          "repairId": "verification:4:repair:T02:T02:2",
+          "planId": "plan:84767a46-c722-434e-864f-c1dff9b3bbcc",
+          "taskId": "T02",
+          "attempt": 2,
+          "kind": "qa-repair",
+          "sourceActionId": "verification",
+          "sourceReceiptId": "verification:4",
+          "findingIds": [
+            "DEF-002",
+            "DEF-003"
+          ],
+          "findings": [
+            {
+              "id": "DEF-002",
+              "taskId": "T02",
+              "severity": "major",
+              "environment": "React frontend (Vite + Tailwind CSS)",
+              "steps": [
+                "以任意QA用户登录",
+                "进入工单工作台 /",
+                "查看筛选栏"
+              ],
+              "expected": "管理员角色用户应看到公司维度筛选输入框",
+              "actual": "公司维度筛选输入框不显示。前端 WorkbenchPage.tsx 中 isAdmin = user.role === 'admin'，但 /api/auth/me 返回的 role 是系统角色（所有QA用户为'user'），非应用角色。",
+              "problem": "前端使用 userkit 系统角色字段(user.role)判断管理员身份，而后端使用 permissionkit 的 audit.view 权限判断。两者不一致导致公司筛选永不显示。",
+              "requiredChange": "前端应使用 audit.view 权限或 /api/auth/me 返回的 roles 数组判断管理员身份，而非系统 role 字段",
+              "acceptanceEvidence": "未修复"
+            },
+            {
+              "id": "DEF-003",
+              "taskId": "T02",
+              "severity": "major",
+              "environment": "React frontend (Vite + Tailwind CSS)",
+              "steps": [
+                "以提交人身份登录",
+                "进入工单工作台 /",
+                "尝试查看工单详情或已完成工单"
+              ],
+              "expected": "提交人应能查看自己的工单列表和详情，对已完成工单进行满意度评价",
+              "actual": "工作台调用 /api/workbench/tickets 要求 workbench.view 权限，提交人不具备。前端无独立工单详情路由或'我的工单'页面。提交人无法通过UI查看工单详情或执行满意度评价。",
+              "problem": "前端仅有 WorkbenchPage 一个入口查看工单，且该页面调用需要 handler/admin 权限的 workbench API。缺少提交人可访问的工单列表和详情页面。",
+              "requiredChange": "添加提交人可访问的'我的工单'列表页面和工单详情路由，或在工作台中为提交人调用 /api/tickets 而非 /api/workbench/tickets",
+              "acceptanceEvidence": "未修复"
+            }
+          ],
+          "status": "open",
+          "createdAt": "2026-10-27T12:51:36.435Z"
+        },
+        "state": "completed"
+      },
+      "createdAt": "2026-10-27T12:51:36.435Z"
     }
   ]
 }
