@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "195-guest\n\n请帮我开发一个微信小程序，小程序的要求如下：\n1、要开发的是一个访客系统，然后需要记录到数据库中，小程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，手机号码可以从微信中获取，如果获取不到可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\n需要有一个审批后端系统，可以审核到来的人员，审核系统要适配移动端\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20473556701810688\",\"code\":\"T1000396\",\"title\":\"195-guest\",\"description\":\"请帮我开发一个微信小程序，小程序的要求如下：\\n1、要开发的是一个访客系统，然后需要记录到数据库中，小程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，手机号码可以从微信中获取，如果获取不到可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\\\\n需要有一个审批后端系统，可以审核到来的人员，审核系统要适配移动端\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"部伟建的测试空间\"}",
   "request": "195-guest\n\n请帮我开发一个微信小程序，小程序的要求如下：\n1、要开发的是一个访客系统，然后需要记录到数据库中，小程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，手机号码可以从微信中获取，如果获取不到可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\n需要有一个审批后端系统，可以审核到来的人员，审核系统要适配移动端\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20473556701810688\",\"code\":\"T1000396\",\"title\":\"195-guest\",\"description\":\"请帮我开发一个微信小程序，小程序的要求如下：\\n1、要开发的是一个访客系统，然后需要记录到数据库中，小程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，手机号码可以从微信中获取，如果获取不到可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\\\\n需要有一个审批后端系统，可以审核到来的人员，审核系统要适配移动端\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"部伟建的测试空间\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-27T11:54:48.405Z"
+  "revision": 1,
+  "createdAt": "2026-10-27T11:54:48.405Z",
+  "completedAt": "2026-10-28T01:20:18.146Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:35b659d55f640a52ed5eac923ff589cdc943967209df850f18df45559bb8bc9d",
+    "completedAt": "2026-10-28T01:20:18.146Z"
+  },
+  "updatedAt": "2026-10-28T01:20:18.146Z"
 }
