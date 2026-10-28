@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "191-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451227913424896\",\"code\":\"T1000389\",\"title\":\"191-teachers\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
   "request": "191-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20451227913424896\",\"code\":\"T1000389\",\"title\":\"191-teachers\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"荆龙刚的测试\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-27T10:26:00.731Z"
+  "revision": 1,
+  "createdAt": "2026-10-27T10:26:00.731Z",
+  "completedAt": "2026-10-27T11:46:34.261Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:6e5107d63220c8151c8e1588b5895c0d3f1c6219c408db9f713ff1963dbc6277",
+    "completedAt": "2026-10-27T11:46:34.261Z"
+  },
+  "updatedAt": "2026-10-27T11:46:34.261Z"
 }
