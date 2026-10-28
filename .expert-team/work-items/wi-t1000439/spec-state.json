@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-28T08:17:44.411Z"
+  "updatedAt": "2026-10-28T08:25:54.569Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000439/requirements.md",
+      "sha256": "sha256:340b61b874d9a0f3d14eeeec9877e51caa44f09b29e7156253a03b731dd15d0c"
+    },
+    "reason": "该教师管理系统是一个典型的单用户 CRUD 应用，仅要求对教师记录进行增删改查操作。需求明确未规定权限角色、数据持久化技术、服务端能力，验收场景仅涉及用户界面交互。不涉及服务端权威数据、认证、后台任务、外部集成或跨用户/设备共享数据，符合 simple-frontend 路由条件，使用浏览器 localStorage 即可满足全部验收场景。",
+    "evidence": {
+      "supporting": [
+        "需求为单用户教师信息 CRUD 应用，包含新增、查看、编辑、删除四种操作",
+        "教师记录仅含5个简单字段：教师名称、教授课程、年级、手机、邮箱",
+        "验收场景 AC-01 和 AC-02 仅要求用户界面层面的增删改查交互，未涉及服务端权威数据",
+        "需求明确写明'用户未规定具体平台'，未要求 Web 服务端部署",
+        "推荐基线仅要求手机号和邮箱的基本格式校验，属于前端可完成的可逆规则"
+      ],
+      "excluding": [
+        "需求明确写明'用户未规定权限角色或操作者身份限制'，排除认证/权限服务端能力",
+        "需求明确写明'用户未规定数据持久化方式或存储技术'，未要求权威数据库或服务端存储",
+        "需求未提及任何后台任务、定时任务或异步处理",
+        "需求未提及任何外部服务集成或第三方 API 调用",
+        "需求未提及跨用户、跨设备或跨浏览器数据共享",
+        "需求未提及服务端 API 或后端业务逻辑"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-28T08:25:21.382Z",
+    "sha256": "sha256:4cf9abe2b74d2a6761f165ccb04961f7ed27007901dd84fdcde2103c1977a77e"
+  }
 }
