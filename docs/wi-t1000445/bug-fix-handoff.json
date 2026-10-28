@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000445",
+  "source": {
+    "request": "196-teachers-issue\n\n你看下这个工程有很多bug，给我修复下\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"20797409747542016\",\"code\":\"T1000445\",\"title\":\"196-teachers-issue\",\"description\":\"你看下这个工程有很多bug，给我修复下\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "TeacherList.jsx: CSS class .col-actions (display:flex; gap:8px) was applied directly to both <th> and <td> elements, overriding display:table-cell and breaking table header and cell layout.",
+      "TeacherForm.jsx: Modal dialog had no keyboard Escape handler; users could only close via cancel button or overlay click, violating standard modal UX expectations.",
+      "ConfirmDialog.jsx: Same missing Escape key handler; delete confirmation dialog could not be dismissed with Escape.",
+      "storage.js: persist() called localStorage.setItem without try-catch; quota-exceeded or privacy-mode exceptions would propagate unhandled and crash the app. saveTeacher/updateTeacher/deleteTeacher did not check write results before returning success.",
+      "Browser runtime verification was attempted (dev server started at http://localhost:5173) but the preview browser did not respond within 30s timeout; runtime verification could not be completed in this environment and is recommended as a follow-up."
+    ],
+    "reproduction": [
+      "Bug 1 (col-actions layout): Open the teacher list page with at least one teacher record. The '操作' column header and action buttons render with display:flex applied directly to table cells, causing incorrect column sizing and header alignment.",
+      "Bug 2 & 3 (Escape key): Open the add/edit teacher form or the delete confirmation dialog. Press Escape — nothing happens; the modal stays open.",
+      "Bug 4 (persist error): If localStorage.setItem throws (e.g. quota exceeded or disabled), the unhandled exception propagates through saveTeacher/updateTeacher/deleteTeacher into the React event handler with no user feedback, crashing the current interaction."
+    ]
+  },
+  "expectedBasis": [
+    {
+      "kind": "user-request",
+      "reference": "Issue T1000445 description: 你看下这个工程有很多bug，给我修复下",
+      "expected": "The teacher management system should render the list table correctly, support standard modal keyboard interactions (Escape to close), and handle localStorage write failures gracefully without crashing."
+    },
+    {
+      "kind": "document",
+      "reference": "README.md 功能说明",
+      "expected": "Teacher list displays as a proper table; add/edit/delete modals follow standard UX patterns; data persistence via localStorage is robust."
+    }
+  ],
+  "fix": {
+    "summary": "Fixed 4 bugs: (1) removed .col-actions class from <th> and wrapped action buttons in a <div> inside <td> to preserve table-cell layout; (2) added Escape key handler to TeacherForm modal; (3) added Escape key handler to ConfirmDialog; (4) wrapped localStorage.setItem in try-catch with boolean return and updated all callers to check write result.",
+    "rootCause": "1. .col-actions CSS class with display:flex was applied to <th> and <td> elements directly, overriding display:table-cell and breaking table layout. 2. Modal components lacked keyboard event listeners for Escape. 3. persist() had no error handling for localStorage write failures, and calling functions assumed writes always succeeded.",
+    "files": [
+      "src/components/TeacherList.jsx",
+      "src/components/TeacherForm.jsx",
+      "src/components/ConfirmDialog.jsx",
+      "src/lib/storage.js"
+    ]
+  },
+  "verification": [
+    {
+      "id": "build-check",
+      "action": "Run npm run build after all fixes applied",
+      "expected": "Build completes successfully with no errors",
+      "actual": "Build completed successfully: 36 modules transformed, output generated to dist/",
+      "status": "passed",
+      "evidence": "vite build output: ✓ built in 206ms, dist/index-BiRPYQy4.js 148.45 kB"
+    },
+    {
+      "id": "col-actions-fix",
+      "action": "Review TeacherList.jsx: verify .col-actions class is removed from <th> and action buttons are wrapped in <div className='col-actions'> inside <td>",
+      "expected": "<th> has no col-actions class; <td> contains a <div className='col-actions'> wrapping the buttons",
+      "actual": "Line 26: <th>操作</th> (no col-actions class); Lines 37-52: <td><div className='col-actions'>...</div></td>",
+      "status": "passed",
+      "evidence": "TeacherList.jsx source verified after edit"
+    },
+    {
+      "id": "escape-form",
+      "action": "Review TeacherForm.jsx: verify useEffect adds keydown listener for Escape that calls onCancel",
+      "expected": "useEffect with document.addEventListener('keydown', ...) that calls onCancel when e.key === 'Escape'",
+      "actual": "Lines 22-31: useEffect with handleKeyDown checking e.key === 'Escape' calling onCancel, with proper cleanup",
+      "status": "passed",
+      "evidence": "TeacherForm.jsx source verified after edit"
+    },
+    {
+      "id": "escape-dialog",
+      "action": "Review ConfirmDialog.jsx: verify useEffect adds keydown listener for Escape that calls onCancel",
+      "expected": "useEffect with document.addEventListener('keydown', ...) that calls onCancel when e.key === 'Escape'",
+      "actual": "Lines 7-16: useEffect with handleKeyDown checking e.key === 'Escape' calling onCancel, with proper cleanup",
+      "status": "passed",
+      "evidence": "ConfirmDialog.jsx source verified after edit"
+    },
+    {
+      "id": "persist-error",
+      "action": "Review storage.js: verify persist() wraps localStorage.setItem in try-catch returning boolean, and saveTeacher/updateTeacher/deleteTeacher check the result",
+      "expected": "persist() returns true/false; callers return null/false when persist fails",
+      "actual": "Lines 78-85: persist() in try-catch returning true/false; Line 36: saveTeacher checks !persist(); Line 51: updateTeacher checks !persist(); Line 64: deleteTeacher checks !persist()",
+      "status": "passed",
+      "evidence": "storage.js source verified after edit"
+    }
+  ],
+  "entry": {
+    "workingDirectory": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000445",
+    "version": "Node.js with Vite 5.4.21, React 18.3.1",
+    "startup": "npm install && npm run dev (dev server at http://localhost:5173)",
+    "testData": "No seed data; localStorage key 'teachers' starts empty. Add teachers via '新增教师' button with name (required), course, grade, phone (11-digit), email.",
+    "identity": "No authentication required; localStorage-based persistence with no secrets"
+  },
+  "regressionSuggestions": [
+    "Verify table header and action column render correctly with multiple teacher records of varying content length.",
+    "Test Escape key closes both the add/edit form and the delete confirmation dialog without side effects.",
+    "Simulate localStorage write failure (e.g. fill quota) and verify saveTeacher/updateTeacher/deleteTeacher return null/false without crashing.",
+    "Verify full CRUD cycle: add a teacher, edit it, delete it, confirm list updates after each operation.",
+    "Test form validation: submit with empty name, invalid phone, invalid email, verify error messages display and clear on input.",
+    "Perform browser runtime verification of all fixes (could not be completed due to preview browser unavailability in this environment)."
+  ]
+}
