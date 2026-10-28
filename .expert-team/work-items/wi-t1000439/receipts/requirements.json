@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:d72b1851d2803a7b2a9d682826c6fc7330fc0753903358a350c0765e58a79661",
+  "createdAt": "2026-10-28T08:17:44.411Z",
+  "timing": {
+    "startedAt": "2026-10-28T08:16:44.024Z",
+    "completedAt": "2026-10-28T08:17:44.411Z",
+    "durationMs": 60387
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000439/requirements.md",
+      "bytes": 2778,
+      "sha256": "sha256:340b61b874d9a0f3d14eeeec9877e51caa44f09b29e7156253a03b731dd15d0c",
+      "role": "requirements",
+      "purpose": "教师管理系统需求文档，定义教师增删改查核心行为、字段规则及验收场景",
+      "title": "教师管理系统需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "fields-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "crud-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-sufficient",
+      "status": "passed"
+    }
+  ]
+}
