@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_c8b297f8-cddc-46c5-973c-05525fa77f18",
+  "workItemId": "wi-t1000396",
+  "workspaceRealpath": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/部伟建的测试空间/.lingee-task-worktrees/wi-t1000396",
+  "target": "workflow",
+  "operation": "compile",
+  "fixedArguments": {},
+  "requiredInputs": {},
+  "status": "pending",
+  "createdAt": "2026-10-27T12:05:02.741Z",
+  "consumedAt": null
+}

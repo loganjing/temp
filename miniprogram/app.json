@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/visitor-form/visitor-form",
+    "pages/submit-success/submit-success"
+  ],
+  "window": {
+    "navigationBarTitleText": "访客登记",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6f8",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2"
+}

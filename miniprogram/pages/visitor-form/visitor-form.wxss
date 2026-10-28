@@ -1,0 +1,62 @@
+.phone-btn {
+  width: 100%;
+  background-color: #2563eb;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+}
+
+.phone-btn[loading]::after {
+  border: none;
+}
+
+.photo-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.photo-preview {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #e5e7eb;
+  background-color: #f3f4f6;
+}
+
+.photo-btn {
+  flex: 1;
+  background-color: #f3f4f6;
+  color: #374151;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+.photo-btn::after {
+  border: none;
+}
+
+.submit-btn {
+  margin-top: 16rpx;
+  width: 100%;
+  background-color: #2563eb;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+}
+
+.submit-btn[disabled] {
+  background-color: #93c5fd;
+  color: #ffffff;
+}
+
+.submit-btn::after {
+  border: none;
+}

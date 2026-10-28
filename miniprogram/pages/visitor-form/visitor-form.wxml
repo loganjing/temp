@@ -1,0 +1,133 @@
+<view class="page">
+  <view class="form-card">
+    <view class="section-title">访客登记</view>
+
+    <!-- 手机号获取按钮置于表单顶部 -->
+    <view class="form-item">
+      <button
+        class="phone-btn"
+        open-type="getPhoneNumber"
+        bindgetphonenumber="onGetPhoneNumber"
+        loading="{{phoneLoading}}"
+      >使用微信手机号</button>
+      <view class="form-tip" wx:if="{{!phoneReadOnly}}">获取失败或未授权时可手工填写</view>
+    </view>
+
+    <!-- 手机号 -->
+    <view class="form-item">
+      <text class="label">手机号</text>
+      <input
+        class="input"
+        type="number"
+        maxlength="11"
+        value="{{phone}}"
+        placeholder="请输入手机号"
+        disabled="{{phoneReadOnly}}"
+        data-key="phone"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <!-- 姓名 -->
+    <view class="form-item">
+      <text class="label">姓名</text>
+      <input
+        class="input"
+        value="{{name}}"
+        placeholder="请输入访客姓名"
+        maxlength="50"
+        data-key="name"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <!-- 身份证号 -->
+    <view class="form-item">
+      <text class="label">身份证号</text>
+      <input
+        class="input"
+        value="{{idCard}}"
+        placeholder="请输入身份证号"
+        maxlength="18"
+        data-key="idCard"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <!-- 公司 -->
+    <view class="form-item">
+      <text class="label">公司</text>
+      <input
+        class="input"
+        value="{{company}}"
+        placeholder="请输入所属公司"
+        maxlength="100"
+        data-key="company"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <!-- 访问事由 -->
+    <view class="form-item">
+      <text class="label">访问事由</text>
+      <textarea
+        class="textarea"
+        value="{{visitReason}}"
+        placeholder="请输入访问事由"
+        maxlength="500"
+        data-key="visitReason"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <!-- 被访人 -->
+    <view class="form-item">
+      <text class="label">被访人</text>
+      <input
+        class="input"
+        value="{{hostName}}"
+        placeholder="请输入被访人姓名"
+        maxlength="50"
+        data-key="hostName"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <!-- 预计到访日期 -->
+    <view class="form-item">
+      <text class="label">预计到访日期</text>
+      <picker mode="date" value="{{dateValue}}" bindchange="onDateChange">
+        <view class="picker-value">{{dateValue || '请选择日期'}}</view>
+      </picker>
+    </view>
+
+    <!-- 预计到访时间 -->
+    <view class="form-item">
+      <text class="label">预计到访时间</text>
+      <picker mode="time" value="{{timeValue}}" bindchange="onTimeChange">
+        <view class="picker-value">{{timeValue || '请选择时间'}}</view>
+      </picker>
+    </view>
+
+    <!-- 访客照片（选填） -->
+    <view class="form-item">
+      <text class="label">访客照片（选填）</text>
+      <view class="photo-area">
+        <image
+          wx:if="{{photoTempPath}}"
+          class="photo-preview"
+          src="{{photoTempPath}}"
+          mode="aspectFill"
+        />
+        <button class="photo-btn" bindtap="onChoosePhoto">{{photoTempPath ? '重新选择' : '选择照片'}}</button>
+      </view>
+    </view>
+
+    <button
+      class="submit-btn"
+      bindtap="onSubmit"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+    >提交登记</button>
+  </view>
+</view>

@@ -1,0 +1,84 @@
+/* 全局样式：中性色调，与审批前端保持一致 */
+page {
+  background-color: #f5f6f8;
+  color: #1f2329;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+.page {
+  padding: 24rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.form-card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 32rpx 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, 0.04);
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1f2329;
+  margin-bottom: 24rpx;
+}
+
+.form-item {
+  margin-bottom: 28rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #4b5563;
+  margin-bottom: 12rpx;
+}
+
+.input {
+  height: 80rpx;
+  border: 2rpx solid #e5e7eb;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  background-color: #ffffff;
+  font-size: 28rpx;
+  color: #1f2329;
+  box-sizing: border-box;
+}
+
+.input[disabled] {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.textarea {
+  border: 2rpx solid #e5e7eb;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  background-color: #ffffff;
+  font-size: 28rpx;
+  color: #1f2329;
+  min-height: 140rpx;
+  box-sizing: border-box;
+}
+
+.form-tip {
+  font-size: 24rpx;
+  color: #9ca3af;
+  margin-top: 10rpx;
+}
+
+.picker-value {
+  height: 80rpx;
+  line-height: 80rpx;
+  border: 2rpx solid #e5e7eb;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  background-color: #ffffff;
+  font-size: 28rpx;
+  color: #1f2329;
+}

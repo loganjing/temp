@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:995716568bd0dc52b89488d297f89c9b1944a28cd579a3f119b80dc442c8ff21",
+  "createdAt": "2026-10-28T01:03:30.485Z",
+  "timing": {
+    "startedAt": "2026-10-27T12:05:02.684Z",
+    "completedAt": "2026-10-28T01:03:30.485Z",
+    "durationMs": 46707801
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000396/implementation-report.md",
+      "bytes": 6230,
+      "sha256": "sha256:662f4e3f4bc128d8e52c6225e3b12e2457645afc44a4797a3e65bd37f770ffb5",
+      "role": "primary",
+      "purpose": "访客系统实现报告：后端 API、审批前端、微信小程序三组件开发完成与验证结果",
+      "title": "实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:full",
+      "status": "passed",
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "checkId": "npm-test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0,
+      "detail": "9/9 passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:full",
+      "status": "passed",
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "checkId": "miniprogram-js-syntax",
+      "status": "passed",
+      "command": "node --check",
+      "exitCode": 0
+    },
+    {
+      "checkId": "miniprogram-json-validity",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "checkId": "miniprogram-structure",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:5e262237e98368527d21133d0a6ec4114c4b021ea54554be4191310e7f81132a",
+        "path": ".expert-team/work-items/wi-t1000396/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
