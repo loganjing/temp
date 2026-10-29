@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-29T10:57:35.862Z"
+  "updatedAt": "2026-10-29T11:05:08.222Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000484/requirements.md",
+      "sha256": "sha256:96d11d5a631bf760fbcba25eab120d5973f1c324d42c92c8931fb9d29dfe8c2d"
+    },
+    "reason": "工单系统需要多角色（提交人、处理人、管理员）跨用户共享数据：工单从提交人创建后流转到业务组处理人，管理员配置的业务组和分配规则需全局生效，历史工单需跨工单查询，工单转派涉及不同处理人之间的数据同步。这些需求明确要求服务端权威数据和跨用户共享，属于 fullstack-complex。",
+    "evidence": {
+      "supporting": [
+        "工单需在提交人、处理人、管理员等多角色之间共享和流转，需要服务端权威数据",
+        "业务组及成员配置需跨用户共享，管理员配置后所有处理人可见",
+        "分类自动分配规则需要服务端持久化，工单创建时按规则匹配业务组",
+        "提交人历史工单需跨工单查询，要求服务端统一数据存储",
+        "工单转派涉及不同业务组或处理人之间的数据同步",
+        "多轮回复需记录回复人和回复时间，跨用户可见",
+        "处理记录需持久化处理人、处理时间、工单状态"
+      ],
+      "excluding": [
+        "需求不涉及外部服务集成或认证系统，但核心数据共享需求已排除 simple-frontend"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-29T10:58:29.601Z",
+    "sha256": "sha256:1ac557401c4e736d0655598b9efb0b23f16bd9f74aa94808fe184244e0d18a99"
+  }
 }

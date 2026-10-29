@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:316d609cc3fe34ed8a2e48955a8ad9b35fff9d083547c89d7835ca4755aa4b6e",
+  "createdAt": "2026-10-29T11:05:08.222Z",
+  "timing": {
+    "startedAt": "2026-10-29T10:58:10.480Z",
+    "completedAt": "2026-10-29T11:05:08.221Z",
+    "durationMs": 417741
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000484/architecture-baseline.md",
+      "bytes": 16665,
+      "sha256": "sha256:4cb95cf2364a894797e376803479e4d867a4278891f946f81eaecb3c6ecad76e",
+      "role": "primary",
+      "purpose": "架构基线：整体方案与技术栈、CommonApp 模块选择、UI 基线、数据模型、模块边界与接口摘要、运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000484/technical-contract.md",
+      "bytes": 16795,
+      "sha256": "sha256:0ee285cab429674f367422596c8d6b23cd1d27c7d30c648a5d5ed8cdeb9630ff",
+      "role": "supporting",
+      "purpose": "技术契约：API 接口定义、ID 类型对照、枚举值、字段映射、事务约定与错误格式",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline-readable",
+      "status": "passed"
+    },
+    {
+      "checkId": "package-agents-md-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "dbkit-manifest-verified",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:1ac557401c4e736d0655598b9efb0b23f16bd9f74aa94808fe184244e0d18a99",
+        "path": ".expert-team/work-items/wi-t1000484/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
