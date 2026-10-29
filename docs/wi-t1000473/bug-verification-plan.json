@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000473",
+  "originalRequest": "204-teachers-issues-3\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21150962496315392\",\"code\":\"T1000473\",\"title\":\"204-teachers-issues-3\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "source": {
+    "handoffWorkItemId": "wi-t1000473"
+  },
+  "stageExecution": {
+    "workItemId": "wi-t1000473",
+    "actionId": "implementation",
+    "receiptId": "implementation:1"
+  },
+  "acceptanceCriteria": [
+    {
+      "id": "ac-no-flash-on-load",
+      "source": "original-request",
+      "statement": "页面加载时有 localStorage 持久化数据，首帧直接显示教师列表，不闪现空列表",
+      "surface": "user-interface",
+      "action": "在有持久化数据的情况下全量刷新页面，立即检查首帧渲染内容",
+      "expected": "首帧直接显示教师数据行，不出现「暂无教师记录」空状态闪现",
+      "evidenceKinds": ["runtime-render", "session-persistence"]
+    },
+    {
+      "id": "ac-no-flash-on-edit",
+      "source": "original-request",
+      "statement": "编辑模式打开表单时首帧直接显示教师已有数据，不闪现空字段",
+      "surface": "user-interface",
+      "action": "点击教师行的编辑按钮，立即检查表单字段内容",
+      "expected": "表单打开瞬间所有字段已填入教师数据，无空表单闪现",
+      "evidenceKinds": ["runtime-render", "interaction"]
+    },
+    {
+      "id": "ac-css-overflow-fix",
+      "source": "original-request",
+      "statement": "表格单元格中超长无空格文本自动换行显示，不被 overflow:hidden 裁剪",
+      "surface": "user-interface",
+      "action": "新增一个邮箱为超长无空格文本（>100字符）的教师，检查表格中该单元格内容显示",
+      "expected": "超长文本在单元格内自动换行，完整可见，不被裁剪",
+      "evidenceKinds": ["visual-style", "interaction"]
+    },
+    {
+      "id": "ac-crud-add",
+      "source": "original-request",
+      "statement": "新增教师功能正常，填写有效数据提交后表格显示新记录",
+      "surface": "user-interface",
+      "action": "点击新增教师，填写有效数据并提交",
+      "expected": "教师添加成功，表格显示新行",
+      "evidenceKinds": ["interaction", "runtime-render"]
+    },
+    {
+      "id": "ac-crud-edit",
+      "source": "original-request",
+      "statement": "编辑教师功能正常，修改信息保存后表格显示更新后的数据",
+      "surface": "user-interface",
+      "action": "编辑教师信息并保存",
+      "expected": "教师信息更新成功，表格显示更新后的数据",
+      "evidenceKinds": ["interaction", "runtime-render"]
+    },
+    {
+      "id": "ac-crud-delete",
+      "source": "original-request",
+      "statement": "删除教师功能正常，确认删除后表格中该行消失",
+      "surface": "user-interface",
+      "action": "点击删除并确认",
+      "expected": "教师删除成功，表格中该行消失",
+      "evidenceKinds": ["interaction", "runtime-render"]
+    },
+    {
+      "id": "ac-validation-empty",
+      "source": "original-request",
+      "statement": "空表单提交时所有字段显示必填错误，表单不关闭",
+      "surface": "user-interface",
+      "action": "空表单点击提交",
+      "expected": "五个字段均显示必填错误信息，表单保持打开",
+      "evidenceKinds": ["error-feedback", "interaction"]
+    },
+    {
+      "id": "ac-validation-format",
+      "source": "original-request",
+      "statement": "无效手机号和邮箱提交时显示格式错误，表单不关闭",
+      "surface": "user-interface",
+      "action": "输入无效手机号和无效邮箱并提交",
+      "expected": "手机字段显示格式错误，邮箱字段显示格式错误，表单不关闭",
+      "evidenceKinds": ["error-feedback", "interaction"]
+    },
+    {
+      "id": "ac-validation-realtime",
+      "source": "original-request",
+      "statement": "已触碰字段实时校验，输入有效值后错误实时消失",
+      "surface": "user-interface",
+      "action": "输入无效手机号并失焦，再修正为有效手机号",
+      "expected": "失焦时显示错误，修正后错误实时消失",
+      "evidenceKinds": ["error-feedback", "interaction"]
+    },
+    {
+      "id": "ac-persistence",
+      "source": "original-request",
+      "statement": "添加教师后刷新页面，数据仍然存在",
+      "surface": "user-interface",
+      "action": "添加教师后全量刷新页面",
+      "expected": "刷新后教师数据正确持久化并显示",
+      "evidenceKinds": ["session-persistence", "runtime-render"]
+    },
+    {
+      "id": "ac-trimming",
+      "source": "original-request",
+      "statement": "输入带首尾空格的教师姓名保存时自动去除空格",
+      "surface": "user-interface",
+      "action": "输入带首尾空格的教师姓名并保存",
+      "expected": "表格显示去除空格后的姓名",
+      "evidenceKinds": ["interaction", "runtime-render"]
+    },
+    {
+      "id": "ac-no-console-errors",
+      "source": "original-request",
+      "statement": "全量刷新页面后控制台无 JavaScript 运行时错误",
+      "surface": "user-interface",
+      "action": "全量刷新页面后检查浏览器控制台",
+      "expected": "控制台无 error 级别消息",
+      "evidenceKinds": ["runtime-render"]
+    },
+    {
+      "id": "ac-localstorage-corruption",
+      "source": "original-request",
+      "statement": "localStorage 数据损坏时优雅降级，显示空列表不崩溃",
+      "surface": "user-interface",
+      "action": "在 localStorage 中写入损坏数据后刷新页面",
+      "expected": "页面正常加载，显示空列表，无崩溃",
+      "evidenceKinds": ["runtime-render", "session-persistence"]
+    }
+  ]
+}
