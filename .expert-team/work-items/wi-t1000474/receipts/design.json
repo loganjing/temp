@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:1773925decbd85980b7624f1dff83725cdd81d41e601fafaf9be1ef67e7325ad",
+  "createdAt": "2026-10-29T09:01:33.034Z",
+  "timing": {
+    "startedAt": "2026-10-29T08:54:36.091Z",
+    "completedAt": "2026-10-29T09:01:33.034Z",
+    "durationMs": 416943
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000474/architecture-baseline.md",
+      "bytes": 14625,
+      "sha256": "sha256:04802da7ebd2ef3bac37594344c3adc324f74ccee8c62b0e691707283cb25f2a",
+      "role": "primary",
+      "purpose": "系统架构基线：技术栈、模块边界、数据模型、状态机、UI布局、运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000474/technical-contract.md",
+      "bytes": 11854,
+      "sha256": "sha256:4de019f286eae9eeaf3429b344f1f93b0ef42f83d05f51baf28df08850076732",
+      "role": "supporting",
+      "purpose": "API契约：字段级定义、类型、可空性、错误码、ID对照表、枚举值",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline-readable",
+      "status": "passed"
+    },
+    {
+      "checkId": "agents-md-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:eff99def65401628f425a8a184ff34521aab2b39a12c6d640bda66cf51bf2b51",
+        "path": ".expert-team/work-items/wi-t1000474/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
