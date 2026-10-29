@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sessions": {
+    "ses_e794b9be2ffegNFC231TVMcxoo": {
+      "sessionId": "ses_e794b9be2ffegNFC231TVMcxoo",
+      "executionStageIds": [
+        "implementation"
+      ]
+    }
+  }
+}

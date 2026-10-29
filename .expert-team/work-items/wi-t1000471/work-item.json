@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000471",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "203-teachers-issue-2\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21141496480669696\",\"code\":\"T1000471\",\"title\":\"203-teachers-issue-2\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "request": "203-teachers-issue-2\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21141496480669696\",\"code\":\"T1000471\",\"title\":\"203-teachers-issue-2\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-29T08:08:56.896Z"
+}

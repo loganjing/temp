@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000471",
+  "source": {
+    "request": "203-teachers-issue-2\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21141496480669696\",\"code\":\"T1000471\",\"title\":\"203-teachers-issue-2\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "src/hooks/useTeachers.js: persist() is called inside setTeachers state updater functions in addTeacher, updateTeacher, and deleteTeacher. React state updater functions must be pure; calling persist (a side effect) inside them is an anti-pattern. In React 18 StrictMode (enabled in main.jsx), updaters are double-invoked, causing persist to run twice per operation.",
+      "src/hooks/useTeachers.js: The return value of persist() is never checked by its callers. If localStorage.setItem fails (e.g., quota exceeded, security restrictions), the in-memory state updates but data is not persisted. The user experiences silent data loss on page reload with no error indication.",
+      "All other source files (App.jsx, TeacherForm.jsx, DeleteConfirm.jsx, validation.js, main.jsx, index.html, vite.config.js, styles/index.css) were reviewed and found correct: imports match, validation logic is sound, CRUD event handlers use proper closure patterns, conditional rendering is correct, and CSS is consistent."
+    ],
+    "reproduction": [
+      "Build passes with no compilation errors (vite build, 35 modules transformed).",
+      "Browser testing on dev server: add/edit/delete teacher operations all function correctly at the UI level.",
+      "Data persists to localStorage and survives page reloads in normal conditions.",
+      "The persist-inside-updater anti-pattern does not cause visible data corruption because StrictMode double-invokes with identical data, but it violates React purity requirements and causes redundant localStorage writes.",
+      "The unchecked persist return value is not visibly reproducible in normal browser conditions but represents a real data-loss risk in edge cases (private browsing, quota exceeded)."
+    ]
+  },
+  "expectedBasis": [
+    {
+      "kind": "document",
+      "reference": "React 18 docs: Updating state in derived state (https://react.dev/reference/react/useState#storing-information-from-previous-renders)",
+      "expected": "State updater functions passed to setTeachers must be pure: they should only compute and return the next state, not perform side effects like writing to localStorage."
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "src/hooks/useTeachers.js persist function returns true/false but callers ignore it",
+      "expected": "The return value of persist should be checked so that persistence failures are detected and logged, preventing silent data loss."
+    }
+  ],
+  "fix": {
+    "summary": "Moved localStorage persistence out of setTeachers state updater functions into a dedicated useEffect that watches the teachers state. Added an initialized flag to prevent overwriting existing localStorage data before the initial load completes. The persist effect checks the return value and logs a warning on failure. Removed persist from useCallback dependency arrays since it is no longer called directly in the mutation callbacks.",
+    "rootCause": "persist() was called inside setTeachers functional updaters in addTeacher, updateTeacher, and deleteTeacher, violating React's requirement that state updater functions be pure. Additionally, the return value of persist() (which indicates success/failure of localStorage.setItem) was never checked, meaning persistence failures were silently swallowed.",
+    "files": [
+      "src/hooks/useTeachers.js"
+    ]
+  },
+  "entry": {
+    "workingDirectory": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers",
+    "version": "node v24.14.1, vite 5.4.21, React 18.3.1",
+    "startup": "npm install && npm run dev (port 5173) or npm run build && npm run preview",
+    "testData": "Teacher records: name=张三, course=数学, grade=高一, phone=13800138000, email=zhangsan@test.com. Stored in localStorage key 'teacher-management:teachers'.",
+    "identity": "No authentication required; client-side only React SPA with localStorage persistence."
+  },
+  "regressionSuggestions": [
+    "Verify add teacher: fill all 5 fields with valid data, submit, confirm row appears and localStorage contains the new record.",
+    "Verify edit teacher: click edit, modify name field, save, confirm table updates and localStorage reflects the change.",
+    "Verify delete teacher: click delete, confirm in dialog, confirm row removed and localStorage reflects the deletion.",
+    "Verify page reload: add a teacher, reload the page, confirm the teacher data loads from localStorage.",
+    "Verify form validation: try submitting empty form, invalid phone (e.g., '123'), invalid email (e.g., 'no-at-sign'), confirm error messages appear and submission is blocked.",
+    "Verify StrictMode safety: check browser console for React warnings about impure state updaters — there should be none.",
+    "Verify persist failure handling: simulate localStorage quota exceeded or disabled, confirm console warning is logged."
+  ],
+  "verification": [
+    {
+      "id": "build-pass",
+      "action": "Run npm run build in the project directory",
+      "expected": "Build completes successfully with no errors",
+      "actual": "vite build completed: 35 modules transformed, dist/index.html (0.39 kB), dist/assets/index-CZBdn6gw.css (2.65 kB), dist/assets/index-DQ5u9y6W.js (147.90 kB)",
+      "status": "passed",
+      "evidence": "Build output: ✓ built in 228ms, no errors"
+    },
+    {
+      "id": "add-teacher-persists",
+      "action": "Add a new teacher with valid data and verify localStorage persistence",
+      "expected": "Teacher appears in table and localStorage contains the new record",
+      "actual": "Added teacher 王五 (物理, 高三, 13700137000, wangwu@test.com). localStorage confirmed 2 records after add.",
+      "status": "passed",
+      "evidence": "Browser eval: JSON.parse(localStorage.getItem('teacher-management:teachers')).length === 2"
+    },
+    {
+      "id": "edit-teacher-persists",
+      "action": "Edit an existing teacher's name and verify localStorage persistence",
+      "expected": "Table updates with new name and localStorage reflects the change",
+      "actual": "Edited teacher name from 测试 to 赵六. localStorage confirmed: JSON.parse(localStorage.getItem('teacher-management:teachers'))[0].name === '赵六'",
+      "status": "passed",
+      "evidence": "Browser eval confirmed localStorage contains updated name"
+    },
+    {
+      "id": "delete-teacher-persists",
+      "action": "Delete a teacher via confirmation dialog and verify localStorage persistence",
+      "expected": "Teacher row removed and localStorage reflects the deletion",
+      "actual": "Deleted teacher 赵六. localStorage confirmed 1 record remaining (王五).",
+      "status": "passed",
+      "evidence": "Browser eval: JSON.parse(localStorage.getItem('teacher-management:teachers')).length === 1"
+    },
+    {
+      "id": "reload-data-persists",
+      "action": "Reload the page after adding a teacher and verify data loads from localStorage",
+      "expected": "Teacher data is loaded and displayed after page reload",
+      "actual": "After reload, table shows 1 teacher (张三) with all fields intact.",
+      "status": "passed",
+      "evidence": "Browser snapshot: cell '张三' visible in table after full page reload on port 5180"
+    },
+    {
+      "id": "validation-works",
+      "action": "Submit empty form, invalid phone, invalid email",
+      "expected": "Error messages displayed and submission blocked",
+      "actual": "Empty form: all 5 fields show '此字段为必填项'. Invalid phone '123456': shows '请输入有效的手机号码'. Invalid email 'invalid-email': shows '请输入有效的邮箱地址'.",
+      "status": "passed",
+      "evidence": "Browser get text confirmed error messages displayed for each validation failure"
+    },
+    {
+      "id": "no-react-warnings",
+      "action": "Check browser console for React warnings on fresh page load",
+      "expected": "No React warnings about impure state updaters or hook order changes",
+      "actual": "Fresh page load on port 5180 shows only Vite connection messages, React DevTools info, and Electron Security Warning (from preview browser). No React state updater warnings.",
+      "status": "passed",
+      "evidence": "Browser console output on fresh load: no error-type messages from React"
+    },
+    {
+      "id": "persist-outside-updater",
+      "action": "Review source code to confirm persist is not called inside setTeachers updaters",
+      "expected": "persist is called only in a useEffect, not inside any state updater function",
+      "actual": "src/hooks/useTeachers.js: persist is called in a dedicated useEffect (line ~42) that watches teachers state. addTeacher, updateTeacher, and deleteTeacher use pure setTeachers updaters with no side effects.",
+      "status": "passed",
+      "evidence": "Source code review: no persist() calls inside setTeachers callbacks"
+    }
+  ]
+}
