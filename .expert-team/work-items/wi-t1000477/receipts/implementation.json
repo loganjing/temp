@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:1",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 2,
+  "actionId": "implementation",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:3a9c1a9865ec248d13fb50b32c03b9a65c07bf8ee77e245a72bf0d860882dcbb",
+  "createdAt": "2026-10-29T10:01:51.736Z",
+  "timing": {
+    "startedAt": "2026-10-29T09:34:41.339Z",
+    "completedAt": "2026-10-29T10:01:51.736Z",
+    "durationMs": 1630397
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000477/implementation-report.md",
+      "bytes": 2687,
+      "sha256": "sha256:dd19775c9c27e5bc7e08d5fb9ee3af4ffdc4b906d772cc9d2d8a4f2567a6f586",
+      "title": "Bug fix / 缺陷修复"
+    }
+  ],
+  "internalArtifacts": [
+    {
+      "path": "docs/wi-t1000477/bug-fix-handoff.json",
+      "bytes": 6331,
+      "sha256": "sha256:300fa5f81ec9969d06f850eaabcaa56723da15a1b1623094fc98ae3e9b0d6cce"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    }
+  ]
+}

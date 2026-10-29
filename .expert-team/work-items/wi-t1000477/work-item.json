@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000477",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "206-teachers-issue-4\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21163089827201024\",\"code\":\"T1000477\",\"title\":\"206-teachers-issue-4\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "request": "206-teachers-issue-4\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21163089827201024\",\"code\":\"T1000477\",\"title\":\"206-teachers-issue-4\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-29T09:34:41.178Z"
+}

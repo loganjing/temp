@@ -1,0 +1,927 @@
+{
+  "schemaVersion": 3,
+  "domainPackId": "general-application-development",
+  "specId": "general-application-development-spec",
+  "specRevision": 16,
+  "expertPool": [
+    "general-app-team-lead",
+    "general-app-product-expert",
+    "general-app-architecture-expert",
+    "general-app-development-expert",
+    "general-app-qa-expert",
+    "general-app-deployment-expert"
+  ],
+  "initialState": "implementation_pending",
+  "scenarioId": "bug_fix",
+  "graphRevision": 2,
+  "graphHash": "sha256:e71eb996eb6be96aa9900f80ac0f599534549da96866446a803f451a91f86a6b",
+  "stages": [
+    {
+      "actionId": "implementation",
+      "taskKind": "implement",
+      "capabilityId": "engineering.bug-fix",
+      "fromState": "implementation_pending",
+      "toState": "implementation_ready",
+      "receiptType": "implementation-report",
+      "artifactPath": "docs/wi-t1000477/implementation-report.md",
+      "requiredArtifacts": [
+        "docs/wi-t1000477/implementation-report.md",
+        "docs/wi-t1000477/bug-fix-handoff.json"
+      ],
+      "writableScopes": [
+        "src",
+        "tests",
+        "config",
+        "migrations",
+        "public",
+        "static",
+        "assets",
+        "scripts",
+        "app",
+        "pages",
+        "components",
+        "lib",
+        "styles",
+        "frontend",
+        "backend",
+        "README.md",
+        "package.json",
+        "package-lock.json",
+        "npm-shrinkwrap.json",
+        "bun.lock",
+        "bun.lockb",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+        "index.html",
+        "tsconfig.json",
+        "vite.config.js",
+        "vite.config.ts",
+        "pyproject.toml",
+        "requirements.txt",
+        "uv.lock",
+        "poetry.lock",
+        "Pipfile",
+        "Pipfile.lock",
+        "go.mod",
+        "go.sum",
+        "Cargo.toml",
+        "Cargo.lock",
+        "pom.xml",
+        "build.gradle",
+        "build.gradle.kts",
+        "settings.gradle",
+        "settings.gradle.kts",
+        "gradle.properties",
+        "docs/wi-t1000477",
+        "vendor/@commonapp"
+      ],
+      "executionMode": "inline-light",
+      "dependsOn": [],
+      "requiresInteraction": false,
+      "displayName": {
+        "zh": "开发实现",
+        "en": "Development Implementation"
+      },
+      "expertId": "general-app-development-expert",
+      "readOnly": false,
+      "autoAdvanceOnSettle": false,
+      "inlineContext": {
+        "schemaVersion": 1,
+        "expertId": "general-app-development-expert",
+        "agentName": "general",
+        "expertDisplayName": {
+          "en": "General Application Development Agent",
+          "zh": "通用应用开发智能体"
+        },
+        "capabilityId": "engineering.bug-fix",
+        "persona": {
+          "role": "Production-minded general application development agent",
+          "perspective": [
+            "Current behavior, complete call chains, and root causes",
+            "Business ownership, technical responsibility, and repository conventions",
+            "Smallest complete changes across source, tests, schemas, migrations, and generated artifacts",
+            "Risk-proportionate verification and reproducible evidence"
+          ],
+          "communicationStyle": "Lead with the changed behavior and root cause, then show the call chain, implementation scope, verification evidence, and residual risk"
+        },
+        "constraints": [],
+        "skills": [
+          "general-app-bug-fix"
+        ],
+        "availableSkills": [
+          "general-app-bug-fix"
+        ],
+        "disclosure": "catalog",
+        "skillInstructions": [],
+        "toolPolicy": {
+          "source": "tools/engineering-policy.json",
+          "rules": [
+            {
+              "permission": "*",
+              "pattern": "*",
+              "action": "deny"
+            },
+            {
+              "permission": "read",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "glob",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "grep",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "edit",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_modify",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "job_list",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "job_output",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "job_kill",
+              "pattern": "*",
+              "action": "allow"
+            }
+          ],
+          "allowedTools": [
+            "read",
+            "glob",
+            "grep",
+            "edit",
+            "write",
+            "apply_patch",
+            "bash",
+            "job_list",
+            "job_output",
+            "job_kill"
+          ]
+        },
+        "artifactGuidance": {
+          "primaryArtifact": "implementation-report.md",
+          "required": true
+        }
+      },
+      "capabilityContract": {
+        "artifacts": [
+          {
+            "path": "implementation-report.md",
+            "kind": "user-deliverable",
+            "format": "markdown",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "completion": {
+              "script": "tools/complete-bug-fix.mjs",
+              "generatesArtifact": true,
+              "inputArtifact": "bug-fix-handoff.json",
+              "inputFlag": "--handoff-json",
+              "inputDescription": "Read the handoff schema and record original request, investigation, expectedBasis, root cause, changes, self-test evidence, entry and regression suggestions. Never claim fixed without passing self-tests.",
+              "defaultResult": {
+                "status": "completed"
+              }
+            }
+          },
+          {
+            "path": "bug-fix-handoff.json",
+            "kind": "internal-execution-input",
+            "format": "json",
+            "schema": "outputs/bug-fix-handoff.schema.json",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "validator": "tools/bug-fix-handoff-validator.mjs"
+          }
+        ],
+        "decisions": [
+          "completed",
+          "blocked",
+          "needs-retry"
+        ],
+        "verificationRequired": true
+      }
+    },
+    {
+      "actionId": "verification",
+      "taskKind": "test",
+      "capabilityId": "quality.bug-regression-verification",
+      "fromState": "implementation_ready",
+      "toState": "completed",
+      "receiptType": "verification-report",
+      "artifactPath": "docs/wi-t1000477/verification.md",
+      "requiredArtifacts": [
+        "docs/wi-t1000477/verification.md",
+        "docs/wi-t1000477/verification.json",
+        "docs/wi-t1000477/bug-verification-plan.json"
+      ],
+      "writableScopes": [
+        "tests",
+        "docs/wi-t1000477"
+      ],
+      "executionMode": "inline-light",
+      "dependsOn": [
+        "implementation"
+      ],
+      "requiresInteraction": false,
+      "displayName": {
+        "zh": "测试验证",
+        "en": "Test & Verification"
+      },
+      "expertId": "general-app-qa-expert",
+      "readOnly": false,
+      "autoAdvanceOnSettle": false,
+      "inlineContext": {
+        "schemaVersion": 1,
+        "expertId": "general-app-qa-expert",
+        "agentName": "general",
+        "expertDisplayName": {
+          "en": "Test & Code Review Agent",
+          "zh": "测试与代码审查智能体"
+        },
+        "capabilityId": "quality.bug-regression-verification",
+        "persona": {
+          "role": "Independent general-application test, verification, and code review agent",
+          "perspective": [
+            "Acceptance, invariant, and delivery risk",
+            "Complete UI-to-API-to-domain-to-data behavior",
+            "Boundary, failure, authorization, and state behavior",
+            "Reproducibility, traceability, and evidence quality"
+          ],
+          "communicationStyle": "Lead with the verification or review decision, then report coverage, evidence, defects or findings with exact locations, skipped checks, and residual risk without overstating confidence"
+        },
+        "constraints": [],
+        "skills": [
+          "bug-regression-verification"
+        ],
+        "availableSkills": [
+          "bug-regression-verification"
+        ],
+        "disclosure": "catalog",
+        "skillInstructions": [],
+        "toolPolicy": {
+          "source": "tools/qa-policy.json",
+          "rules": [
+            {
+              "permission": "*",
+              "pattern": "*",
+              "action": "deny"
+            },
+            {
+              "permission": "read",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "glob",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "grep",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "agent_browser",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "edit",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_modify",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "job_list",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "job_output",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "job_kill",
+              "pattern": "*",
+              "action": "allow"
+            }
+          ],
+          "allowedTools": [
+            "read",
+            "glob",
+            "grep",
+            "agent_browser",
+            "edit",
+            "write",
+            "apply_patch",
+            "bash",
+            "job_list",
+            "job_output",
+            "job_kill"
+          ]
+        },
+        "artifactGuidance": {
+          "primaryArtifact": "verification.md",
+          "required": true
+        }
+      },
+      "policyGate": {
+        "fromStep": "implementation",
+        "toStep": "verification",
+        "gate": "auto-advance"
+      },
+      "capabilityContract": {
+        "artifacts": [
+          {
+            "path": "verification.md",
+            "kind": "user-deliverable",
+            "format": "markdown",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "validator": "tools/quality-report-validator.mjs",
+            "completion": {
+              "script": "tools/complete-quality-report.mjs",
+              "generatesArtifact": true,
+              "inputArtifact": "verification.json",
+              "inputFlag": "--verification-json",
+              "inputDescription": "the independently executed QA report, initialized from the authored bug-verification-plan.json and updated using qaResources.writer",
+              "defaultResult": {
+                "status": "completed"
+              }
+            }
+          },
+          {
+            "path": "verification.json",
+            "kind": "internal-execution-input",
+            "format": "json",
+            "schema": "outputs/quality-report.schema.json",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "validator": "tools/quality-report-validator.mjs"
+          },
+          {
+            "path": "bug-verification-plan.json",
+            "kind": "internal-execution-input",
+            "format": "json",
+            "required": true,
+            "hashAlgorithm": "sha256"
+          }
+        ],
+        "decisions": [
+          "pass",
+          "pass-with-risk",
+          "fail",
+          "blocked"
+        ],
+        "verificationRequired": true
+      },
+      "semanticEvaluator": {
+        "id": "artifact.validation",
+        "version": 1,
+        "artifactPath": "verification.md",
+        "expertValidator": true
+      }
+    }
+  ],
+  "executionStageIds": [
+    "implementation"
+  ],
+  "failureMappings": [
+    {
+      "failureCode": "SEMANTIC_ARTIFACT_VALIDATION_FAILED",
+      "action": "block"
+    },
+    {
+      "failureCode": "SEMANTIC_FINDINGS_REQUIRED",
+      "action": "retry-self",
+      "maxAttempts": 2
+    },
+    {
+      "failureCode": "SEMANTIC_ARTIFACT_INVALID",
+      "action": "retry-self",
+      "maxAttempts": 2
+    },
+    {
+      "failureCode": "QA_ENVIRONMENT_BLOCKED",
+      "action": "block"
+    },
+    {
+      "failureCode": "QA_TEST_PLAN_UNEXECUTABLE",
+      "action": "retry-self",
+      "maxAttempts": 2
+    },
+    {
+      "failureCode": "QA_TESTABILITY_GAP",
+      "action": "reopen-dependency",
+      "targetTaskKind": "implement",
+      "retryKind": "qa-repair",
+      "retryContextTemplate": "qa-repair"
+    },
+    {
+      "failureCode": "quality-gate-blocked",
+      "action": "reopen-dependency",
+      "targetTaskKind": "implement",
+      "retryKind": "qa-repair",
+      "retryContextTemplate": "qa-repair"
+    },
+    {
+      "failureCode": "verification-failed",
+      "action": "reopen-dependency",
+      "targetTaskKind": "implement",
+      "retryKind": "qa-repair",
+      "retryContextTemplate": "qa-repair"
+    },
+    {
+      "failureCode": "review-changes-requested",
+      "action": "reopen-dependency",
+      "targetTaskKind": "implement",
+      "retryKind": "review-findings",
+      "retryContextTemplate": "review-findings"
+    }
+  ],
+  "policy": {
+    "schemaVersion": 2,
+    "policyId": "general-application-development",
+    "revision": 9,
+    "failureMapping": [
+      {
+        "failureCode": "SEMANTIC_ARTIFACT_VALIDATION_FAILED",
+        "action": "block"
+      },
+      {
+        "failureCode": "SEMANTIC_FINDINGS_REQUIRED",
+        "action": "retry-self",
+        "maxAttempts": 2
+      },
+      {
+        "failureCode": "SEMANTIC_ARTIFACT_INVALID",
+        "action": "retry-self",
+        "maxAttempts": 2
+      },
+      {
+        "failureCode": "QA_ENVIRONMENT_BLOCKED",
+        "action": "block"
+      },
+      {
+        "failureCode": "QA_TEST_PLAN_UNEXECUTABLE",
+        "action": "retry-self",
+        "maxAttempts": 2
+      },
+      {
+        "failureCode": "QA_TESTABILITY_GAP",
+        "action": "reopen-dependency",
+        "targetTaskKind": "implement",
+        "retryKind": "qa-repair",
+        "retryContextTemplate": "qa-repair"
+      },
+      {
+        "failureCode": "quality-gate-blocked",
+        "action": "reopen-dependency",
+        "targetTaskKind": "implement",
+        "retryKind": "qa-repair",
+        "retryContextTemplate": "qa-repair"
+      },
+      {
+        "failureCode": "verification-failed",
+        "action": "reopen-dependency",
+        "targetTaskKind": "implement",
+        "retryKind": "qa-repair",
+        "retryContextTemplate": "qa-repair"
+      },
+      {
+        "failureCode": "review-changes-requested",
+        "action": "reopen-dependency",
+        "targetTaskKind": "implement",
+        "retryKind": "review-findings",
+        "retryContextTemplate": "review-findings"
+      }
+    ],
+    "maxReviewAttempts": [
+      {
+        "taskKind": "review",
+        "limit": 2
+      }
+    ],
+    "maxRepairIterations": 5,
+    "maxReviewRepairIterations": 2,
+    "blockOnEmptyChange": true,
+    "retryContextTemplates": {
+      "qa-repair": "Address each confirmed defect or application testability finding by stable finding ID. For a testability gap, provide the deterministic test entry, fixture or controllable event needed for the listed acceptance checks; do not call it a reproduced product defect. Recheck the affected flow with real evidence. Preserve unresolved mandatory acceptance as blocked; never downgrade it to pass-with-risk.",
+      "review-findings": "Address every review finding and preserve its ID."
+    },
+    "stepGates": [
+      {
+        "fromStep": "requirements",
+        "toStep": "design",
+        "gate": "auto-advance"
+      },
+      {
+        "fromStep": "implementation",
+        "toStep": "verification",
+        "gate": "auto-advance"
+      }
+    ],
+    "allowedTaskKinds": [
+      {
+        "taskKind": "analyze"
+      },
+      {
+        "taskKind": "design",
+        "requiresReview": true,
+        "reviewCapabilityId": "implementation-correctness"
+      },
+      {
+        "taskKind": "implement",
+        "requiresQA": true,
+        "qaCapabilityId": "quality.verification"
+      },
+      {
+        "taskKind": "test"
+      },
+      {
+        "taskKind": "review"
+      },
+      {
+        "taskKind": "integrate"
+      }
+    ],
+    "executionGates": [
+      {
+        "id": "review",
+        "taskKind": "review",
+        "capabilityId": "implementation-correctness",
+        "dependsOnTaskKinds": [
+          "implement"
+        ],
+        "reviewsTaskKind": "implement",
+        "readOnly": true
+      },
+      {
+        "id": "test",
+        "taskKind": "test",
+        "capabilityId": "quality.verification",
+        "dependsOnTaskKinds": [
+          "implement"
+        ]
+      },
+      {
+        "id": "integrate",
+        "taskKind": "integrate",
+        "capabilityId": "engineering.implementation",
+        "dependsOnTaskKinds": [
+          "review",
+          "test"
+        ],
+        "uniqueFinal": true
+      }
+    ],
+    "coordinatorRule": {
+      "requiresLead": false
+    },
+    "workflowComposition": {
+      "maxStages": 9,
+      "intentVocabulary": {
+        "supportedPrimaryIntents": [
+          "analysis",
+          "defect-fix",
+          "feature-change",
+          "initial-build",
+          "refactor",
+          "migration"
+        ],
+        "objectives": [
+          "understand-problem",
+          "diagnose",
+          "clarify-requirements",
+          "analyze-impact",
+          "design-change",
+          "design-system",
+          "plan-implementation",
+          "implement-change",
+          "verify",
+          "review",
+          "integrate",
+          "collect-evidence",
+          "validate-conclusion",
+          "increase-test-coverage",
+          "change-infrastructure",
+          "measure-performance"
+        ],
+        "changeModes": [
+          "read-only",
+          "write"
+        ],
+        "targetKinds": [
+          "docs",
+          "source",
+          "tests",
+          "config",
+          "ci",
+          "schema",
+          "data",
+          "external-system"
+        ],
+        "scopes": [
+          "local",
+          "component",
+          "cross-component",
+          "system"
+        ],
+        "riskLevels": [
+          "low",
+          "medium",
+          "high",
+          "critical"
+        ],
+        "deliverableKinds": [
+          "analysis-report",
+          "requirements",
+          "code-change",
+          "application-change",
+          "application",
+          "migration-result"
+        ]
+      },
+      "stageKindTaskKinds": {
+        "analysis": "analyze",
+        "requirements": "analyze",
+        "design": "design",
+        "implementation": "implement",
+        "verification": "test",
+        "review": "review",
+        "delivery": "integrate",
+        "integrate": "integrate"
+      },
+      "objectiveStageKinds": {
+        "understand-problem": [
+          "analysis"
+        ],
+        "diagnose": [
+          "analysis"
+        ],
+        "clarify-requirements": [
+          "requirements"
+        ],
+        "analyze-impact": [
+          "requirements"
+        ],
+        "design-change": [
+          "design"
+        ],
+        "design-system": [
+          "design"
+        ],
+        "plan-implementation": [
+          "implementation"
+        ],
+        "implement-change": [
+          "implementation"
+        ],
+        "verify": [
+          "verification"
+        ],
+        "review": [
+          "review"
+        ],
+        "integrate": [
+          "integrate"
+        ],
+        "collect-evidence": [
+          "analysis"
+        ],
+        "validate-conclusion": [
+          "verification"
+        ],
+        "increase-test-coverage": [
+          "implementation",
+          "verification"
+        ],
+        "change-infrastructure": [
+          "implementation",
+          "verification"
+        ],
+        "measure-performance": [
+          "analysis",
+          "verification"
+        ]
+      },
+      "changeModeRules": {
+        "read-only": {
+          "forbidStageKinds": [
+            "implementation",
+            "integrate"
+          ]
+        },
+        "write": {
+          "requireWriteTarget": true
+        }
+      },
+      "targetKindRules": {
+        "docs": {
+          "allowedStageKinds": [
+            "analysis",
+            "delivery"
+          ]
+        },
+        "source": {
+          "allowedStageKinds": [
+            "design",
+            "implementation",
+            "verification",
+            "review"
+          ]
+        },
+        "tests": {
+          "allowedStageKinds": [
+            "implementation",
+            "verification"
+          ]
+        },
+        "config": {
+          "allowedStageKinds": [
+            "design",
+            "implementation",
+            "verification",
+            "review"
+          ]
+        },
+        "ci": {
+          "allowedStageKinds": [
+            "implementation",
+            "verification",
+            "review"
+          ]
+        },
+        "schema": {
+          "requiredStageKinds": [
+            "design",
+            "implementation",
+            "verification",
+            "review"
+          ]
+        },
+        "data": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification",
+            "review"
+          ]
+        },
+        "external-system": {
+          "requiredStageKinds": [
+            "design",
+            "implementation",
+            "verification",
+            "review"
+          ]
+        }
+      },
+      "scopeRules": {
+        "local": [],
+        "component": [
+          "design"
+        ],
+        "cross-component": [
+          "design",
+          "implementation"
+        ],
+        "system": [
+          "requirements",
+          "design",
+          "implementation"
+        ]
+      },
+      "riskRules": {
+        "low": [],
+        "medium": [
+          "verification"
+        ],
+        "high": [
+          "implementation",
+          "verification",
+          "review"
+        ],
+        "critical": [
+          "requirements",
+          "design",
+          "implementation",
+          "verification",
+          "review"
+        ]
+      },
+      "policyFloorRules": {
+        "lightweight": [],
+        "standard": [
+          "verification",
+          "review"
+        ],
+        "strict": [
+          "verification",
+          "review"
+        ]
+      },
+      "independenceRules": {
+        "verification": [
+          "implementation"
+        ],
+        "review": [
+          "implementation"
+        ]
+      },
+      "deliverableRules": {
+        "analysis-report": {
+          "terminalStageKind": "delivery",
+          "forbidStageKinds": [
+            "implementation"
+          ]
+        },
+        "requirements": {
+          "terminalStageKind": "delivery",
+          "forbidStageKinds": [
+            "implementation"
+          ]
+        },
+        "code-change": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ],
+          "terminalStageKind": "delivery"
+        },
+        "application-change": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ],
+          "terminalStageKind": "integrate"
+        },
+        "application": {
+          "requiredStageKinds": [
+            "implementation"
+          ],
+          "terminalStageKind": "integrate"
+        },
+        "migration-result": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification",
+            "review"
+          ],
+          "terminalStageKind": "integrate"
+        }
+      }
+    }
+  }
+}

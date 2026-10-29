@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000477",
+  "source": {
+    "request": "206-teachers-issue-4\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21163089827201024\",\"code\":\"T1000477\",\"title\":\"206-teachers-issue-4\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "useTeachers.js 的 addTeacher 和 updateTeacher 直接调用 data.name.trim()，若 data 字段为 undefined/null 会抛 TypeError 导致应用崩溃",
+      "useTeachers.js 的 persist effect 在 localStorage.setItem 失败时仅 console.warn，用户无法感知保存失败，刷新后数据丢失",
+      "updateTeacher 不返回任何值（返回 undefined），与 addTeacher 返回新建对象不一致",
+      "App.jsx 的 handleFormSubmit 无 try-catch，若 addTeacher/updateTeacher 抛异常，表单不会关闭且错误直接传播到 React 错误边界"
+    ],
+    "reproduction": [
+      "覆盖 localStorage.setItem 使其抛出 QuotaExceededError，添加教师后页面显示成功但 localStorage 未写入，刷新后教师数据丢失",
+      "调用 addTeacher({ name: undefined }) 时 data.name.trim() 抛出 TypeError: Cannot read properties of undefined (reading 'trim')"
+    ]
+  },
+  "expectedBasis": [
+    {
+      "kind": "user-request",
+      "reference": "原始 Issue 描述：保存教师的api好像有bug",
+      "expected": "保存教师 API 应能安全处理边界数据，持久化失败时通知用户，不静默丢失数据"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "代码审查：addTeacher/updateTeacher 中 data.name.trim() 直接访问",
+      "expected": "使用 safeTrim(data?.name) 防止 undefined/null 字段抛 TypeError"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "代码审查：persist effect 仅 console.warn 不向 UI 反馈",
+      "expected": "持久化失败时显示用户可见的错误提示，恢复后自动清除"
+    }
+  ],
+  "fix": {
+    "summary": "修复保存教师 API 的三个问题：(1) 使用 safeTrim 函数替代直接 .trim() 调用，防止 undefined/null 字段导致 TypeError 崩溃；(2) 在 useTeachers hook 中新增 persistError 状态，持久化失败时向 UI 暴露错误信息，成功后自动清除；(3) 为 handleFormSubmit 添加 try-catch 错误处理，防止保存异常导致表单状态不一致。同时使 updateTeacher 返回更新后的教师对象，与 addTeacher 保持一致。",
+    "rootCause": "addTeacher 和 updateTeacher 假设 data 的所有字段都是字符串，直接调用 .trim() 而无防御性检查；持久化错误仅在控制台输出，未反馈给 UI；handleFormSubmit 无异常处理。根本原因是保存 API 缺乏防御性编程和错误反馈机制。",
+    "files": [
+      "src/hooks/useTeachers.js",
+      "src/App.jsx",
+      "src/styles/index.css"
+    ]
+  },
+  "verification": [
+    {
+      "id": "build",
+      "action": "运行 npm run build 构建项目",
+      "expected": "构建成功，无编译错误",
+      "actual": "vite build 成功，35 模块转换完成，产出 index.html + CSS + JS",
+      "status": "passed",
+      "evidence": "dist/index.html (0.39 kB), dist/assets/index-PQtxzlM9.css (2.79 kB), dist/assets/index-DLT2AA86.js (148.29 kB)"
+    },
+    {
+      "id": "add-teacher",
+      "action": "在浏览器中新增教师（张老师/数学/三年级/13800138000/zhang@test.com）",
+      "expected": "教师出现在列表中，localStorage 正确写入",
+      "actual": "教师显示在表格中，localStorage 包含正确的 JSON 数据",
+      "status": "passed",
+      "evidence": "localStorage.getItem 返回 [{\"id\":\"mvtdga7skjc403\",\"name\":\"张老师\",\"course\":\"数学\",...}]"
+    },
+    {
+      "id": "edit-teacher",
+      "action": "编辑教师将课程从数学改为物理并保存",
+      "expected": "列表更新，localStorage 同步更新",
+      "actual": "课程显示为物理，localStorage 中 course 字段为物理",
+      "status": "passed",
+      "evidence": "localStorage 数据确认 course 从 \"数学\" 变为 \"物理\""
+    },
+    {
+      "id": "persist-error-display",
+      "action": "覆盖 localStorage.setItem 抛出异常后新增教师",
+      "expected": "教师加入列表但显示持久化失败错误提示",
+      "actual": "页面显示「数据保存失败：浏览器本地存储不可用或已满，刷新后数据可能丢失。」",
+      "status": "passed",
+      "evidence": "snapshot 显示 persist-error div 包含错误文本"
+    },
+    {
+      "id": "persist-error-clear",
+      "action": "恢复 localStorage.setItem 后再次新增教师",
+      "expected": "持久化成功，错误提示消失",
+      "actual": "错误提示消失，localStorage 包含全部 3 条教师记录",
+      "status": "passed",
+      "evidence": "页面文本不再包含错误提示，localStorage 包含 3 条记录"
+    }
+  ],
+  "entry": {
+    "workingDirectory": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000477",
+    "version": "Node.js + Vite 5.4.21 + React 18.3.1",
+    "startup": "npm install && npm run dev",
+    "testData": "localStorage key: teacher-management:teachers；测试数据：张老师/物理/三年级/13800138000/zhang@test.com",
+    "identity": "无外部认证；数据存储于浏览器 localStorage"
+  },
+  "regressionSuggestions": [
+    "测试 addTeacher 传入 { name: undefined } 不崩溃，生成空字符串字段",
+    "测试 updateTeacher 传入 null data 不崩溃",
+    "测试隐私模式下 localStorage 不可用时显示持久化错误提示",
+    "测试 localStorage 配额满时保存教师后显示错误提示",
+    "测试 localStorage 恢复后错误提示自动消失且新数据正常持久化",
+    "测试连续新增、编辑、删除教师后 localStorage 数据与 UI 一致"
+  ]
+}
