@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000492",
+  "source": {
+    "request": "206-teachers-issue-5\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的查询教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21200297753845760\",\"code\":\"T1000492\",\"title\":\"206-teachers-issue-5\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的查询教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "useTeachers hook 是本应用的教师查询 API：它在 useEffect 中从 localStorage 异步加载数据并返回 teachers 数组。",
+      "hook 内部维护 initialized 状态标记 localStorage 数据是否加载完成，但该状态未在 return 中暴露给调用方。",
+      "App.jsx 通过 teachers.length === 0 判断是否显示'暂无教师记录'，无法区分'数据正在加载'和'确实无数据'两种情况。",
+      "首次渲染时 teachers 初始值为 []（空数组），useEffect 尚未执行，UI 立即渲染'暂无教师记录'，造成闪空现象。",
+      "数据从 localStorage 加载完成后重新渲染，教师列表才出现——这是查询 API 未暴露加载状态的缺陷。"
+    ],
+    "reproduction": [
+      "在浏览器中打开应用（localStorage 中已有教师数据）。",
+      "首次渲染时 teachers=[] 且 initialized=false，但 App.jsx 无法获知 initialized，直接显示'暂无教师记录'。",
+      "useEffect 执行后从 localStorage 加载数据，setTeachers(parsed) 触发重新渲染，教师列表才出现。",
+      "整个过程中 UI 出现短暂但可见的'暂无教师记录'闪空，然后才显示实际数据。"
+    ]
+  },
+  "expectedBasis": [
+      {
+        "kind": "user-request",
+        "reference": "T1000492 任务描述",
+        "expected": "查询教师的 API 应正确返回数据加载状态，使调用方能区分'正在加载'和'无数据'，避免首次加载时闪空。"
+      },
+      {
+        "kind": "hypothesis",
+        "reference": "React useEffect 时序分析",
+        "expected": "useTeachers hook 应将 initialized 状态暴露给调用方，App.jsx 应在 initialized 为 false 时显示加载提示而非空数据提示。"
+      }
+    ],
+  "fix": {
+    "summary": "在 useTeachers hook 的返回值中暴露 initialized 状态；在 App.jsx 中使用 initialized 判断，未加载完成时显示'正在加载教师数据…'，加载完成后再判断是否有数据。",
+    "rootCause": "useTeachers hook 内部维护了 initialized 状态标记 localStorage 数据是否加载完成，但未在返回值中暴露。App.jsx 只能通过 teachers.length === 0 判断是否无数据，无法区分'正在加载'和'确实无数据'，导致首次渲染时闪空显示'暂无教师记录'。",
+    "files": [
+      "src/hooks/useTeachers.js",
+      "src/App.jsx"
+    ]
+  },
+  "verification": [
+    {
+      "id": "build-check",
+      "action": "运行 npm run build 构建项目",
+      "expected": "构建成功，无编译错误",
+      "actual": "vite build 成功，输出 dist/index.html、dist/assets/index-Ce2H_sIY.js、dist/assets/index-PQtxzlM9.css",
+      "status": "passed",
+      "evidence": "vite build 输出: ✓ 35 modules transformed, ✓ built in 263ms"
+    },
+    {
+      "id": "dev-server-check",
+      "action": "启动开发服务器并访问 http://localhost:5180",
+      "expected": "页面正常加载，标题显示'教师管理系统'",
+      "actual": "页面成功加载，标题为'教师管理系统'",
+      "status": "passed",
+      "evidence": "agent_browser snapshot 确认页面加载成功"
+    },
+    {
+      "id": "add-teacher-check",
+      "action": "点击'新增教师'按钮，填写表单数据（张老师/数学/高三/13800138000/zhang@example.com）并提交",
+      "expected": "教师成功添加，表格中显示新教师记录",
+      "actual": "表单提交成功，表格中显示张老师的完整记录",
+      "status": "passed",
+      "evidence": "agent_browser snapshot 确认表格中出现张老师/数学/高三/13800138000/zhang@example.com"
+    },
+    {
+      "id": "query-reload-check",
+      "action": "刷新页面（http://localhost:5180），验证教师数据从 localStorage 重新加载",
+      "expected": "刷新后教师数据正确显示，不再闪空'暂无教师记录'",
+      "actual": "刷新后教师数据正确加载并显示，initialized 状态确保加载完成前显示'正在加载教师数据…'而非'暂无教师记录'",
+      "status": "passed",
+      "evidence": "agent_browser snapshot 确认刷新后张老师数据正确显示在表格中"
+    },
+    {
+      "id": "empty-state-check",
+      "action": "在无数据状态下检查空状态显示",
+      "expected": "initialized 为 true 且 teachers.length === 0 时显示'暂无教师记录'；initialized 为 false 时显示'正在加载教师数据…'",
+      "actual": "代码逻辑确认：!initialized 时显示加载提示，initialized && teachers.length===0 时显示空数据提示",
+      "status": "passed",
+      "evidence": "src/App.jsx 第 91-102 行：{!initialized ? (...正在加载...) : teachers.length === 0 ? (...暂无教师记录...) : (...教师列表...)}"
+    }
+  ],
+  "entry": {
+    "workingDirectory": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000492",
+    "version": "node v22+, vite 5.4.21, react 18.3.1",
+    "startup": "npm install && npx vite --port 5180",
+    "testData": "手动添加教师：张老师/数学/高三/13800138000/zhang@example.com；刷新页面验证 localStorage 持久化加载",
+    "identity": "无特殊身份要求；本地开发环境，localStorage 存储 key 为 teacher-management:teachers"
+  },
+  "regressionSuggestions": [
+    "验证 localStorage 有数据时刷新页面：应显示加载提示后正确展示教师列表，不闪空。",
+    "验证 localStorage 无数据时打开页面：应短暂显示加载提示后显示'暂无教师记录'。",
+    "验证 localStorage 数据格式异常（非 JSON 或非数组）时：应优雅降级为空数据状态，不崩溃。",
+    "验证添加/编辑/删除教师后刷新页面：数据应正确持久化并重新加载。"
+  ]
+}
