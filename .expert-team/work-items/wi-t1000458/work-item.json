@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000458",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "198-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21057504569987072\",\"code\":\"T1000458\",\"title\":\"198-teachers\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "request": "198-teachers\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21057504569987072\",\"code\":\"T1000458\",\"title\":\"198-teachers\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-29T02:35:23.903Z"
+}
