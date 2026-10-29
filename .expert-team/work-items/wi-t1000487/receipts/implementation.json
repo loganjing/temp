@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:cc381531e0edcce3b569aa859de3b9447d3bf55b5bec81e1f241afab57f58918",
+  "createdAt": "2026-10-29T11:54:41.594Z",
+  "timing": {
+    "startedAt": "2026-10-29T11:42:44.216Z",
+    "completedAt": "2026-10-29T11:54:41.594Z",
+    "durationMs": 717378
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000487/implementation-report.md",
+      "bytes": 6711,
+      "sha256": "sha256:c261a8acf0c0e32265f917743623166c5e1c09e9c1ee9f64abbaabfad33a4d93",
+      "role": "primary",
+      "purpose": "工单系统实现报告，记录两个并行任务的交付产物、验证结果和验收场景覆盖",
+      "title": "实现报告 — 工单系统 (T1000487)"
+    },
+    {
+      "path": "app/jlg-ticket/src/server/",
+      "bytes": 33599,
+      "sha256": "sha256:a68391df1c822b2cc28bd9b41ae1152259da399138d170deb7a337da4e8d691c",
+      "role": "backend",
+      "purpose": "后端 Hono 服务：21 个 API、SQLite 迁移、dbkit 集成"
+    },
+    {
+      "path": "app/jlg-ticket/src/shared/",
+      "bytes": 2383,
+      "sha256": "sha256:8ffed69953dfe5c73328148382211ddbd00ac105f90eb331927827f90f711a6d",
+      "role": "shared",
+      "purpose": "平台中立共享层：类型定义、常量枚举"
+    },
+    {
+      "path": "app/jlg-ticket/src/client/",
+      "bytes": 63916,
+      "sha256": "sha256:e6dcc1b04080e7bc249ef38e1e2ab54cfd69c771275343e476d006c59594fb50",
+      "role": "frontend",
+      "purpose": "前端 React SPA：split-master-detail 工作台、组织管理、分配规则界面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "test:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:ba0abe6bf1eed07addd2c93abb2fc66a0565f346bde0767dde7f8aa19cc1c495",
+        "path": ".expert-team/work-items/wi-t1000487/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

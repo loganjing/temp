@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { createDb, createDbConfig, runMigrations } from '@commonapp/dbkit'
 
 export async function initializePlatform() {
-  const sqlitePath = process.env.DB_PATH ?? './data/application.db'
+  const sqlitePath = process.env.DB_PATH ?? './data/ticket.db'
   if (sqlitePath !== ':memory:') await mkdir(path.dirname(path.resolve(sqlitePath)), { recursive: true })
   const db = createDb(createDbConfig({ driver: 'sqlite', sqlitePath }))
   await runMigrations(db, {
