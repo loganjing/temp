@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000473",
+  "source": {
+    "request": "204-teachers-issues-3\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21150962496315392\",\"code\":\"T1000473\",\"title\":\"204-teachers-issues-3\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "useTeachers.js: teachers 状态初始化为空数组 []，通过 useEffect 异步从 localStorage 加载数据。首帧渲染时 teachers 为空，表格显示「暂无教师记录」，effect 执行后才更新为持久化数据，导致页面加载时短暂闪现空列表。",
+      "TeacherForm.jsx: formData 状态初始化为 EMPTY_FORM，通过 useEffect 异步回填编辑数据。编辑模式打开表单时首帧渲染为空字段，effect 执行后才填入教师数据，导致编辑表单打开时短暂闪现空表单。",
+      "styles/index.css: .table-wrapper 设置 overflow: hidden（用于 border-radius 裁剪），但 tbody td 缺少 overflow-wrap/word-break，当单元格内容为超长无空格文本（如很长的邮箱地址）时，内容会被裁剪不可见。"
+    ],
+    "reproduction": [
+      "页面加载时有 localStorage 持久化数据：刷新页面，首帧可见表格显示「暂无教师记录」，随后立即切换为实际教师列表（闪现）。",
+      "点击编辑按钮：表单打开瞬间字段为空，随后立即填入教师数据（闪现）。",
+      "在表单中输入超长无空格文本（如 aaaa...aaa@example.com，超过 100 字符）并保存，表格中该单元格内容被 overflow:hidden 裁剪。"
+    ]
+  },
+  "expectedBasis": [
+    {
+      "kind": "user-request",
+      "reference": "任务描述：修复这个目录下的bug",
+      "expected": "教师管理系统应用不应存在可见的 UI 闪现、数据裁剪或其他影响用户体验的缺陷"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "React useState 惰性初始化文档",
+      "expected": "页面加载时如果有持久化数据，首帧应直接显示教师列表，不应闪现空列表"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "React useState 惰性初始化文档",
+      "expected": "编辑模式打开表单时首帧应直接显示教师已有数据，不应闪现空表单"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "CSS overflow-wrap/word-break 规范",
+      "expected": "表格单元格中超长文本应自动换行显示，不应被父容器 overflow:hidden 裁剪"
+    }
+  ],
+  "fix": {
+    "summary": "修复三个问题：(1) useTeachers.js 使用 useState 惰性初始化同步读取 localStorage，消除页面加载时空列表闪现；移除了不再需要的 initialized 状态和初始化 useEffect。(2) TeacherForm.jsx 使用 useState 惰性初始化同步回填编辑数据，消除编辑模式空表单闪现。(3) CSS 为 tbody td 添加 overflow-wrap: break-word 和 word-break: break-word，防止超长文本被裁剪。",
+    "rootCause": "useTeachers.js 和 TeacherForm.jsx 均使用 useState(初始值) + useEffect 异步加载模式，导致首帧渲染时数据未就绪、出现短暂的空状态闪现。正确做法是使用 useState(() => ...) 惰性初始化在首次渲染时同步完成数据加载。CSS 中 .table-wrapper 的 overflow: hidden 用于配合 border-radius，但未给单元格设置换行规则，超长无空格文本溢出后被裁剪。",
+    "files": [
+      "src/hooks/useTeachers.js",
+      "src/components/TeacherForm.jsx",
+      "src/styles/index.css"
+    ]
+  },
+  "verification": [
+    {
+      "id": "build",
+      "action": "运行 npm run build",
+      "expected": "构建成功无错误",
+      "actual": "vite build 成功，35 模块转换完成，产出 index.html / CSS 2.70KB / JS 147.96KB",
+      "status": "passed",
+      "evidence": "终端输出: ✓ built in 231ms，无 error"
+    },
+    {
+      "id": "no-flash-on-load",
+      "action": "在有 localStorage 持久化数据的情况下刷新页面",
+      "expected": "页面首帧直接显示教师列表，不闪现「暂无教师记录」",
+      "actual": "刷新后页面直接显示已持久化的教师列表，无空列表闪现",
+      "status": "passed",
+      "evidence": "浏览器全量刷新后 snapshot 立即显示教师数据行，无空状态过渡"
+    },
+    {
+      "id": "no-flash-on-edit",
+      "action": "点击教师行的编辑按钮打开编辑表单",
+      "expected": "表单首帧直接显示教师已有数据，不闪现空字段",
+      "actual": "编辑表单打开瞬间字段已填入教师数据（王老师/英语/五年级/13900139000/wang@example.com），无空表单闪现",
+      "status": "passed",
+      "evidence": "snapshot 显示编辑表单 ref e98-e102 均已包含教师数据"
+    },
+    {
+      "id": "add-teacher",
+      "action": "点击新增教师，填写有效数据并提交",
+      "expected": "教师添加成功，表格显示新记录",
+      "actual": "添加赵老师（物理/初一/13500135000/zhao@example.com）成功，表格显示新行",
+      "status": "passed",
+      "evidence": "snapshot 显示新教师行 ref e139-e144"
+    },
+    {
+      "id": "edit-teacher",
+      "action": "编辑教师信息并保存",
+      "expected": "教师信息更新成功，表格显示更新后的数据",
+      "actual": "将王老师编辑为王老师改/数学并保存成功，表格显示更新后的数据",
+      "status": "passed",
+      "evidence": "snapshot 显示 cell 王老师改 / 数学"
+    },
+    {
+      "id": "delete-teacher",
+      "action": "点击删除并确认",
+      "expected": "教师删除成功，表格中该行消失",
+      "actual": "删除赵老师成功，表格中该行消失，剩余教师正常显示",
+      "status": "passed",
+      "evidence": "snapshot 确认赵老师行已移除，王老师改和李老师仍在"
+    },
+    {
+      "id": "validation-empty",
+      "action": "空表单点击提交",
+      "expected": "所有五个字段显示必填错误，表单不关闭",
+      "actual": "所有字段显示「此字段为必填项」，表单保持打开",
+      "status": "passed",
+      "evidence": "get text 显示五个字段均出现错误信息"
+    },
+    {
+      "id": "validation-format",
+      "action": "输入无效手机号 123456 和无效邮箱 invalid-email 并提交",
+      "expected": "手机字段显示格式错误，邮箱字段显示格式错误，表单不关闭",
+      "actual": "手机显示「请输入有效的手机号码」，邮箱显示「请输入有效的邮箱地址」",
+      "status": "passed",
+      "evidence": "get text 确认错误信息内容"
+    },
+    {
+      "id": "validation-realtime",
+      "action": "输入无效手机号并失焦，再修正为有效手机号",
+      "expected": "失焦时显示错误，修正后实时清除错误",
+      "actual": "失焦显示手机号格式错误，输入有效号码后错误实时消失",
+      "status": "passed",
+      "evidence": "两次 get text 对比确认错误出现后消失"
+    },
+    {
+      "id": "persistence",
+      "action": "添加教师后刷新页面",
+      "expected": "刷新后教师数据仍然存在",
+      "actual": "刷新后教师数据正确持久化并显示",
+      "status": "passed",
+      "evidence": "刷新后 snapshot 显示教师列表完整保留"
+    },
+    {
+      "id": "trimming",
+      "action": "输入带首尾空格的教师姓名并保存",
+      "expected": "存储时自动去除首尾空格",
+      "actual": "输入「  李老师  」，表格显示「李老师」（已去除空格）",
+      "status": "passed",
+      "evidence": "snapshot cell 显示李老师（无空格）"
+    },
+    {
+      "id": "no-console-errors",
+      "action": "全量刷新页面后检查控制台",
+      "expected": "无 JavaScript 运行时错误",
+      "actual": "全量刷新后控制台仅有 vite 连接和 React DevTools 信息，无运行时错误",
+      "status": "passed",
+      "evidence": "console 输出无 error 级别消息（HMR 过渡期间的 hooks 顺序警告仅出现在热替换时，全量刷新后不出现）"
+    }
+  ],
+  "entry": {
+    "workingDirectory": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000473",
+    "version": "Node.js v24.14.1, Vite 5.4.21, React 18.3.1",
+    "startup": "npm install && npm run dev（开发）或 npm run build（构建）",
+    "testData": "localStorage key 'teacher-management:teachers' 存储 JSON 数组；浏览器中通过新增/编辑/删除操作产生测试数据；无外部服务依赖",
+    "identity": "无身份验证；localStorage 同源隔离；无密钥或凭据"
+  },
+  "regressionSuggestions": [
+    "在有持久化数据的情况下刷新页面，验证首帧直接显示教师列表（不闪现空列表）",
+    "点击编辑按钮，验证表单首帧直接显示教师已有数据（不闪现空字段）",
+    "在表单中输入超长无空格文本（>100 字符）并保存，验证表格单元格中文本自动换行不被裁剪",
+    "验证 CRUD 全流程：新增→编辑→删除→刷新持久化",
+    "验证表单校验：空字段必填、手机号格式、邮箱格式、实时校验清除",
+    "验证输入首尾空格自动去除",
+    "验证 localStorage 数据损坏时优雅降级（清除后刷新应显示空列表）"
+  ]
+}
