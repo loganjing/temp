@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-29T02:36:22.610Z"
+  "updatedAt": "2026-10-29T02:38:54.170Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000458/requirements.md",
+      "sha256": "sha256:480fd7c8efd117d9cc23046dd91959cb0f65bf6ebf728f75a0da35d3140c40ba"
+    },
+    "reason": "这是一个单用户教师管理 CRUD 应用，需求只要求刷新或重开页面后数据仍在（session-persistence），没有明确的服务端权威数据、认证/权限、后台任务、外部服务集成或跨用户/设备数据共享要求。按照路由规则，单用户 CRUD 应用若无服务端能力要求，默认选用 simple-frontend，使用浏览器 localStorage 持久化。",
+    "evidence": {
+      "supporting": [
+        "需求仅描述界面层增删改查操作：列表查看、新增、编辑、删除教师记录",
+        "所有验收场景的入口类型均为'用户界面'，证据类型为 interaction、session-persistence、runtime-render",
+        "需求未提出服务端权威数据、认证/权限、后台任务、外部服务或跨用户/设备共享等能力",
+        "字段仅包含教师名称、教授课程、年级、手机、邮箱，为纯展示与编辑数据，无服务端业务逻辑"
+      ],
+      "excluding": [
+        "需求未提及任何服务端权威数据或数据库存储要求",
+        "需求未提及用户认证、权限或登录功能",
+        "需求未提及外部服务集成或第三方API调用",
+        "需求未提及后台任务、定时任务或异步处理",
+        "需求未提及跨用户、跨设备或跨浏览器数据共享"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-29T02:38:23.606Z",
+    "sha256": "sha256:259553edef7e4cf9b4f4a6df51fb503986d144da93ac40f918c3109d816bb104"
+  }
 }

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:0ac5feaf27522fedd1c16b908b596af2a5bae825074825c2404f8e217b26d1ad",
+  "createdAt": "2026-10-29T02:38:54.170Z",
+  "timing": {
+    "startedAt": "2026-10-29T02:38:10.946Z",
+    "completedAt": "2026-10-29T02:38:54.170Z",
+    "durationMs": 43224
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000458/architecture-baseline.md",
+      "bytes": 2681,
+      "sha256": "sha256:94ce3d9b138508b435a254013ca1b791c790f989449d987422a6a06742fd4987",
+      "role": "primary",
+      "purpose": "教师管理系统架构基线，描述页面交互范围、localStorage 数据归属、数据模型、校验边界和 React/Vite SPA 实现入口",
+      "title": "教师管理系统 — 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:259553edef7e4cf9b4f4a6df51fb503986d144da93ac40f918c3109d816bb104",
+        "path": ".expert-team/work-items/wi-t1000458/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
