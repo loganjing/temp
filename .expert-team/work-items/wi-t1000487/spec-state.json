@@ -2,14 +2,39 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-10-29T11:29:09.951Z"
+  "updatedAt": "2026-10-29T11:40:23.965Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000487/requirements.md",
+      "sha256": "sha256:e64ffa4ed6aa145dfd327fc7b3a68dd0d33f13bc24628f75f9536e6a2485d929"
+    },
+    "reason": "该工单系统涉及多角色协作（提交人、处理人、业务组成员），工单需在用户间流转并共享状态，自动分配规则需服务端匹配，历史工单查询需跨工单检索，公司/业务组/成员管理需持久化共享存储。需求明确要求跨用户、跨业务组的共享权威数据，满足fullstack-complex的分类条件，不满足simple-frontend的单用户/localStorage条件。",
+    "evidence": {
+      "supporting": [
+        "多用户角色协作：提交人创建工单，处理人在业务组中处理，不同用户共享同一工单数据（需求§2角色定义）",
+        "跨用户共享数据：工单需在提交人、处理人、业务组之间流转，状态变更需对所有参与者可见（需求§4生命周期）",
+        "服务端权威数据：自动分配规则需基于公司+分类在服务端匹配，工单历史查询需跨工单检索（需求§4.1分配流程、§5.4.1历史工单）",
+        "公司/业务组/成员管理：多公司多业务组的组织架构需持久化共享存储（需求§3.3-3.4、§5.2.1）",
+        "工单转派涉及跨业务组归属变更，需共享事务性数据（需求§4.2转派流程）"
+      ],
+      "excluding": [
+        "需求未提及浏览器本地存储或单机数据隔离，不存在simple-frontend的证据"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-10-29T11:33:45.227Z",
+    "sha256": "sha256:ba0abe6bf1eed07addd2c93abb2fc66a0565f346bde0767dde7f8aa19cc1c495"
+  }
 }
