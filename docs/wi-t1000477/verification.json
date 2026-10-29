@@ -1,0 +1,464 @@
+{
+  "decision": "pass",
+  "summary": {
+    "objective": "独立验证保存教师 API 的 bug 修复：safeTrim 防御性处理、持久化错误反馈、handleFormSubmit 异常处理、updateTeacher 返回值一致性",
+    "changedBehavior": "addTeacher/updateTeacher 使用 safeTrim 安全处理 undefined/null 字段；persist effect 在 localStorage.setItem 失败时设置 persistError 状态并在 UI 显示错误提示，恢复后自动清除；handleFormSubmit 包裹 try-catch 防止异常传播；updateTeacher 返回更新后的教师对象",
+    "nonGoals": [
+      "未验证非浏览器环境（如 SSR）下的 localStorage 行为",
+      "未验证 localStorage 配额满以外的存储失败场景（如隐私模式）",
+      "未运行自动化单元测试（项目无测试框架配置）"
+    ],
+    "riskLabels": [
+      "localStorage 边界场景覆盖有限"
+    ]
+  },
+  "environment": {
+    "name": "Vite Dev Server + Chromium Preview",
+    "version": "Node.js v24.14.1 + Vite 5.4.21 + React 18.3.1",
+    "dataProfile": "测试数据：张老师/物理/三年级/13800138000/zhang@test.com、李老师/语文/五年级/13900139000/li@test.com（已删除）、王老师/英语/二年级/13700137000/wang@test.com；localStorage key: teacher-management:teachers"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-1",
+          "action": "代码审查 addTeacher/updateTeacher 中 safeTrim 的使用，确认传入 undefined/null 字段不会崩溃",
+          "expected": "addTeacher 和 updateTeacher 使用 safeTrim(data?.field) 替代 data.field.trim()，undefined/null 字段转为空字符串而非抛 TypeError"
+        }
+      ],
+      "evidence": "代码审查确认 safeTrim(value) 返回 String(value ?? '').trim()，addTeacher 和 updateTeacher 均使用 safeTrim(data?.field) 替代直接 .trim()，传入 undefined/null 不会抛 TypeError",
+      "results": [
+        {
+          "requirementId": "AC-1",
+          "action": "代码审查 addTeacher/updateTeacher 中 safeTrim 的使用，确认传入 undefined/null 字段不会崩溃",
+          "expected": "addTeacher 和 updateTeacher 使用 safeTrim(data?.field) 替代 data.field.trim()，undefined/null 字段转为空字符串而非抛 TypeError",
+          "actual": "useTeachers.js:9-11 定义 safeTrim(value) => String(value ?? '').trim()；addTeacher(:70-81) 和 updateTeacher(:88-105) 对所有字段使用 safeTrim(data?.field)，undefined/null 转为空字符串",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-2",
+          "kind": "error-feedback",
+          "action": "在浏览器中模拟 localStorage.setItem 失败后新增教师，检查页面是否显示持久化失败错误提示",
+          "expected": "页面显示「数据保存失败」提示信息，用户可感知存储异常"
+        },
+        {
+          "requirementId": "AC-2",
+          "kind": "runtime-render",
+          "action": "在浏览器中模拟 localStorage.setItem 失败后新增教师，检查页面是否显示持久化失败错误提示",
+          "expected": "页面显示「数据保存失败」提示信息，用户可感知存储异常"
+        }
+      ],
+      "evidence": "覆盖 localStorage.setItem 抛 QuotaExceededError 后新增教师（李老师），页面显示 persist-error div 包含「数据保存失败：浏览器本地存储不可用或已满，刷新后数据可能丢失。」",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser snapshot at http://localhost:5173/ after overriding localStorage.setItem to throw and adding 李老师"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-2",
+          "kind": "error-feedback",
+          "action": "在浏览器中模拟 localStorage.setItem 失败后新增教师，检查页面是否显示持久化失败错误提示",
+          "expected": "页面显示「数据保存失败」提示信息，用户可感知存储异常",
+          "actual": "新增教师后页面显示 persist-error div，文本为「数据保存失败：浏览器本地存储不可用或已满，刷新后数据可能丢失。」",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-2",
+          "kind": "runtime-render",
+          "action": "在浏览器中模拟 localStorage.setItem 失败后新增教师，检查页面是否显示持久化失败错误提示",
+          "expected": "页面显示「数据保存失败」提示信息，用户可感知存储异常",
+          "actual": "persist-error div 渲染在表格上方，包含红色背景错误提示文本",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-3",
+          "kind": "error-feedback",
+          "action": "恢复 localStorage.setItem 后再次新增教师，检查错误提示是否消失且数据正常持久化",
+          "expected": "错误提示消失，localStorage 包含全部教师记录"
+        },
+        {
+          "requirementId": "AC-3",
+          "kind": "session-persistence",
+          "action": "恢复 localStorage.setItem 后再次新增教师，检查错误提示是否消失且数据正常持久化",
+          "expected": "错误提示消失，localStorage 包含全部教师记录"
+        }
+      ],
+      "evidence": "恢复 localStorage.setItem 后新增教师（王老师），错误提示消失，localStorage 包含全部 3 条教师记录",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser snapshot + localStorage eval at http://localhost:5173/ after restoring setItem and adding 王老师"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-3",
+          "kind": "error-feedback",
+          "action": "恢复 localStorage.setItem 后再次新增教师，检查错误提示是否消失且数据正常持久化",
+          "expected": "错误提示消失，localStorage 包含全部教师记录",
+          "actual": "恢复 setItem 并新增教师后，页面不再包含 persist-error 元素，错误提示已消失",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-3",
+          "kind": "session-persistence",
+          "action": "恢复 localStorage.setItem 后再次新增教师，检查错误提示是否消失且数据正常持久化",
+          "expected": "错误提示消失，localStorage 包含全部教师记录",
+          "actual": "localStorage.getItem('teacher-management:teachers') 返回 3 条记录：张老师/物理、李老师/语文、王老师/英语",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-4",
+          "kind": "interaction",
+          "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+          "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录"
+        },
+        {
+          "requirementId": "AC-4",
+          "kind": "session-persistence",
+          "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+          "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录"
+        },
+        {
+          "requirementId": "AC-4",
+          "kind": "runtime-render",
+          "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+          "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录"
+        }
+      ],
+      "evidence": "填写教师表单（张老师/数学/三年级/13800138000/zhang@test.com）并提交，表格显示新记录，localStorage 包含对应 JSON",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser batch fill+click at http://localhost:5173/ — form submitted, table row appeared, localStorage verified"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-4",
+          "kind": "interaction",
+          "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+          "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录",
+          "actual": "点击「添加」后表单关闭，表格新增一行显示张老师/数学/三年级/13800138000/zhang@test.com",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-4",
+          "kind": "session-persistence",
+          "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+          "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录",
+          "actual": "localStorage.getItem('teacher-management:teachers') 返回 [{\"id\":\"mvtg2spzp4i6b0\",\"name\":\"张老师\",\"course\":\"数学\",\"grade\":\"三年级\",\"phone\":\"13800138000\",\"email\":\"zhang@test.com\"}]",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-4",
+          "kind": "runtime-render",
+          "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+          "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录",
+          "actual": "表格行渲染包含 5 个单元格（教师名称、教授课程、年级、手机、邮箱）及操作列",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-5",
+          "kind": "interaction",
+          "action": "编辑已有教师的课程字段并保存，检查表格和 localStorage 是否同步更新",
+          "expected": "表格显示更新后的课程，localStorage 中对应字段已更新"
+        },
+        {
+          "requirementId": "AC-5",
+          "kind": "session-persistence",
+          "action": "编辑已有教师的课程字段并保存，检查表格和 localStorage 是否同步更新",
+          "expected": "表格显示更新后的课程，localStorage 中对应字段已更新"
+        }
+      ],
+      "evidence": "编辑张老师的课程从数学改为物理并保存，表格显示物理，localStorage 中 course 字段更新为物理",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser batch fill+click edit form at http://localhost:5173/ — course changed from 数学 to 物理"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-5",
+          "kind": "interaction",
+          "action": "编辑已有教师的课程字段并保存，检查表格和 localStorage 是否同步更新",
+          "expected": "表格显示更新后的课程，localStorage 中对应字段已更新",
+          "actual": "编辑表单回填现有数据，修改课程为物理并点击保存后，表格中课程单元格显示「物理」",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-5",
+          "kind": "session-persistence",
+          "action": "编辑已有教师的课程字段并保存，检查表格和 localStorage 是否同步更新",
+          "expected": "表格显示更新后的课程，localStorage 中对应字段已更新",
+          "actual": "localStorage 中该教师记录的 course 字段从 \"数学\" 更新为 \"物理\"",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-6",
+          "action": "代码审查 updateTeacher 的返回值",
+          "expected": "updateTeacher 返回更新后的教师对象，而非 undefined"
+        }
+      ],
+      "evidence": "代码审查确认 updateTeacher 使用 let updated = null 在 map 回调中赋值更新对象并返回 updated，与 addTeacher 返回新建对象一致",
+      "results": [
+        {
+          "requirementId": "AC-6",
+          "action": "代码审查 updateTeacher 的返回值",
+          "expected": "updateTeacher 返回更新后的教师对象，而非 undefined",
+          "actual": "useTeachers.js:88-105 updateTeacher 创建 let updated = null，在 setTeachers 的 map 回调中匹配 id 时赋值为 {...t, name: safeTrim(data?.name), ...}，函数末尾 return updated",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-7",
+          "action": "代码审查 handleFormSubmit 的 try-catch 结构",
+          "expected": "handleFormSubmit 包裹 addTeacher/updateTeacher 调用在 try-catch 中，异常时不传播到 React 错误边界"
+        }
+      ],
+      "evidence": "代码审查确认 App.jsx handleFormSubmit (:30-42) 将 updateTeacher/addTeacher 调用包裹在 try-catch 中，catch 块 console.error 记录错误",
+      "results": [
+        {
+          "requirementId": "AC-7",
+          "action": "代码审查 handleFormSubmit 的 try-catch 结构",
+          "expected": "handleFormSubmit 包裹 addTeacher/updateTeacher 调用在 try-catch 中，异常时不传播到 React 错误边界",
+          "actual": "App.jsx:31-41 handleFormSubmit 使用 try { updateTeacher/addTeacher; setShowForm(false); setEditingTeacher(null); } catch(e) { console.error('保存教师失败:', e); }，异常被捕获不传播",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-08",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-8",
+          "action": "运行 npm run build 构建项目",
+          "expected": "vite build 成功，产出可部署的 dist 目录"
+        }
+      ],
+      "evidence": "npm run build 成功，vite v5.4.21 转换 35 模块，产出 dist/index.html (0.39 kB) + dist/assets/index-PQtxzlM9.css (2.79 kB) + dist/assets/index-DLT2AA86.js (148.29 kB)",
+      "results": [
+        {
+          "requirementId": "AC-8",
+          "action": "运行 npm run build 构建项目",
+          "expected": "vite build 成功，产出可部署的 dist 目录",
+          "actual": "vite build 成功，35 modules transformed，built in 274ms，dist 目录包含 index.html + CSS + JS 产物",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-09",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-9",
+          "kind": "interaction",
+          "action": "在浏览器中执行新增→编辑→删除完整 CRUD 流程，检查每步后 localStorage 和 UI 一致性",
+          "expected": "每步操作后表格显示和 localStorage 数据一致，无数据丢失或不同步"
+        },
+        {
+          "requirementId": "AC-9",
+          "kind": "session-persistence",
+          "action": "在浏览器中执行新增→编辑→删除完整 CRUD 流程，检查每步后 localStorage 和 UI 一致性",
+          "expected": "每步操作后表格显示和 localStorage 数据一致，无数据丢失或不同步"
+        }
+      ],
+      "evidence": "执行新增（张老师）→编辑（课程数学→物理）→删除（李老师）完整 CRUD 流程，每步后表格和 localStorage 一致：最终表格 2 行（张老师/物理、王老师/英语），localStorage 2 条匹配记录",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser CRUD workflow at http://localhost:5173/ — add, edit, delete verified with localStorage checks at each step"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-9",
+          "kind": "interaction",
+          "action": "在浏览器中执行新增→编辑→删除完整 CRUD 流程，检查每步后 localStorage 和 UI 一致性",
+          "expected": "每步操作后表格显示和 localStorage 数据一致，无数据丢失或不同步",
+          "actual": "新增、编辑、删除操作后表格显示与操作结果一致：最终表格显示张老师/物理和老师/英语两行",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-9",
+          "kind": "session-persistence",
+          "action": "在浏览器中执行新增→编辑→删除完整 CRUD 流程，检查每步后 localStorage 和 UI 一致性",
+          "expected": "每步操作后表格显示和 localStorage 数据一致，无数据丢失或不同步",
+          "actual": "最终 localStorage.getItem 返回 [{\"name\":\"张老师\",\"course\":\"物理\"},{\"name\":\"王老师\",\"course\":\"英语\"}]，与表格一致",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-1: 保存教师 API 安全处理 undefined/null 字段，不抛 TypeError 崩溃; AC-2: 持久化失败时向用户显示可见错误提示; AC-3: 持久化恢复后错误提示自动消失且数据正常保存; AC-4: 新增教师后 UI 表格与 localStorage 数据一致; AC-5: 编辑教师后 UI 和 localStorage 同步更新; AC-6: updateTeacher 返回更新后的教师对象，与 addTeacher 返回值一致; AC-7: handleFormSubmit 包含 try-catch 错误处理，防止保存异常导致表单状态不一致; AC-8: 项目构建无编译错误; AC-9: 连续新增、编辑、删除教师后 localStorage 数据与 UI 保持一致",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-1",
+        "source": "bug-verification-plan.json#AC-1",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidence": "QA-01 代码审查确认 safeTrim 防止 undefined/null 抛 TypeError"
+      },
+      {
+        "id": "AC-2",
+        "source": "bug-verification-plan.json#AC-2",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "error-feedback",
+          "runtime-render"
+        ],
+        "evidence": "QA-02 浏览器测试确认 localStorage.setItem 失败时显示持久化错误提示"
+      },
+      {
+        "id": "AC-3",
+        "source": "bug-verification-plan.json#AC-3",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "error-feedback",
+          "session-persistence"
+        ],
+        "evidence": "QA-03 浏览器测试确认恢复后错误消失且数据正常持久化"
+      },
+      {
+        "id": "AC-4",
+        "source": "bug-verification-plan.json#AC-4",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence",
+          "runtime-render"
+        ],
+        "evidence": "QA-04 浏览器测试确认新增教师后表格和 localStorage 一致"
+      },
+      {
+        "id": "AC-5",
+        "source": "bug-verification-plan.json#AC-5",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-05 浏览器测试确认编辑后表格和 localStorage 同步更新"
+      },
+      {
+        "id": "AC-6",
+        "source": "bug-verification-plan.json#AC-6",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-06"
+        ],
+        "evidence": "QA-06 代码审查确认 updateTeacher 返回更新后的教师对象"
+      },
+      {
+        "id": "AC-7",
+        "source": "bug-verification-plan.json#AC-7",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-07"
+        ],
+        "evidence": "QA-07 代码审查确认 handleFormSubmit 包含 try-catch 错误处理"
+      },
+      {
+        "id": "AC-8",
+        "source": "bug-verification-plan.json#AC-8",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-08"
+        ],
+        "evidence": "QA-08 npm run build 成功，无编译错误"
+      },
+      {
+        "id": "AC-9",
+        "source": "bug-verification-plan.json#AC-9",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-09"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "QA-09 浏览器测试确认 CRUD 全流程后 UI 和 localStorage 一致"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "E2E/API",
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [],
+  "baselineUpdates": []
+}

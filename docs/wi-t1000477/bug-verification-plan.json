@@ -1,0 +1,91 @@
+{
+  "workItemId": "wi-t1000477",
+  "originalRequest": "206-teachers-issue-4\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21163089827201024\",\"code\":\"T1000477\",\"title\":\"206-teachers-issue-4\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "source": {
+    "handoffWorkItemId": "wi-t1000477"
+  },
+  "stageExecution": {
+    "workItemId": "wi-t1000477",
+    "actionId": "implementation",
+    "receiptId": "implementation:1"
+  },
+  "acceptanceCriteria": [
+    {
+      "id": "AC-1",
+      "source": "original-request",
+      "statement": "保存教师 API 安全处理 undefined/null 字段，不抛 TypeError 崩溃",
+      "surface": "internal",
+      "action": "代码审查 addTeacher/updateTeacher 中 safeTrim 的使用，确认传入 undefined/null 字段不会崩溃",
+      "expected": "addTeacher 和 updateTeacher 使用 safeTrim(data?.field) 替代 data.field.trim()，undefined/null 字段转为空字符串而非抛 TypeError"
+    },
+    {
+      "id": "AC-2",
+      "source": "original-request",
+      "statement": "持久化失败时向用户显示可见错误提示",
+      "surface": "user-interface",
+      "action": "在浏览器中模拟 localStorage.setItem 失败后新增教师，检查页面是否显示持久化失败错误提示",
+      "expected": "页面显示「数据保存失败」提示信息，用户可感知存储异常",
+      "evidenceKinds": ["error-feedback", "runtime-render"]
+    },
+    {
+      "id": "AC-3",
+      "source": "original-request",
+      "statement": "持久化恢复后错误提示自动消失且数据正常保存",
+      "surface": "user-interface",
+      "action": "恢复 localStorage.setItem 后再次新增教师，检查错误提示是否消失且数据正常持久化",
+      "expected": "错误提示消失，localStorage 包含全部教师记录",
+      "evidenceKinds": ["error-feedback", "session-persistence"]
+    },
+    {
+      "id": "AC-4",
+      "source": "original-request",
+      "statement": "新增教师后 UI 表格与 localStorage 数据一致",
+      "surface": "user-interface",
+      "action": "在浏览器中填写教师表单（姓名/课程/年级/手机/邮箱）并提交，检查表格显示和 localStorage 数据",
+      "expected": "教师出现在表格中，localStorage 包含对应的 JSON 记录",
+      "evidenceKinds": ["interaction", "session-persistence", "runtime-render"]
+    },
+    {
+      "id": "AC-5",
+      "source": "original-request",
+      "statement": "编辑教师后 UI 和 localStorage 同步更新",
+      "surface": "user-interface",
+      "action": "编辑已有教师的课程字段并保存，检查表格和 localStorage 是否同步更新",
+      "expected": "表格显示更新后的课程，localStorage 中对应字段已更新",
+      "evidenceKinds": ["interaction", "session-persistence"]
+    },
+    {
+      "id": "AC-6",
+      "source": "hypothesis",
+      "statement": "updateTeacher 返回更新后的教师对象，与 addTeacher 返回值一致",
+      "surface": "internal",
+      "action": "代码审查 updateTeacher 的返回值",
+      "expected": "updateTeacher 返回更新后的教师对象，而非 undefined"
+    },
+    {
+      "id": "AC-7",
+      "source": "hypothesis",
+      "statement": "handleFormSubmit 包含 try-catch 错误处理，防止保存异常导致表单状态不一致",
+      "surface": "internal",
+      "action": "代码审查 handleFormSubmit 的 try-catch 结构",
+      "expected": "handleFormSubmit 包裹 addTeacher/updateTeacher 调用在 try-catch 中，异常时不传播到 React 错误边界"
+    },
+    {
+      "id": "AC-8",
+      "source": "original-request",
+      "statement": "项目构建无编译错误",
+      "surface": "internal",
+      "action": "运行 npm run build 构建项目",
+      "expected": "vite build 成功，产出可部署的 dist 目录"
+    },
+    {
+      "id": "AC-9",
+      "source": "original-request",
+      "statement": "连续新增、编辑、删除教师后 localStorage 数据与 UI 保持一致",
+      "surface": "user-interface",
+      "action": "在浏览器中执行新增→编辑→删除完整 CRUD 流程，检查每步后 localStorage 和 UI 一致性",
+      "expected": "每步操作后表格显示和 localStorage 数据一致，无数据丢失或不同步",
+      "evidenceKinds": ["interaction", "session-persistence"]
+    }
+  ]
+}

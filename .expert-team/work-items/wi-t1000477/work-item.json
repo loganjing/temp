@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "206-teachers-issue-4\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21163089827201024\",\"code\":\"T1000477\",\"title\":\"206-teachers-issue-4\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
   "request": "206-teachers-issue-4\n\n/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21163089827201024\",\"code\":\"T1000477\",\"title\":\"206-teachers-issue-4\",\"description\":\"/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/修复这个目录下的保存教师的api好像有bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-10-29T09:34:41.178Z"
+  "revision": 1,
+  "createdAt": "2026-10-29T09:34:41.178Z",
+  "completedAt": "2026-10-29T11:15:21.556Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:3d43728d1cfebb28eadc610888f1cfabfb66a6523fa24dbc899a6ce58098cf70",
+    "completedAt": "2026-10-29T11:15:21.556Z"
+  },
+  "updatedAt": "2026-10-29T11:15:21.556Z"
 }
