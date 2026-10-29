@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_177f02ab-f757-4eb6-b630-8101d21d9bf9",
+  "workItemId": "wi-t1000474",
+  "workspaceRealpath": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-ticket/.lingee-task-worktrees/wi-t1000474",
+  "target": "task_operation",
+  "operation": "submit",
+  "fixedArguments": {
+    "--workspace": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-ticket/.lingee-task-worktrees/wi-t1000474",
+    "--work-item": "wi-t1000474",
+    "--task": "T02",
+    "--actor-id": "expert-team-coordinator"
+  },
+  "requiredInputs": {
+    "--execution-id": {
+      "source": "spawn_task.executionId",
+      "description": "Use the exact execution ID returned for this prepared envelope.",
+      "encoding": "text"
+    }
+  },
+  "status": "pending",
+  "createdAt": "2026-10-29T09:06:44.330Z",
+  "consumedAt": null
+}

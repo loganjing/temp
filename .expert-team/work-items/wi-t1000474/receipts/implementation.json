@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:2df8b4126be15188747b3b605bc4b90062f55fbe248c02cb08d70c1b562b583b",
+  "createdAt": "2026-10-29T09:20:01.385Z",
+  "timing": {
+    "startedAt": "2026-10-29T09:03:02.887Z",
+    "completedAt": "2026-10-29T09:20:01.385Z",
+    "durationMs": 1018498
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000474/implementation-report.md",
+      "bytes": 5162,
+      "sha256": "sha256:812402a68614e39ce192ac114bc359be2667c74b2e19d968f5a98e06170ede3b",
+      "role": "primary",
+      "purpose": "工单系统开发实现报告：双任务并行执行结果、验证证据、AC覆盖映射",
+      "title": "实现报告 — 205-ticket"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "npm-test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:eff99def65401628f425a8a184ff34521aab2b39a12c6d640bda66cf51bf2b51",
+        "path": ".expert-team/work-items/wi-t1000474/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
