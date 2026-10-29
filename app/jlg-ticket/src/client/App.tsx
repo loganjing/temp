@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react'
-import { apiRequest } from './platform/api-client'
-import { usePlatformText } from './platform/i18n'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Sidebar from './components/Sidebar'
+import TopBar from './components/TopBar'
+import TicketListPage from './pages/TicketListPage'
+import TicketCreatePage from './pages/TicketCreatePage'
+import BusinessGroupPage from './pages/BusinessGroupPage'
+import AssignmentRulesPage from './pages/AssignmentRulesPage'
 
 export default function App() {
-  const t = usePlatformText()
-  const [health, setHealth] = useState<'checking' | 'ok' | 'down'>('checking')
-
-  useEffect(() => {
-    apiRequest<{ ok: boolean }>('/api/health')
-      .then((d) => setHealth(d.ok ? 'ok' : 'down'))
-      .catch(() => setHealth('down'))
-  }, [])
-
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', padding: '4rem', maxWidth: 640, margin: '0 auto' }}>
-      <h1>jlg-ticket</h1>
-      <p>{t('intro')}</p>
-      <p>
-        {t('health')}:
-        {health === 'checking' && t('checking')}
-        {health === 'ok' && t('ok')}
-        {health === 'down' && t('down')}
-      </p>
-    </main>
+    <div className="flex h-screen overflow-hidden bg-slate-50">
+      <Sidebar />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <TopBar />
+        <main className="flex-1 overflow-hidden">
+          <Routes>
+            <Route path="/" element={<TicketListPage />} />
+            <Route path="/tickets/new" element={<TicketCreatePage />} />
+            <Route path="/groups" element={<BusinessGroupPage />} />
+            <Route path="/rules" element={<AssignmentRulesPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
   )
 }
