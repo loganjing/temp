@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000484/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "架构基线：整体方案、技术栈、CommonApp 模块选择、UI 基线、数据模型、模块边界与接口摘要"
+    },
+    {
+      "path": "docs/wi-t1000484/technical-contract.md",
+      "role": "supporting",
+      "purpose": "技术契约：API 接口定义、ID 类型对照、枚举值、字段映射、事务约定与错误格式"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    }
+  ]
+}
