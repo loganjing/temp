@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000460",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "198-teachers-issue\n\n198-teachers存在很多bug，请修复。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21059451423301632\",\"code\":\"T1000460\",\"title\":\"198-teachers-issue\",\"description\":\"198-teachers存在很多bug，请修复。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "request": "198-teachers-issue\n\n198-teachers存在很多bug，请修复。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21059451423301632\",\"code\":\"T1000460\",\"title\":\"198-teachers-issue\",\"description\":\"198-teachers存在很多bug，请修复。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-29T02:42:53.295Z"
+}

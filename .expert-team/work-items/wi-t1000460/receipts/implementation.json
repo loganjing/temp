@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:1",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 2,
+  "actionId": "implementation",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:a791c1802c9aedeb2db92f2e366655b9718d7947336e258b7cbf8f4a30ba7084",
+  "createdAt": "2026-10-29T02:49:42.455Z",
+  "timing": {
+    "startedAt": "2026-10-29T02:42:53.476Z",
+    "completedAt": "2026-10-29T02:49:42.455Z",
+    "durationMs": 408979
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000460/implementation-report.md",
+      "bytes": 3357,
+      "sha256": "sha256:0b0326cf726bdeef8cd05e7b2781ed944ee552480c8ac64ea35d2b7afcf61760",
+      "title": "Bug fix / 缺陷修复"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "implementation:completion",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_f42c6300-bc4b-4d35-8857-43f66fdb535d",
+  "workItemId": "wi-t1000460",
+  "workspaceRealpath": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000460",
+  "target": "workflow",
+  "operation": "complete",
+  "fixedArguments": {
+    "--workspace": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000460",
+    "--work-item": "wi-t1000460",
+    "--action": "implementation",
+    "--expected-revision": 0,
+    "--handoff-json": "/Users/loganjing/lingeebuild-beta/workspaces/4794c7b1878d6afde442334d2e0c5d75/jlg-teachers/.lingee-task-worktrees/wi-t1000460/docs/wi-t1000460/bug-fix-handoff.json",
+    "--result-status": "completed"
+  },
+  "requiredInputs": {},
+  "status": "pending",
+  "createdAt": "2026-10-29T02:42:53.535Z",
+  "consumedAt": null
+}

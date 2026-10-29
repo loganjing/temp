@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000460",
+  "source": {
+    "request": "198-teachers-issue\n\n198-teachers存在很多bug，请修复。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21059451423301632\",\"code\":\"T1000460\",\"title\":\"198-teachers-issue\",\"description\":\"198-teachers存在很多bug，请修复。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-teachers\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "App.jsx handleDeleteConfirm 调用 persistTeachers 后未检查返回值，无论保存成功与否都执行 setDeleteTarget(null) 关闭删除确认弹窗",
+      "persistTeachers 在保存失败时设置 formError 状态，但该状态仅在 TeacherForm 组件中渲染；删除时表单未打开，错误信息对用户不可见",
+      "handleFormSubmit 在校验通过后未清空 formErrors，此前轮次的字段错误提示会残留显示",
+      "handleFormChange 修改字段值时不清除该字段的校验错误，用户修正输入后错误提示仍持续显示直到下次提交",
+      "loadTeachers 仅检查 localStorage 解析结果是否为数组，未校验单个教师对象的结构完整性，损坏数据可能导致 undefined 渲染和受控/非受控组件警告"
+    ],
+    "reproduction": [
+      "BUG-1 复现：在 localStorage 存储配额已满或被禁用的环境中，添加教师记录后点击删除并确认；弹窗关闭但数据实际未持久化，刷新页面后记录重新出现，用户无任何错误反馈",
+      "BUG-2 复现：在新增/编辑表单中留空一个必填字段并提交，字段下方显示校验错误；修正该字段后再次提交（校验通过），旧的字段错误提示仍残留在界面上",
+      "BUG-3 复现：在表单中输入无效手机号并提交，phone 字段显示错误；用户修改手机号输入时，错误提示不消失，直到下次点击提交按钮",
+      "BUG-4 复现：在浏览器开发者工具中向 localStorage 写入格式错误的数据（如 [{\"id\":123}]，id 为数字而非字符串），刷新页面后应用尝试渲染不合规记录，表格出现空单元格或 React 受控组件警告"
+    ]
+  },
+  "expectedBasis": [
+    {
+      "kind": "document",
+      "reference": "docs/wi-t1000458/architecture-baseline.md — 接口与校验边界：localStorage 读写",
+      "expected": "应用通过封装的存储函数统一读写，写入失败时向用户提示错误。删除操作属于存储写入，失败时应向用户提示错误而非静默关闭弹窗。"
+    },
+    {
+      "kind": "document",
+      "reference": "docs/wi-t1000458/requirements.md — 删除教师验收场景 AC-04",
+      "expected": "删除成功后该记录不再出现在教师列表中。若持久化失败则记录仍存在于 localStorage，刷新后恢复，因此必须在失败时通知用户。"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "表单交互最佳实践",
+      "expected": "用户修正字段值后，该字段的校验错误提示应即时清除，避免显示与当前输入不符的过时错误。"
+    },
+    {
+      "kind": "hypothesis",
+      "reference": "数据加载健壮性",
+      "expected": "loadTeachers 应过滤掉结构不合规的记录，避免损坏数据导致渲染异常或 React 受控/非受控组件警告。"
+    }
+  ],
+  "fix": {
+    "summary": "修复了教师管理系统中 4 个缺陷：(1) 删除确认弹窗在持久化失败时静默关闭且无错误反馈；(2) 表单校验通过后旧字段错误提示残留；(3) 用户修改字段时校验错误不清除；(4) 加载数据时未校验记录结构完整性。",
+    "rootCause": "handleDeleteConfirm 无条件关闭弹窗且不检查 persistTeachers 返回值；persistTeachers 将错误设置到仅表单可见的 formError 状态而非调用方上下文；handleFormSubmit 校验通过分支未重置 formErrors；handleFormChange 不清除对应字段错误；loadTeachers 缺少对单个教师对象的结构校验。",
+    "files": [
+      "src/App.jsx",
+      "src/components/ConfirmDialog.jsx",
+      "src/lib/storage.js"
+    ]
+  },
+  "entry": {
+    "workingDirectory": ".",
+    "version": "Node.js + npm; React 18.3.1; Vite 5.4.11",
+    "startup": "npm install && npm run dev（前端地址 http://localhost:5173/）",
+    "testData": "localStorage key 'jlg-teachers' 存储教师 JSON 数组；可手动写入格式异常数据测试加载健壮性；无预设测试数据集",
+    "identity": "无需登录或认证；单用户前端 SPA；无敏感凭据"
+  },
+  "regressionSuggestions": [
+      "删除教师时模拟 localStorage 写入失败（如禁用存储或填充至配额上限），验证删除弹窗保持打开并显示错误提示",
+      "在表单中触发校验错误后修正字段并重新提交成功，验证字段错误提示全部消失",
+      "在表单校验错误后逐个修改字段，验证对应字段的错误提示随输入即时清除",
+      "向 localStorage 写入包含非字符串 id 或缺失字段的异常数据，刷新页面后验证应用正常加载且过滤掉不合规记录",
+      "正常执行新增、编辑、删除 CRUD 流程，验证核心功能不受修复影响"
+  ],
+  "verification": [
+      {
+        "id": "self-test-build",
+        "action": "运行 npm run build 构建项目",
+        "expected": "构建成功，无编译错误，dist 产物正常输出",
+        "actual": "vite v5.4.21 构建成功，36 个模块转换完成，输出 dist/index.html、dist/assets/index-*.css、dist/assets/index-*.js，退出码 0",
+        "status": "passed",
+        "evidence": "终端输出：✓ built in 219ms，36 modules transformed"
+      },
+      {
+        "id": "self-test-delete-persistence",
+        "action": "代码审查 handleDeleteConfirm 是否检查 persistTeachers 返回值并在失败时保持弹窗打开",
+        "expected": "persistTeachers 返回 false 时不关闭弹窗，设置 deleteError 并在 ConfirmDialog 中显示",
+        "actual": "App.jsx 第 119-128 行：persistTeachers 返回 false 时设置 deleteError 且不调用 setDeleteTarget(null)；ConfirmDialog 接收 error prop 并在存在时渲染 form-error 提示",
+        "status": "passed",
+        "evidence": "src/App.jsx:119-128, src/components/ConfirmDialog.jsx:3,9"
+      },
+      {
+        "id": "self-test-stale-errors",
+        "action": "代码审查 handleFormSubmit 校验通过分支是否清空 formErrors",
+        "expected": "校验通过后调用 setFormErrors({}) 清除残留的字段错误",
+        "actual": "App.jsx 第 77 行在校验通过后立即执行 setFormErrors({})，确保后续保存流程中无残留错误",
+        "status": "passed",
+        "evidence": "src/App.jsx:77"
+      },
+      {
+        "id": "self-test-field-error-clear",
+        "action": "代码审查 handleFormChange 是否在字段值变更时清除该字段的校验错误",
+        "expected": "修改字段时从 formErrors 中移除该字段对应的错误条目",
+        "actual": "App.jsx 第 63-68 行在 setFormData 后通过 setFormErrors 回调删除对应字段的错误键，返回新对象",
+        "status": "passed",
+        "evidence": "src/App.jsx:61-69"
+      },
+      {
+        "id": "self-test-data-validation",
+        "action": "代码审查 loadTeachers 是否校验单个教师对象的结构完整性",
+        "expected": "loadTeachers 过滤掉不符合预期结构的记录（id 为非空字符串，其余字段为字符串类型）",
+        "actual": "storage.js 第 3-14 行定义 isValidTeacher 校验函数，第 22 行 loadTeachers 返回 parsed.filter(isValidTeacher) 过滤不合规记录",
+        "status": "passed",
+        "evidence": "src/lib/storage.js:3-14,22"
+      },
+      {
+        "id": "self-test-persist-error-handling",
+        "action": "代码审查 persistTeachers 是否将错误处理移至调用方上下文",
+        "expected": "persistTeachers 仅返回布尔值，由调用方在表单上下文设置 formError 或在删除上下文设置 deleteError",
+        "actual": "App.jsx 第 30-37 行 persistTeachers 不再设置 formError；handleFormSubmit 第 94/105 行在失败时设置 formError；handleDeleteConfirm 第 126 行在失败时设置 deleteError",
+        "status": "passed",
+        "evidence": "src/App.jsx:30-37,94,105,126"
+      }
+  ]
+}
