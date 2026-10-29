@@ -1,3 +1,9 @@
 # BEGIN expert-team local state
 
 # END expert-team local state
+node_modules/
+dist/
+.env
+data/
+*.log
+.DS_Store

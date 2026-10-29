@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000487/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "architecture baseline"
+    },
+    {
+      "path": "docs/wi-t1000487/technical-contract.md",
+      "role": "supporting",
+      "purpose": "API technical contract"
+    }
+  ]
+}
