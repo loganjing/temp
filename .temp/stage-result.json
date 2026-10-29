@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "mode": "design",
+  "decision": "ready",
+  "artifacts": [
+    { "path": "docs/wi-t1000474/architecture-baseline.md", "role": "primary" },
+    { "path": "docs/wi-t1000474/technical-contract.md", "role": "supporting" }
+  ],
+  "internalArtifacts": ["workspace-bootstrap.json"]
+}
