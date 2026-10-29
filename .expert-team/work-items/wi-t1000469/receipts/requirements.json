@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:929f084b2568ab40d1f788dfad8ae6cb8fe667b3b8501a7b7d63b328c92f447a",
+  "createdAt": "2026-10-29T07:41:17.136Z",
+  "timing": {
+    "startedAt": "2026-10-29T07:39:47.026Z",
+    "completedAt": "2026-10-29T07:41:17.136Z",
+    "durationMs": 90110
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000469/requirements.md",
+      "bytes": 8508,
+      "sha256": "sha256:0c8757695208e2c31092b4f2835b1621b57af810180fcd7e2bbedfbcf1ce244e",
+      "role": "requirements",
+      "purpose": "工单系统需求文档，覆盖工单管理、分配、协作、处理和评价全生命周期的8条验收标准",
+      "title": "工单系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
