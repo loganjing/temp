@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:b042d07730a4cf200a51943f1de7ef0fb246788ecd622ad8ec612ca9104aa683",
+  "createdAt": "2026-10-30T07:42:03.688Z",
+  "timing": {
+    "startedAt": "2026-10-30T07:41:35.755Z",
+    "completedAt": "2026-10-30T07:42:03.687Z",
+    "durationMs": 27932
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000071/requirements.md",
+      "bytes": 4338,
+      "sha256": "sha256:e54b77f2242e29b122a6798d4c2c6e509695be61ae5227bb0e3bb79b54e1566c",
+      "role": "requirements",
+      "purpose": "教师管理系统需求基线与验收场景",
+      "title": "教师管理系统 需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-structure",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-field-completeness",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirement-source-separation",
+      "status": "passed"
+    }
+  ]
+}
