@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000070",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "215-医院药品配送\n\n开发配送订单接收、取送点管理、身份核验、配送状态跟踪和异常处理功能。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21474391850225664\",\"code\":\"T1000070\",\"title\":\"215-医院药品配送\",\"description\":\"开发配送订单接收、取送点管理、身份核验、配送状态跟踪和异常处理功能。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
+  "request": "215-医院药品配送\n\n开发配送订单接收、取送点管理、身份核验、配送状态跟踪和异常处理功能。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"21474391850225664\",\"code\":\"T1000070\",\"title\":\"215-医院药品配送\",\"description\":\"开发配送订单接收、取送点管理、身份核验、配送状态跟踪和异常处理功能。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-10-30T06:12:41.279Z"
+}

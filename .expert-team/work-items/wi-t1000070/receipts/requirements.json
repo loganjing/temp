@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:cc1aed4222c24c294031fe27a66c312b279b6c52ba5dde1c6bc81a331c049ba6",
+  "createdAt": "2026-10-30T06:13:51.601Z",
+  "timing": {
+    "startedAt": "2026-10-30T06:12:41.383Z",
+    "completedAt": "2026-10-30T06:13:51.601Z",
+    "durationMs": 70218
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000070/requirements.md",
+      "bytes": 12364,
+      "sha256": "sha256:78f33c055cff06fdbe650cbcaafb3d763c685fb3d9e6f12db35e9dbd9d98c686",
+      "role": "requirements",
+      "purpose": "215-医院药品配送 需求基线：目标、参与方、主流程、五项功能需求、业务状态、推荐基线与待确认事项、8 条验收场景",
+      "title": "215-医院药品配送 需求说明"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "module-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-field-completeness",
+      "status": "passed"
+    },
+    {
+      "checkId": "provenance-labelling",
+      "status": "passed"
+    },
+    {
+      "checkId": "light-requirements-template-checker",
+      "status": "not-applicable"
+    }
+  ]
+}
