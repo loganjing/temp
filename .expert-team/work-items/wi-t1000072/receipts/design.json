@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:04d111dee185062968f55c1644587413f9ce7313257535632920df88f78e1e0a",
+  "createdAt": "2026-11-02T02:34:30.424Z",
+  "timing": {
+    "startedAt": "2026-11-02T02:30:04.260Z",
+    "completedAt": "2026-11-02T02:34:30.424Z",
+    "durationMs": 266164
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000072/architecture-baseline.md",
+      "bytes": 14491,
+      "sha256": "sha256:dbc93e0759f72e10b6e40be2a3d28e0c9f53214e1d7d1600cd4d3b25fe462d13",
+      "role": "primary",
+      "purpose": "工单系统整体架构、技术栈、CommonApp 模块选择、模块边界、权限与可见范围、UI 基线、运行与验证约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000072/technical-contract.md",
+      "bytes": 17672,
+      "sha256": "sha256:ef2b0327b9275f6878a6ee582ceb0cfd90d4196d037a4260764c5ba9a9ad4dc4",
+      "role": "supporting",
+      "purpose": "实体 ID 对照、SQLite 数据模型、认证与授权、接口字段、错误码、事务与幂等约定",
+      "title": "技术契约（工单系统）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planSha256": "sha256:adf5143cf325fa05b823069a2d22ddb65aa41812b299aec580c2e970da1e918a",
+      "planDigest": "sha256:a43593a9284260db3dd175f6ad28c0843b8c34aa26a992286fed570a31fa2a33",
+      "scaffoldDigest": "sha256:d516008c063a01f5df476121f37117dafe6bbb4577d82bb0d3185e28195ff427",
+      "packageRoot": "app/ticket-system",
+      "modules": [
+        "dbkit",
+        "authkit",
+        "userkit",
+        "emailkit"
+      ],
+      "result": "initialized"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:b53e156656ebbc57bc985de978ed7c0484369f289e75f295549390d23e6cc07f",
+        "path": ".expert-team/work-items/wi-t1000072/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

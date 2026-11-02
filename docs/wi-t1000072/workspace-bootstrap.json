@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "ticket-system",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "tailwind",
+  "packageManager": "npm",
+  "modules": ["dbkit", "authkit", "userkit", "emailkit"],
+  "identityMode": "local-password"
+}

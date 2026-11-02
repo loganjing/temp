@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000072/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "工单系统整体架构、技术栈、模块边界、权限范围、UI 基线与运行约定"
+    },
+    {
+      "path": "docs/wi-t1000072/technical-contract.md",
+      "role": "supporting",
+      "purpose": "实体 ID 对照、SQLite 数据模型、认证、接口字段、错误码与幂等约定"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planPath": "docs/wi-t1000072/workspace-bootstrap.json",
+      "planSha256": "sha256:adf5143cf325fa05b823069a2d22ddb65aa41812b299aec580c2e970da1e918a",
+      "planDigest": "sha256:a43593a9284260db3dd175f6ad28c0843b8c34aa26a992286fed570a31fa2a33",
+      "scaffoldDigest": "sha256:d516008c063a01f5df476121f37117dafe6bbb4577d82bb0d3185e28195ff427",
+      "packageRoot": "app/ticket-system",
+      "modules": ["dbkit", "authkit", "userkit", "emailkit"],
+      "result": "initialized"
+    }
+  ],
+  "evidence": [
+    "工作区初始化器返回 decision=initialized，packageRoot=app/ticket-system，checks 包含 bootstrap-schema、module-distribution-files、scaffold-assets、source-layout-map、generated-scaffold-contract、npm install、npm run build、npm run test、workspace-merge、existing docs unchanged",
+    "初始化过程 npm run build 与 npm test 通过（4 项通过，1 项因未配置认证边界跳过）",
+    "根目录 platform-baseline.json 可读取，指出 packageRoot 与已解析模块，app/ticket-system/AGENTS.md 存在"
+  ]
+}

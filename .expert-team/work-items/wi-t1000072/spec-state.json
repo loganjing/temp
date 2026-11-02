@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-02T02:29:08.391Z"
+  "updatedAt": "2026-11-02T02:34:30.424Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000072/requirements.md",
+      "sha256": "sha256:a0284e88df5fa92ef8e4d46a56f4d636fcfa179dc3858d25bac27637e1602f08"
+    },
+    "reason": "工单系统需要服务端权威数据与真实的多用户权限边界：工单按公司隔离、提交人/处理人/管理员/平台运营的可见范围不同、业务组与成员关系、跨用户的自动分配与转派、服务端统计口径，以及完成时向提交人邮箱发送通知邮件。这些都超出单浏览器 localStorage 可承载的范围，因此走完整全栈设计路线。",
+    "evidence": {
+      "supporting": [
+        "R-3 公司隔离与第 3 节可见范围要求按角色与公司限制列表、详情、回复、统计、日志的读取，必须由服务端统一校验",
+        "R-2 多轮回复要求提交人与处理人跨用户共享同一对话记录，属于跨用户共享数据",
+        "R-7 按分类自动分配与 R-8 转派涉及多名处理人之间的工单流转，需要服务端一致的工单归属与状态",
+        "R-9 完成时向提交人邮箱发送通知邮件并要求记录发送结果与失败重发，属于外部服务集成与后台行为",
+        "R-12 按公司、部门维度统计与仪表盘指标（平均响应时间、满意度、热点问题）要求基于权威数据聚合",
+        "RB-1/RB-2 区分管理员与可跨公司查看的平台运营角色，需要认证与角色权限"
+      ],
+      "excluding": [
+        "需求未声明数据仅在当前浏览器或设备可用，也未声明单用户使用",
+        "需求明确要求多角色、多公司、多业务组协作，不满足 simple-frontend 的单用户前提"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-02T02:30:09.883Z",
+    "sha256": "sha256:b53e156656ebbc57bc985de978ed7c0484369f289e75f295549390d23e6cc07f"
+  }
 }
