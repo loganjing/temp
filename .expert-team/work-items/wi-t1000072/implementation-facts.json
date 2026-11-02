@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 1,
+  "revision": 6,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:8da5875f-d736-4e6a-b1ac-e92f5c3cb016",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:bc006c7b-8277-4147-9037-45a73fccf1cb",
+      "createdAt": "2026-11-02T02:48:44.785Z",
+      "executionId": "ses_e65d7299affelB3bhegcTQtxsa",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:8da5875f-d736-4e6a-b1ac-e92f5c3cb016",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:d0860453-b349-4b9f-9660-423fe8280665",
+      "createdAt": "2026-11-02T02:48:44.877Z",
+      "executionId": "ses_e65d7156effek0ukKDU0YdzMws",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:8da5875f-d736-4e6a-b1ac-e92f5c3cb016",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_e65d7299affelB3bhegcTQtxsa",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/",
+            "bytes": 97059,
+            "sha256": "sha256:1e49090bb11c3a95a1500f7bed0cb43eda30bdf886550f7f9d1523cb815a383e"
+          },
+          {
+            "path": "app/ticket-system/src/shared/",
+            "bytes": 1819,
+            "sha256": "sha256:d55d6a1b8952df51e2b3719fb4dae548ef01e437299abf11918c38d50befb4d4"
+          }
+        ],
+        "verification": [
+          {
+            "checkId": "typecheck:server",
+            "status": "passed",
+            "command": "npm run typecheck:server (cwd app/ticket-system)",
+            "exitCode": 0
+          },
+          {
+            "checkId": "test",
+            "status": "passed",
+            "command": "npm test (cwd app/ticket-system) — 9 tests, 8 pass, 1 skipped (pre-existing conditional skip in test/platform.test.mjs), 0 fail",
+            "exitCode": 0
+          }
+        ]
+      },
+      "createdAt": "2026-11-02T03:05:00.580Z"
+    },
+    {
+      "planId": "plan:8da5875f-d736-4e6a-b1ac-e92f5c3cb016",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_e65d7156effek0ukKDU0YdzMws",
+      "outcome": "completed",
+      "result": {
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/",
+            "bytes": 170217,
+            "sha256": "sha256:e98f58dc0c91f456c1086cb48edcabbb8f30eaf389fa7e4e0c29dfe1e2292757"
+          }
+        ],
+        "message": "已交付：按角色显示的应用壳与导航、我的工单与新建、主从工作台（状态/优先级/分类/业务组/公司/部门筛选，主题与 ID 搜索，创建时间与优先级排序）、详情协作（多轮回复、人工分配、转派、完成、取消、优先级调整、满意度评价与待评价、提交人信息与同公司历史、工单日志、通知记录与重发、终态锁定、服务端能力标记）、统计仪表盘与公司/部门分布、管理员业务组/成员/分配规则配置。验证边界：本次只做了客户端类型检查、生产构建、契约字段样例的渲染断言与 mock 交互断言；合并 T01 后的浏览器端到端验收仍由后续验证阶段执行。接口对齐风险：契约未明确 GET /api/tickets/:ticketId/submitter 的响应字段名，客户端按 {name,email,companyName,departmentName,history} 消费；/api/meta/companies 与 /api/meta/departments 按 {id,name} 消费，并兼容裸数组或 {items} 包装；若 T01 采用其他形状需对齐。配置页添加成员仅提供用户 ID 输入，因为契约未声明“公司用户列表”接口；成员移除与组的增删改按契约路径实现。预览地址启用开发期 mock（VITE_MOCK_API=true，可用 ?mockRole=submitter|handler|admin|ops 切换身份，任意邮箱密码登录），不代表验收环境或个人真实后端；原 admin/UsersPage.tsx 保留但未挂载到工单导航。",
+        "status": "completed",
+        "url": "http://localhost:5288/",
+        "verification": [
+          {
+            "checkId": "client-typecheck",
+            "command": "npm run typecheck:client",
+            "evidence": "tsc -p tsconfig.client.json，无错误输出",
+            "exitCode": 0,
+            "status": "passed",
+            "workdir": "app/ticket-system"
+          },
+          {
+            "checkId": "client-build",
+            "command": "npm run build:client",
+            "evidence": "vite build 成功，49 modules transformed，产出 dist/assets/index-*.js 与 index-*.css",
+            "exitCode": 0,
+            "status": "passed",
+            "workdir": "app/ticket-system"
+          },
+          {
+            "checkId": "client-render-check",
+            "command": "node --import tsx src/client/platform/__check__/render-check.tsx",
+            "evidence": "契约字段样例渲染断言通过：终态锁定、待评价、提交人历史、权限隐藏、错误/空/加载/无权限状态、格式函数；临时脚本已删除",
+            "exitCode": 0,
+            "status": "passed",
+            "workdir": "app/ticket-system"
+          },
+          {
+            "checkId": "client-mock-flow-check",
+            "command": "node --import tsx src/client/platform/__check__/mock-check.ts",
+            "evidence": "契约字段 mock 覆盖创建读回、多轮回复、分配/转派/完成/评价、跨公司 403、工作台筛选排序与统计口径；临时脚本已删除",
+            "exitCode": 0,
+            "status": "passed",
+            "workdir": "app/ticket-system"
+          },
+          {
+            "checkId": "mock-excluded-from-production-bundle",
+            "command": "if grep -q \"北方物流\" dist/assets/*.js; then exit 1; else echo mock-data-absent; fi",
+            "evidence": "生产构建产物不包含开发样例数据",
+            "exitCode": 0,
+            "status": "passed",
+            "workdir": "app/ticket-system"
+          },
+          {
+            "checkId": "dev-preview-http",
+            "command": "curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5288/",
+            "evidence": "HTTP 200；仅开发预览可达性，不构成浏览器验收证据",
+            "exitCode": 0,
+            "status": "passed",
+            "workdir": "app/ticket-system"
+          }
+        ]
+      },
+      "createdAt": "2026-11-02T03:05:26.971Z"
+    }
+  ],
+  "repairs": [],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:bc006c7b-8277-4147-9037-45a73fccf1cb",
+      "actorId": "expert-team-coordinator",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000072",
+          "planId": "plan:8da5875f-d736-4e6a-b1ac-e92f5c3cb016",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "工单领域服务端：数据模型、状态机、分配协作、通知、统计与配置接口",
+          "objective": "## 目标\n在应用包 `app/ticket-system` 内交付工单系统的服务端权威实现：数据库结构与种子数据、认证与可见范围、工单领域状态机、协作与通知、统计与配置接口。前端由 T02 负责，本任务不写 `src/client/`。\n\n## 交付范围\n- **数据与种子**：按 `docs/wi-t1000072/technical-contract.md` 第 2 节的表结构与迁移顺序新增 `0002_org.sql` 至 `0005_events_notifications.sql`，并实现启动时幂等的演示种子（两家公司、部门、四类角色账号、业务组与成员、问题分类、一条分配规则）。\n- **身份与可见范围**：在现有 authkit/userkit 绑定之上解析 `user_profiles` 的公司、部门与单值角色，实现提交人/处理人/管理员/平台运营的服务端可见范围计算，所有读取入口按契约第 4 节强制过滤。\n- **工单领域闭环**：工单创建与 `TK-` 编号生成、多轮回复与首次响应时间、按分类自动分配与人工分配、转派、完成（记录处理人与完成时间并同事务生成完成通知与日志）、取消、优先级调整、一次性满意度评价，均按契约第 4.1 节与第 6 节的并发/幂等约定实现。\n- **提交人上下文、日志与通知**：提交人信息与同公司历史工单、追加式工单日志（含邮件结果）、通知记录与失败重发接口。\n- **配置与统计**：业务组与成员、分配规则、问题分类、公司/部门元数据；按公司与部门的分布统计与运营仪表盘指标，口径遵循需求 RB-10 与契约第 4.4 节。\n- **错误语义**：统一平台错误形状与契约第 5 节的错误码，越权响应不携带工单字段。\n\n## 自检责任\n在 `app/ticket-system` 内执行适用的服务端类型检查、现有 Node 测试以及针对工单状态流转、公司隔离、自动分配、完成通知与统计口径的定向接口测试（可用 `test/with-http-server.mjs` 与 `test/fixtures/qa-environment.mjs` 启动隔离实例），并报告实际命令与结果。前端联调与浏览器验收由后续验证阶段负责。\n\n## 验收贡献\n- 服务端权威数据、状态机、授权边界、事务与统计口径，覆盖 AC-01 至 AC-15 的服务端侧条件。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13",
+            "AC-14",
+            "AC-15"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000072/technical-contract.md",
+              "sha256": "sha256:ef2b0327b9275f6878a6ee582ceb0cfd90d4196d037a4260764c5ba9a9ad4dc4"
+            },
+            {
+              "path": "docs/wi-t1000072/architecture-baseline.md",
+              "sha256": "sha256:dbc93e0759f72e10b6e40be2a3d28e0c9f53214e1d7d1600cd4d3b25fe462d13"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/test"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/",
+              "app/ticket-system/src/shared/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-11-02T02:48:44.785Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:d0860453-b349-4b9f-9660-423fe8280665",
+      "actorId": "expert-team-coordinator",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000072",
+          "planId": "plan:8da5875f-d736-4e6a-b1ac-e92f5c3cb016",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "工单系统浏览器端：我的工单、工作台、详情协作、统计仪表盘与配置界面",
+          "objective": "## 目标\n在应用包 `app/ticket-system` 的 `src/client/` 内交付工单系统的完整浏览器界面与交互，严格按 `docs/wi-t1000072/technical-contract.md` 第 3、4 节的接口契约对接，界面结构遵循 `docs/wi-t1000072/architecture-baseline.md` 第 1.4 节的 split-master-detail 基线与 Modern SaaS 视觉约束。本任务不写 `src/server/`，也不修改 `src/shared/`。\n\n## 交付范围\n- **应用壳与导航**：在现有登录/改密/退出基础上扩展按角色显示的左导航（我的工单、工单工作台、统计分析、配置）与顶部公司/身份上下文栏。\n- **我的工单与创建**：提交人列表与新建工单表单（主题、描述、问题分类、SLA 优先级 P0–P4），创建后读回并显示系统生成的工单 ID 与提交人信息。\n- **工单详情与协作**：多轮回复（回复人与时间）、人工分配业务组、转派、完成、取消、优先级调整、满意度评价与待评价标记、提交人信息与历史工单区域、工单日志、完成通知记录与重发入口；终态工单的写操作入口不可用并给出拒绝反馈；按服务端返回的能力标记隐藏无权操作。\n- **工单工作台**：主从布局的列表与详情，支持按状态、优先级、分类、业务组、公司、部门筛选，按主题与工单 ID 搜索，按创建时间与优先级排序。\n- **统计与分析**：按公司与部门维度的分布视图，以及工单量、平均响应时间、满意度、热点问题仪表盘与时间范围切换。\n- **配置**：业务组、业务组成员与「分类 → 业务组」自动分配规则的管理界面（管理员视角）。\n- **状态与无障碍**：加载、空、错误、无权限与成功反馈齐备，越权访问不渲染任何工单字段。\n\n## 自检责任\n在 `app/ticket-system` 内执行客户端类型检查与前端构建，并用契约字段驱动的本地样例或 mock 验证主要交互与成功/空/错误/无权限状态；不得自创契约以外的接口行为，也不得把服务端未声明的字段当作既有事实。浏览器端到端验收由后续验证阶段在合并后的应用上执行。\n\n## 验收贡献\n- 页面呈现、交互与状态反馈，覆盖 AC-01 至 AC-15 的用户界面侧条件；与 T01 共同满足同一批验收条件，端到端判定归后续验证阶段。",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10",
+            "AC-11",
+            "AC-12",
+            "AC-13",
+            "AC-14",
+            "AC-15"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000072/technical-contract.md",
+              "sha256": "sha256:ef2b0327b9275f6878a6ee582ceb0cfd90d4196d037a4260764c5ba9a9ad4dc4"
+            },
+            {
+              "path": "docs/wi-t1000072/architecture-baseline.md",
+              "sha256": "sha256:dbc93e0759f72e10b6e40be2a3d28e0c9f53214e1d7d1600cd4d3b25fe462d13"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": []
+        }
+      },
+      "createdAt": "2026-11-02T02:48:44.877Z"
+    },
+    {
+      "requestId": "cli:submit:T01:b616a200-5bf5-41e8-855d-18eccb7221ca",
+      "actorId": "expert-team-coordinator",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-11-02T02:48:57.131Z"
+    },
+    {
+      "requestId": "cli:submit:T02:4ccb6d21-4ca8-461a-9d0f-76e83a13b183",
+      "actorId": "expert-team-coordinator",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-11-02T02:48:57.205Z"
+    },
+    {
+      "requestId": "cli:complete:T01:1ef76a55-f113-4e1e-a282-34212cafac16",
+      "actorId": "expert-team-coordinator",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/",
+              "bytes": 97059,
+              "sha256": "sha256:1e49090bb11c3a95a1500f7bed0cb43eda30bdf886550f7f9d1523cb815a383e"
+            },
+            {
+              "path": "app/ticket-system/src/shared/",
+              "bytes": 1819,
+              "sha256": "sha256:d55d6a1b8952df51e2b3719fb4dae548ef01e437299abf11918c38d50befb4d4"
+            }
+          ],
+          "verification": [
+            {
+              "checkId": "typecheck:server",
+              "status": "passed",
+              "command": "npm run typecheck:server (cwd app/ticket-system)",
+              "exitCode": 0
+            },
+            {
+              "checkId": "test",
+              "status": "passed",
+              "command": "npm test (cwd app/ticket-system) — 9 tests, 8 pass, 1 skipped (pre-existing conditional skip in test/platform.test.mjs), 0 fail",
+              "exitCode": 0
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-11-02T03:05:00.580Z"
+    },
+    {
+      "requestId": "cli:complete:T02:4f45f91b-7f47-4f51-81bb-b19763b63eb6",
+      "actorId": "expert-team-coordinator",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/",
+              "bytes": 170217,
+              "sha256": "sha256:e98f58dc0c91f456c1086cb48edcabbb8f30eaf389fa7e4e0c29dfe1e2292757"
+            }
+          ],
+          "message": "已交付：按角色显示的应用壳与导航、我的工单与新建、主从工作台（状态/优先级/分类/业务组/公司/部门筛选，主题与 ID 搜索，创建时间与优先级排序）、详情协作（多轮回复、人工分配、转派、完成、取消、优先级调整、满意度评价与待评价、提交人信息与同公司历史、工单日志、通知记录与重发、终态锁定、服务端能力标记）、统计仪表盘与公司/部门分布、管理员业务组/成员/分配规则配置。验证边界：本次只做了客户端类型检查、生产构建、契约字段样例的渲染断言与 mock 交互断言；合并 T01 后的浏览器端到端验收仍由后续验证阶段执行。接口对齐风险：契约未明确 GET /api/tickets/:ticketId/submitter 的响应字段名，客户端按 {name,email,companyName,departmentName,history} 消费；/api/meta/companies 与 /api/meta/departments 按 {id,name} 消费，并兼容裸数组或 {items} 包装；若 T01 采用其他形状需对齐。配置页添加成员仅提供用户 ID 输入，因为契约未声明“公司用户列表”接口；成员移除与组的增删改按契约路径实现。预览地址启用开发期 mock（VITE_MOCK_API=true，可用 ?mockRole=submitter|handler|admin|ops 切换身份，任意邮箱密码登录），不代表验收环境或个人真实后端；原 admin/UsersPage.tsx 保留但未挂载到工单导航。",
+          "status": "completed",
+          "url": "http://localhost:5288/",
+          "verification": [
+            {
+              "checkId": "client-typecheck",
+              "command": "npm run typecheck:client",
+              "evidence": "tsc -p tsconfig.client.json，无错误输出",
+              "exitCode": 0,
+              "status": "passed",
+              "workdir": "app/ticket-system"
+            },
+            {
+              "checkId": "client-build",
+              "command": "npm run build:client",
+              "evidence": "vite build 成功，49 modules transformed，产出 dist/assets/index-*.js 与 index-*.css",
+              "exitCode": 0,
+              "status": "passed",
+              "workdir": "app/ticket-system"
+            },
+            {
+              "checkId": "client-render-check",
+              "command": "node --import tsx src/client/platform/__check__/render-check.tsx",
+              "evidence": "契约字段样例渲染断言通过：终态锁定、待评价、提交人历史、权限隐藏、错误/空/加载/无权限状态、格式函数；临时脚本已删除",
+              "exitCode": 0,
+              "status": "passed",
+              "workdir": "app/ticket-system"
+            },
+            {
+              "checkId": "client-mock-flow-check",
+              "command": "node --import tsx src/client/platform/__check__/mock-check.ts",
+              "evidence": "契约字段 mock 覆盖创建读回、多轮回复、分配/转派/完成/评价、跨公司 403、工作台筛选排序与统计口径；临时脚本已删除",
+              "exitCode": 0,
+              "status": "passed",
+              "workdir": "app/ticket-system"
+            },
+            {
+              "checkId": "mock-excluded-from-production-bundle",
+              "command": "if grep -q \"北方物流\" dist/assets/*.js; then exit 1; else echo mock-data-absent; fi",
+              "evidence": "生产构建产物不包含开发样例数据",
+              "exitCode": 0,
+              "status": "passed",
+              "workdir": "app/ticket-system"
+            },
+            {
+              "checkId": "dev-preview-http",
+              "command": "curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5288/",
+              "evidence": "HTTP 200；仅开发预览可达性，不构成浏览器验收证据",
+              "exitCode": 0,
+              "status": "passed",
+              "workdir": "app/ticket-system"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-11-02T03:05:26.971Z"
+    }
+  ]
+}

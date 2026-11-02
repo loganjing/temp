@@ -33,10 +33,12 @@ test('identity fixture is isolated and temporary-password rejection survives aut
 
         const unauthenticated = await fetch(`${url}/api/admin/users`)
         assert.equal(unauthenticated.status, 401)
-        assert.deepEqual(await unauthenticated.json(), { error: 'Not authenticated' })
+        assert.deepEqual(await unauthenticated.json(), { error: { code: 'not_authenticated', message: 'Not authenticated' } })
         const invalidToken = await fetch(`${url}/api/admin/users`, { headers: { authorization: 'Bearer invalid' } })
         assert.equal(invalidToken.status, 401)
-        assert.deepEqual(await invalidToken.json(), { error: 'Session expired, please log in again' })
+        assert.deepEqual(await invalidToken.json(), {
+          error: { code: 'not_authenticated', message: 'Session expired, please log in again' },
+        })
 
         const readyLogin = await fetch(`${url}/api/auth/login`, {
           method: 'POST',

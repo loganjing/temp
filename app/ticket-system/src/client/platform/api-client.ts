@@ -5,6 +5,12 @@ export class ApiRequestError extends Error {
   }
 }
 
+/** 列表接口既可能是裸数组，也可能是平台 `{ items }` 形状；两种都按同一集合消费。 */
+export function readList<T>(value: T[] | { items: T[] } | null | undefined): T[] {
+  if (!value) return []
+  return Array.isArray(value) ? value : value.items
+}
+
 export async function apiRequest<T>(path: string, options?: RequestInit): Promise<T> {
   const token = localStorage.getItem('platform-token')
   const headers = new Headers(options?.headers)

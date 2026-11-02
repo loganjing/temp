@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:efbb51d671301d4036f79391f1ae172e9222e555f2e6cbeb1f9d3f9783568154",
+  "createdAt": "2026-11-02T03:06:43.487Z",
+  "timing": {
+    "startedAt": "2026-11-02T02:46:54.844Z",
+    "completedAt": "2026-11-02T03:06:43.486Z",
+    "durationMs": 1188642
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000072/implementation-report.md",
+      "bytes": 8922,
+      "sha256": "sha256:14faa2e4a68d463b67653965557462b449682565006f7ddadc8060946ea633b8",
+      "role": "primary",
+      "purpose": "工单系统开发实现汇总：计划与拆分依据、两项实现任务的交付内容、真实自检证据、预览地址、AC-01~AC-15 覆盖状态与待验证风险",
+      "title": "开发实现报告（工单系统 217-tickets）"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "T01:typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "workdir": "app/ticket-system",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T01:test",
+      "status": "passed",
+      "command": "npm test",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "evidence": "9 项中 8 通过、1 项为既有条件跳过、0 失败"
+    },
+    {
+      "checkId": "T02:client-typecheck",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "workdir": "app/ticket-system",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T02:client-build",
+      "status": "passed",
+      "command": "npm run build:client",
+      "workdir": "app/ticket-system",
+      "exitCode": 0,
+      "evidence": "vite build 成功，49 个模块，产出 dist/assets/index-*.js 与 index-*.css"
+    },
+    {
+      "checkId": "preview:server-health",
+      "status": "passed",
+      "command": "curl -s -o /dev/null -w %{http_code} http://localhost:3000/",
+      "exitCode": 0,
+      "evidence": "服务端 npm start 启动成功，根路径 200，未认证 /api/auth/me 返回 401 not_authenticated"
+    },
+    {
+      "checkId": "preview:frontend-http",
+      "status": "passed",
+      "command": "curl -s -o /dev/null -w %{http_code} http://localhost:5173/",
+      "exitCode": 0,
+      "evidence": "Vite 开发服务 200；经 /api 代理登录后 GET /api/tickets 与 /api/stats/dashboard 均返回 200 与契约形状 JSON"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:b53e156656ebbc57bc985de978ed7c0484369f289e75f295549390d23e6cc07f",
+        "path": ".expert-team/work-items/wi-t1000072/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -12,7 +12,7 @@ test('platform serves a real HTTP API and keeps unknown API paths out of the SPA
 
     const missing = await fetch(`${url}/api/missing`)
     assert.equal(missing.status, 404)
-    assert.deepEqual(await missing.json(), { error: { code: 'NOT_FOUND', message: 'API route not found' } })
+    assert.deepEqual(await missing.json(), { error: { code: 'not_found', message: 'API route not found' } })
   })
 })
 
@@ -37,6 +37,6 @@ test('unexpected server errors do not expose their details', async () => {
   await withHttpServer(app, async (url) => {
     const response = await fetch(`${url}/api/fail`)
     assert.equal(response.status, 500)
-    assert.deepEqual(await response.json(), { error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } })
+    assert.deepEqual(await response.json(), { error: { code: 'internal_error', message: 'Internal server error' } })
   })
 })

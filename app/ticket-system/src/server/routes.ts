@@ -1,11 +1,48 @@
 import { randomUUID } from 'node:crypto'
-import type { Hono, MiddlewareHandler } from 'hono'
+import type { Context, Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { loadProfile, requireProfile } from './services/access'
+import {
+  addGroupMember,
+  createAssignmentRule,
+  createGroup,
+  deleteAssignmentRule,
+  deleteGroup,
+  listAssignmentRules,
+  listCategories,
+  listCompanies,
+  listDepartments,
+  listGroups,
+  removeGroupMember,
+  renameGroup,
+  updateAssignmentRule,
+} from './services/config'
+import { getDashboard, getDistribution } from './services/stats'
+import {
+  addReply,
+  assignTicket,
+  cancelTicket,
+  changePriority,
+  completeTicket,
+  createTicket,
+  getSubmitterContext,
+  getTicketDetail,
+  listEvents,
+  listReplies,
+  listTicketNotifications,
+  listTickets,
+  rateTicket,
+  resendTicketNotification,
+  transferTicket,
+} from './services/tickets'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
+const currentUser = (context: Context) => context.get('currentUser' as never) as unknown as AuthUser
 const currentUserId = (context: unknown) => ((context as { get(name: string): unknown }).get('currentUser') as AuthUser).id
+const requestBody = async (context: Context) => (await context.req.json().catch(() => ({}))) as Record<string, unknown>
+const profileFor = (context: Context, platform: Platform) => requireProfile(platform.db, currentUser(context).id)
 const requiredString = (value: unknown, name: string, maxLength = 200) => {
   if (typeof value !== 'string' || !value.trim() || value.length > maxLength) throw new TypeError(`${name} is required`)
   return value.trim()
@@ -51,14 +88,29 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
     }
     return context.json({ ok: true }, 201)
   })
-  app.post('/api/auth/login', platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
+  app.post('/api/auth/login', platform.auth.normalizeLogin, platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
   app.get('/api/auth/sso/start', (context) => platform.auth.sso.start(context as never))
   app.get('/api/auth/sso/callback', (context) => platform.auth.sso.callback(context as never))
   app.post('/api/auth/sso/exchange', (context) => platform.auth.sso.exchange(context as never))
 }
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
-  app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  app.get('/api/auth/me', async (context) => {
+    const user = currentUser(context)
+    const profile = await loadProfile(platform.db, user.id)
+    return context.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: profile?.role ?? user.role,
+      companyId: profile?.companyId ?? user.companyId,
+      companyName: profile?.companyName ?? null,
+      departmentId: profile?.departmentId ?? null,
+      departmentName: profile?.departmentName ?? null,
+      roles: profile ? [profile.role] : user.roles,
+      passwordChangeRequired: user.passwordChangeRequired,
+    })
+  })
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -71,6 +123,163 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     const userId = currentUserId(context)
     if (!await platform.auth.userStore.updatePassword(userId, platform.auth.hashPassword(password))) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true, passwordChangeRequired: false })
+  })
+
+  app.get('/api/tickets', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listTickets(platform.db, profile, context.req.query()))
+  })
+
+  app.post('/api/tickets', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await createTicket(platform.db, profile, await requestBody(context)), 201)
+  })
+
+  app.get('/api/tickets/:ticketId', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await getTicketDetail(platform.db, profile, context.req.param('ticketId')))
+  })
+
+  app.get('/api/tickets/:ticketId/submitter', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await getSubmitterContext(platform.db, profile, context.req.param('ticketId')))
+  })
+
+  app.get('/api/tickets/:ticketId/replies', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listReplies(platform.db, profile, context.req.param('ticketId')))
+  })
+
+  app.post('/api/tickets/:ticketId/replies', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await addReply(platform.db, profile, context.req.param('ticketId'), await requestBody(context)), 201)
+  })
+
+  app.post('/api/tickets/:ticketId/assign', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await assignTicket(platform.db, profile, context.req.param('ticketId'), await requestBody(context)))
+  })
+
+  app.post('/api/tickets/:ticketId/transfer', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await transferTicket(platform.db, profile, context.req.param('ticketId'), await requestBody(context)))
+  })
+
+  app.post('/api/tickets/:ticketId/complete', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await completeTicket(platform.db, platform.email, profile, context.req.param('ticketId')))
+  })
+
+  app.post('/api/tickets/:ticketId/cancel', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await cancelTicket(platform.db, profile, context.req.param('ticketId')))
+  })
+
+  app.patch('/api/tickets/:ticketId/priority', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await changePriority(platform.db, profile, context.req.param('ticketId'), await requestBody(context)))
+  })
+
+  app.post('/api/tickets/:ticketId/rating', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await rateTicket(platform.db, profile, context.req.param('ticketId'), await requestBody(context)))
+  })
+
+  app.get('/api/tickets/:ticketId/events', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listEvents(platform.db, profile, context.req.param('ticketId')))
+  })
+
+  app.get('/api/tickets/:ticketId/notifications', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listTicketNotifications(platform.db, profile, context.req.param('ticketId')))
+  })
+
+  app.post('/api/tickets/:ticketId/notifications/:notificationId/resend', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await resendTicketNotification(
+      platform.db,
+      platform.email,
+      profile,
+      context.req.param('ticketId'),
+      context.req.param('notificationId'),
+    ))
+  })
+
+  app.get('/api/groups', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listGroups(platform.db, profile))
+  })
+
+  app.post('/api/groups', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await createGroup(platform.db, profile, await requestBody(context)), 201)
+  })
+
+  app.patch('/api/groups/:groupId', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await renameGroup(platform.db, profile, context.req.param('groupId'), await requestBody(context)))
+  })
+
+  app.delete('/api/groups/:groupId', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await deleteGroup(platform.db, profile, context.req.param('groupId')))
+  })
+
+  app.post('/api/groups/:groupId/members', async (context) => {
+    const profile = await profileFor(context, platform)
+    const result = await addGroupMember(platform.db, profile, context.req.param('groupId'), await requestBody(context))
+    return context.json({ member: result.member, groupId: result.groupId }, result.created ? 201 : 200)
+  })
+
+  app.delete('/api/groups/:groupId/members/:userId', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await removeGroupMember(platform.db, profile, context.req.param('groupId'), context.req.param('userId')))
+  })
+
+  app.get('/api/categories', async (context) => {
+    await profileFor(context, platform)
+    return context.json(await listCategories(platform.db))
+  })
+
+  app.get('/api/assignment-rules', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listAssignmentRules(platform.db, profile))
+  })
+
+  app.post('/api/assignment-rules', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await createAssignmentRule(platform.db, profile, await requestBody(context)), 201)
+  })
+
+  app.put('/api/assignment-rules/:ruleId', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await updateAssignmentRule(platform.db, profile, context.req.param('ruleId'), await requestBody(context)))
+  })
+
+  app.delete('/api/assignment-rules/:ruleId', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await deleteAssignmentRule(platform.db, profile, context.req.param('ruleId')))
+  })
+
+  app.get('/api/stats/distribution', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await getDistribution(platform.db, profile, context.req.query()))
+  })
+
+  app.get('/api/stats/dashboard', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await getDashboard(platform.db, profile, context.req.query()))
+  })
+
+  app.get('/api/meta/companies', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listCompanies(platform.db, profile))
+  })
+
+  app.get('/api/meta/departments', async (context) => {
+    const profile = await profileFor(context, platform)
+    return context.json(await listDepartments(platform.db, profile, context.req.query('companyId')))
   })
 
   app.get('/api/admin/users', async (context) => {
