@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:08fd72d798bba78600c872271e022634789af54aacc8d76cd6aabd1c89868d18",
+  "createdAt": "2026-11-02T02:29:08.391Z",
+  "timing": {
+    "startedAt": "2026-11-02T02:28:05.268Z",
+    "completedAt": "2026-11-02T02:29:08.390Z",
+    "durationMs": 63122
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000072/requirements.md",
+      "bytes": 21201,
+      "sha256": "sha256:a0284e88df5fa92ef8e4d46a56f4d636fcfa179dc3858d25bac27637e1602f08",
+      "role": "requirements",
+      "purpose": "工单系统需求基线：目标与范围、角色与公司隔离可见范围、核心流程、工单信息模型、R-1~R-13 模块需求、推荐基线与未规定事项、AC-01~AC-15 验收场景",
+      "title": "工单系统需求（217-tickets）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "ac-field-completeness",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-numbering-unique",
+      "status": "passed"
+    },
+    {
+      "checkId": "user-goal-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "baseline-vs-recommended-marking",
+      "status": "passed"
+    }
+  ]
+}
