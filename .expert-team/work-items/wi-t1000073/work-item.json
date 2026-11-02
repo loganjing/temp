@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "218\n\n请设计一个会话流程轨迹可视化功能，目标是让用户无需展开细节，仅通过整体概览就能一眼看清一次会话的完整执行流程。\n\n需要展示的内容：\n1. 用户输入内容\n2. 大模型的返回内容\n3. 系统调用了哪些工具\n4. 第 2 至第 6 步等各步骤分别做了什么\n展示要求：每个步骤保持粗粒度，不展开过多细节，重点呈现整体流程轨迹的清晰脉络与先后顺序，让用户能直观看出步骤之间的衔接关系。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"22576695009607680\",\"code\":\"T1000073\",\"title\":\"218\",\"description\":\"请设计一个会话流程轨迹可视化功能，目标是让用户无需展开细节，仅通过整体概览就能一眼看清一次会话的完整执行流程。\\n\\n需要展示的内容：\\n1. 用户输入内容\\n2. 大模型的返回内容\\n3. 系统调用了哪些工具\\n4. 第 2 至第 6 步等各步骤分别做了什么\\n展示要求：每个步骤保持粗粒度，不展开过多细节，重点呈现整体流程轨迹的清晰脉络与先后顺序，让用户能直观看出步骤之间的衔接关系。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
   "request": "218\n\n请设计一个会话流程轨迹可视化功能，目标是让用户无需展开细节，仅通过整体概览就能一眼看清一次会话的完整执行流程。\n\n需要展示的内容：\n1. 用户输入内容\n2. 大模型的返回内容\n3. 系统调用了哪些工具\n4. 第 2 至第 6 步等各步骤分别做了什么\n展示要求：每个步骤保持粗粒度，不展开过多细节，重点呈现整体流程轨迹的清晰脉络与先后顺序，让用户能直观看出步骤之间的衔接关系。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"22576695009607680\",\"code\":\"T1000073\",\"title\":\"218\",\"description\":\"请设计一个会话流程轨迹可视化功能，目标是让用户无需展开细节，仅通过整体概览就能一眼看清一次会话的完整执行流程。\\n\\n需要展示的内容：\\n1. 用户输入内容\\n2. 大模型的返回内容\\n3. 系统调用了哪些工具\\n4. 第 2 至第 6 步等各步骤分别做了什么\\n展示要求：每个步骤保持粗粒度，不展开过多细节，重点呈现整体流程轨迹的清晰脉络与先后顺序，让用户能直观看出步骤之间的衔接关系。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-02T07:12:02.769Z"
+  "revision": 1,
+  "createdAt": "2026-11-02T07:12:02.769Z",
+  "completedAt": "2026-11-02T07:33:00.733Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:5a766f5038622225a9af7aac8f2659aff5ad1c4e7de8559f9a28f4dcdcacb5d2",
+    "completedAt": "2026-11-02T07:33:00.733Z"
+  },
+  "updatedAt": "2026-11-02T07:33:00.733Z"
 }
