@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:e1e22837be1bfac188c06268a9f34d1a6448bf8f360319533c6aae408b011e7c",
+  "createdAt": "2026-11-02T09:00:19.008Z",
+  "timing": {
+    "startedAt": "2026-11-02T08:58:16.836Z",
+    "completedAt": "2026-11-02T09:00:19.007Z",
+    "durationMs": 122171
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000074/requirements.md",
+      "bytes": 10935,
+      "sha256": "sha256:3790b23ed9ab1359c31fc7a16047a2f85a6611712c0db926be2c73f0bdc558fb",
+      "role": "requirements",
+      "purpose": "工单系统需求文档，覆盖工单管理、分配、协作、处理、评价、统计分析、工作台和操作日志八个功能模块及10条验收场景",
+      "title": "工单系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
