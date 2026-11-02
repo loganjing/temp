@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:7e9d3c16f8f2fec3c525e38f21a557b26f0db83f211f16b26450d8deacba120d",
+  "createdAt": "2026-11-02T07:16:25.613Z",
+  "timing": {
+    "startedAt": "2026-11-02T07:15:47.807Z",
+    "completedAt": "2026-11-02T07:16:25.612Z",
+    "durationMs": 37805
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000073/architecture-baseline.md",
+      "bytes": 5413,
+      "sha256": "sha256:00520429908f6da5c2460f5e990ca5ee913b8ea97bad47ecf2d84ac7ccd8245d",
+      "role": "primary",
+      "purpose": "会话流程轨迹可视化的架构基线：简单前端紧凑路线、纵向时间线页面与粗粒度步骤条目、只读数据边界与步骤模型校验、运行方式及范围边界",
+      "title": "会话流程轨迹可视化 — 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:a3cfc527b0e352acb70a5ee85754e17a1df62bdca3d7bb53d486fce59b724d24",
+        "path": ".expert-team/work-items/wi-t1000073/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

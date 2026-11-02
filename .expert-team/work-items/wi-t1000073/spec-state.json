@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-02T07:12:50.798Z"
+  "updatedAt": "2026-11-02T07:16:25.613Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000073/requirements.md",
+      "sha256": "sha256:3c35460f7476ee9a07a8471bb17bfd0f474d97d8155575786ccbaae0d6f672bc"
+    },
+    "reason": "批准需求只要求一个只读的会话轨迹概览视图：单条轨迹按序呈现用户输入、模型回复与工具调用等粗粒度步骤，验收全部落在用户界面渲染与浏览交互（AC-01~AC-04）。需求第 4 节明确说明真实会话数据源、接入方式与数据可见范围“未规定、不纳入本次验收”，并给出示例会话数据基线；第 5 节明确排除单步详情下钻、原始报文与日志，也未提出导出、分享、多会话对比。因此不存在服务端权威数据、认证权限、后台任务、外部服务或跨用户共享等能力要求，采用浏览器本地示例数据即可完整承载验收。",
+    "evidence": {
+      "supporting": [
+        "AC-01/AC-02/AC-03/AC-04 的入口类型均为用户界面，证据类型为 runtime-render、interaction、visual-style，仅涉及前端渲染与浏览",
+        "需求第 4 节：示例会话包含 1 条用户输入、1 条模型最终回复与不少于 5 个中间步骤，含至少 1 次工具调用，足以在本地构造数据",
+        "需求 R2/R3/R6：全部步骤在同一视图中以连续编号的粗粒度条目呈现，无需展开或下钻，属于纯展示逻辑",
+        "需求未提出角色划分或权限差异（第 2 节），不推断多用户与权限模型"
+      ],
+      "excluding": [
+        "需求第 4 节明确：真实会话数据的来源、接入方式与数据可见范围未规定，不纳入本次验收",
+        "需求第 5 节明确：单步详情下钻、原始报文与日志展示不在范围；导出、分享、多会话对比亦不纳入",
+        "需求未要求跨设备、跨浏览器或跨用户共享与同步，也未要求认证、后台任务或外部服务集成"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-02T07:15:57.882Z",
+    "sha256": "sha256:a3cfc527b0e352acb70a5ee85754e17a1df62bdca3d7bb53d486fce59b724d24"
+  }
 }
