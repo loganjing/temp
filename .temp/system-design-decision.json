@@ -1,0 +1,9 @@
+{
+  "mode": "design",
+  "decision": "ready",
+  "artifacts": ["architecture-baseline.md", "technical-contract.md"],
+  "internalArtifacts": ["workspace-bootstrap.json"],
+  "openQuestions": [],
+  "blockers": [],
+  "residualRisks": []
+}
