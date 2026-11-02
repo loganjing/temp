@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:987a299a7e44802d85417f5bb6471c0fedf417866ff5519944dfb0f0c9d947f1",
+  "createdAt": "2026-11-02T10:16:58.615Z",
+  "timing": {
+    "startedAt": "2026-11-02T09:58:20.776Z",
+    "completedAt": "2026-11-02T10:16:58.615Z",
+    "durationMs": 1117839
+  },
+  "artifacts": [
+    {
+      "path": "app/ticket-system/src/server/",
+      "bytes": 77728,
+      "sha256": "sha256:2a9a5f1629f3d2c193bda6a7f3a602b3a63012dd3db3b8ec8e6463a2df352e3c",
+      "role": "backend",
+      "purpose": "工单系统后端：API 路由、业务服务、中间件、数据库迁移"
+    },
+    {
+      "path": "app/ticket-system/src/shared/",
+      "bytes": 3139,
+      "sha256": "sha256:3a6e97caf81582a686aab5ed4746fcd4e7ca3538751c173a4c7706fe4d42248e",
+      "role": "shared-types",
+      "purpose": "平台中立类型定义与枚举"
+    },
+    {
+      "path": "app/ticket-system/src/client/",
+      "bytes": 103300,
+      "sha256": "sha256:aab8ebfc60a4df76b2be81430fda09c79ea1ae4f0414a88181eda81d247a1fea",
+      "role": "frontend",
+      "purpose": "工单系统前端：页面组件、工作台、仪表盘、导航"
+    },
+    {
+      "path": "docs/wi-t1000074/implementation-report.md",
+      "bytes": 7743,
+      "sha256": "sha256:706ef3fb047e2d099fae9555c1a8ce256a188720c601dd807e494f087ee01cea",
+      "role": "report",
+      "purpose": "开发实现报告",
+      "title": "开发实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "unit-tests",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "dev-server-boot",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:7c13ae7200f5ce0e53f1955116d6e32d3fe9b9eb26537da73b2f0ba94d1939ed",
+        "path": ".expert-team/work-items/wi-t1000074/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

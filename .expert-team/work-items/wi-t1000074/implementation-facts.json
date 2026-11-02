@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "revision": 6,
+  "attempts": [
+    {
+      "attempt": 1,
+      "planId": "plan:e7cc1a61-bda8-4e4e-8ab9-3173488cba26",
+      "taskId": "T01",
+      "status": "terminal",
+      "requestId": "cli:prepare:T01:8ba5ed81-25eb-4e0e-a85e-044c48346e28",
+      "createdAt": "2026-11-02T10:02:08.626Z",
+      "executionId": "ses_e644a4003ffe8mD8vvlteRCErj",
+      "outcome": "completed"
+    },
+    {
+      "attempt": 1,
+      "planId": "plan:e7cc1a61-bda8-4e4e-8ab9-3173488cba26",
+      "taskId": "T02",
+      "status": "terminal",
+      "requestId": "cli:prepare:T02:3d522aba-85d7-4507-a147-45332155725f",
+      "createdAt": "2026-11-02T10:02:08.728Z",
+      "executionId": "ses_e644a27cdffeHAd0BOdDX9or8C",
+      "outcome": "completed"
+    }
+  ],
+  "receipts": [
+    {
+      "planId": "plan:e7cc1a61-bda8-4e4e-8ab9-3173488cba26",
+      "taskId": "T01",
+      "attempt": 1,
+      "executionId": "ses_e644a4003ffe8mD8vvlteRCErj",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/server/",
+            "bytes": 77728,
+            "sha256": "sha256:2a9a5f1629f3d2c193bda6a7f3a602b3a63012dd3db3b8ec8e6463a2df352e3c"
+          },
+          {
+            "path": "app/ticket-system/src/shared/",
+            "bytes": 3139,
+            "sha256": "sha256:3a6e97caf81582a686aab5ed4746fcd4e7ca3538751c173a4c7706fe4d42248e"
+          }
+        ],
+        "verification": [
+          {
+            "checkId": "typecheck:server",
+            "status": "passed",
+            "command": "npx tsc -p tsconfig.server.json --noEmit",
+            "exitCode": 0
+          },
+          {
+            "checkId": "typecheck:client",
+            "status": "passed",
+            "command": "npx tsc -p tsconfig.client.json --noEmit",
+            "exitCode": 0
+          },
+          {
+            "checkId": "unit-tests",
+            "status": "passed",
+            "command": "node --import tsx --test test/*.test.mjs",
+            "exitCode": 0
+          }
+        ]
+      },
+      "createdAt": "2026-11-02T10:15:58.027Z"
+    },
+    {
+      "planId": "plan:e7cc1a61-bda8-4e4e-8ab9-3173488cba26",
+      "taskId": "T02",
+      "attempt": 1,
+      "executionId": "ses_e644a27cdffeHAd0BOdDX9or8C",
+      "outcome": "completed",
+      "result": {
+        "status": "completed",
+        "artifacts": [
+          {
+            "path": "app/ticket-system/src/client/",
+            "bytes": 103300,
+            "sha256": "sha256:aab8ebfc60a4df76b2be81430fda09c79ea1ae4f0414a88181eda81d247a1fea"
+          }
+        ],
+        "verification": [
+          {
+            "checkId": "typecheck:client",
+            "status": "passed",
+            "command": "npm run typecheck:client",
+            "exitCode": 0,
+            "workdir": "app/ticket-system",
+            "evidence": "tsc -p tsconfig.client.json 通过，无类型错误"
+          },
+          {
+            "checkId": "build:client",
+            "status": "passed",
+            "command": "npm run build:client",
+            "exitCode": 0,
+            "workdir": "app/ticket-system",
+            "evidence": "vite build 成功，49 模块转换，产物 dist/index.html + index-*.css(17.94kB) + index-*.js(196.11kB)"
+          },
+          {
+            "checkId": "dev-server-boot",
+            "status": "passed",
+            "command": "npx vite --port 5174",
+            "exitCode": 0,
+            "workdir": "app/ticket-system",
+            "evidence": "Vite ready in 117ms，HTTP 200 返回工单系统 HTML；main.tsx/App.tsx/index.css 模块均 200 编译通过"
+          }
+        ]
+      },
+      "createdAt": "2026-11-02T10:15:58.119Z"
+    }
+  ],
+  "repairs": [],
+  "blockers": [],
+  "operations": [
+    {
+      "requestId": "cli:prepare:T01:8ba5ed81-25eb-4e0e-a85e-044c48346e28",
+      "actorId": "expert-team-coordinator",
+      "operation": "prepare",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000074",
+          "planId": "plan:e7cc1a61-bda8-4e4e-8ab9-3173488cba26",
+          "taskId": "T01",
+          "attempt": 1,
+          "summary": "工单系统后端：数据库迁移、API 路由、业务服务、公司隔离中间件、审计与邮件集成",
+          "objective": "## 目标\n\n实现工单系统完整后端，覆盖技术契约定义的全部服务端 API 和数据模型。\n\n## 范围\n\n### 数据库迁移\n- 新增迁移文件 `0004_ticket_system.sql`，创建以下表：companies、departments、ticket_categories、tickets、ticket_replies、business_groups、business_group_members、auto_assign_rules、ticket_transfers、ticket_evaluations\n- 在 users 表上扩展 company_id、department_id、role 字段（若 userkit 迁移未包含）\n- 所有业务表包含 company_id 字段以实现公司隔离\n\n### 共享类型与枚举\n- 在 `src/shared/` 创建平台中立的 TypeScript 类型定义：TicketStatus、SLAPriority、UserRole、TransferTargetType 枚举；Ticket、TicketDetail、TicketReply、BusinessGroup、BusinessGroupMember、AutoAssignRule、TicketCategory、TicketEvaluation、SubmitterInfo、OperationLog、TicketTransfer 接口\n- 所有类型严格遵循 technical-contract.md 定义\n\n### 公司隔离中间件\n- 实现请求级公司隔离中间件，从当前用户注入 company_id 过滤\n- 路径参数中的 :companyId 必须与当前用户公司一致，否则返回 403\n\n### 工单 API 路由\n- `POST /api/tickets` — 创建工单，触发自动分配规则匹配\n- `GET /api/tickets` — 分页查询，支持 status/slaPriority/categoryId/keyword 筛选和 sortBy/sortOrder 排序\n- `GET /api/tickets/:id` — 工单详情含回复列表\n- `PUT /api/tickets/:id` — 更新工单基本信息\n- `POST /api/tickets/:id/replies` — 添加回复\n- `GET /api/tickets/:id/replies` — 回复列表按时间升序\n- `POST /api/tickets/:id/assign` — 手动分配\n- `POST /api/tickets/:id/transfer` — 转派，记录 ticket_transfer\n- `POST /api/tickets/:id/complete` — 完成工单，记录处理人/时间，异步发送邮件\n- `POST /api/tickets/:id/cancel` — 取消工单\n- `GET /api/tickets/:id/submitter-info` — 提交人完整信息含历史工单\n- `GET /api/tickets/:id/logs` — 工单操作日志\n- `GET /api/tickets/:id/evaluation` — 获取评价\n- `POST /api/tickets/:id/evaluation` — 提交满意度评价（1-5 分）\n\n### 业务组与分配 API\n- `GET/POST /api/companies/:companyId/groups` — 业务组列表与创建\n- `GET/POST /api/companies/:companyId/groups/:groupId/members` — 成员管理\n- `DELETE /api/companies/:companyId/groups/:groupId/members/:userId` — 移除成员\n- `GET/POST /api/companies/:companyId/auto-assign-rules` — 自动分配规则（幂等：同 categoryId 仅一条）\n- `GET/POST /api/companies/:companyId/categories` — 问题分类管理\n\n### 统计分析与工作台 API\n- `GET /api/statistics/distribution` — 按公司/部门维度统计工单分布\n- `GET /api/statistics/dashboard` — 仪表盘：工单量、平均响应时间、满意度、热点问题\n- `GET /api/workbench/tickets` — 待处理工单列表，支持筛选/搜索/排序\n\n### 审计日志集成\n- 在工单创建、分配、转派、回复、完成、取消各操作点写入 audit_event\n- 通过 auditkit 的 record 接口持久化\n\n### 邮件通知集成\n- 工单完成时通过 emailkit 异步发送邮件到提交人邮箱\n- SMTP 未配置时降级为日志记录，不阻塞工单完成\n\n### 权限控制\n- 基于 permissionkit 实现 RBAC：submitter/handler/admin 角色权限校验\n- 各 API 端点按 technical-contract.md 定义的授权角色校验\n\n### 用户扩展\n- 扩展用户模型以承载公司、部门、角色信息\n- `GET /api/users` — 按公司筛选用户列表\n- `POST /api/users` — 管理员创建用户（含公司、部门、角色）\n\n### package.json\n- 添加 `migrate` 脚本执行 dbkit 版本化迁移\n\n## 验证\n- `npm run typecheck:server` 通过\n- `npm test` 通过（含平台基线测试和新增工单业务测试）\n- 服务可启动并响应 API 请求\n\n## 输入\n- 遵循 technical-contract.md 的全部 API 契约、类型定义和枚举值\n- 遵循 architecture-baseline.md 的数据模型、公司隔离策略和运行约定",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000074/requirements.md",
+              "sha256": "sha256:3790b23ed9ab1359c31fc7a16047a2f85a6611712c0db926be2c73f0bdc558fb"
+            },
+            {
+              "path": "docs/wi-t1000074/architecture-baseline.md",
+              "sha256": "sha256:38eb9d84a2ba4ca4d57dd2eecb7b43e1717e65fa9a31af54d8cb3523a2f51a5b"
+            },
+            {
+              "path": "docs/wi-t1000074/technical-contract.md",
+              "sha256": "sha256:76001cfb17a0fe06dc124781db2060de95682bb3082764938247bd2bf0b7190d"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/",
+            "app/ticket-system/package.json",
+            "app/ticket-system/test/"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/server/",
+            "app/ticket-system/src/shared/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/server/",
+              "app/ticket-system/src/shared/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": [
+            "TASK_FAILED"
+          ]
+        }
+      },
+      "createdAt": "2026-11-02T10:02:08.626Z"
+    },
+    {
+      "requestId": "cli:prepare:T02:3d522aba-85d7-4507-a147-45332155725f",
+      "actorId": "expert-team-coordinator",
+      "operation": "prepare",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "envelope": {
+          "schemaVersion": 1,
+          "workItemId": "wi-t1000074",
+          "planId": "plan:e7cc1a61-bda8-4e4e-8ab9-3173488cba26",
+          "taskId": "T02",
+          "attempt": 1,
+          "summary": "工单系统前端：页面组件、工作台、仪表盘、业务组管理、导航与 API 调用层",
+          "objective": "## 目标\n\n实现工单系统完整前端界面，覆盖需求定义的全部用户交互功能。\n\n## 范围\n\n### 应用壳与导航\n- 左侧固定导航栏：工单工作台、工单管理、统计分析、业务组管理、分类管理\n- 顶部上下文栏：当前用户信息、公司显示\n- 替换现有 App.tsx 的用户管理主界面为工单系统主界面\n- 保留登录/引导流程\n\n### API 调用层\n- 在 `src/client/platform/api-client.ts` 基础上扩展工单系统 API 调用函数\n- 覆盖 technical-contract.md 定义的全部前端→后端接口\n- 使用契约定义的 TypeScript 类型（前端可基于契约自定义类型）\n\n### 工单工作台页面\n- 展示待处理工单列表，默认按 SLA 优先级降序\n- 支持按公司维度筛选（管理员）\n- 支持关键词搜索（title/description）\n- 支持字段排序（slaPriority/createdAt/updatedAt）\n- 支持按状态、优先级、分类筛选\n\n### 工单管理页面（split-master-detail 布局）\n- 左侧：工单列表含筛选、搜索、排序\n- 右侧：选中工单详情面板\n- 工单详情展示：工单字段、回复列表（按时间排列）、操作按钮\n- 工单创建表单：主题、描述、分类、SLA 优先级\n- 工单操作：分配、转派、完成、取消\n- 回复功能：在详情中添加回复\n\n### 提交人信息查看\n- 在工单详情中展示提交人完整信息：姓名、公司、部门\n- 展示提交人历史工单列表\n\n### 用户评价\n- 工单完成后展示评价入口\n- 满意度评价表单（1-5 分评分 + 可选评论）\n- 评价结果展示\n\n### 业务组管理页面\n- 业务组列表与创建\n- 业务组成员管理（添加/移除）\n- 自动分配规则配置（分类→业务组）\n\n### 分类管理页面\n- 问题分类列表与创建\n\n### 统计分析仪表盘\n- 工单分布统计：按公司/部门维度切换\n- 运营指标卡片：工单量、平均响应时间、满意度\n- 热点问题列表\n- 使用 ECharts 或简洁 CSS 图表展示\n\n### 全局状态\n- 列表和详情加载时显示骨架屏\n- 无工单时显示空态提示和创建入口\n- API 错误时显示错误提示，支持重试\n- 无权限时显示无权限提示\n\n### 视觉风格\n- Modern SaaS 风格：柔和中性色、细边界、少阴影、中等圆角\n- 使用 Tailwind CSS 和 Lucide 图标\n- 状态色用于工单状态和优先级标识\n- 桌面 Web，最小宽度 1280px\n\n## 验证\n- `npm run typecheck:client` 通过\n- `npm run build:client` 通过\n- 前端开发服务器可启动并渲染页面\n\n## 输入\n- 遵循 technical-contract.md 的全部 API 契约和类型定义\n- 遵循 architecture-baseline.md 的 UI 全局基线和展示模板\n- 使用契约定义的类型，不臆造 API 行为",
+          "requirementIds": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06",
+            "AC-07",
+            "AC-08",
+            "AC-09",
+            "AC-10"
+          ],
+          "capabilityId": "engineering.implementation",
+          "expertId": "general-app-development-expert",
+          "executionMode": "spawn_task",
+          "taskKind": "implement",
+          "agentName": "general",
+          "expertDisplayName": {
+            "en": "General Application Development Agent",
+            "zh": "通用应用开发智能体"
+          },
+          "inputArtifacts": [
+            {
+              "path": "docs/wi-t1000074/requirements.md",
+              "sha256": "sha256:3790b23ed9ab1359c31fc7a16047a2f85a6611712c0db926be2c73f0bdc558fb"
+            },
+            {
+              "path": "docs/wi-t1000074/architecture-baseline.md",
+              "sha256": "sha256:38eb9d84a2ba4ca4d57dd2eecb7b43e1717e65fa9a31af54d8cb3523a2f51a5b"
+            },
+            {
+              "path": "docs/wi-t1000074/technical-contract.md",
+              "sha256": "sha256:76001cfb17a0fe06dc124781db2060de95682bb3082764938247bd2bf0b7190d"
+            }
+          ],
+          "writableScopes": [
+            "app/ticket-system/src/client/",
+            "app/ticket-system/index.html",
+            "app/ticket-system/tailwind.config.js"
+          ],
+          "resourceKeys": [],
+          "artifactPaths": [
+            "app/ticket-system/src/client/"
+          ],
+          "expectedOutput": {
+            "artifactPaths": [
+              "app/ticket-system/src/client/"
+            ]
+          },
+          "failurePolicy": "block",
+          "blockerCodes": [
+            "TASK_FAILED"
+          ]
+        }
+      },
+      "createdAt": "2026-11-02T10:02:08.728Z"
+    },
+    {
+      "requestId": "cli:submit:T01:855da618-84bf-4ece-b4fb-6c778769087c",
+      "actorId": "expert-team-coordinator",
+      "operation": "submit",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-11-02T10:02:33.714Z"
+    },
+    {
+      "requestId": "cli:submit:T02:9533736b-475d-4d01-ab80-38e321dcb3dc",
+      "actorId": "expert-team-coordinator",
+      "operation": "submit",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running"
+      },
+      "createdAt": "2026-11-02T10:02:33.795Z"
+    },
+    {
+      "requestId": "cli:complete:T01:347dc9d8-f92b-4b8a-ab20-d6efb708bfa5",
+      "actorId": "expert-team-coordinator",
+      "operation": "complete",
+      "taskId": "T01",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/server/",
+              "bytes": 77728,
+              "sha256": "sha256:2a9a5f1629f3d2c193bda6a7f3a602b3a63012dd3db3b8ec8e6463a2df352e3c"
+            },
+            {
+              "path": "app/ticket-system/src/shared/",
+              "bytes": 3139,
+              "sha256": "sha256:3a6e97caf81582a686aab5ed4746fcd4e7ca3538751c173a4c7706fe4d42248e"
+            }
+          ],
+          "verification": [
+            {
+              "checkId": "typecheck:server",
+              "status": "passed",
+              "command": "npx tsc -p tsconfig.server.json --noEmit",
+              "exitCode": 0
+            },
+            {
+              "checkId": "typecheck:client",
+              "status": "passed",
+              "command": "npx tsc -p tsconfig.client.json --noEmit",
+              "exitCode": 0
+            },
+            {
+              "checkId": "unit-tests",
+              "status": "passed",
+              "command": "node --import tsx --test test/*.test.mjs",
+              "exitCode": 0
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-11-02T10:15:58.027Z"
+    },
+    {
+      "requestId": "cli:complete:T02:ce038333-10dc-45cd-91ca-1ea5f2393536",
+      "actorId": "expert-team-coordinator",
+      "operation": "complete",
+      "taskId": "T02",
+      "result": {
+        "applied": true,
+        "state": "running",
+        "result": {
+          "status": "completed",
+          "artifacts": [
+            {
+              "path": "app/ticket-system/src/client/",
+              "bytes": 103300,
+              "sha256": "sha256:aab8ebfc60a4df76b2be81430fda09c79ea1ae4f0414a88181eda81d247a1fea"
+            }
+          ],
+          "verification": [
+            {
+              "checkId": "typecheck:client",
+              "status": "passed",
+              "command": "npm run typecheck:client",
+              "exitCode": 0,
+              "workdir": "app/ticket-system",
+              "evidence": "tsc -p tsconfig.client.json 通过，无类型错误"
+            },
+            {
+              "checkId": "build:client",
+              "status": "passed",
+              "command": "npm run build:client",
+              "exitCode": 0,
+              "workdir": "app/ticket-system",
+              "evidence": "vite build 成功，49 模块转换，产物 dist/index.html + index-*.css(17.94kB) + index-*.js(196.11kB)"
+            },
+            {
+              "checkId": "dev-server-boot",
+              "status": "passed",
+              "command": "npx vite --port 5174",
+              "exitCode": 0,
+              "workdir": "app/ticket-system",
+              "evidence": "Vite ready in 117ms，HTTP 200 返回工单系统 HTML；main.tsx/App.tsx/index.css 模块均 200 编译通过"
+            }
+          ]
+        }
+      },
+      "createdAt": "2026-11-02T10:15:58.119Z"
+    }
+  ]
+}
