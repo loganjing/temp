@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:b345122eaf34bcbe02f43b7ca9abff1989f1cb2fb7fab5f8eac0ae9ce9bb9d1f",
+  "createdAt": "2026-11-02T07:12:50.798Z",
+  "timing": {
+    "startedAt": "2026-11-02T07:12:02.868Z",
+    "completedAt": "2026-11-02T07:12:50.798Z",
+    "durationMs": 47930
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000073/requirements.md",
+      "bytes": 6101,
+      "sha256": "sha256:3c35460f7476ee9a07a8471bb17bfd0f474d97d8155575786ccbaae0d6f672bc",
+      "role": "requirements",
+      "purpose": "会话流程轨迹可视化功能的产品需求基线与验收场景",
+      "title": "会话流程轨迹可视化 — 需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "scope-boundary",
+      "status": "passed"
+    }
+  ]
+}
