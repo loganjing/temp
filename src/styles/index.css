@@ -1,0 +1,244 @@
+/* === 基础重置 === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #1a1a2e;
+  background: #f5f5fa;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === 应用容器 === */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  text-align: center;
+  padding: 32px 24px 20px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8f0;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  letter-spacing: 0.5px;
+}
+
+.app-subtitle {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #888;
+}
+
+/* === 轨迹容器 === */
+.app-main {
+  flex: 1;
+  padding: 32px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.timeline-trajectory {
+  width: 100%;
+  max-width: 720px;
+  position: relative;
+}
+
+/* 纵向时间线 */
+.timeline-line {
+  position: absolute;
+  left: 27px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: #d4d4e8;
+}
+
+.timeline-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* === 步骤条目 === */
+.step-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  position: relative;
+}
+
+.step-marker {
+  flex-shrink: 0;
+  width: 56px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 类型图标 */
+.step-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 1;
+  position: relative;
+}
+
+.step-icon.step-user {
+  background: #4f6bed;
+}
+
+.step-icon.step-model {
+  background: #6b4fef;
+}
+
+.step-icon.step-tool {
+  background: #e89518;
+}
+
+/* 步骤内容区 */
+.step-body {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #e8e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+/* 起点/终点视觉区分 */
+.step-start .step-body {
+  border-left: 4px solid #4f6bed;
+}
+
+.step-end .step-body {
+  border-left: 4px solid #6b4fef;
+}
+
+/* 步骤头部 */
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.step-seq {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+
+.step-type-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+.step-type-badge.step-user {
+  background: #e8ecfd;
+  color: #4f6bed;
+}
+
+.step-type-badge.step-model {
+  background: #ede8fd;
+  color: #6b4fef;
+}
+
+.step-type-badge.step-tool {
+  background: #fdf0d8;
+  color: #c97818;
+}
+
+.step-position-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+
+.tag-start {
+  background: #4f6bed;
+  color: #fff;
+}
+
+.tag-end {
+  background: #6b4fef;
+  color: #fff;
+}
+
+/* 动作摘要 */
+.step-summary {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a2e;
+  line-height: 1.5;
+}
+
+/* 步骤附加信息 */
+.step-detail {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.step-content {
+  color: #444;
+  /* 概览收敛：限定两行，超出省略 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.detail-label {
+  color: #888;
+}
+
+.tool-name {
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+  background: #f5f5fa;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #c97818;
+}
+
+/* === 响应式 === */
+@media (max-width: 480px) {
+  .app-header {
+    padding: 20px 16px 14px;
+  }
+
+  .app-title {
+    font-size: 20px;
+  }
+
+  .app-main {
+    padding: 20px 12px;
+  }
+
+  .step-body {
+    padding: 12px 14px;
+  }
+}

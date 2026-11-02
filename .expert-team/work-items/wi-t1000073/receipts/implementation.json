@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:618b4a8ddb8fc6dbf01496cbe61197a25c99a181fda8aa5f52a82ba838fbb1a0",
+  "createdAt": "2026-11-02T07:21:10.988Z",
+  "timing": {
+    "startedAt": "2026-11-02T07:17:51.196Z",
+    "completedAt": "2026-11-02T07:21:10.988Z",
+    "durationMs": 199792
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000073/implementation-report.md",
+      "bytes": 5207,
+      "sha256": "sha256:f4015a33e6bf07ae2f1974f5f8481247b8f016598d9b2e601139e584f3ed1988",
+      "role": "implementation-report",
+      "purpose": "实现报告，覆盖变更概述、调用链、AC 映射、示例数据、验证结果与遗留边界",
+      "title": "会话流程轨迹可视化 — 实现报告"
+    }
+  ],
+  "url": "http://127.0.0.1:5173/",
+  "verification": [
+    {
+      "checkId": "vite-build",
+      "status": "passed"
+    },
+    {
+      "checkId": "unit-test-sessionRepository",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:a3cfc527b0e352acb70a5ee85754e17a1df62bdca3d7bb53d486fce59b724d24",
+        "path": ".expert-team/work-items/wi-t1000073/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
