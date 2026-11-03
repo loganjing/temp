@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "actionId": "verification",
+  "status": "passed",
+  "evaluatorId": "quality.verification",
+  "evaluatorVersion": 1,
+  "sourceReceiptId": "verification:6",
+  "sourceArtifactSha256": "sha256:49c2138983fad7c7e6cc034a50d41d94b265550ce0d690e788164191e6e8177d",
+  "validator": "tools/quality-report-validator.mjs",
+  "evaluatedAt": "2026-11-03T09:39:31.886Z"
+}
