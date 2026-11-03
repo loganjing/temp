@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:467a1628f3f048a29135da58cb8588788e25d57f556c0701d9edf1a20d570c4b",
+  "createdAt": "2026-11-03T07:05:56.755Z",
+  "timing": {
+    "startedAt": "2026-11-03T06:46:00.047Z",
+    "completedAt": "2026-11-03T07:05:56.754Z",
+    "durationMs": 1196707
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000080/implementation-report.md",
+      "bytes": 7179,
+      "sha256": "sha256:289889d818178c47cedd84058efb7af91668372bae3a9ddbb994e6ee708aba4e",
+      "role": "primary",
+      "purpose": "实现报告：两个并行任务产物清单、验证结果、AC覆盖矩阵",
+      "title": "实现报告"
+    },
+    {
+      "path": "app/ticket-system/src/server/ticket-routes.ts",
+      "bytes": 24958,
+      "sha256": "sha256:d60bfec1cf3724aa780074bc21a79aedc0038ba6bdee22dcb28d0482212d847f",
+      "purpose": "工单API路由"
+    },
+    {
+      "path": "app/ticket-system/src/server/assignment-routes.ts",
+      "bytes": 7756,
+      "sha256": "sha256:735ef5d4e6b5002f97ae53cbbbaf7ef57fbd7fc93e33dad5498dc011495935e8",
+      "purpose": "业务组与路由规则API"
+    },
+    {
+      "path": "app/ticket-system/src/server/statistics-routes.ts",
+      "bytes": 6117,
+      "sha256": "sha256:2dcbcd8072c7809527f91f253a4db0eef30c106c50bcbf0d9b7159d03eadb452",
+      "purpose": "统计API"
+    },
+    {
+      "path": "app/ticket-system/src/shared/types.ts",
+      "bytes": 1375,
+      "sha256": "sha256:861ecf9ae8a14ab44b248db5476089c8ee7cf73564fef94c4966084972f7ed7a",
+      "purpose": "共享类型定义"
+    },
+    {
+      "path": "app/ticket-system/src/server/migrations/sqlite/0010_ticket_companies.sql",
+      "bytes": 297,
+      "sha256": "sha256:f89cb58c860ba0c83623ab9256dad1f878256a902f01eb54bc9975edc9ce3270",
+      "purpose": "companies+departments迁移"
+    },
+    {
+      "path": "app/ticket-system/src/server/migrations/sqlite/0011_ticket_profiles.sql",
+      "bytes": 412,
+      "sha256": "sha256:0febe10849217808396042be3f557238169fe523e0ecb7ee2b6f0d9402c96ab1",
+      "purpose": "user_profiles迁移"
+    },
+    {
+      "path": "app/ticket-system/src/server/migrations/sqlite/0012_ticket_core.sql",
+      "bytes": 1204,
+      "sha256": "sha256:e1849a77ae635e3b5380e36473f0c90926462e79b858b518cbbe964c8e678ac1",
+      "purpose": "tickets+replies+evaluations迁移"
+    },
+    {
+      "path": "app/ticket-system/src/server/migrations/sqlite/0013_ticket_assignment.sql",
+      "bytes": 1115,
+      "sha256": "sha256:8d0f134ab606eac283fa5b1fb4433d31c06507ae4ad197a0daf6a4930d173307",
+      "purpose": "business_groups+routing_rules迁移"
+    },
+    {
+      "path": "app/ticket-system/test/ticket.test.mjs",
+      "bytes": 14669,
+      "sha256": "sha256:39de5ed040f10818ca9a8fc75b8ca19d92b620abf700ec97a8726f30bb6734d7",
+      "purpose": "工单业务测试"
+    },
+    {
+      "path": "app/ticket-system/src/client/App.tsx",
+      "bytes": 2407,
+      "sha256": "sha256:afa0b6eef781f7dbe1bc8acc8682582ac82db407df9c22ca1cfe2b65afb2fc90",
+      "purpose": "React SPA入口与路由"
+    },
+    {
+      "path": "app/ticket-system/src/client/types.ts",
+      "bytes": 5042,
+      "sha256": "sha256:7c230f10f81934e7beca425543bda1f8b1350068efe1eac350fb74dfd0e77448",
+      "purpose": "前端API类型"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/WorkbenchPage.tsx",
+      "bytes": 5705,
+      "sha256": "sha256:b9e42c7d560c61fe08ecd3396c3862de5322ea9fd53f3943ad5149042cf4b9d7",
+      "purpose": "工单工作台"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/TicketDetailPage.tsx",
+      "bytes": 15446,
+      "sha256": "sha256:20236cb19fd373c74b506a48704550ff9f00867d73bd45f9f0abbac00510acbb",
+      "purpose": "工单详情"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/CreateTicketPage.tsx",
+      "bytes": 2712,
+      "sha256": "sha256:4b6c3e9eb3f0119735a804c2ad473b8879275b88bd8e2ff2da3ad3129891b5c2",
+      "purpose": "创建工单"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/BusinessGroupsPage.tsx",
+      "bytes": 6135,
+      "sha256": "sha256:736658f4e6993e2ca23adac2ba8749888893d09aa1c4820499f3bdb326c2a928",
+      "purpose": "业务组管理"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/RoutingRulesPage.tsx",
+      "bytes": 3794,
+      "sha256": "sha256:c31b38b75c733c750e5260794ad0eb43df40e7a8614c305e85964650c54e57db",
+      "purpose": "路由规则管理"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/StatisticsPage.tsx",
+      "bytes": 5552,
+      "sha256": "sha256:7d9716f99b4afe1003c2d101a5f9b138f13e0308197386baba3a2b3b30be276f",
+      "purpose": "统计分析"
+    },
+    {
+      "path": "app/ticket-system/src/client/pages/LoginPage.tsx",
+      "bytes": 4417,
+      "sha256": "sha256:2e397609654a0865f3ab033195a80fd3674fac523184a10419fa2820f9b1d8df",
+      "purpose": "登录页"
+    },
+    {
+      "path": "app/ticket-system/src/client/components/Layout.tsx",
+      "bytes": 2394,
+      "sha256": "sha256:ac3713f2a90b33beedd058e8567c22ee719756185e42eb1039ed76e2fc16ae11",
+      "purpose": "应用壳布局"
+    },
+    {
+      "path": "app/ticket-system/src/client/components/StateViews.tsx",
+      "bytes": 1032,
+      "sha256": "sha256:d83fe26595604de76048cd624b0caffa7a6c3390664bc4350486091ba133fe83",
+      "purpose": "全局状态组件"
+    },
+    {
+      "path": "app/ticket-system/src/client/components/Badges.tsx",
+      "bytes": 993,
+      "sha256": "sha256:9006ae949c6a4b72b7ad0e003603c14be7188dd957d73c24490d660a95c99db3",
+      "purpose": "状态与优先级徽章"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "test",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:6c3a4560f830a790797409276260293344fba1ee666cd73a94fe72290e2ce5ea",
+        "path": ".expert-team/work-items/wi-t1000080/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
