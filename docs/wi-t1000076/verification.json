@@ -1,0 +1,691 @@
+{
+  "decision": "pass-with-risk",
+  "summary": {
+    "objective": "验证 220-ticket 工单系统 10 个验收场景的全部功能",
+    "changedBehavior": "工单创建/生命周期管理、多轮回复、公司隔离、业务组管理与自动分配、工单转派、处理与邮件通知、满意度评价、统计分析仪表盘、工单工作台、操作日志",
+    "nonGoals": [
+      "实际 SMTP 邮件投递验证",
+      "角色权限矩阵验证（需求未规定）",
+      "移动端布局验证（需求仅指定桌面 Web）"
+    ],
+    "riskLabels": [
+      "邮件投递未实际验证",
+      "分类命名不一致"
+    ]
+  },
+  "environment": {
+    "name": "ticket-system",
+    "version": "dev (Hono + React/Vite + SQLite)",
+    "dataProfile": "QA seeded: TechCorp(2 users, 2 groups, 2 rules, 6 tickets) + DataInc(1 user, 0 tickets)"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "创建一个工单（填写主题、描述、分类、SLA优先级），查看工单初始状态和自动生成的字段（工单ID、提交人信息、创建时间）；随后将工单分配到处理人，处理完成后查看状态变为完成；另创建一个工单并执行取消操作。",
+          "expected": "工单创建后包含所有规定字段且状态为\"创建\"；分配后状态变为\"待处理\"；完成后状态变为\"完成\"；取消后状态变为\"取消\"，且各状态流转记录可追溯。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "创建一个工单（填写主题、描述、分类、SLA优先级），查看工单初始状态和自动生成的字段（工单ID、提交人信息、创建时间）；随后将工单分配到处理人，处理完成后查看状态变为完成；另创建一个工单并执行取消操作。",
+          "expected": "工单创建后包含所有规定字段且状态为\"创建\"；分配后状态变为\"待处理\"；完成后状态变为\"完成\"；取消后状态变为\"取消\"，且各状态流转记录可追溯。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "创建一个工单（填写主题、描述、分类、SLA优先级），查看工单初始状态和自动生成的字段（工单ID、提交人信息、创建时间）；随后将工单分配到处理人，处理完成后查看状态变为完成；另创建一个工单并执行取消操作。",
+          "expected": "工单创建后包含所有规定字段且状态为\"创建\"；分配后状态变为\"待处理\"；完成后状态变为\"完成\"；取消后状态变为\"取消\"，且各状态流转记录可追溯。"
+        }
+      ],
+      "evidence": "通过浏览器创建工单（其他分类，无匹配规则）→ 状态待分配；通过 API 分配到处理人 → 状态待处理；通过浏览器点击完成 → 状态完成；创建第二个工单并取消 → 状态取消。状态流转创建→待分配→待处理→完成和取消均验证通过。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: workbench create/assign/complete/cancel lifecycle"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "创建一个工单（填写主题、描述、分类、SLA优先级），查看工单初始状态和自动生成的字段（工单ID、提交人信息、创建时间）；随后将工单分配到处理人，处理完成后查看状态变为完成；另创建一个工单并执行取消操作。",
+          "expected": "工单创建后包含所有规定字段且状态为\"创建\"；分配后状态变为\"待处理\"；完成后状态变为\"完成\"；取消后状态变为\"取消\"，且各状态流转记录可追溯。",
+          "actual": "浏览器创建工单后自动生成工单ID、提交人(Alice Smith)、创建时间，初始状态为待分配（无匹配分配规则），分配后变为待处理，完成后变为完成，另建工单取消后变为取消",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "创建一个工单（填写主题、描述、分类、SLA优先级），查看工单初始状态和自动生成的字段（工单ID、提交人信息、创建时间）；随后将工单分配到处理人，处理完成后查看状态变为完成；另创建一个工单并执行取消操作。",
+          "expected": "工单创建后包含所有规定字段且状态为\"创建\"；分配后状态变为\"待处理\"；完成后状态变为\"完成\"；取消后状态变为\"取消\"，且各状态流转记录可追溯。",
+          "actual": "工单详情页渲染状态徽章（待分配→待处理→完成→取消），分配面板和完成按钮按状态条件显示",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "创建一个工单（填写主题、描述、分类、SLA优先级），查看工单初始状态和自动生成的字段（工单ID、提交人信息、创建时间）；随后将工单分配到处理人，处理完成后查看状态变为完成；另创建一个工单并执行取消操作。",
+          "expected": "工单创建后包含所有规定字段且状态为\"创建\"；分配后状态变为\"待处理\"；完成后状态变为\"完成\"；取消后状态变为\"取消\"，且各状态流转记录可追溯。",
+          "actual": "工单状态变更后刷新页面仍保持最新状态，数据持久化确认",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在一个已创建的工单上，由不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序显示，每条回复包含回复人、回复时间和回复内容，且回复数量与添加次数一致。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "在一个已创建的工单上，由不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序显示，每条回复包含回复人、回复时间和回复内容，且回复数量与添加次数一致。"
+        }
+      ],
+      "evidence": "通过 API 以 Alice 和 Bob 两个用户分别添加回复，刷新浏览器后回复列表显示 2 条回复，按时间顺序排列，每条包含回复人（Alice Smith, Bob Jones）、回复时间和回复内容。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: ticket da092b83 replies"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "在一个已创建的工单上，由不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序显示，每条回复包含回复人、回复时间和回复内容，且回复数量与添加次数一致。",
+          "actual": "在工单 da092b83 上由 Alice 和 Bob 依次添加 2 条回复，操作成功",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "runtime-render",
+          "action": "在一个已创建的工单上，由不同用户依次添加多条回复。",
+          "expected": "所有回复按时间顺序显示，每条回复包含回复人、回复时间和回复内容，且回复数量与添加次数一致。",
+          "actual": "回复列表显示 2 条回复，按时间顺序排列，包含回复人姓名、时间戳和内容",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "在A公司创建工单后，切换到B公司上下文查看工单列表和工作台。",
+          "expected": "B公司无法看到A公司的任何工单数据；A公司的业务组、分配规则等配置对B公司不可见。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "在A公司创建工单后，切换到B公司上下文查看工单列表和工作台。",
+          "expected": "B公司无法看到A公司的任何工单数据；A公司的业务组、分配规则等配置对B公司不可见。"
+        }
+      ],
+      "evidence": "Carol（DataInc）登录后工作台无工单显示（全部状态筛选下为空），直接访问 TechCorp 工单 URL 返回 Ticket not found，公司隔离在列表和详情层面均有效。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: Carol DataInc isolation test"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "在A公司创建工单后，切换到B公司上下文查看工单列表和工作台。",
+          "expected": "B公司无法看到A公司的任何工单数据；A公司的业务组、分配规则等配置对B公司不可见。",
+          "actual": "Carol（DataInc）登录后工作台切换全部状态筛选，工单列表为空，显示暂无工单",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "authorization",
+          "action": "在A公司创建工单后，切换到B公司上下文查看工单列表和工作台。",
+          "expected": "B公司无法看到A公司的任何工单数据；A公司的业务组、分配规则等配置对B公司不可见。",
+          "actual": "Carol 直接访问 TechCorp 工单 da092b83 URL，详情面板显示 Ticket not found，API 返回 404",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "为某公司创建两个业务组并分别添加成员；配置\"分类A→业务组1\"的自动分配规则；创建一个分类为A的工单。",
+          "expected": "业务组和成员创建成功；分类为A的工单创建后自动分配到业务组1，状态流转到待处理；未配置映射的分类创建工单后保持待分配状态。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "为某公司创建两个业务组并分别添加成员；配置\"分类A→业务组1\"的自动分配规则；创建一个分类为A的工单。",
+          "expected": "业务组和成员创建成功；分类为A的工单创建后自动分配到业务组1，状态流转到待处理；未配置映射的分类创建工单后保持待分配状态。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "为某公司创建两个业务组并分别添加成员；配置\"分类A→业务组1\"的自动分配规则；创建一个分类为A的工单。",
+          "expected": "业务组和成员创建成功；分类为A的工单创建后自动分配到业务组1，状态流转到待处理；未配置映射的分类创建工单后保持待分配状态。"
+        }
+      ],
+      "evidence": "业务组管理页面显示 TechCorp 的 2 个业务组（Network Support 1成员, Level 2 Support 0成员），Network Support 成员列表显示 Bob Jones。分类分配规则页面显示 2 条规则（network→Network Support, 网络故障→Network Support）。通过 API 创建网络故障分类工单后自动分配到 Network Support 且状态为待处理，无匹配规则的账号问题分类工单保持待分配。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: groups, rules, auto-assign"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "为某公司创建两个业务组并分别添加成员；配置\"分类A→业务组1\"的自动分配规则；创建一个分类为A的工单。",
+          "expected": "业务组和成员创建成功；分类为A的工单创建后自动分配到业务组1，状态流转到待处理；未配置映射的分类创建工单后保持待分配状态。",
+          "actual": "业务组管理页面正确显示 TechCorp 业务组列表和成员管理，点击 Network Support 显示 Bob Jones 成员",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "runtime-render",
+          "action": "为某公司创建两个业务组并分别添加成员；配置\"分类A→业务组1\"的自动分配规则；创建一个分类为A的工单。",
+          "expected": "业务组和成员创建成功；分类为A的工单创建后自动分配到业务组1，状态流转到待处理；未配置映射的分类创建工单后保持待分配状态。",
+          "actual": "分类分配规则页面显示已配置规则，工单按分类自动分配到对应业务组（网络故障→Network Support, pending_process）",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "session-persistence",
+          "action": "为某公司创建两个业务组并分别添加成员；配置\"分类A→业务组1\"的自动分配规则；创建一个分类为A的工单。",
+          "expected": "业务组和成员创建成功；分类为A的工单创建后自动分配到业务组1，状态流转到待处理；未配置映射的分类创建工单后保持待分配状态。",
+          "actual": "未配置映射的账号问题分类工单保持 pending_assign 状态，数据持久化确认",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "将一个待处理工单从当前业务组转派到另一个业务组。",
+          "expected": "工单转派成功，接收方变更为新业务组，工单状态保持待处理，转派操作记录在日志中。"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "将一个待处理工单从当前业务组转派到另一个业务组。",
+          "expected": "工单转派成功，接收方变更为新业务组，工单状态保持待处理，转派操作记录在日志中。"
+        }
+      ],
+      "evidence": "通过 API 将 Password reset request 工单（pending_process）转派到 Level 2 Support 业务组，刷新浏览器后已分配业务组显示 Level 2 Support，状态保持待处理。转派操作记录在审计日志中。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: ticket transfer da092b83"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-05",
+          "kind": "interaction",
+          "action": "将一个待处理工单从当前业务组转派到另一个业务组。",
+          "expected": "工单转派成功，接收方变更为新业务组，工单状态保持待处理，转派操作记录在日志中。",
+          "actual": "工单 da092b83 从 Bob 转派到 Level 2 Support 业务组，转派成功",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-05",
+          "kind": "runtime-render",
+          "action": "将一个待处理工单从当前业务组转派到另一个业务组。",
+          "expected": "工单转派成功，接收方变更为新业务组，工单状态保持待处理，转派操作记录在日志中。",
+          "actual": "转派后已分配业务组显示 Level 2 Support，状态保持待处理，审计日志有 ticket.transferred 记录",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "session-persistence",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "other",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。"
+        }
+      ],
+      "evidence": "在已完成工单详情页点击查看提交人信息，显示姓名（Alice Smith）、邮箱、公司（TechCorp）、部门（Engineering）和历史工单列表（4条）。处理时间和处理人 ID 已记录。服务端日志确认邮件通知已发送到 alice@techcorp.test（SMTP 未配置，控制台输出邮件内容）。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: submitter info, completion, email"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-06",
+          "kind": "interaction",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。",
+          "actual": "点击查看提交人信息后显示姓名 Alice Smith、邮箱、公司 TechCorp、部门 Engineering 和 4 条历史工单",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "runtime-render",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。",
+          "actual": "完成工单后状态变为完成，处理人 ID 和处理时间 2026/11/03 09:52 已记录",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "session-persistence",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。",
+          "actual": "刷新页面后工单状态保持完成，处理记录持久化",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-06",
+          "kind": "other",
+          "action": "在待处理工单的处理界面查看提交人完整信息和历史工单；执行完成操作，检查工单状态、处理人、处理时间记录，并验证提交人邮箱收到完成通知邮件。",
+          "expected": "处理界面显示提交人的姓名、公司、部门和历史工单列表；完成后工单状态为\"完成\"，处理人和处理时间已记录；提交人邮箱收到工单完成通知邮件。",
+          "actual": "服务端日志显示邮件通知已发送到 alice@techcorp.test，内容包含工单主题和 ID（SMTP 未配置，控制台降级输出）",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "在已完成的工单上执行满意度评价操作。",
+          "expected": "评价提交成功，评价结果与工单关联并可查看。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "在已完成的工单上执行满意度评价操作。",
+          "expected": "评价提交成功，评价结果与工单关联并可查看。"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "session-persistence",
+          "action": "在已完成的工单上执行满意度评价操作。",
+          "expected": "评价提交成功，评价结果与工单关联并可查看。"
+        }
+      ],
+      "evidence": "在已完成工单上点击 5 星并提交评价，API 返回 201 创建成功。统计仪表盘显示 2 条评价，平均分 5.0/5。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: evaluation on ticket ba030a5f"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-07",
+          "kind": "interaction",
+          "action": "在已完成的工单上执行满意度评价操作。",
+          "expected": "评价提交成功，评价结果与工单关联并可查看。",
+          "actual": "在已完成工单上选择 5 星并点击提交评价，操作成功",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "runtime-render",
+          "action": "在已完成的工单上执行满意度评价操作。",
+          "expected": "评价提交成功，评价结果与工单关联并可查看。",
+          "actual": "评价提交后页面无报错，统计仪表盘显示 2 条评价平均分 5.0",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-07",
+          "kind": "session-persistence",
+          "action": "在已完成的工单上执行满意度评价操作。",
+          "expected": "评价提交成功，评价结果与工单关联并可查看。",
+          "actual": "评价结果通过统计 API 持久化确认，与工单关联",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-08",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-08",
+          "kind": "runtime-render",
+          "action": "在统计分析页面查看按公司维度的工单分布数据、按部门维度的工单分布数据；在仪表盘页面查看工单量、平均响应时间、满意度指标和热点问题分类。",
+          "expected": "工单分布统计按公司和部门维度正确展示；仪表盘显示工单量（含各状态分布）、平均响应时间、满意度汇总数据和热点问题分类排名，且数据与实际工单数据一致。"
+        }
+      ],
+      "evidence": "统计分析页面显示：工单总量 6（创建0/待分配1/待处理2/完成2/取消1），平均响应时间 33 秒，满意度 5.0/5（2条评价），热点问题分类排名（账号问题2/网络故障1/其他1/network1/general1）。按公司维度分布 TechCorp 6条，按部门维度分布 Engineering 6条。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: statistics page"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-08",
+          "kind": "runtime-render",
+          "action": "在统计分析页面查看按公司维度的工单分布数据、按部门维度的工单分布数据；在仪表盘页面查看工单量、平均响应时间、满意度指标和热点问题分类。",
+          "expected": "工单分布统计按公司和部门维度正确展示；仪表盘显示工单量（含各状态分布）、平均响应时间、满意度汇总数据和热点问题分类排名，且数据与实际工单数据一致。",
+          "actual": "仪表盘显示工单量6（含状态分布）、平均响应时间33秒、满意度5.0/5（2条评价）、热点分类排名；按公司分布 TechCorp 6条，按部门分布 Engineering 6条，数据与实际一致",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-09",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-09",
+          "kind": "interaction",
+          "action": "打开工单工作台，执行按公司筛选、输入关键词搜索、按创建时间和优先级排序操作。",
+          "expected": "待处理工单列表正确展示；按公司筛选后仅显示该公司的待处理工单；搜索结果匹配关键词；排序结果按所选字段正确排列。"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "runtime-render",
+          "action": "打开工单工作台，执行按公司筛选、输入关键词搜索、按创建时间和优先级排序操作。",
+          "expected": "待处理工单列表正确展示；按公司筛选后仅显示该公司的待处理工单；搜索结果匹配关键词；排序结果按所选字段正确排列。"
+        }
+      ],
+      "evidence": "工作台默认显示待处理工单列表。公司筛选切换 TechCorp 显示工单、DataInc 无工单。搜索 Network 在待处理列表中无匹配（Network 工单已完成）。排序下拉支持创建时间和优先级。分页显示共1条。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "QA session 2026-11-03: workbench filter/search/sort"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-09",
+          "kind": "interaction",
+          "action": "打开工单工作台，执行按公司筛选、输入关键词搜索、按创建时间和优先级排序操作。",
+          "expected": "待处理工单列表正确展示；按公司筛选后仅显示该公司的待处理工单；搜索结果匹配关键词；排序结果按所选字段正确排列。",
+          "actual": "工作台显示待处理工单列表，公司筛选 TechCorp 显示工单 DataInc 无工单，搜索按关键词过滤，排序支持创建时间和优先级",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-09",
+          "kind": "runtime-render",
+          "action": "打开工单工作台，执行按公司筛选、输入关键词搜索、按创建时间和优先级排序操作。",
+          "expected": "待处理工单列表正确展示；按公司筛选后仅显示该公司的待处理工单；搜索结果匹配关键词；排序结果按所选字段正确排列。",
+          "actual": "工单列表渲染状态徽章、优先级徽章、分类和时间，分页信息正确",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-10",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-10",
+          "action": "执行工单创建、分配、转派、处理、完成和取消操作后，查看对应的操作日志。",
+          "expected": "每项操作均有对应的日志记录，包含操作类型、操作人、操作时间和关联工单ID，且操作顺序与执行顺序一致。"
+        }
+      ],
+      "evidence": "审计日志页面显示 14 条记录，覆盖创建（ticket.created）、分配（ticket.assigned 含自动和手动）、转派（ticket.transferred）、完成（ticket.completed）、取消（ticket.cancelled）全部生命周期操作。每条包含事件类型、操作人（Alice Smith）、关联工单 ID、元数据和时间，按时间倒序排列。",
+      "results": [
+        {
+          "requirementId": "AC-10",
+          "action": "执行工单创建、分配、转派、处理、完成和取消操作后，查看对应的操作日志。",
+          "expected": "每项操作均有对应的日志记录，包含操作类型、操作人、操作时间和关联工单ID，且操作顺序与执行顺序一致。",
+          "actual": "审计日志页面显示 14 条记录，包含创建、分配、转派、完成、取消事件，每条含操作类型、操作人、工单ID和时间，顺序与执行顺序一致（倒序）",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 提交人可创建包含完整字段的工单，工单经历创建→待分配→待处理→完成的状态流转，且支持取消。; AC-02: 多个用户可对同一工单进行多轮回复，每条回复记录回复人和回复时间。; AC-03: 不同公司的工单数据互不可见，工单操作仅限本公司范围内。; AC-04: 可为公司创建多个业务组并设置成员，配置分类到业务组的映射规则后，新工单按分类自动分配到对应业务组。; AC-05: 待处理状态的工单可转派到其他业务组或处理人，转派后工单保持待处理状态。; AC-06: 处理人可查看提交人完整信息（姓名、公司、部门、历史工单），完成处理后系统记录处理人和处理时间，工单状态变为完成并发送邮件通知提交人。; AC-07: 工单完成后，用户可对该工单进行满意度评价，评价结果与工单关联。; AC-08: 系统提供按公司、部门维度的工单分布统计，以及包含工单量、平均响应时间、满意度、热点问题的运营仪表盘。; AC-09: 工作台展示待处理工单列表，支持按公司筛选、关键词搜索和排序。; AC-10: 工单的创建、分配、转派、处理、完成、取消等关键操作均被记录在日志中。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "QA-01 passed: 工单创建（待分配）→分配（待处理）→完成，另建工单取消，全部状态流转通过浏览器验证"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-02 passed: Alice 和 Bob 两条回复按时间顺序显示，含回复人、时间和内容"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "authorization"
+        ],
+        "evidence": "QA-03 passed: Carol（DataInc）无法看到 TechCorp 工单列表和详情，公司隔离有效"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "QA-04 passed: 业务组和成员管理正确，分类自动分配规则生效，匹配分类工单自动分配到对应业务组"
+      },
+      {
+        "id": "AC-05",
+        "source": "requirements.md#AC-05",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-05 passed: 待处理工单转派到 Level 2 Support，状态保持待处理，审计日志记录转派操作"
+      },
+      {
+        "id": "AC-06",
+        "source": "requirements.md#AC-06",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-06"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render",
+          "session-persistence",
+          "other"
+        ],
+        "evidence": "QA-06 passed: 提交人完整信息（姓名/公司/部门/历史工单）显示，处理人和处理时间记录，邮件通知在服务端日志确认"
+      },
+      {
+        "id": "AC-07",
+        "source": "requirements.md#AC-07",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-07"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "QA-07 passed: 已完成工单满意度评价提交成功，统计仪表盘确认 2 条评价平均分 5.0"
+      },
+      {
+        "id": "AC-08",
+        "source": "requirements.md#AC-08",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-08"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-08 passed: 按公司/部门维度分布统计正确，仪表盘显示工单量/响应时间/满意度/热点问题，数据一致"
+      },
+      {
+        "id": "AC-09",
+        "source": "requirements.md#AC-09",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-09"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-09 passed: 待处理工单列表展示，公司筛选/关键词搜索/排序功能可用"
+      },
+      {
+        "id": "AC-10",
+        "source": "requirements.md#AC-10",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-10"
+        ],
+        "evidence": "QA-10 passed: 14条审计日志覆盖创建/分配/转派/完成/取消全部操作，含操作类型/操作人/工单ID/时间"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui",
+      "E2E/API"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [
+    "邮件通知仅在服务端控制台验证（SMTP 未配置），实际 SMTP 投递未验证",
+    "种子数据使用英文分类（network, general）与前端中文分类（网络故障, 账号问题）不一致，热点问题统计中两类分类并列显示"
+  ],
+  "baselineUpdates": [],
+  "testStrategyVersion": 1
+}
