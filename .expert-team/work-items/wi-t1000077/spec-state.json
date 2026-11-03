@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-03T02:07:56.079Z"
+  "updatedAt": "2026-11-03T02:17:39.943Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000077/requirements.md",
+      "sha256": "sha256:63cc9d9aacf1653fa7961bfd4ffc696db7860a253caa40f68e4c01e46307245f"
+    },
+    "reason": "工单系统涉及多角色（提交人、处理人、管理员）跨用户协作，工单数据需在公司维度隔离后共享给不同用户，包含邮件通知（外部服务集成）、自动分配规则引擎、服务端统计聚合（工单量、平均响应时间、满意度、热点问题）、历史工单关联查询和操作审计日志。这些能力明确要求服务端权威数据存储、权限控制和后台处理，无法用浏览器 localStorage 满足跨用户/跨设备的数据共享与隔离需求。",
+    "evidence": {
+      "supporting": [
+        "需求4.1明确多角色协作：提交人创建工单，处理人处理工单，管理员配置业务组——需要跨用户共享的服务端权威数据",
+        "需求4.4工单完成时发送邮件通知提交人——需要后端外部服务集成",
+        "需求4.2工单按公司隔离，不同公司工单互不可见（AC-04）——需要服务端权限控制与数据隔离",
+        "需求4.6工单工作台支持按公司维度筛选、关键词搜索、排序——需要服务端查询与分页",
+        "需求4.7统计分析仪表盘：工单量、平均响应时间、满意度、热点问题按分类聚合——需要服务端数据聚合计算",
+        "需求4.2自动分配规则：分类→业务组映射，工单创建后自动分配——需要服务端规则引擎",
+        "需求4.4查看提交人历史工单列表——需要跨工单的服务端关联查询",
+        "需求4.8操作日志记录全生命周期关键操作——需要持久化的服务端审计日志"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-03T02:09:30.690Z",
+    "sha256": "sha256:ecad88d8c318c5f677a19fbfab26685a084298633cf21ff7468ed298194c04d5"
+  }
 }

@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000077/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "系统架构基线：技术栈、模块边界、数据模型、UI 基线、外部集成与运行约定"
+    },
+    {
+      "path": "docs/wi-t1000077/technical-contract.md",
+      "role": "supporting",
+      "purpose": "API 契约：端点定义、ID 对照表、请求/响应字段、错误码"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "design-markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-coverage",
+      "status": "passed"
+    }
+  ],
+  "evidence": [
+    "workspace-init 成功：appName=ticket-system, packageRoot=app/ticket-system, 全部 10 项检查通过, 5 项测试通过",
+    "planDigest=sha256:1adc0c42a5db3b11a2d0941d41625228bc93fd2882afbccdc2d6d7a8478bef17",
+    "scaffoldDigest=sha256:b501cbac19f784a8ef9e6ec9a00ccee8b3a8b0822832b51c35877df5bbe0df7c",
+    "platform-baseline.json 确认 6 个模块（dbkit/authkit/userkit/permissionkit/auditkit/emailkit）均已安装",
+    "app/ticket-system/AGENTS.md 存在"
+  ]
+}

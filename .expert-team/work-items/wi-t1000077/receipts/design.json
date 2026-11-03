@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:d7610986f3f830f68a8b409e5530a805f2b53fa3ed22ca5b90bd50d5ff29ea83",
+  "createdAt": "2026-11-03T02:17:39.943Z",
+  "timing": {
+    "startedAt": "2026-11-03T02:09:03.692Z",
+    "completedAt": "2026-11-03T02:17:39.942Z",
+    "durationMs": 516250
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000077/architecture-baseline.md",
+      "bytes": 14000,
+      "sha256": "sha256:1cfe7d1c0228efdb3debe08980ce7a428d576b80a03ab12f6726b10528cee644",
+      "role": "primary",
+      "purpose": "系统架构基线：技术栈（Hono+React/Vite+Tailwind+SQLite/dbkit）、CommonApp 模块选择（dbkit/authkit/userkit/permissionkit/auditkit/emailkit）、模块边界与接口摘要、数据模型、UI 全局基线（helpdesk+split-master-detail+Modern SaaS）、邮件集成、运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000077/technical-contract.md",
+      "bytes": 17289,
+      "sha256": "sha256:042fb8bd7d72464624bdad747ad66ed5541672ff51d7ee172a65e0a923d368a5",
+      "role": "supporting",
+      "purpose": "API 契约：ID 对照表、认证/组织/工单/工作台/统计/日志 全部端点定义（method/path/请求响应字段/类型/错误码/授权）",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "design-markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline:readable",
+      "status": "passed"
+    },
+    {
+      "checkId": "agents-md:exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:ecad88d8c318c5f677a19fbfab26685a084298633cf21ff7468ed298194c04d5",
+        "path": ".expert-team/work-items/wi-t1000077/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
