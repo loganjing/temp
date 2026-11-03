@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:bbefdc04a76a06d281f823848cd7528526f12d17dbdf002447eb99ea24634aca",
+  "createdAt": "2026-11-03T01:43:26.255Z",
+  "timing": {
+    "startedAt": "2026-11-03T01:26:54.564Z",
+    "completedAt": "2026-11-03T01:43:26.255Z",
+    "durationMs": 991691
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000076/implementation-report.md",
+      "bytes": 6576,
+      "sha256": "sha256:edb532ac6f4190648c1564531a7f515d70d16aaa45fb7c2e4d9762c6bfbe6e1f",
+      "role": "primary",
+      "purpose": "工单系统开发实现报告，记录两个并行任务的产出物、验证结果和验收场景覆盖",
+      "title": "实现报告 — 220-ticket 工单系统"
+    },
+    {
+      "path": "app/ticket-system/src/shared/types.ts",
+      "bytes": 3640,
+      "sha256": "sha256:5c9f4350a5196116b42e34cd514fb548cdc9555f9f23202692718aab93bea351",
+      "role": "shared-types",
+      "purpose": "平台中立的 API 契约类型定义"
+    },
+    {
+      "path": "app/ticket-system/src/server/",
+      "bytes": 66070,
+      "sha256": "sha256:f65fd5c0a37709ad6e489fcd2d52dc58741ba69e6d3275ac4df3b261271add13",
+      "role": "backend",
+      "purpose": "后端全部业务路由、领域服务、迁移、平台集成"
+    },
+    {
+      "path": "app/ticket-system/src/client/",
+      "bytes": 82320,
+      "sha256": "sha256:06692ec884951407e720738fda75d9acc46abe2b6fb969583c96d6e8170ab92e",
+      "role": "frontend",
+      "purpose": "前端全部页面、组件、导航与路由"
+    },
+    {
+      "path": "app/ticket-system/test/ticket.test.mjs",
+      "bytes": 26607,
+      "sha256": "sha256:3efe9223fbf154df62e9a9886573eec3796e84e7cf042e67d57b4f91825d9787",
+      "role": "test",
+      "purpose": "工单业务流程测试"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:full",
+      "status": "passed",
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "checkId": "npm-test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:9e7c5009d2ef9aea0015e95b5afcb3f544e39e031ffb9a2d6baaa4736b69ca66",
+        "path": ".expert-team/work-items/wi-t1000076/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

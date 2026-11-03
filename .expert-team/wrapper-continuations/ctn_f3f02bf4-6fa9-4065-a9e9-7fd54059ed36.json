@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_f3f02bf4-6fa9-4065-a9e9-7fd54059ed36",
+  "workItemId": "wi-t1000076",
+  "workspaceRealpath": "/Users/kingdee/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000076",
+  "target": "task_operation",
+  "operation": "complete",
+  "fixedArguments": {
+    "--workspace": "/Users/kingdee/lingeebuild-beta/workspaces/64814fc7b41150ceb6de32dedc8559d4/JLGSpace-88/.lingee-task-worktrees/wi-t1000076",
+    "--work-item": "wi-t1000076",
+    "--task": "T02",
+    "--actor-id": "expert-team-coordinator",
+    "--execution-id": "ses_e60f7e0f5ffeEHQuu4f6rawOAo"
+  },
+  "requiredInputs": {
+    "--result-json": {
+      "source": "spawn_task.result",
+      "schema": {
+        "status": "completed",
+        "artifacts": []
+      },
+      "encoding": "json",
+      "shellSafeAlternative": {
+        "flag": "--result-json-file",
+        "description": "Write the JSON to a UTF-8 file and pass --result-json-file <path> when the command must go through a shell; inline JSON loses its quotes on Windows PowerShell."
+      }
+    }
+  },
+  "status": "pending",
+  "createdAt": "2026-11-03T01:31:17.894Z",
+  "consumedAt": null
+}

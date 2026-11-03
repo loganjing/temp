@@ -1,8 +1,17 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { apiRequest } from './platform/api-client'
+import { Layout } from './components/Layout'
+import { ToastProvider } from './components/Toast'
+import WorkbenchPage from './pages/WorkbenchPage'
+import CreateTicketPage from './pages/CreateTicketPage'
+import StatisticsPage from './pages/StatisticsPage'
+import BusinessGroupsPage from './pages/BusinessGroupsPage'
+import AssignmentRulesPage from './pages/AssignmentRulesPage'
+import AuditLogsPage from './pages/AuditLogsPage'
 import UsersPage from './admin/UsersPage'
+import type { CurrentUser } from './api/types'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
 type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
 
 export default function App() {
@@ -66,6 +75,12 @@ export default function App() {
     }
   }
 
+  const logout = () => {
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
+  }
+
   if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
   if (state === 'required' || state === 'login') return (
     <main className="shell auth-shell">
@@ -96,13 +111,24 @@ export default function App() {
       </section>
     </main>
   )
+
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <BrowserRouter>
+      <ToastProvider>
+        <Layout user={user} onLogout={logout}>
+          <Routes>
+            <Route path="/" element={<WorkbenchPage />} />
+            <Route path="/tickets/new" element={<CreateTicketPage />} />
+            <Route path="/tickets/:ticketId" element={<WorkbenchPage />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/groups" element={<BusinessGroupsPage />} />
+            <Route path="/assignment-rules" element={<AssignmentRulesPage />} />
+            <Route path="/audit-logs" element={<AuditLogsPage />} />
+            <Route path="/admin/users" element={<UsersPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
+      </ToastProvider>
+    </BrowserRouter>
   )
 }

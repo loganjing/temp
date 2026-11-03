@@ -1,0 +1,46 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "工单系统后端：业务表迁移、领域服务、全部业务 API 路由、邮件/审计集成与公司隔离",
+      "objective": "## 范围\n\n实现工单系统的完整后端，覆盖 AC-01 至 AC-10 的服务端行为。\n\n### 数据库迁移\n- 创建 `0002_business_tables.sql` 迁移文件，建立以下业务表：companies、departments、user_profiles、tickets、ticket_replies、business_groups、business_group_members、category_assignment_rules、ticket_evaluations\n- 表结构遵循架构基线 §4.2 的数据模型定义\n- user_profiles 扩展 userkit 管理的 users 表，补充 company_id、department_id、full_name\n\n### 平台集成\n- 在 `platform/bootstrap.ts` 中接入 emailkit（createEmailClient）和 auditkit（createAuditKit）— 无 SMTP 配置时 emailkit 降级为控制台输出\n- auditkit 提供审计事件记录能力，供业务服务调用\n\n### 公司隔离中间件\n- 创建公司隔离中间件，从认证用户上下文提取 companyId 并注入请求上下文\n- 所有工单相关查询自动附加公司过滤条件\n\n### 领域服务与路由\n在 `routes.ts` 或新建 `services/` 目录中实现以下全部 API（接口定义见 technical-contract.md）：\n- 工单管理：POST/GET/PATCH /api/tickets，POST/GET /api/tickets/:id/replies，POST /api/tickets/:id/evaluation，GET /api/tickets/:id/submitter，POST /api/tickets/:id/transfer\n- 组织管理：GET/POST /api/companies，GET/POST /api/companies/:companyId/departments，GET/POST /api/companies/:companyId/groups，GET/POST/DELETE 成员管理，GET/POST /api/companies/:companyId/assignment-rules\n- 统计分析：GET /api/statistics/distribution，GET /api/statistics/dashboard\n- 审计日志：GET /api/audit-logs\n\n### 工单分配引擎\n- 工单创建时检查当前公司的分类分配规则，匹配则自动分配到对应业务组并进入 pending_process 状态\n- 未匹配则进入 pending_assign 状态\n\n### 工单完成与邮件通知\n- 工单完成时设置 handlerUserId 和 processedAt\n- 调用 emailkit 向提交人邮箱发送完成通知\n- 邮件发送失败时记录错误日志，不影响工单完成状态\n\n### 审计日志记录\n- 在工单创建、分配、转派、完成、取消操作后调用 auditkit.record 记录审计事件\n- 审计事件类型：ticket.created、ticket.assigned、ticket.transferred、ticket.completed、ticket.cancelled\n\n### 共享类型\n- 在 `src/shared/` 创建平台中立的 TypeScript 类型定义和常量（工单状态枚举、SLA优先级、API请求/响应类型）\n- 仅使用纯 TypeScript，不依赖 Node API、Hono、React 或 DOM\n\n### 验证\n- 运行 `npm run typecheck:server` 通过服务端类型检查\n- 运行 `npm test` 确保现有测试和新增业务测试通过\n- 编写 `test/ticket.test.mjs` 验证工单创建、分配、转派、完成、取消、回复、评价等核心流程",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-10"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000076/requirements.md" },
+        { "path": "docs/wi-t1000076/architecture-baseline.md" },
+        { "path": "docs/wi-t1000076/technical-contract.md" }
+      ],
+      "artifactPaths": [
+        "app/ticket-system/src/shared/",
+        "app/ticket-system/src/server/",
+        "app/ticket-system/test/"
+      ],
+      "failurePolicy": "block",
+      "blockerCodes": ["TASK_FAILED"]
+    },
+    {
+      "taskId": "T02",
+      "summary": "工单系统前端：工作台、工单详情/创建、统计仪表盘、业务组管理、审计日志页面与导航",
+      "objective": "## 范围\n\n实现工单系统的完整前端 SPA，覆盖 AC-01 至 AC-09 和 AC-10 的用户界面行为。\n\n### 应用导航与布局\n- 改造 `App.tsx`，添加左侧导航栏（工单工作台、创建工单、统计分析、业务组管理、分类分配规则、审计日志）\n- 顶部上下文栏显示当前用户信息和登出\n- 使用 react-router-dom 实现页面路由\n- 遵循 split-master-detail 布局风格（工作台左侧列表、右侧详情）\n\n### 工单工作台 (AC-09)\n- 左侧待处理工单列表，支持按公司筛选、关键词搜索、按创建时间/优先级排序\n- 右侧选中工单的详情面板\n- 列表支持分页\n\n### 工单创建 (AC-01)\n- 表单填写主题、描述、分类、SLA优先级（P0-P4下拉）\n- 创建后显示工单ID和初始状态\n\n### 工单详情与处理 (AC-01, AC-02, AC-05, AC-06)\n- 显示工单完整信息和状态\n- 多轮回复列表（按时间排序），支持添加回复\n- 工单分配操作（选择业务组或处理人）\n- 工单转派操作（待处理状态下）\n- 工单完成操作（记录处理人和处理时间）\n- 工单取消操作\n- 查看提交人完整信息（姓名、公司、部门、历史工单）\n\n### 用户评价 (AC-07)\n- 已完成工单显示满意度评价入口\n- 使用 1-5 星级评价\n\n### 统计分析 (AC-08)\n- 工单分布统计：按公司维度和部门维度展示\n- 运营仪表盘：工单量（含状态分布）、平均响应时间、满意度汇总、热点问题分类排名\n- 使用简洁的表格或卡片展示，不引入额外图表库\n\n### 业务组管理 (AC-04)\n- 创建业务组、添加/移除成员\n- 配置分类自动分配规则（分类→业务组映射）\n\n### 审计日志 (AC-10)\n- 审计日志列表页面，支持按工单ID和事件类型筛选\n\n### 样式\n- 使用 Tailwind CSS，遵循 Modern SaaS 视觉风格\n- 状态色：绿色（完成）、琥珀色（待处理/待分配）、红色（取消/P0）、灰色（创建）\n- 桌面 Web 布局（最小宽度 1024px）\n\n### 验证\n- 运行 `npm run typecheck:client` 通过客户端类型检查\n- 运行 `npm run build:client` 通过前端构建\n- 前端使用 technical-contract.md 定义的 API 契约类型，不臆造 API 行为",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000076/requirements.md" },
+        { "path": "docs/wi-t1000076/architecture-baseline.md" },
+        { "path": "docs/wi-t1000076/technical-contract.md" }
+      ],
+      "artifactPaths": [
+        "app/ticket-system/src/client/"
+      ],
+      "failurePolicy": "block",
+      "blockerCodes": ["TASK_FAILED"]
+    }
+  ]
+}
