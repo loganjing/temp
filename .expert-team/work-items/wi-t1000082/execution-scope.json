@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sessions": {
+    "ses_e5f36c46bffee7O74c1HuGmw4p": {
+      "sessionId": "ses_e5f36c46bffee7O74c1HuGmw4p",
+      "executionStageIds": [
+        "requirements"
+      ]
+    }
+  }
+}

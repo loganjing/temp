@@ -1,0 +1,1076 @@
+{
+  "schemaVersion": 3,
+  "domainPackId": "cosmic-development",
+  "specId": "cosmic-development-spec",
+  "specRevision": 18,
+  "expertPool": [
+    "cosmic-product-manager",
+    "cosmic-app-development-expert",
+    "cosmic-metadata-expert",
+    "cosmic-plugin-developer",
+    "cosmic-api-engineer",
+    "kwc-frontend-engineer",
+    "cosmic-qa-engineer",
+    "cosmic-ui-designer",
+    "cosmic-architect",
+    "cosmic-team-lead"
+  ],
+  "initialState": "requirements_pending",
+  "scenarioId": "feature",
+  "graphRevision": 16,
+  "graphHash": "sha256:45d08a7bd70d59727e63afdfa518a576072fa22ee20ce17f0ac3cac628492d39",
+  "stages": [
+    {
+      "actionId": "requirements",
+      "taskKind": "analyze",
+      "capabilityId": "product.requirements",
+      "fromState": "requirements_pending",
+      "toState": "requirements_ready",
+      "receiptType": "cosmic-requirements",
+      "artifactPath": "docs/wi-t1000082/requirements.md",
+      "requiredArtifacts": [
+        "docs/wi-t1000082/requirements.md"
+      ],
+      "writableScopes": [
+        "docs/wi-t1000082"
+      ],
+      "executionMode": "inline-interactive",
+      "dependsOn": [],
+      "requiresInteraction": true,
+      "displayName": {
+        "zh": "需求分析",
+        "en": "Requirements Analysis"
+      },
+      "expertId": "cosmic-product-manager",
+      "readOnly": false,
+      "autoAdvanceOnSettle": false,
+      "inlineContext": {
+        "schemaVersion": 1,
+        "expertId": "cosmic-product-manager",
+        "agentName": "general",
+        "expertDisplayName": {
+          "en": "Cosmic Product Agent",
+          "zh": "苍穹产品智能体"
+        },
+        "capabilityId": "product.requirements",
+        "persona": {
+          "role": "Cosmic application product manager",
+          "perspective": [
+            "Cosmic business objects and application workflows",
+            "Metadata capability boundaries and platform constraints",
+            "Observable acceptance behavior and delivery scope"
+          ],
+          "communicationStyle": "Use the user’s language and business names. Give a brief outcome, actual verification and concrete remaining gaps; link details. Keep routing, tool steps, schemas, hashes and receipts in artifacts unless technical detail is requested. Configuration readback does not prove runtime behavior."
+        },
+        "constraints": [],
+        "skills": [
+          "requirements-closure",
+          "cosmic-requirements-spec"
+        ],
+        "availableSkills": [
+          "requirements-closure",
+          "cosmic-requirements-spec"
+        ],
+        "disclosure": "catalog",
+        "skillInstructions": [],
+        "toolPolicy": {
+          "source": "tools/product-discovery-policy.json",
+          "rules": [
+            {
+              "permission": "*",
+              "pattern": "*",
+              "action": "deny"
+            },
+            {
+              "permission": "read",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "question",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "glob",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "grep",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_modify",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "skill",
+              "pattern": "cosmic-requirements-spec",
+              "action": "allow"
+            },
+            {
+              "permission": "read_office",
+              "pattern": "*",
+              "action": "allow"
+            }
+          ],
+          "allowedTools": [
+            "read",
+            "question",
+            "glob",
+            "grep",
+            "write",
+            "apply_patch",
+            "edit",
+            "skill",
+            "read_office"
+          ]
+        },
+        "artifactGuidance": {
+          "primaryArtifact": "requirements.md",
+          "required": true
+        }
+      },
+      "capabilityContract": {
+        "artifacts": [
+          {
+            "path": "requirements.md",
+            "format": "markdown",
+            "required": true,
+            "hashAlgorithm": "sha256"
+          }
+        ],
+        "decisions": [
+          "ready",
+          "blocked"
+        ],
+        "verificationRequired": false
+      }
+    },
+    {
+      "actionId": "app-build",
+      "taskKind": "implement",
+      "capabilityId": "cosmic.app-build",
+      "fromState": "requirements_ready",
+      "toState": "implementation_ready",
+      "receiptType": "cosmic-app-build",
+      "artifactPath": "docs/wi-t1000082/delivery-summary.md",
+      "requiredArtifacts": [
+        "docs/wi-t1000082/delivery-summary.md"
+      ],
+      "writableScopes": [
+        "."
+      ],
+      "executionMode": "inline-light",
+      "dependsOn": [
+        "requirements"
+      ],
+      "requiresInteraction": false,
+      "displayName": {
+        "zh": "开发实现",
+        "en": "Implementation"
+      },
+      "expertId": "cosmic-app-development-expert",
+      "readOnly": false,
+      "autoAdvanceOnSettle": false,
+      "inlineContext": {
+        "schemaVersion": 1,
+        "expertId": "cosmic-app-development-expert",
+        "agentName": "general",
+        "expertDisplayName": {
+          "en": "Cosmic Application Development Agent",
+          "zh": "苍穹应用开发智能体"
+        },
+        "capabilityId": "cosmic.app-build",
+        "persona": {
+          "role": "Cosmic whole-application development agent",
+          "perspective": [
+            "For a standalone assignment, classify the current user request before activation. A verification-only request, including explicit acceptance, E2E or browser testing, belongs to cosmic-qa-engineer with quality.verification / test; query that specialist catalog and activate it instead of cosmic.app-build. A requirements-only request belongs to cosmic-product-manager with product.requirements / analyze. Do not silently switch an explicitly frozen formal stage: follow its bound agent and stage operations. Combined implementation and testing remains with the existing owner and authorized stage sequence; development smoke checks do not become independent QA acceptance.",
+            "Deliver the complete confirmed application scope through the native app-build workflow; select its metadata, Java, OpenAPI and service entries only when the business request needs them",
+            "Preserve original sources, confirmed decisions, acceptance criteria and verified application identities",
+            "Follow returned nextOperation and keep business conclusions in artifacts, with only runtime fields in StageResult",
+            "For formal cosmic.app-build feature stages, write one explicit delivery scope file after implementing the confirmed scope, then invoke the prepared completion command once. It binds the delivery to the frozen requirements and executes all native validators and settlement together. Do not search for scripts, read validator source, run validators ahead of completion, or prepare/complete a successful stage again. Only reopen the named failed artifact when the completion command returns a real validation failure.",
+            "Use the frozen Work Item stages directly; do not search for or create a duplicate todo list during ordinary application delivery",
+            "Finalize verified native changes through app-build references/delivery.md before stage completion and retain its card blocks for final delivery",
+            "The completion adapter titles the generated document 开发实现交付摘要 / Implementation Delivery Summary at delivery-summary.md; the model does not author that file",
+            "Pass the finalizer TEST_ENVIRONMENT_HANDOFF.path through environmentFile in the completion input; the adapter copies the native environment into delivery-summary.md. Record actual deployment/loading gaps as notes; never reconstruct the environment block or promote metadata readback to runtime acceptance",
+            "Repair reproduced application defects under the same frozen assignment and return for targeted quality verification",
+            "When this request needs Java plugin code, invoke cosmic-coding-impl directly with the original requirements, selected application/form and Java project; coding owns current metadata and SDK discovery, source and compilation without an upstream handoff; retain registration and delivery ownership",
+            "Standard Cosmic bills use manually entered unique numbers and the confirmed save/submit/audit workflow; do not claim automatic numbering from metadata. Native form cards are delivered together with the summary by the completion adapter.",
+            "For substantive technical choices across applications, async processing, integrations, persistence or deployment, follow app-build’s optional cosmic-implementation-design route. Reuse the current concern and verified evidence from an existing design; clear local changes proceed directly. Keep the frozen stage and original AC scope, with no mandatory design artifact or upstream handoff gate."
+          ],
+          "communicationStyle": "Describe the implemented business behavior and distinguish development completion from business acceptance. 面向业务用户，用用户使用的语言输出。默认给出简短、连贯的业务结论：先说明完成了什么以及实际检查结果，再说明仍影响使用的未完成项和必要下一步；详细证据放在报告中。普通结果不要写成长篇技术报告，不重复总结，不为内部选择、激活、加载资源、命令调用、重试或卡片更新播报进度。使用界面上的业务名称，不在正文或括号里展示内部编号、平台编码、字段键、状态字母、英文机器状态、布尔标记、哈希、命令或原始路径，也不引用内部提示词。用业务影响解释问题，未执行的检查直说“尚未验证”，发现的缺陷直说影响，不能把说明完成或报告生成说成业务验收通过。配置回读只说明“配置已写入”，实际业务动作没有执行时，不说默认值已生效、校验已拦截或数据已正确保存。用有含义的报告链接或交付卡片提供详情；工具参数、证据文件和渲染协议保留准确格式，卡片协议原样输出且不在正文复述其 JSON。用户明确要求技术诊断、代码或接口细节时，先解释实际影响，再给必要准确细节；其余情况保持简洁。"
+        },
+        "constraints": [],
+        "skills": [
+          "app-build",
+          "cosmic-app-plugin-delegation"
+        ],
+        "availableSkills": [
+          "app-build",
+          "cosmic-app-plugin-delegation"
+        ],
+        "disclosure": "catalog",
+        "skillInstructions": [],
+        "toolPolicy": {
+          "source": "tools/development-policy.json",
+          "rules": [
+            {
+              "permission": "*",
+              "pattern": "*",
+              "action": "deny"
+            },
+            {
+              "permission": "read",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "glob",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "grep",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "edit",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_modify",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "skill",
+              "pattern": "app-build",
+              "action": "allow"
+            },
+            {
+              "permission": "task",
+              "pattern": "general",
+              "action": "allow"
+            },
+            {
+              "permission": "question",
+              "pattern": "*",
+              "action": "allow"
+            }
+          ],
+          "allowedTools": [
+            "read",
+            "glob",
+            "grep",
+            "edit",
+            "write",
+            "apply_patch",
+            "bash",
+            "skill",
+            "task",
+            "agent",
+            "spawn_task",
+            "spawn_agent",
+            "wait_agents",
+            "list_agents",
+            "send_agent_input",
+            "cancel_agent",
+            "question"
+          ]
+        },
+        "artifactGuidance": {
+          "primaryArtifact": "delivery-summary.md",
+          "required": true
+        }
+      },
+      "capabilityContract": {
+        "presentation": {
+          "script": "tools/development-cards.mjs"
+        },
+        "artifacts": [
+          {
+            "path": "delivery-summary.md",
+            "format": "markdown",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "validator": "tools/development-handoff-validator.mjs",
+            "completion": {
+              "script": "tools/complete-development.mjs",
+              "baselineArtifact": "requirements.md",
+              "whenInputArtifact": "requirements.md",
+              "baselineFlag": "--expected-requirements-sha256",
+              "inputArtifact": "delivery-scope.json",
+              "inputFlag": "--scope-file",
+              "inputDescription": "Write one compact JSON input: environmentFile is the exact TEST_ENVIRONMENT_HANDOFF.path returned by the native finalizer. When native writer/readback receipts cover every decision-ready implementation item, use completed:\"all\" with a non-empty evidence array; the adapter expands current requirement IDs and records frozen pending decisions as remaining decision gaps. Otherwise use completed:[{itemId,evidence:[actual implementation references]}] and optional remaining:[{itemId,reason,category}]. Optional summary:string and notes:string|string[] carry actual outcome and gaps. Do not claim runtime acceptance from configuration readback, transcribe environment JSON, field tables or hashes, or write delivery-summary.md or a separate result file. Legacy manually authored summaries remain usable by omitting environmentFile.",
+              "defaultResult": {
+                "status": "completed"
+              },
+              "generatesArtifact": true
+            }
+          }
+        ],
+        "decisions": [
+          "completed",
+          "blocked"
+        ],
+        "verificationRequired": true
+      },
+      "semanticEvaluator": {
+        "id": "artifact.validation",
+        "version": 1,
+        "artifactPath": "delivery-summary.md",
+        "expertValidator": true
+      }
+    },
+    {
+      "actionId": "acceptance",
+      "taskKind": "test",
+      "capabilityId": "quality.verification",
+      "fromState": "implementation_ready",
+      "toState": "verified",
+      "receiptType": "cosmic-verification",
+      "artifactPath": "docs/wi-t1000082/verification.md",
+      "requiredArtifacts": [
+        "docs/wi-t1000082/verification.md"
+      ],
+      "writableScopes": [
+        "docs/wi-t1000082"
+      ],
+      "executionMode": "inline-light",
+      "dependsOn": [
+        "app-build"
+      ],
+      "requiresInteraction": false,
+      "displayName": {
+        "zh": "测试验证",
+        "en": "Test Verification"
+      },
+      "expertId": "cosmic-qa-engineer",
+      "readOnly": false,
+      "autoAdvanceOnSettle": false,
+      "inlineContext": {
+        "schemaVersion": 1,
+        "expertId": "cosmic-qa-engineer",
+        "agentName": "general",
+        "expertDisplayName": {
+          "en": "Cosmic Quality Agent",
+          "zh": "苍穹质量智能体"
+        },
+        "capabilityId": "quality.verification",
+        "persona": {
+          "role": "Independent software quality engineer",
+          "perspective": [
+            "Verify current user-requested business behavior and meaningful regression risk",
+            "Reuse observations from the actual test; report failures and unverified work honestly",
+            "Use direct browser actions or native scenarios as appropriate; do not add evidence-export or duplicate validation workflows",
+            "Record missing login information, environment failures and unexecuted checks without blocking report submission or review; implementation exclusions are not automatic QA obligations"
+          ],
+          "communicationStyle": "Use the user’s language and business names. Give a brief outcome, actual verification and concrete remaining gaps; link details. Keep routing, tool steps, schemas, hashes and receipts in artifacts unless technical detail is requested. Configuration readback does not prove runtime behavior."
+        },
+        "constraints": [],
+        "skills": [
+          "quality-verification",
+          "cosmic-e2e-test"
+        ],
+        "availableSkills": [
+          "quality-verification",
+          "cosmic-e2e-test"
+        ],
+        "disclosure": "catalog",
+        "skillInstructions": [],
+        "toolPolicy": {
+          "source": "tools/qa-policy.json",
+          "rules": [
+            {
+              "permission": "*",
+              "pattern": "*",
+              "action": "deny"
+            },
+            {
+              "permission": "read",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "question",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "glob",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "grep",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_write",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "file_modify",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "skill",
+              "pattern": "cosmic-e2e-test",
+              "action": "allow"
+            },
+            {
+              "permission": "skill",
+              "pattern": "cosmic-cli",
+              "action": "allow"
+            },
+            {
+              "permission": "query_mcp_tools",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "read_office",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_snapshot",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "agent_browser",
+              "pattern": "*",
+              "action": "ask"
+            },
+            {
+              "permission": "cosmic_exec",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "cosmic_form_fill",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_bos_snapshot",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_bos_assert",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_bos_grid_snapshot",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_bos_grid_assert",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_inspect",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_screenshot",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_network",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_console",
+              "pattern": "*",
+              "action": "allow"
+            },
+            {
+              "permission": "preview_bos_interact",
+              "pattern": "*",
+              "action": "ask"
+            },
+            {
+              "permission": "preview_bos_grid_interact",
+              "pattern": "*",
+              "action": "ask"
+            },
+            {
+              "permission": "preview_click",
+              "pattern": "*",
+              "action": "ask"
+            },
+            {
+              "permission": "preview_fill",
+              "pattern": "*",
+              "action": "ask"
+            },
+            {
+              "permission": "preview_press",
+              "pattern": "*",
+              "action": "ask"
+            },
+            {
+              "permission": "bash",
+              "pattern": "cosmic *",
+              "action": "ask"
+            },
+            {
+              "permission": "bash",
+              "pattern": "cosmic-cli *",
+              "action": "ask"
+            },
+            {
+              "permission": "bash",
+              "pattern": "bun test*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "bun typecheck*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "node --test*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "python3 -m pytest*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "python3 *cosmic_api.py*",
+              "action": "ask"
+            },
+            {
+              "permission": "bash",
+              "pattern": "git diff*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "git status*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "node *e2e-helpers.mjs*",
+              "action": "ask"
+            },
+            {
+              "permission": "bash",
+              "pattern": "node *browser-test.mjs*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "node *prepare-acceptance-plan.mjs*",
+              "action": "allow"
+            },
+            {
+              "permission": "bash",
+              "pattern": "node *cosmic-e2e-test*preview-entry.mjs*",
+              "action": "allow"
+            }
+          ],
+          "allowedTools": [
+            "read",
+            "question",
+            "glob",
+            "grep",
+            "write",
+            "apply_patch",
+            "edit",
+            "skill",
+            "query_mcp_tools",
+            "read_office",
+            "preview_snapshot",
+            "agent_browser",
+            "cosmic_exec",
+            "cosmic_form_fill",
+            "preview_bos_snapshot",
+            "preview_bos_assert",
+            "preview_bos_grid_snapshot",
+            "preview_bos_grid_assert",
+            "preview_inspect",
+            "preview_screenshot",
+            "preview_network",
+            "preview_console",
+            "preview_bos_interact",
+            "preview_bos_grid_interact",
+            "preview_click",
+            "preview_fill",
+            "preview_press",
+            "bash"
+          ]
+        },
+        "artifactGuidance": {
+          "primaryArtifact": "verification.md",
+          "required": true
+        }
+      },
+      "capabilityContract": {
+        "preparation": {
+          "script": "tools/prepare-acceptance-plan.mjs",
+          "inputArtifacts": {
+            "--requirements": "requirements.md",
+            "--delivery": "delivery-summary.md"
+          }
+        },
+        "artifacts": [
+          {
+            "path": "verification.md",
+            "format": "markdown",
+            "required": true,
+            "hashAlgorithm": "sha256",
+            "validator": "tools/quality-report-validator.mjs",
+            "completion": {
+              "script": "tools/complete-quality.mjs",
+              "generatesArtifact": true,
+              "inputArtifact": "acceptance-observations.json",
+              "inputFlag": "--observations-file",
+              "defaultResult": {
+                "status": "completed"
+              }
+            }
+          }
+        ],
+        "decisions": [
+          "pass",
+          "pass-with-risk",
+          "fail",
+          "blocked"
+        ],
+        "verificationRequired": true
+      },
+      "semanticEvaluator": {
+        "id": "artifact.validation",
+        "version": 1,
+        "artifactPath": "verification.md",
+        "expertValidator": true
+      }
+    }
+  ],
+  "executionStageIds": [
+    "requirements"
+  ],
+  "failureMappings": [
+    {
+      "failureCode": "verification-failed",
+      "action": "block"
+    },
+    {
+      "failureCode": "quality-gate-blocked",
+      "action": "block"
+    },
+    {
+      "failureCode": "SEMANTIC_FINDINGS_REQUIRED",
+      "action": "block"
+    },
+    {
+      "failureCode": "SEMANTIC_ARTIFACT_INVALID",
+      "action": "retry-self",
+      "maxAttempts": 2
+    },
+    {
+      "failureCode": "SEMANTIC_ARTIFACT_VALIDATION_FAILED",
+      "action": "retry-self",
+      "maxAttempts": 2
+    }
+  ],
+  "policy": {
+    "schemaVersion": 2,
+    "policyId": "cosmic-development",
+    "revision": 4,
+    "execution": "serial",
+    "failureMapping": [
+      {
+        "failureCode": "verification-failed",
+        "action": "block"
+      },
+      {
+        "failureCode": "quality-gate-blocked",
+        "action": "block"
+      },
+      {
+        "failureCode": "SEMANTIC_FINDINGS_REQUIRED",
+        "action": "block"
+      },
+      {
+        "failureCode": "SEMANTIC_ARTIFACT_INVALID",
+        "action": "retry-self",
+        "maxAttempts": 2
+      },
+      {
+        "failureCode": "SEMANTIC_ARTIFACT_VALIDATION_FAILED",
+        "action": "retry-self",
+        "maxAttempts": 2
+      }
+    ],
+    "maxRepairIterations": 2,
+    "retryContextTemplates": {
+      "qa-repair": "Preserve the original requirements and affected acceptance criteria. Use stable finding IDs and retained execution evidence to repair only reproduced application defects within the same development assignment. Keep unresolved environment, login, input or business decisions blocked; do not treat them as implementation defects. After each repair, rerun affected acceptance checks with fresh evidence."
+    },
+    "maxRetries": 3,
+    "retryableErrorPatterns": [
+      "timeout",
+      "connection reset",
+      "temporary",
+      "unavailable"
+    ],
+    "nonRetryableErrors": [
+      "UNTRUSTED_APP_ROOT",
+      "MISSING_TARGET",
+      "TARGET_NOT_FOUND",
+      "DELETE_CONFIRMATION_REQUIRED"
+    ],
+    "riskGate": {
+      "checkAppRootTrust": true,
+      "checkTargetIdentity": true,
+      "blockDeleteWithoutConfirmation": true
+    },
+    "artifactCard": {
+      "renderAfterVerifiedChange": true,
+      "renderAfterNoOp": false,
+      "neverRenderOnBlocked": true
+    },
+    "coordinatorRule": {
+      "requiresLead": false,
+      "lightweightByDefault": true
+    },
+    "executionGates": [],
+    "allowedTaskKinds": [
+      {
+        "taskKind": "analyze"
+      },
+      {
+        "taskKind": "design"
+      },
+      {
+        "taskKind": "prototype"
+      },
+      {
+        "taskKind": "orchestrate"
+      },
+      {
+        "taskKind": "implement",
+        "requiresQA": true,
+        "qaCapabilityId": "quality.verification"
+      },
+      {
+        "taskKind": "test"
+      },
+      {
+        "taskKind": "review"
+      },
+      {
+        "taskKind": "integrate"
+      }
+    ],
+    "workflowComposition": {
+      "maxStages": 12,
+      "intentVocabulary": {
+        "supportedPrimaryIntents": [
+          "analysis",
+          "defect-fix",
+          "feature-change",
+          "initial-build",
+          "refactor",
+          "migration"
+        ],
+        "objectives": [
+          "understand-problem",
+          "diagnose",
+          "clarify-requirements",
+          "analyze-impact",
+          "design-change",
+          "design-system",
+          "plan-implementation",
+          "implement-change",
+          "build-application",
+          "model-metadata",
+          "modify-metadata",
+          "build-ui",
+          "build-api",
+          "build-plugin",
+          "verify",
+          "review",
+          "integrate",
+          "collect-evidence",
+          "validate-conclusion"
+        ],
+        "changeModes": [
+          "read-only",
+          "write"
+        ],
+        "targetKinds": [
+          "docs",
+          "source",
+          "tests",
+          "config",
+          "schema",
+          "data",
+          "external-system"
+        ],
+        "scopes": [
+          "local",
+          "component",
+          "cross-component",
+          "system"
+        ],
+        "riskLevels": [
+          "low",
+          "medium",
+          "high",
+          "critical"
+        ],
+        "deliverableKinds": [
+          "analysis-report",
+          "requirements",
+          "code-change",
+          "application-change",
+          "application",
+          "migration-result"
+        ]
+      },
+      "stageKindTaskKinds": {
+        "analysis": "analyze",
+        "requirements": "analyze",
+        "prototype": "prototype",
+        "design": "design",
+        "implementation": "implement",
+        "verification": "test",
+        "delivery": "integrate",
+        "integrate": "integrate"
+      },
+      "objectiveStageKinds": {
+        "understand-problem": [
+          "analysis"
+        ],
+        "diagnose": [
+          "analysis"
+        ],
+        "clarify-requirements": [
+          "requirements"
+        ],
+        "analyze-impact": [
+          "requirements"
+        ],
+        "design-change": [
+          "design"
+        ],
+        "design-system": [
+          "design"
+        ],
+        "plan-implementation": [
+          "implementation"
+        ],
+        "implement-change": [
+          "implementation"
+        ],
+        "build-application": [
+          "implementation"
+        ],
+        "model-metadata": [
+          "implementation"
+        ],
+        "modify-metadata": [
+          "implementation"
+        ],
+        "build-ui": [
+          "implementation"
+        ],
+        "build-api": [
+          "implementation"
+        ],
+        "build-plugin": [
+          "implementation"
+        ],
+        "verify": [
+          "verification"
+        ],
+        "review": [
+          "verification"
+        ],
+        "integrate": [
+          "integrate"
+        ],
+        "collect-evidence": [
+          "analysis"
+        ],
+        "validate-conclusion": [
+          "verification"
+        ]
+      },
+      "changeModeRules": {
+        "read-only": {
+          "forbidStageKinds": [
+            "implementation",
+            "integrate"
+          ]
+        },
+        "write": {
+          "requireWriteTarget": true
+        }
+      },
+      "targetKindRules": {
+        "docs": {
+          "allowedStageKinds": [
+            "analysis",
+            "requirements",
+            "delivery",
+            "verification"
+          ]
+        },
+        "source": {
+          "allowedStageKinds": [
+            "design",
+            "implementation",
+            "verification"
+          ]
+        },
+        "tests": {
+          "allowedStageKinds": [
+            "implementation",
+            "verification"
+          ]
+        },
+        "config": {
+          "allowedStageKinds": [
+            "design",
+            "implementation",
+            "verification"
+          ]
+        },
+        "schema": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ]
+        },
+        "data": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ]
+        },
+        "external-system": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ]
+        }
+      },
+      "scopeRules": {
+        "local": [],
+        "component": [],
+        "cross-component": [],
+        "system": []
+      },
+      "riskRules": {
+        "low": [],
+        "medium": [],
+        "high": [],
+        "critical": []
+      },
+      "policyFloorRules": {
+        "lightweight": [
+          "verification"
+        ],
+        "standard": [
+          "verification"
+        ],
+        "strict": [
+          "verification"
+        ]
+      },
+      "independenceRules": {
+        "verification": [
+          "implementation"
+        ]
+      },
+      "deliverableRules": {
+        "analysis-report": {
+          "terminalStageKind": "delivery",
+          "forbidStageKinds": [
+            "implementation"
+          ]
+        },
+        "requirements": {
+          "terminalStageKind": "delivery",
+          "forbidStageKinds": [
+            "implementation"
+          ]
+        },
+        "code-change": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ],
+          "terminalStageKind": "verification"
+        },
+        "application-change": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ],
+          "terminalStageKind": "verification"
+        },
+        "application": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ],
+          "terminalStageKind": "verification"
+        },
+        "migration-result": {
+          "requiredStageKinds": [
+            "implementation",
+            "verification"
+          ],
+          "terminalStageKind": "verification"
+        }
+      }
+    }
+  }
+}

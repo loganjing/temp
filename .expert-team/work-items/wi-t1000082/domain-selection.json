@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "decisionId": "domain-selection:cosmic-development:18937491fc39",
+  "teamId": "cosmic-development",
+  "domainPack": {
+    "id": "cosmic-development",
+    "revision": 14
+  },
+  "spec": {
+    "id": "cosmic-development-spec",
+    "revision": 18
+  },
+  "policy": {
+    "id": "cosmic-development",
+    "revision": 4
+  },
+  "source": "user",
+  "inputHash": "sha256:18937491fc392db04498288513053f013149998522ea0924a29c4c9c531a33de",
+  "createdAt": "2026-11-03T09:41:50.576Z"
+}

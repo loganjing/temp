@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "cosmic-requirements",
+  "specId": "cosmic-development-spec",
+  "graphRevision": 16,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:f9561a9b49ae2e5787c330af996414bfca08d1360870a0d32efe1345c6790523",
+  "createdAt": "2026-11-03T09:42:34.804Z",
+  "timing": {
+    "startedAt": "2026-11-03T09:41:50.746Z",
+    "completedAt": "2026-11-03T09:42:34.803Z",
+    "durationMs": 44057
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000082/requirements.md",
+      "bytes": 5255,
+      "sha256": "sha256:eef75ce38ced4bf249bd0b5ec19fe1ca457d0eb53521549fa65f6cddfd804a83",
+      "role": "primary",
+      "purpose": "教师管理系统需求规格文档，定义数据对象、增删改查功能、业务规则及14条验收标准",
+      "title": "教师管理系统 — 需求规格"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements:clarification",
+      "status": "passed",
+      "readiness": {
+        "mode": "document",
+        "semanticHash": "sha256:eef75ce38ced4bf249bd0b5ec19fe1ca457d0eb53521549fa65f6cddfd804a83",
+        "revision": 1
+      }
+    }
+  ]
+}
