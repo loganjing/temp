@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000078/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "系统架构基线"
+    },
+    {
+      "path": "docs/wi-t1000078/technical-contract.md",
+      "role": "supporting",
+      "purpose": "前后端共享 API 契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    }
+  ],
+  "evidence": [
+    "workspace-init decision=initialized, packageRoot=app/ticket-system, modules=[dbkit,authkit,userkit,permissionkit,auditkit,emailkit]",
+    "npm run build passed, npm run test 4 pass 0 fail"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:353e02a8d135001b7d734ed5e354188163aef3329610fc0b666dc4a196dccfda",
+  "createdAt": "2026-11-03T02:29:58.505Z",
+  "timing": {
+    "startedAt": "2026-11-03T02:21:52.411Z",
+    "completedAt": "2026-11-03T02:29:58.505Z",
+    "durationMs": 486094
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000078/architecture-baseline.md",
+      "bytes": 19108,
+      "sha256": "sha256:540658a89a17e00b0c5bbcb6a0c12bc86239abb1dd6898266211ecee2d356b3e",
+      "role": "primary",
+      "purpose": "系统架构基线：技术栈、模块边界、数据模型、CommonApp 集成、UI 基线、运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000078/technical-contract.md",
+      "bytes": 10982,
+      "sha256": "sha256:7187dba0956e4670df765a8559d2fe627a4548fb47b612dba9021412c0dbffb4",
+      "role": "supporting",
+      "purpose": "前后端共享 API 契约：ID 类型对照、端点定义、授权规则、错误格式",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline-verified",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:186df806712c4d3a18877f2f4d37a4dbf18b94885b2bfd9e43720f64c34329bf",
+        "path": ".expert-team/work-items/wi-t1000078/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

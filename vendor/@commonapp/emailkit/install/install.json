@@ -1,0 +1,9 @@
+{
+  "moduleId": "emailkit",
+  "packageName": "@commonapp/emailkit",
+  "configurationExample": "config.env.example",
+  "runtimeDependencies": {
+    "nodemailer": "^9.0.5"
+  },
+  "usage": "import { createEmailClient } from '@commonapp/emailkit'"
+}
