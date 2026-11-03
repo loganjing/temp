@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:532ba5a9afd0147b4975aa6cd054370d9d291552c07d4593f7ae228a4d9fd0d1",
+  "createdAt": "2026-11-03T09:12:03.485Z",
+  "timing": {
+    "startedAt": "2026-11-03T09:11:07.415Z",
+    "completedAt": "2026-11-03T09:12:03.485Z",
+    "durationMs": 56070
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000081/requirements.md",
+      "bytes": 3290,
+      "sha256": "sha256:dc23c29cab3505c0c17d29719bd0b2dc8fd0484d5e85d359748bd0bda4eb586f",
+      "role": "requirements",
+      "purpose": "教师管理系统需求文档，包含目标、字段定义、核心CRUD行为规则与3条验收场景",
+      "title": "教师管理系统需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
