@@ -20,7 +20,7 @@
 |------|------|------|---------|----------|----------|
 | dbkit | 0.2.0 | @commonapp/dbkit | f343ad1fc6ceae6843b0c43efc72f6c59c568f826619570f0808c017ec06eec6 | SQLite 持久化、查询、事务、迁移 | 全量数据库操作入口 |
 | authkit | 0.1.2 | @commonapp/authkit | a91e927efd1cc7661dd23841070590f255686dd3dc6ae223de90621aefc62b02 | 用户认证、Bearer 会话 | Hono 中间件，保护全部业务路由 |
-| userkit | 0.1.0 | @commonapp/userkit | 40b00dda1885792fb4a85a7d3734833174b577c3efca241523a5fe9e3dab1dc4 | 本地用户、密码凭证 | 管理用户表与密码；项目扩展 user_profiles 存储业务属性 |
+| userkit | 0.1.0 | @commonapp/userkit | 40b00dda1885792fb4a85a7d3734833174b577c3efca241523a5fe9e3dab1dc4 | 本地用户、密码凭证 | 管理用户表（id TEXT, name, email, company_id TEXT）与密码；项目不创建独立 user_profiles 表 |
 | permissionkit | 0.1.0 | @commonapp/permissionkit | 09b66531da01ee401dc5ea3a746a8a71910ec8d0eb304c84f8e00217db7f0228 | RBAC 角色授权 | 定义 submitter/handler/admin 角色与权限检查 |
 | auditkit | 0.1.0 | @commonapp/auditkit | 27697d5cfe82dafe1d362312079fe63e81f15a30c25a10305cba99166cff0ce1 | 操作日志审计 | 记录工单生命周期关键操作 |
 | emailkit | 0.1.0 | @commonapp/emailkit | a9ccc93ac2553ad540e825b361d63d528ce888dcc3f749a83dead80c3563896c | SMTP 邮件发送 | 工单完成时通知提交人 |
@@ -63,23 +63,24 @@
 
 - SQLite 是唯一权威数据存储，通过 dbkit 管理连接、查询、事务和迁移。
 - **公司隔离**在应用层强制：每个请求经 Company Scope 中间件注入当前用户所属 `company_id`，所有业务查询自动按 `company_id` 过滤。管理员（admin 角色）可跨公司查询，通过显式 `company_id` 查询参数控制范围。
-- 用户认证由 authkit 管理，用户凭证由 userkit 管理，业务属性（姓名、邮箱、公司、部门、角色）存储在项目拥有的 `user_profiles` 表。
+- 用户认证由 authkit 管理，用户凭证由 userkit 管理，用户业务属性（name、email、company_id）已包含在 userkit 的 `users` 表中（id TEXT PK）。角色通过 permissionkit 的 `user_role_assignments` 管理。项目不创建独立 user_profiles 表。所有项目表的主键和外键均使用 TEXT 类型，与平台一致。
 
 <!-- system-design: architecture-boundaries -->
 ## 2. 领域责任、模块边界与接口摘要
 
 ### 2.1 认证与用户模块
 
-**职责**：用户登录、会话管理、用户凭证存储、用户业务档案。
+**职责**：用户登录、会话管理、用户凭证存储。
 
 **数据归属**：
-- `users` 表（userkit 管理）：id, username, password_hash, created_at
-- `user_profiles` 表（项目拥有）：id, user_id, display_name, email, company_id, department_id, role, created_at
+- `users` 表（userkit 管理）：id TEXT PK, name TEXT, email TEXT UNIQUE, phone TEXT, company_id TEXT, password_hash TEXT, enabled INTEGER, password_change_required INTEGER, created_at TEXT, updated_at TEXT
+- 角色通过 permissionkit 的 `user_role_assignments` 表管理（user_id TEXT, role_key TEXT）
+- 项目不创建独立 user_profiles 表——userkit 的 users 表已包含 name、email、company_id 业务字段；department 关联通过项目 departments 表间接查询
 
 **接口摘要**：
-- `POST /api/auth/login` — 用户登录，返回 Bearer Token
+- `POST /api/auth/login` — 用户登录（email + password），返回 Bearer Token 和扁平用户对象
 - `POST /api/auth/logout` — 注销会话
-- `GET /api/auth/me` — 获取当前用户信息（含业务档案）
+- `GET /api/auth/me` — 获取当前用户信息（扁平结构：id, name, email, companyId, roles, passwordChangeRequired）
 - `GET /api/users/:userId` — 获取指定用户档案（处理人查看提交人信息）
 - `GET /api/users/:userId/tickets` — 获取用户历史工单列表
 
@@ -88,12 +89,12 @@
 **职责**：公司、部门、业务组、工单分类、分类分配规则的管理。
 
 **数据归属**：
-- `companies`（项目拥有）：id, name, created_at
-- `departments`（项目拥有）：id, company_id, name, created_at
-- `business_groups`（项目拥有）：id, company_id, name, created_at
-- `business_group_members`（项目拥有）：id, business_group_id, user_id, created_at
-- `ticket_categories`（项目拥有）：id, company_id, name, created_at
-- `category_assignment_rules`（项目拥有）：id, company_id, category_id, business_group_id, created_at
+- `companies`（项目拥有）：id TEXT PK, name TEXT, created_at TEXT
+- `departments`（项目拥有）：id TEXT PK, company_id TEXT FK, name TEXT, created_at TEXT
+- `business_groups`（项目拥有）：id TEXT PK, company_id TEXT FK, name TEXT, created_at TEXT
+- `business_group_members`（项目拥有）：id TEXT PK, business_group_id TEXT FK, user_id TEXT FK, created_at TEXT
+- `ticket_categories`（项目拥有）：id TEXT PK, company_id TEXT FK, name TEXT, created_at TEXT
+- `category_assignment_rules`（项目拥有）：id TEXT PK, company_id TEXT FK, category_id TEXT FK, business_group_id TEXT FK, created_at TEXT
 
 **接口摘要**：
 - `GET /api/business-groups` — 按公司查询业务组列表（含成员）
@@ -110,10 +111,10 @@
 **职责**：工单创建（含自动分配）、查询、详情、回复、转派、处理、完成（含邮件通知）、取消。
 
 **数据归属**：
-- `tickets`（项目拥有）：id, title, description, category_id, company_id, submitter_id, sla_priority, status, business_group_id, handler_id, created_at, assigned_at, processed_at, completed_at, cancelled_at
-- `ticket_replies`（项目拥有）：id, ticket_id, replier_id, content, created_at
-- `ticket_transfers`（项目拥有）：id, ticket_id, from_business_group_id, to_business_group_id, transferred_by, reason, created_at
-- `ticket_satisfactions`（项目拥有）：id, ticket_id, rating, comment, created_at
+- `tickets`（项目拥有）：id TEXT PK, title TEXT, description TEXT, category_id TEXT FK, company_id TEXT FK, submitter_id TEXT FK, sla_priority TEXT, status TEXT, business_group_id TEXT FK, handler_id TEXT FK, created_at TEXT, assigned_at TEXT, processed_at TEXT, completed_at TEXT, cancelled_at TEXT
+- `ticket_replies`（项目拥有）：id TEXT PK, ticket_id TEXT FK, replier_id TEXT FK, content TEXT, created_at TEXT
+- `ticket_transfers`（项目拥有）：id TEXT PK, ticket_id TEXT FK, from_business_group_id TEXT FK, to_business_group_id TEXT FK, transferred_by TEXT FK, reason TEXT, created_at TEXT
+- `ticket_satisfactions`（项目拥有）：id TEXT PK, ticket_id TEXT FK, rating INTEGER, comment TEXT, created_at TEXT
 
 **接口摘要**：
 - `POST /api/tickets` — 创建工单（自动按分类规则分配业务组）
@@ -168,7 +169,8 @@ companies 1───* tickets *───1 ticket_categories
 tickets   1───* ticket_replies *───1 users
 tickets   1───* ticket_transfers
 tickets   1───1 ticket_satisfactions
-users     1───1 user_profiles
+users     1───* tickets (submitter)
+users     1───* tickets (handler)
 ```
 
 ### 关键约束
@@ -183,7 +185,7 @@ users     1───1 user_profiles
 ### 迁移策略
 
 - 使用 dbkit 的 `runMigrations(db, {directory: './migrations'})`。
-- SQL 迁移文件位于 `migrations/sqlite/`，版本化递增（001_init.sql, 002_*.sql, ...）。
+- SQL 迁移文件位于 `src/server/migrations/sqlite/`，编号从 0004 开始（0001-0003 为平台模块迁移），版本化递增（0004_init_business.sql, 0005_*.sql, ...）。
 - 不通过 ORM 自动同步 schema，所有 schema 变更通过迁移文件。
 
 ## 4. UI 全局基线
@@ -225,7 +227,7 @@ users     1───1 user_profiles
 ### 邮件通知（emailkit）
 
 - **触发时机**：工单状态变为 `completed` 时
-- **收件人**：提交人邮箱（user_profiles.email）
+- **收件人**：提交人邮箱（users.email，通过 userkit 查询）
 - **发送方式**：emailkit 的 `createEmailClient` 创建 SMTP 客户端
 - **内容模板**：基本通知格式，包含工单标题、工单ID、完成时间、处理人姓名。模板细节未在需求中规定，使用默认模板，后续可配置。
 - **失败可见性**：邮件发送失败不阻塞工单完成流程，记录错误日志；审计日志记录通知发送状态。

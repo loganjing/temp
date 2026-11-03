@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:0ecaea0f68311858965494c5289862078a300915889b444def3ba5c35b17ff10",
+  "createdAt": "2026-11-03T03:03:45.973Z",
+  "timing": {
+    "startedAt": "2026-11-03T02:18:50.367Z",
+    "completedAt": "2026-11-03T03:03:45.972Z",
+    "durationMs": 2695605
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000077/implementation-report.md",
+      "bytes": 7093,
+      "sha256": "sha256:6f5097601859c3cab5f19bb826c13c8971f47e488e7d77bde9db30bbfe1abbb0",
+      "role": "primary",
+      "purpose": "实现报告：两并行任务交付结果、契约修正、AC 覆盖、验证证据",
+      "title": "实现报告"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "T01-typecheck-server",
+      "status": "passed"
+    },
+    {
+      "checkId": "T01-typecheck-client",
+      "status": "passed"
+    },
+    {
+      "checkId": "T01-typecheck-full",
+      "status": "passed"
+    },
+    {
+      "checkId": "T01-tests",
+      "status": "passed"
+    },
+    {
+      "checkId": "T02-client-typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "T02-full-build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:ecad88d8c318c5f677a19fbfab26685a084298633cf21ff7468ed298194c04d5",
+        "path": ".expert-team/work-items/wi-t1000077/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

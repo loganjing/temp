@@ -51,3 +51,52 @@ export async function seedQaIdentity(platform, {
 
   return { id: created.id, email, password, companyId }
 }
+
+const TEST_PASSWORD = 'test-password-12345'
+
+/**
+ * Seed a full ticket-system test environment: two companies with departments,
+ * users (submitter/handler/admin) in each, business groups, categories, and
+ * assignment rules. Returns identifiers and login credentials for all actors.
+ */
+export async function seedTicketEnvironment(platform, { qaRunId }) {
+  const now = new Date().toISOString()
+  const companyA = `${qaRunId}-comp-a`
+  const companyB = `${qaRunId}-comp-b`
+  const deptA = `${qaRunId}-dept-a`
+
+  await platform.db.run({ text: 'INSERT INTO companies (id, name, created_at) VALUES (?, ?, ?)', params: [companyA, `Company A`, now] })
+  await platform.db.run({ text: 'INSERT INTO companies (id, name, created_at) VALUES (?, ?, ?)', params: [companyB, `Company B`, now] })
+  await platform.db.run({ text: 'INSERT INTO departments (id, company_id, name, created_at) VALUES (?, ?, ?, ?)', params: [deptA, companyA, `Dept A`, now] })
+
+  async function createUser(name, email, companyId, role, departmentId = null) {
+    const user = await platform.auth.userStore.create({ name, email, companyId, passwordChangeRequired: false }, platform.auth.hashPassword(TEST_PASSWORD))
+    await platform.permissionKit.assignRole(user.id, role)
+    if (departmentId) await platform.db.run({ text: 'UPDATE users SET department_id = ? WHERE id = ?', params: [departmentId, user.id] })
+    return { id: user.id, email, password: TEST_PASSWORD, companyId }
+  }
+
+  const submitterA = await createUser(`Submitter A`, `sub-a-${qaRunId}@example.test`, companyA, 'submitter', deptA)
+  const handlerA = await createUser(`Handler A`, `hdl-a-${qaRunId}@example.test`, companyA, 'handler')
+  const adminA = await createUser(`Admin A`, `adm-a-${qaRunId}@example.test`, companyA, 'admin')
+  const submitterB = await createUser(`Submitter B`, `sub-b-${qaRunId}@example.test`, companyB, 'submitter')
+
+  const groupA = `${qaRunId}-bg-a`
+  const groupB = `${qaRunId}-bg-b`
+  await platform.db.run({ text: 'INSERT INTO business_groups (id, company_id, name, created_at) VALUES (?, ?, ?, ?)', params: [groupA, companyA, `BG A`, now] })
+  await platform.db.run({ text: 'INSERT INTO business_groups (id, company_id, name, created_at) VALUES (?, ?, ?, ?)', params: [groupB, companyA, `BG B`, now] })
+  await platform.db.run({ text: 'INSERT INTO business_group_members (id, business_group_id, user_id, created_at) VALUES (?, ?, ?, ?)', params: [randomUUID(), groupA, handlerA.id, now] })
+
+  const catA = `${qaRunId}-cat-a`
+  const catAUnassigned = `${qaRunId}-cat-unassigned`
+  await platform.db.run({ text: 'INSERT INTO ticket_categories (id, company_id, name, created_at) VALUES (?, ?, ?, ?)', params: [catA, companyA, `Cat A`, now] })
+  await platform.db.run({ text: 'INSERT INTO ticket_categories (id, company_id, name, created_at) VALUES (?, ?, ?, ?)', params: [catAUnassigned, companyA, `Cat Unassigned`, now] })
+
+  await platform.db.run({ text: 'INSERT INTO category_assignment_rules (id, company_id, category_id, business_group_id, created_at) VALUES (?, ?, ?, ?, ?)', params: [randomUUID(), companyA, catA, groupA, now] })
+
+  return {
+    companyA, companyB, deptA, groupA, groupB, catA, catAUnassigned,
+    submitterA, handlerA, adminA, submitterB,
+    password: TEST_PASSWORD,
+  }
+}

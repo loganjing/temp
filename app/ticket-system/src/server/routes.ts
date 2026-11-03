@@ -2,6 +2,11 @@ import { randomUUID } from 'node:crypto'
 import type { Hono, MiddlewareHandler } from 'hono'
 import type { initializePlatform } from './platform/bootstrap'
 import type { AuthUser } from '@commonapp/userkit'
+import { createServices } from './services'
+import { registerTicketRoutes } from './routes/tickets'
+import { registerOrgRoutes } from './routes/org'
+import { registerUserRoutes } from './routes/users'
+import { registerStatsRoutes } from './routes/stats'
 
 type Platform = Awaited<ReturnType<typeof initializePlatform>>
 const errorBody = (code: string, message: string) => ({ error: { code, message } })
@@ -49,7 +54,7 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
       console.error('[bootstrap] failed')
       return context.json(errorBody('BOOTSTRAP_FAILED', 'Could not create the first account'), 500)
     }
-    return context.json({ ok: true }, 201)
+    return context.json({ id, name, email }, 201)
   })
   app.post('/api/auth/login', platform.auth.loginRateLimit, platform.auth.loginRoute as MiddlewareHandler)
   app.get('/api/auth/sso/start', (context) => platform.auth.sso.start(context as never))
@@ -59,6 +64,7 @@ export function registerPublicRoutes(app: Hono, platform: Platform) {
 
 export function registerProtectedRoutes(app: Hono, platform: Platform) {
   app.get('/api/auth/me', (context) => context.json((context as unknown as { get(key: string): unknown }).get('currentUser')))
+  app.post('/api/auth/logout', (context) => context.body(null, 204))
   app.post('/api/auth/password', async (context) => {
     const body = await context.req.json().catch(() => ({}))
     let password: string
@@ -141,4 +147,10 @@ export function registerProtectedRoutes(app: Hono, platform: Platform) {
     if (!changed) return context.json(errorBody('NOT_FOUND', 'User not found'), 404)
     return context.json({ ok: true })
   })
+
+  const services = createServices(platform)
+  registerTicketRoutes(app, platform, services)
+  registerOrgRoutes(app, platform, services)
+  registerUserRoutes(app, platform, services)
+  registerStatsRoutes(app, platform, services)
 }
