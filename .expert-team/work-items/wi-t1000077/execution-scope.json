@@ -18,6 +18,12 @@
       "executionStageIds": [
         "implementation"
       ]
+    },
+    "ses_e60a25434ffe0ReJGAGMR7cc92": {
+      "sessionId": "ses_e60a25434ffe0ReJGAGMR7cc92",
+      "executionStageIds": [
+        "verification"
+      ]
     }
   }
 }

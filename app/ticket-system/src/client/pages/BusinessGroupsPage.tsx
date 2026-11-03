@@ -103,7 +103,7 @@ export default function BusinessGroupsPage() {
                     <p className="subtext">无成员</p>
                   )}
                   <form className="member-add-form" onSubmit={(e) => { e.preventDefault(); const f = e.currentTarget; void addMember(g.id, (f.elements.namedItem('userId') as HTMLInputElement).value); f.reset() }}>
-                    <input name="userId" type="number" placeholder="用户 ID" required min={1} />
+                    <input name="userId" type="text" placeholder="用户 ID" required />
                     <button className="secondary">添加成员</button>
                   </form>
                 </div>
