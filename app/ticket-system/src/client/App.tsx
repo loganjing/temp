@@ -1,9 +1,22 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
-import UsersPage from './admin/UsersPage'
+import { BrowserRouter, Routes, Route, Navigate, NavLink, useNavigate } from 'react-router-dom'
+import { authApi, type CurrentUser } from './platform/api-client'
+import WorkbenchPage from './pages/WorkbenchPage'
+import CreateTicketPage from './pages/CreateTicketPage'
+import TicketDetailRoute from './pages/TicketDetailRoute'
+import BusinessGroupPage from './pages/BusinessGroupPage'
+import StatsPage from './pages/StatsPage'
+import UsersPage from './pages/UsersPage'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
 type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+
+const NAV_ITEMS = [
+  { to: '/workbench', label: '工单工作台' },
+  { to: '/tickets/new', label: '创建工单' },
+  { to: '/business-groups', label: '业务组管理' },
+  { to: '/stats', label: '统计分析' },
+  { to: '/users', label: '用户管理' },
+]
 
 export default function App() {
   const [state, setState] = useState<BootstrapState>('checking')
@@ -15,14 +28,14 @@ export default function App() {
     const token = localStorage.getItem('platform-token')
     if (token) {
       try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
+        setUser(await authApi.me())
         setState('authenticated')
         return
       } catch {
         localStorage.removeItem('platform-token')
       }
     }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
+    const status = await authApi.bootstrapStatus()
     setState(status.required ? 'required' : 'login')
   }
 
@@ -35,11 +48,11 @@ export default function App() {
     const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
       if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
+        await authApi.bootstrap(body as Record<string, string>)
         setState('login')
         setError('账户已创建，请登录 / Account created. Please sign in.')
       } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
+        const result = await authApi.login(String(body.email), String(body.password))
         localStorage.setItem('platform-token', result.token)
         setUser(result.user)
         setState('authenticated')
@@ -57,13 +70,19 @@ export default function App() {
     setError('')
     const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
+      await authApi.changePassword(String(body.password))
       setUser(user ? { ...user, passwordChangeRequired: false } : user)
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
     } finally {
       setBusy(false)
     }
+  }
+
+  const signOut = () => {
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
   }
 
   if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
@@ -96,13 +115,52 @@ export default function App() {
       </section>
     </main>
   )
+
+  const departmentName = user.department?.name ?? ''
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <BrowserRouter>
+      <div className="app-shell">
+        <aside className="sidebar">
+          <div className="brand">工单系统</div>
+          <nav className="nav">
+            {NAV_ITEMS.map((item) => (
+              <NavLink key={item.to} to={item.to} className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}>{item.label}</NavLink>
+            ))}
+          </nav>
+          <button className="secondary sign-out" onClick={signOut}>退出登录</button>
+        </aside>
+        <div className="main-area">
+          <header className="topbar context-bar">
+            <div>
+              <h1>工单工作台</h1>
+              <p title={user.email}>{user.name} · {user.email}{departmentName ? ` · ${departmentName}` : ''}{user.companyId ? '' : ' · 未关联公司'}</p>
+            </div>
+          </header>
+          <main className="content">
+            <Routes>
+              <Route path="/" element={<Navigate to="/workbench" replace />} />
+              <Route path="/workbench" element={<WorkbenchPage currentUser={user} />} />
+              <Route path="/tickets/new" element={<CreateTicketPage />} />
+              <Route path="/tickets/:id" element={<TicketDetailRoute currentUser={user} />} />
+              <Route path="/business-groups" element={<BusinessGroupPage currentUser={user} />} />
+              <Route path="/stats" element={<StatsPage />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </BrowserRouter>
+  )
+}
+
+function NotFound() {
+  const navigate = useNavigate()
+  return (
+    <section className="card">
+      <h2>页面未找到</h2>
+      <p className="muted">请求的页面不存在。</p>
+      <button className="secondary" onClick={() => navigate('/workbench')}>返回工作台</button>
+    </section>
   )
 }

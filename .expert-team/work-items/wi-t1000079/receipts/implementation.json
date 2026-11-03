@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:905e66e65f7adf8096ac417f741a57ec79f2243912eff862e70771e064c32f8b",
+  "createdAt": "2026-11-03T07:06:49.575Z",
+  "timing": {
+    "startedAt": "2026-11-03T06:46:09.023Z",
+    "completedAt": "2026-11-03T07:06:49.574Z",
+    "durationMs": 1240551
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000079/implementation-report.md",
+      "bytes": 6706,
+      "sha256": "sha256:bf2d285124ba94d3a23fb9e7d3b160cd36ded9499777e2cf091a418f60353811",
+      "role": "primary",
+      "purpose": "工单系统开发实现阶段报告，记录两个并行任务（后端 T01 + 前端 T02）的实现范围、验证结果、验收场景覆盖和遗留事项",
+      "title": "实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "evidence": "服务端与客户端类型检查均通过"
+    },
+    {
+      "checkId": "build",
+      "status": "passed",
+      "command": "npm run build",
+      "exitCode": 0,
+      "evidence": "整体构建通过，44 模块转换，dist 产出正常"
+    },
+    {
+      "checkId": "test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0,
+      "evidence": "测试套件通过（4 pass, 0 fail, 1 skip）"
+    },
+    {
+      "checkId": "T01-typecheck-server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T01-test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T01-server-startup",
+      "status": "passed",
+      "command": "DB_PATH=./data/test-startup.db PORT=13999 node --import tsx src/server/index.ts",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T02-typecheck-client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "T02-build-client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:da8f8e524d0f73e47ca2f1cb08aeb81808a59bd43e5af5338db1fca165562a99",
+        "path": ".expert-team/work-items/wi-t1000079/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
