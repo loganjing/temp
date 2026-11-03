@@ -45,6 +45,14 @@ export default function App() {
     setState(status.required ? 'required' : 'login')
   }
 
+  // 角色判定兼容服务端返回的 roles 数组或单个 role 字段。须在条件返回之前调用以遵守 React hooks 规则。
+  const roles = useMemo(() => {
+    const set = new Set<UserInfo['role']>()
+    if (user?.role) set.add(user.role)
+    if (user?.roles) for (const r of user.roles) set.add(r as UserInfo['role'])
+    return set
+  }, [user])
+
   useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
 
   const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
@@ -58,7 +66,7 @@ export default function App() {
         setState('login')
         setError('账户已创建，请登录 / Account created. Please sign in.')
       } else {
-        const result = await authApi.login({ username: String(body.username ?? body.email ?? ''), password: String(body.password ?? '') })
+        const result = await authApi.login({ email: String(body.email ?? ''), password: String(body.password ?? '') })
         localStorage.setItem('platform-token', result.token)
         setUser(result.user)
         setState('authenticated')
@@ -126,14 +134,7 @@ export default function App() {
     </main>
   )
 
-  // 角色判定兼容服务端返回的 roles 数组或单个 role 字段。
-  const roles = useMemo(() => {
-    const set = new Set<UserInfo['role']>()
-    if (user.role) set.add(user.role)
-    if (user.roles) for (const r of user.roles) set.add(r as UserInfo['role'])
-    return set
-  }, [user])
-
+  // 角色判定已在条件返回之前通过 useMemo 计算。
   const visibleNav = NAV_ITEMS.filter((item) => !item.roles || item.roles.some((r) => roles.has(r)))
   const activeNav = visibleNav.some((item) => item.key === nav) ? nav : visibleNav[0]?.key ?? 'workbench'
 

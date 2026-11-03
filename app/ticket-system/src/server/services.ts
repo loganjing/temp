@@ -298,6 +298,7 @@ export async function transferTicket(
   if (!ticket) throw new ServiceError('NOT_FOUND', 'Ticket not found', 404)
   if (user.role !== 'handler') throw new ServiceError('FORBIDDEN', 'Only handler can transfer', 403)
   if (ticket.assigned_handler_id !== user.id) throw new ServiceError('FORBIDDEN', 'Only the assigned handler can transfer', 403)
+  if (!['pending_processing'].includes(ticket.status)) throw new ServiceError('INVALID_STATE', 'Ticket is not pending processing', 409)
   let groupId: string | null = null
   let handlerId: string | null = null
   let targetUserName: string | null = null
@@ -660,8 +661,8 @@ export async function workbench(
     where.push('t.company_id = ?')
     params.push(companyId)
   } else {
-    where.push('t.company_id = ? AND t.assigned_handler_id = ?')
-    params.push(user.companyId, user.id)
+    where.push('t.company_id = ? AND (t.assigned_handler_id = ? OR t.assigned_group_id IN (SELECT group_id FROM business_group_members WHERE user_id = ?))')
+    params.push(user.companyId, user.id, user.id)
   }
   const status = query.status ?? 'pending_processing'
   where.push('t.status = ?')

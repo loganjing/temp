@@ -7,7 +7,7 @@ export const authApi = {
   bootstrap: (body: { name: string; email: string; password: string }) =>
     apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) }),
 
-  login: (body: { username: string; password: string }) =>
+  login: (body: { email: string; password: string }) =>
     apiRequest<{ token: string; user: UserInfo }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) }),
 
   me: () => apiRequest<UserInfo>('/api/auth/me'),
@@ -25,7 +25,7 @@ export const usersApi = {
     if (companyId) sp.set('companyId', companyId)
     const s = sp.toString()
     return apiRequest<{ users: { id: string; name: string; email: string; phone?: string | null }[]; total: number }>(
-      `/api/users${s ? `?${s}` : ''}`,
+      `/api/admin/users${s ? `?${s}` : ''}`,
     )
   },
 }

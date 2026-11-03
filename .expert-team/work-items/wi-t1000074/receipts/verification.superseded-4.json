@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "verification:4",
+  "receiptType": "verification-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "verification",
+  "inputRevision": 3,
+  "stateVersion": 4,
+  "outcome": "passed",
+  "contentHash": "sha256:035278e45b982cc2b9a920801095c6999468fc5ac02064737463ec0e30859ac6",
+  "createdAt": "2026-11-02T11:44:27.551Z",
+  "timing": {
+    "startedAt": "2026-11-02T10:34:18.536Z",
+    "completedAt": "2026-11-02T11:44:27.550Z",
+    "durationMs": 4209014
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000074/verification.md",
+      "bytes": 29370,
+      "sha256": "sha256:b3a964f788701f27eb70a8168ec1384a7c2f60c34e671361c40ff55211c0a200",
+      "title": "验证报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "verification:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "verification:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "inline-qa",
+        "sha256": "sha256:7c13ae7200f5ce0e53f1955116d6e32d3fe9b9eb26537da73b2f0ba94d1939ed",
+        "path": ".expert-team/work-items/wi-t1000074/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
