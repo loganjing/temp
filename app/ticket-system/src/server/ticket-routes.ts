@@ -115,7 +115,7 @@ export function registerTicketRoutes(app: Hono, platform: Platform) {
     if (!user.companyId) return c.json(errorBody('FORBIDDEN', 'No company context'), 403)
     const companyId = user.companyId
 
-    const status = c.req.query('status') ?? 'pending_processing'
+    const status = c.req.query('status') ?? null
     const search = c.req.query('search') ?? ''
     const sortBy = c.req.query('sortBy') ?? 'created_at'
     const sortOrder = c.req.query('sortOrder') ?? 'desc'

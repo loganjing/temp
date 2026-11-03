@@ -36,7 +36,7 @@ export function LoginPage({ onLogin }: { onLogin: (token: string) => void }) {
         setMode('login')
       } else {
         const body = {
-          username: String(formData.get('username') ?? ''),
+          email: String(formData.get('username') ?? ''),
           password: String(formData.get('password') ?? ''),
         }
         const result = await apiRequest<LoginResponse>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
