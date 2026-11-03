@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:2f8849016e662d762cf29131a7dbed1802e76f7a99c04cf91b9110160898006b",
+  "createdAt": "2026-11-03T03:29:43.548Z",
+  "timing": {
+    "startedAt": "2026-11-03T03:04:14.916Z",
+    "completedAt": "2026-11-03T03:29:43.548Z",
+    "durationMs": 1528632
+  },
+  "artifacts": [
+    {
+      "path": "app/ticket-system/src/server/",
+      "bytes": 68281,
+      "sha256": "sha256:a74856a36cfa47a54c7d0c295f2cdbb161287f7f981c98c5de8b3be8367e06c3",
+      "role": "primary",
+      "purpose": "Hono 后端：35 个 API 端点、6 个 CommonApp 模块集成、领域服务"
+    },
+    {
+      "path": "app/ticket-system/src/shared/",
+      "bytes": 4601,
+      "sha256": "sha256:262d8da381be479372da28468472d94c9ccdce77c5db58a16f4b6a3e392fa158",
+      "role": "shared",
+      "purpose": "前后端共享 TypeScript 类型与常量"
+    },
+    {
+      "path": "app/ticket-system/src/client/",
+      "bytes": 93545,
+      "sha256": "sha256:b656ebc4d67ad6b290ac2640aedf1aec67393f774ca6597c69a3f2d762341bdd",
+      "role": "primary",
+      "purpose": "React/Vite SPA：工单工作台、统计仪表盘、管理后台"
+    },
+    {
+      "path": "app/ticket-system/test/",
+      "bytes": 28150,
+      "sha256": "sha256:b325c8893e9918eb416186c1b90d6e21c47cb47e395930aae95ceac535e501bc",
+      "role": "test",
+      "purpose": "集成测试覆盖全部核心 API 端点"
+    },
+    {
+      "path": "docs/wi-t1000078/implementation-report.md",
+      "bytes": 5637,
+      "sha256": "sha256:c18e28bd3d9c8405ce8c6aaaf81b630319db09044bb368db32b2db8baf7216c7",
+      "role": "report",
+      "purpose": "实现报告",
+      "title": "实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:full",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "test",
+      "status": "passed"
+    },
+    {
+      "checkId": "startup",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:186df806712c4d3a18877f2f4d37a4dbf18b94885b2bfd9e43720f64c34329bf",
+        "path": ".expert-team/work-items/wi-t1000078/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

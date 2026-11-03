@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "requirementsSha256": "sha256:2e8cf5fe7f115ffc222f57f7de30a0d2795aada5c5dd4ce0760275ad27eb48d9",
+    "designSha256": "sha256:540658a89a17e00b0c5bbcb6a0c12bc86239abb1dd6898266211ecee2d356b3e"
+  },
+  "tasks": [
+    {
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08"
+      ],
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000078/requirements.md",
+          "sha256": "sha256:2e8cf5fe7f115ffc222f57f7de30a0d2795aada5c5dd4ce0760275ad27eb48d9"
+        },
+        {
+          "path": "docs/wi-t1000078/architecture-baseline.md",
+          "sha256": "sha256:540658a89a17e00b0c5bbcb6a0c12bc86239abb1dd6898266211ecee2d356b3e"
+        },
+        {
+          "path": "docs/wi-t1000078/technical-contract.md",
+          "sha256": "sha256:7187dba0956e4670df765a8559d2fe627a4548fb47b612dba9021412c0dbffb4"
+        }
+      ],
+      "artifactPaths": [
+        "app/ticket-system/src/server/",
+        "app/ticket-system/src/shared/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": [],
+      "taskId": "T01",
+      "summary": "工单系统后端：Hono API、SQLite 领域迁移、CommonApp 集成与全部业务逻辑",
+      "objective": "## 目标\n\n实现工单系统完整后端，覆盖技术契约定义的全部 API 端点、10 张领域表迁移和 6 个 CommonApp 模块集成。\n\n### 实现范围\n\n- **领域迁移**（`src/server/migrations/sqlite/` 0004-0010）：companies、departments、user_profiles、tickets、ticket_replies、business_groups、business_group_members、assignment_rules、ticket_evaluations、ticket_transfer_records\n- **平台绑定**：dbkit（数据库初始化与 runMigrations）、authkit（Bearer 认证中间件）、userkit（用户账户与 user_profiles 映射）、permissionkit（submitter/handler/admin 三角色 RBAC）、auditkit（操作日志 record）、emailkit（SMTP createEmailClient 发送通知）\n- **认证与授权**：POST /api/auth/login、POST /api/auth/logout、GET /api/auth/me；认证中间件从 authkit 会话解析 user_id，通过 user_profiles 映射 company_id 和 role；所有查询附加 company_id 过滤；角色权限检查中间件\n- **工单管理 API**：GET /api/tickets（筛选/搜索/排序/分页）、POST /api/tickets（创建并触发自动分配）、GET /api/tickets/:id（详情含回复/评价/日志）、PATCH /api/tickets/:id/status（状态流转校验）、POST /api/tickets/:id/replies（多轮回复）\n- **工单分配 API**：GET/POST /api/business-groups、POST/DELETE /api/business-groups/:id/members、GET/POST/DELETE /api/assignment-rules；创建工单时按 company_id + category 匹配分配规则，命中则分配到目标业务组并流转到 pending_processing\n- **工单协作 API**：POST /api/tickets/:id/transfer（转派到目标业务组，记 ticket_transfer_records，状态保持 pending_processing）\n- **工单处理 API**：GET /api/users/:id/profile（提交人完整信息含历史工单）、POST /api/tickets/:id/complete（记录 handler_id/completed_at，触发 emailkit 发送邮件到 submitter_email，邮件失败不回滚工单状态仅记日志）\n- **用户评价 API**：POST /api/tickets/:id/evaluation（1-5 星，仅 completed 工单，一对一）、GET /api/tickets/:id/evaluation\n- **统计分析 API**：GET /api/statistics/overview（工单量/平均响应时间=创建到首次回复/平均满意度/热点分类 Top5）、GET /api/statistics/distribution（按 company/department 维度）\n- **操作日志 API**：GET /api/tickets/:id/logs（auditkit 审计事件查询，action 枚举：ticket_created/assigned/transferred/processed/completed/cancelled）\n- **共享类型**（`src/shared/`）：API 请求/响应 TypeScript 类型、Ticket/TicketDetail 接口、错误码常量、状态/优先级枚举\n- **错误格式**：统一 `{error:{code,message,details?}}` 格式，按技术契约错误表实现\n\n### 验证\n\n- `npm run typecheck:server` 通过\n- `npm start` 服务正常启动并监听\n- test/ 下集成测试覆盖核心 API 端点（认证、工单 CRUD、自动分配、转派、完成、评价、统计）\n\n### 写入范围与所有权\n\n- 拥有 `app/ticket-system/src/server/`（routes、services、repositories、platform bindings、middleware、migrations）\n- 拥有 `app/ticket-system/src/shared/`（共享类型与常量，前端只读引用）\n- 拥有 `app/ticket-system/test/`（测试 fixture 与集成测试）\n- 拥有 `app/ticket-system/package.json`、`app/ticket-system/tsconfig.json`、`app/ticket-system/tsconfig.server.json`",
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "expertId": "general-app-development-expert",
+      "successors": [],
+      "writableScopes": [
+        "app/ticket-system/src/server/",
+        "app/ticket-system/src/shared/",
+        "app/ticket-system/package.json",
+        "app/ticket-system/tsconfig.json",
+        "app/ticket-system/tsconfig.server.json",
+        "app/ticket-system/test/"
+      ]
+    },
+    {
+      "requirementIds": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08"
+      ],
+      "dependsOn": [],
+      "inputArtifacts": [
+        {
+          "path": "docs/wi-t1000078/requirements.md",
+          "sha256": "sha256:2e8cf5fe7f115ffc222f57f7de30a0d2795aada5c5dd4ce0760275ad27eb48d9"
+        },
+        {
+          "path": "docs/wi-t1000078/architecture-baseline.md",
+          "sha256": "sha256:540658a89a17e00b0c5bbcb6a0c12bc86239abb1dd6898266211ecee2d356b3e"
+        },
+        {
+          "path": "docs/wi-t1000078/technical-contract.md",
+          "sha256": "sha256:7187dba0956e4670df765a8559d2fe627a4548fb47b612dba9021412c0dbffb4"
+        }
+      ],
+      "artifactPaths": [
+        "app/ticket-system/src/client/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": [],
+      "taskId": "T02",
+      "summary": "工单系统前端：React/Vite SPA、工单工作台、统计仪表盘与管理后台",
+      "objective": "## 目标\n\n实现工单系统完整前端 SPA，覆盖架构基线定义的全部页面与交互，严格基于技术契约实现 API 调用。\n\n### 实现范围\n\n- **应用壳**：左侧导航栏 + 顶部上下文栏 + 主工作区，Modern SaaS 视觉风格（柔和中性色、细边界、少阴影、中等圆角、一个主色与状态色）\n- **登录页**：用户名密码登录，调用 POST /api/auth/login，存储 token\n- **工单工作台**（默认首页）：split-master-detail 布局\n  - 左侧：待处理工单列表，支持按公司筛选、关键词搜索、字段排序（created_at/priority/status）\n  - 右侧：工单详情面板——基本信息、提交人信息（姓名/公司/部门/历史工单）、多轮回复列表、操作按钮（回复/转派/完成/取消）、满意度评价区域（1-5 星）\n- **工单管理**：创建工单表单（主题/描述/分类/SLA优先级 P0-P4）、全部工单列表\n- **统计分析**：command-center-dashboard 布局\n  - 顶部维度切换（公司/部门）\n  - KPI 卡片行：工单量、平均响应时间、满意度、热点分类\n  - 明细图表与列表（使用 CSS/SVG 轻量图表）\n- **管理后台**（仅 admin 可见）：业务组管理（创建/成员增删）、分配规则配置（创建/删除）\n- **API 客户端**：基于 `src/client/platform/api-client.ts` 封装全部 API 端点调用，Bearer token 自动注入，错误解码\n- **全局状态**：加载中骨架屏、空数据引导文案+创建入口、错误提示+重试按钮、无权限提示\n- **图标**：使用 Lucide React 图标库（如需新增依赖，向 package.json owner 协调）\n\n### 前后端协调\n\n- 前端基于 `docs/wi-t1000078/technical-contract.md` 定义 API 类型，可从 `src/shared/` 导入共享类型（后端任务 T01 拥有 `src/shared/`，前端只读引用）\n- 前端不发明 API 行为，严格按契约实现请求参数和响应处理\n- 聚合 build（`npm run build`）和最终 E2E 集成由后续 QA 验证\n\n### 验证\n\n- `npm run typecheck:client` 通过\n- `npm run build:client` 构建成功\n\n### 写入范围与所有权\n\n- 拥有 `app/ticket-system/src/client/`（React 应用、页面、组件、hooks、API 客户端、样式）\n- 拥有 `app/ticket-system/index.html`、`app/ticket-system/vite.config.ts`、`app/ticket-system/tsconfig.client.json`、`app/ticket-system/tailwind.config.js`、`app/ticket-system/postcss.config.js`",
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "expertId": "general-app-development-expert",
+      "successors": [],
+      "writableScopes": [
+        "app/ticket-system/src/client/",
+        "app/ticket-system/index.html",
+        "app/ticket-system/vite.config.ts",
+        "app/ticket-system/tsconfig.client.json",
+        "app/ticket-system/tailwind.config.js",
+        "app/ticket-system/postcss.config.js"
+      ]
+    }
+  ],
+  "planId": "plan:589875c6-5c14-4e9b-9ccc-4b2c81cd19b9"
+}
