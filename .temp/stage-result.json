@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000076/architecture-baseline.md",
+      "sha256": "sha256:ab20ffc0464a33d09f97f2b0c6ca8648e11e58f95e45ec7ad101bcc50c024763",
+      "role": "primary",
+      "purpose": "系统架构基线：技术栈、模块边界、UI基线、数据模型、邮件集成、运行约定"
+    },
+    {
+      "path": "docs/wi-t1000076/technical-contract.md",
+      "sha256": "sha256:32cd345d9990f3ae7bc78376acc42eb6fb8488dd0a7005ace0c82dbfb899f6f4",
+      "role": "supporting",
+      "purpose": "API技术契约：实体ID对照表、全部接口定义、审计事件类型、错误格式"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    }
+  ]
+}

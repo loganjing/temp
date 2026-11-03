@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:6420ef5a7d4e4e18f8953f0831136e8cd6a7769353415e99fcac8fbaab3aa8e1",
+  "createdAt": "2026-11-03T01:21:39.858Z",
+  "timing": {
+    "startedAt": "2026-11-03T01:16:06.879Z",
+    "completedAt": "2026-11-03T01:21:39.857Z",
+    "durationMs": 332978
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000076/architecture-baseline.md",
+      "bytes": 17696,
+      "sha256": "sha256:ab20ffc0464a33d09f97f2b0c6ca8648e11e58f95e45ec7ad101bcc50c024763",
+      "role": "primary",
+      "purpose": "系统架构基线：技术栈、CommonApp模块选择、模块边界与接口摘要、UI全局基线、数据模型、邮件集成、运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000076/technical-contract.md",
+      "bytes": 12701,
+      "sha256": "sha256:32cd345d9990f3ae7bc78376acc42eb6fb8488dd0a7005ace0c82dbfb899f6f4",
+      "role": "supporting",
+      "purpose": "API技术契约：实体ID对照表、全部REST接口定义、审计事件类型、错误响应格式",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline.json readable",
+      "status": "passed"
+    },
+    {
+      "checkId": "app AGENTS.md exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:9e7c5009d2ef9aea0015e95b5afcb3f544e39e031ffb9a2d6baaa4736b69ca66",
+        "path": ".expert-team/work-items/wi-t1000076/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

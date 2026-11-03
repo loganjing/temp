@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-03T01:07:09.619Z"
+  "updatedAt": "2026-11-03T01:21:39.858Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000076/requirements.md",
+      "sha256": "sha256:cb2702a2c12679f7ab35506914faf2da42e2b2707db0161365d2296b23631b50"
+    },
+    "reason": "工单系统需要服务端权威数据库实现多公司数据隔离、跨用户工单共享与多轮回复；邮件通知属于外部服务集成；操作日志需跨用户持久化；统计分析需服务端数据聚合。这些能力均超出浏览器本地存储范畴，必须走完整全栈路线。",
+    "evidence": {
+      "supporting": [
+        "需求要求'工单按公司隔离'，需要服务端权威数据边界和隔离过滤，localStorage 无法实现",
+        "需求要求'工单完成且发送邮件进行通知'，邮件发送是服务端外部集成能力，浏览器端无法独立完成",
+        "需求要求'工单支持多轮回复，包括回复人，回复时间'，不同用户需共享同一工单数据，属于跨用户共享场景",
+        "需求要求'记录相关日志'覆盖工单生命周期关键操作，日志需跨用户持久化共享",
+        "需求要求'统计分析'按公司、部门维度统计工单分布和运营仪表盘指标，需聚合服务端数据",
+        "需求要求'业务组管理'和'分类自动分配规则'，配置数据需跨用户共享且以公司为边界"
+      ],
+      "excluding": [
+        "需求未声明仅单用户使用或仅本地浏览器可用，localStorage 无法满足多用户共享工单数据"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-03T01:16:27.734Z",
+    "sha256": "sha256:9e7c5009d2ef9aea0015e95b5afcb3f544e39e031ffb9a2d6baaa4736b69ca66"
+  }
 }
