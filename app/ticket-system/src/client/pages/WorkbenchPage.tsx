@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { ticketApi, userApi, groupApi } from '../platform/ticket-api'
 import { ApiRequestError } from '../platform/api-client'
-import type { Ticket, TicketDetail, SubmitterProfile, BusinessGroup, SortField, SortOrder, Role } from '../types'
+import type { Ticket, TicketDetail, SubmitterProfile, BusinessGroup, SortField, SortOrder, Role, TicketStatus } from '../types'
 import {
   Skeleton, SkeletonRows, EmptyState, ErrorState, PriorityBadge, StatusBadge,
   StarRating, Pagination, formatTime, actionLabel,
@@ -33,6 +33,7 @@ export default function WorkbenchPage({ role, companyId }: Props) {
   const [sort, setSort] = useState<SortColumn>('created_at')
   const [order, setOrder] = useState<SortOrder>('desc')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('pending_processing')
 
   // ── 详情状态 ──
   const [detail, setDetail] = useState<TicketDetail | null>(null)
@@ -59,7 +60,7 @@ export default function WorkbenchPage({ role, companyId }: Props) {
     setError('')
     try {
       const res = await ticketApi.list({
-        status: 'pending_processing',
+        status: statusFilter === 'all' ? undefined : statusFilter,
         companyId: role === 'admin' ? undefined : companyId,
         keyword: keyword || undefined,
         sort,
@@ -77,7 +78,7 @@ export default function WorkbenchPage({ role, companyId }: Props) {
     } finally {
       setLoading(false)
     }
-  }, [keyword, sort, order, page, pageSize, role, companyId, selectedId])
+  }, [keyword, sort, order, page, pageSize, role, companyId, selectedId, statusFilter])
 
   useEffect(() => { void loadList() }, [loadList])
 
@@ -241,7 +242,7 @@ export default function WorkbenchPage({ role, companyId }: Props) {
       {/* ── 左侧：工单列表 ── */}
       <div className="list-panel">
         <div className="list-header">
-          <h2>待处理工单</h2>
+          <h2>{statusFilter === 'all' ? '全部工单' : statusFilter === 'pending_processing' ? '待处理工单' : statusFilter === 'completed' ? '已完成工单' : statusFilter === 'cancelled' ? '已取消工单' : '待分配工单'}</h2>
           <form className="search-box" onSubmit={handleSearch}>
             <SearchIcon size={16} />
             <input
@@ -250,6 +251,12 @@ export default function WorkbenchPage({ role, companyId }: Props) {
               placeholder="搜索主题/描述…"
             />
           </form>
+        </div>
+        <div className="list-filters">
+          <button className={`sort-btn ${statusFilter === 'pending_processing' ? 'active' : ''}`} onClick={() => { setStatusFilter('pending_processing'); setPage(1); setSelectedId(null) }}>待处理</button>
+          <button className={`sort-btn ${statusFilter === 'completed' ? 'active' : ''}`} onClick={() => { setStatusFilter('completed'); setPage(1); setSelectedId(null) }}>已完成</button>
+          <button className={`sort-btn ${statusFilter === 'cancelled' ? 'active' : ''}`} onClick={() => { setStatusFilter('cancelled'); setPage(1); setSelectedId(null) }}>已取消</button>
+          <button className={`sort-btn ${statusFilter === 'all' ? 'active' : ''}`} onClick={() => { setStatusFilter('all'); setPage(1); setSelectedId(null) }}>全部</button>
         </div>
         <div className="list-filters">
           <button className={`sort-btn ${sort === 'created_at' ? 'active' : ''}`} onClick={() => toggleSort('created_at')}>

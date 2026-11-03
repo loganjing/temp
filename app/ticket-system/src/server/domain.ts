@@ -213,11 +213,28 @@ export async function getTicketDetail(db: DbClient, ctx: DomainContext, ticketId
     sql('SELECT id, ticket_id, rating, comment, created_at FROM ticket_evaluations WHERE ticket_id = ?', [ticketId]),
   )
 
+  const logEvents = await db.queryAll<{ id: string; event_type: string; actor_user_id: string | null; occurred_at: string }>(
+    sql(`SELECT id, event_type, actor_user_id, occurred_at FROM audit_events
+         WHERE event_type IN ('ticket_created', 'ticket_assigned', 'ticket_transferred', 'ticket_processed', 'ticket_completed', 'ticket_cancelled')
+         AND metadata_json LIKE ?
+         ORDER BY occurred_at DESC LIMIT 10`, [`%${ticketId}%`]),
+  )
+
+  const recentLogs = []
+  for (const e of logEvents) {
+    let operatorName = ''
+    if (e.actor_user_id) {
+      const actorProfile = await getUserProfileByUserId(db, e.actor_user_id)
+      operatorName = actorProfile?.name ?? ''
+    }
+    recentLogs.push({ id: e.id, action: e.event_type, operatorName, createdAt: e.occurred_at })
+  }
+
   return {
     ...ticket,
     replies: replies.map(r => ({ id: r.id, ticketId: r.ticket_id, replierId: r.replier_id, replierName: r.replier_name, content: r.content, createdAt: r.created_at })),
     evaluation: evaluation ? { id: evaluation.id, ticketId: evaluation.ticket_id, rating: evaluation.rating, comment: evaluation.comment, createdAt: evaluation.created_at } : null,
-    recentLogs: [],
+    recentLogs,
   }
 }
 
@@ -372,7 +389,7 @@ export async function getEvaluation(db: DbClient, ticketId: string) {
 
 export async function getSubmitterProfile(db: DbClient, ctx: DomainContext, userId: string): Promise<UserProfile> {
   const profile = await db.queryOne<{ id: string; name: string; email: string; company_id: string; department_id: string | null }>(
-    sql('SELECT id, name, email, company_id, department_id FROM user_profiles WHERE user_id = ?', [userId]),
+    sql('SELECT id, name, email, company_id, department_id FROM user_profiles WHERE id = ?', [userId]),
   )
   if (!profile) throw new DomainError('not_found', 'User profile not found', 404)
 
