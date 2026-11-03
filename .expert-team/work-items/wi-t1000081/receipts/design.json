@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:a7e4439af453bc47e4e79a559f8d978ca9523e0ce05a8648157ca52b4921968f",
+  "createdAt": "2026-11-03T09:14:32.682Z",
+  "timing": {
+    "startedAt": "2026-11-03T09:13:37.728Z",
+    "completedAt": "2026-11-03T09:14:32.682Z",
+    "durationMs": 54954
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000081/architecture-baseline.md",
+      "bytes": 2436,
+      "sha256": "sha256:c9acc02893e136194a1a6d102799c66bb1971fac95b186ab84ef864fac4d70e4",
+      "role": "primary",
+      "purpose": "教师管理系统架构基线：simple-frontend 路线，React/Vite SPA + localStorage，覆盖页面交互范围、数据归属、校验边界与运行方式",
+      "title": "教师管理系统架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "route-simple-frontend",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-referenced",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:6b9f108055b688681a5a5a0a1bf859442ab14237d0d381b95f8fd40948b33c10",
+        "path": ".expert-team/work-items/wi-t1000081/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-03T09:12:03.485Z"
+  "updatedAt": "2026-11-03T09:14:32.682Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000081/requirements.md",
+      "sha256": "sha256:dc23c29cab3505c0c17d29719bd0b2dc8fd0484d5e85d359748bd0bda4eb586f"
+    },
+    "reason": "该教师管理系统是单用户 CRUD 应用，需求仅要求刷新或重开页面后数据仍在（AC-01 持久化保存），且在「未规定事项」中明确排除了用户角色/权限、服务端存储方案、外部集成和共享数据。六项服务端能力（权威数据库、认证、后台任务、外部集成、共享数据）均无需求证据，符合 simple-frontend 路由条件，使用浏览器 localStorage 即可满足全部验收场景。",
+    "evidence": {
+      "supporting": [
+        "需求核心是单用户教师 CRUD（增删改查），字段仅教师名称、教授课程、年级、手机、邮箱",
+        "AC-01 要求「该记录持久化保存且可在列表中读回」，持久化边界为刷新/重开页面后数据仍在，符合 localStorage 能力范围",
+        "需求「未规定事项」明确排除用户角色/权限体系、部署方式/技术选型/存储方案、分页排序搜索、数据导出批量操作",
+        "三条 AC 均为用户界面交互验证（runtime-render, interaction），无服务端 API 验证或多用户并发场景",
+        "需求未提及任何服务端权威数据、认证、后台任务、外部服务或跨用户/设备共享能力"
+      ],
+      "excluding": [
+        "服务端权威数据：需求未提及任何服务端数据权威要求，存储方案在「未规定事项」中明确标注为「用户未指定，不纳入基线」",
+        "认证/权限：需求「未规定事项」明确写「用户角色、权限体系：用户未提及，不纳入基线」",
+        "后台任务：需求无任何后台任务、定时任务或异步处理描述",
+        "外部集成：需求无外部服务调用或第三方集成描述",
+        "共享数据：需求无跨用户、跨设备、跨浏览器数据同步要求，AC-01 仅要求「刷新或重开页面后数据仍在」可在单浏览器 localStorage 中满足"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-03T09:14:02.297Z",
+    "sha256": "sha256:6b9f108055b688681a5a5a0a1bf859442ab14237d0d381b95f8fd40948b33c10"
+  }
 }
