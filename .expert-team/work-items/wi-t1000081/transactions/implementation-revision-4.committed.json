@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "operation": "revise-stage",
+  "transactionId": "implementation-revision-4",
+  "expectedRevision": 3,
+  "expectedStateHash": "sha256:a180dadec50b1df4c4fea694a80aaac2a6dd0e8db7d2d40f9b7d92fe114d3669",
+  "expectedReceiptHash": "sha256:073d98f5ef2ce30eacc2972d28f8daea9cf586c18a8bc7d2cd1e5ba0830b37c5",
+  "previousReceipt": {
+    "schemaVersion": 2,
+    "receiptId": "implementation:3",
+    "receiptType": "implementation-report",
+    "specId": "general-application-development-spec",
+    "graphRevision": 5,
+    "actionId": "implementation",
+    "inputRevision": 2,
+    "stateVersion": 3,
+    "outcome": "passed",
+    "contentHash": "sha256:0ec77e0d2a262a65a9b282783fdd3e4396cc586eddd76e2b8edfaf9399036c08",
+    "createdAt": "2026-11-03T09:18:49.702Z",
+    "timing": {
+      "startedAt": "2026-11-03T09:15:58.930Z",
+      "completedAt": "2026-11-03T09:18:49.702Z",
+      "durationMs": 170772
+    },
+    "artifacts": [
+      {
+        "path": "docs/wi-t1000081/implementation-report.md",
+        "bytes": 3682,
+        "sha256": "sha256:d6671e25424e1c3a6fba6329c0ea0809036735adb9bdfc3cee8e71a60edaa6b8",
+        "role": "implementation-report",
+        "purpose": "教师管理系统实现报告",
+        "title": "教师管理系统实现报告"
+      }
+    ],
+    "url": "http://localhost:5174/",
+    "verification": [
+      {
+        "checkId": "unit-tests",
+        "status": "passed"
+      },
+      {
+        "checkId": "production-build",
+        "status": "passed"
+      },
+      {
+        "checkId": "dev-server-started",
+        "status": "passed"
+      },
+      {
+        "checkId": "implementation:application-route",
+        "status": "passed",
+        "applicationProfile": {
+          "applicationType": "simple-frontend",
+          "routeId": "inline",
+          "sha256": "sha256:6b9f108055b688681a5a5a0a1bf859442ab14237d0d381b95f8fd40948b33c10",
+          "path": ".expert-team/work-items/wi-t1000081/spec-state.json#/applicationProfile"
+        }
+      }
+    ]
+  },
+  "receiptRelativePath": "receipts/implementation.json",
+  "nextState": {
+    "schemaVersion": 2,
+    "specId": "general-application-development-spec",
+    "specRevision": 16,
+    "state": "design_ready",
+    "revision": 4,
+    "completedActions": [
+      "requirements",
+      "design"
+    ],
+    "blockers": [],
+    "scenarioId": "feature",
+    "graphRevision": 5,
+    "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
+    "updatedAt": "2026-11-03T09:34:21.459Z",
+    "applicationProfile": {
+      "schemaVersion": 1,
+      "applicationType": "simple-frontend",
+      "source": {
+        "artifactPath": "docs/wi-t1000081/requirements.md",
+        "sha256": "sha256:dc23c29cab3505c0c17d29719bd0b2dc8fd0484d5e85d359748bd0bda4eb586f"
+      },
+      "reason": "该教师管理系统是单用户 CRUD 应用，需求仅要求刷新或重开页面后数据仍在（AC-01 持久化保存），且在「未规定事项」中明确排除了用户角色/权限、服务端存储方案、外部集成和共享数据。六项服务端能力（权威数据库、认证、后台任务、外部集成、共享数据）均无需求证据，符合 simple-frontend 路由条件，使用浏览器 localStorage 即可满足全部验收场景。",
+      "evidence": {
+        "supporting": [
+          "需求核心是单用户教师 CRUD（增删改查），字段仅教师名称、教授课程、年级、手机、邮箱",
+          "AC-01 要求「该记录持久化保存且可在列表中读回」，持久化边界为刷新/重开页面后数据仍在，符合 localStorage 能力范围",
+          "需求「未规定事项」明确排除用户角色/权限体系、部署方式/技术选型/存储方案、分页排序搜索、数据导出批量操作",
+          "三条 AC 均为用户界面交互验证（runtime-render, interaction），无服务端 API 验证或多用户并发场景",
+          "需求未提及任何服务端权威数据、认证、后台任务、外部服务或跨用户/设备共享能力"
+        ],
+        "excluding": [
+          "服务端权威数据：需求未提及任何服务端数据权威要求，存储方案在「未规定事项」中明确标注为「用户未指定，不纳入基线」",
+          "认证/权限：需求「未规定事项」明确写「用户角色、权限体系：用户未提及，不纳入基线」",
+          "后台任务：需求无任何后台任务、定时任务或异步处理描述",
+          "外部集成：需求无外部服务调用或第三方集成描述",
+          "共享数据：需求无跨用户、跨设备、跨浏览器数据同步要求，AC-01 仅要求「刷新或重开页面后数据仍在」可在单浏览器 localStorage 中满足"
+        ],
+        "unresolved": []
+      },
+      "decidedAt": "2026-11-03T09:14:02.297Z",
+      "sha256": "sha256:6b9f108055b688681a5a5a0a1bf859442ab14237d0d381b95f8fd40948b33c10"
+    },
+    "stageRevision": {
+      "actionId": "implementation",
+      "feedback": "请调整教师列表的字段展示",
+      "round": 1,
+      "review": {
+        "sessionId": "ses_e5f4e7b7cffeE6YLqSDj9lkUwW",
+        "workItemId": "wi-t1000081",
+        "projectId": "18502328382390272",
+        "issueTaskId": "22969064498405376",
+        "status": "review",
+        "revision": 4,
+        "stageIds": [
+          "implementation"
+        ]
+      },
+      "previousReceiptId": "implementation:3"
+    },
+    "approvals": []
+  },
+  "nextStateHash": "sha256:5440ca2519b2c8a12b43686b3e7c29f9672bf8e12714d3ec6d6dff24ab052f5e",
+  "createdAt": "2026-11-03T09:34:21.459Z",
+  "committedAt": "2026-11-03T09:34:21.473Z"
+}

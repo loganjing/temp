@@ -1,0 +1,203 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #e53e3e;
+  color: #333;
+}
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.app-header {
+  margin-bottom: 24px;
+}
+
+.app-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.app-main {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.toolbar {
+  margin-bottom: 20px;
+}
+
+/* 表单样式 */
+.teacher-form h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-field .required {
+  color: #e53e3e;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.15);
+}
+
+.field-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #e53e3e;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 列表样式 */
+.teacher-list h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.empty-state {
+  padding: 40px 0;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+.teacher-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed;
+}
+
+/* 列宽定义 */
+.col-name { width: 18%; }
+.col-grade { width: 10%; }
+.col-course { width: 18%; }
+.col-phone { width: 18%; }
+.col-email { width: 22%; }
+.col-actions { width: 14%; }
+
+.teacher-table th,
+.teacher-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-table th {
+  font-weight: 600;
+  color: #555;
+  background: #fafafa;
+}
+
+/* 年级、操作列居中对齐 */
+.cell-center {
+  text-align: center;
+}
+
+.teacher-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.row-actions {
+  white-space: nowrap;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* 按钮样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary {
+  background: #4299e1;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #3182ce;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+}
+
+.btn-edit {
+  background: #ed8936;
+  color: #fff;
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+.btn-edit:hover {
+  background: #dd6b20;
+}
+
+.btn-delete {
+  background: #e53e3e;
+  color: #fff;
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+.btn-delete:hover {
+  background: #c53030;
+}

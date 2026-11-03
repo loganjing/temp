@@ -2,17 +2,18 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "design_ready",
-  "revision": 2,
+  "state": "implementation_ready",
+  "revision": 5,
   "completedActions": [
     "requirements",
-    "design"
+    "design",
+    "implementation"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-03T09:14:32.682Z",
+  "updatedAt": "2026-11-03T09:35:05.090Z",
   "applicationProfile": {
     "schemaVersion": 1,
     "applicationType": "simple-frontend",
@@ -40,5 +41,23 @@
     },
     "decidedAt": "2026-11-03T09:14:02.297Z",
     "sha256": "sha256:6b9f108055b688681a5a5a0a1bf859442ab14237d0d381b95f8fd40948b33c10"
-  }
+  },
+  "stageRevision": {
+    "actionId": "implementation",
+    "feedback": "请调整教师列表的字段展示",
+    "round": 1,
+    "review": {
+      "sessionId": "ses_e5f4e7b7cffeE6YLqSDj9lkUwW",
+      "workItemId": "wi-t1000081",
+      "projectId": "18502328382390272",
+      "issueTaskId": "22969064498405376",
+      "status": "review",
+      "revision": 4,
+      "stageIds": [
+        "implementation"
+      ]
+    },
+    "previousReceiptId": "implementation:3"
+  },
+  "approvals": []
 }
