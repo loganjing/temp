@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:56536977e748d78f5c0e245398f7cda0d6162bb588b4b3d45b9802289f81d9f5",
+  "createdAt": "2026-11-03T06:31:54.545Z",
+  "timing": {
+    "startedAt": "2026-11-03T06:22:18.334Z",
+    "completedAt": "2026-11-03T06:31:54.544Z",
+    "durationMs": 576210
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000079/architecture-baseline.md",
+      "bytes": 15480,
+      "sha256": "sha256:83a52ead6b3ce9c8e1b1e306d0703643dcec3a20f75f8e12f102359e7e5bb40d",
+      "role": "primary",
+      "purpose": "系统架构基线文档：技术栈、CommonApp 模块选择、数据模型、模块边界、接口摘要、UI 基线、外部集成",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000079/technical-contract.md",
+      "bytes": 12154,
+      "sha256": "sha256:c11f7690ba9ebb213b95b3bf4b1247d4f0f4bb1a51aa4de4db9b9593c99a8026",
+      "role": "supporting",
+      "purpose": "API 技术契约：认证、工单、工作台、公司部门、业务组、路由规则、用户、统计接口的完整字段定义与权限矩阵",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:da8f8e524d0f73e47ca2f1cb08aeb81808a59bd43e5af5338db1fca165562a99",
+        "path": ".expert-team/work-items/wi-t1000079/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

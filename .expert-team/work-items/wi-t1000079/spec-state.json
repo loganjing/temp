@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-03T06:18:18.875Z"
+  "updatedAt": "2026-11-03T06:31:54.545Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000079/requirements.md",
+      "sha256": "sha256:e64c6f29c1f1c11cb4416b2a2f89c2946ad8772e959ae35e8276d39954cf78c1"
+    },
+    "reason": "工单系统需要服务端权威数据存储以支持多用户协作（提交人与处理人为不同用户），工单按公司隔离要求服务端权限控制，完成通知需要邮件发送这一外部服务，统计分析仪表盘需要跨工单聚合计算，操作日志需要持久化审计记录。这些能力均无法通过浏览器 localStorage 实现且需跨用户/跨设备共享数据。",
+    "evidence": {
+      "supporting": [
+        "AC-03 工单公司隔离：用户只能查看和操作所属公司范围内的工单，不能跨公司访问，要求服务端数据隔离与授权",
+        "AC-07 工单完成后系统向提交人邮箱发送完成通知邮件，需要后端邮件发送能力",
+        "AC-01/AC-02 多用户创建工单和多轮回复：提交人与处理人为不同用户角色，数据需跨用户共享",
+        "AC-05 分类自动分配规则需持久化存储并跨工单匹配，要求服务端权威数据",
+        "AC-09/AC-10 统计分析与运营仪表盘需跨工单聚合计算工单量、平均响应时间、满意度、热点问题等指标",
+        "AC-13 操作日志记录工单生命周期关键操作，需服务端持久化审计日志"
+      ],
+      "excluding": [
+        "需求中未出现仅使用浏览器 localStorage 的单用户 CRUD 场景",
+        "无任何需求表明数据只在当前浏览器/设备可用"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-03T06:22:46.257Z",
+    "sha256": "sha256:da8f8e524d0f73e47ca2f1cb08aeb81808a59bd43e5af5338db1fca165562a99"
+  }
 }
