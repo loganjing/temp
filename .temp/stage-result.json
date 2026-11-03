@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000080/architecture-baseline.md",
+      "role": "primary"
+    },
+    {
+      "path": "docs/wi-t1000080/technical-contract.md",
+      "role": "supporting"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planDigest": "sha256:d24c6a45d87a54db2109b6d6a2ecb6f9986561f5217b3294779d6fbe5cecc1e7",
+      "scaffoldDigest": "sha256:d3fe2fd0431cf1bb2b3cbb71b48cc7559276ba93f6352c06d62192f4749f8153",
+      "planSha256": "sha256:d87e45e902b0a23d3d95a6e4d23fdc7ae755776d8ee13ef76e4927c6523a1240",
+      "packageRoot": "app/ticket-system",
+      "bootstrapPath": "docs/wi-t1000080/workspace-bootstrap.json"
+    }
+  ]
+}

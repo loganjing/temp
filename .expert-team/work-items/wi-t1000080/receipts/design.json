@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:9cecd70297b6b2d454d05bc828acdc0c91095efe1508053e0430af36f718ee23",
+  "createdAt": "2026-11-03T06:35:12.963Z",
+  "timing": {
+    "startedAt": "2026-11-03T06:27:22.017Z",
+    "completedAt": "2026-11-03T06:35:12.963Z",
+    "durationMs": 470946
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000080/architecture-baseline.md",
+      "bytes": 18848,
+      "sha256": "sha256:64a0ed30b0c82c51c5abab271e1f29f97f4c1c343163f234c632908d61392eec",
+      "role": "primary",
+      "purpose": "整体架构、技术栈、模块边界、数据模型、UI基线、外部集成与运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000080/technical-contract.md",
+      "bytes": 14498,
+      "sha256": "sha256:e63a103fa2dc67c41b24a1aa2f4d7a7b7efb9d071cb8f9610566a60699e9e3d6",
+      "role": "supporting",
+      "purpose": "前后端API契约、ID类型对照表、错误码与枚举定义",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline-readable",
+      "status": "passed"
+    },
+    {
+      "checkId": "app-agents-md-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:6c3a4560f830a790797409276260293344fba1ee666cd73a94fe72290e2ce5ea",
+        "path": ".expert-team/work-items/wi-t1000080/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

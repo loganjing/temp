@@ -2,14 +2,38 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-03T06:24:51.656Z"
+  "updatedAt": "2026-11-03T06:35:12.963Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000080/requirements.md",
+      "sha256": "sha256:b693b04920250dce30bcddd3c1a499ca779b62696371c85e0cabb47742b53480"
+    },
+    "reason": "工单系统需要多公司数据隔离（AC-03）、跨用户共享工单数据（三类角色协作）、邮件通知外部服务集成（AC-09）、服务端自动分类分配规则（AC-06）、统计分析聚合（AC-11/AC-12）和持久化操作日志（AC-14），均明确要求服务端权威数据、认证权限、后台任务和外部集成能力，不满足 simple-frontend 的条件。",
+    "evidence": {
+      "supporting": [
+        "需求明确要求工单按公司隔离，用户只能查看所属公司范围的工单（AC-03），需要服务端权威数据边界",
+        "系统涉及提交人、处理人、管理员三类角色，工单需跨用户共享与流转（AC-04、AC-07），不可能是单浏览器 localStorage 应用",
+        "工单完成后需向提交人邮箱发送完成通知邮件（AC-09），属于外部服务集成",
+        "分类自动分配规则要求服务端根据工单分类匹配规则自动分配到业务组（AC-06），属于后台业务逻辑",
+        "统计分析仪表盘需聚合工单量、平均响应时间、满意度、热点问题等运营指标（AC-11、AC-12），需要服务端聚合计算",
+        "操作日志记录工单全生命周期关键操作（AC-14），需要服务端持久化审计日志"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-03T06:27:48.037Z",
+    "sha256": "sha256:6c3a4560f830a790797409276260293344fba1ee666cd73a94fe72290e2ce5ea"
+  }
 }
