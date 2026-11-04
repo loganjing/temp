@@ -6,6 +6,12 @@
       "executionStageIds": [
         "requirements"
       ]
+    },
+    "ses_e5f32a9baffexFSahLqArwLUt2": {
+      "sessionId": "ses_e5f32a9baffexFSahLqArwLUt2",
+      "executionStageIds": [
+        "app-build"
+      ]
     }
   }
 }

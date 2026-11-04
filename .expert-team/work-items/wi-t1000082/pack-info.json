@@ -692,7 +692,7 @@
     }
   ],
   "executionStageIds": [
-    "requirements"
+    "app-build"
   ],
   "failureMappings": [
     {

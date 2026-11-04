@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "app-build:2",
+  "receiptType": "cosmic-app-build",
+  "specId": "cosmic-development-spec",
+  "graphRevision": 16,
+  "actionId": "app-build",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:11e596cf23065d2ce407ed5f0d9648a49d94e0ebdd50f0dfa5b3b4366277d1cc",
+  "createdAt": "2026-11-03T09:55:35.753Z",
+  "timing": {
+    "startedAt": "2026-11-03T09:46:19.776Z",
+    "completedAt": "2026-11-03T09:55:35.752Z",
+    "durationMs": 555976
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000082/delivery-summary.md",
+      "bytes": 17687,
+      "sha256": "sha256:07e266b1691e29e328cca464fae52202ecbe1e85e81a776ce853f9794887c6a6",
+      "role": "primary",
+      "purpose": "开发实现交付摘要",
+      "title": "教师管理系统 — 开发实现交付摘要"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "AC-1",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-10",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-11",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-12",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-13",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-14",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-2",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-3",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-4",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-5",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-6",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-7",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-8",
+      "status": "passed"
+    },
+    {
+      "checkId": "AC-9",
+      "status": "passed"
+    }
+  ]
+}

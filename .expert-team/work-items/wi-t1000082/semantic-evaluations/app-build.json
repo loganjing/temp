@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "actionId": "app-build",
+  "status": "passed",
+  "evaluatorId": "artifact.validation",
+  "evaluatorVersion": 1,
+  "sourceReceiptId": "app-build:2",
+  "sourceArtifactSha256": "sha256:07e266b1691e29e328cca464fae52202ecbe1e85e81a776ce853f9794887c6a6",
+  "validator": "tools/development-handoff-validator.mjs",
+  "evaluatedAt": "2026-11-03T09:55:35.837Z"
+}
