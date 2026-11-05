@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:061217acb86c019a9f866018366bdacbe0087d53cfd54467f8147b795e8fcb8b",
+  "createdAt": "2026-11-05T02:30:14.301Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:28:58.002Z",
+    "completedAt": "2026-11-05T02:30:14.300Z",
+    "durationMs": 76298
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000083/requirements.md",
+      "bytes": 13687,
+      "sha256": "sha256:1a019942bc6d46b21b49d0011063f71f14e7041060a53dc5cdfc9634b1ab7e79",
+      "role": "requirements",
+      "purpose": "工单系统需求基线文档，覆盖工单生命周期、分配、协作转派、处理通知、用户评价、统计分析、工作台和操作日志的完整需求与验收场景",
+      "title": "工单系统需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements-coverage",
+      "status": "passed"
+    }
+  ]
+}
