@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:2c62b67f7a90dc9850887cae10bd9c262c278c1e5bd20097dcbb92c96058ac1c",
+  "createdAt": "2026-11-05T02:36:47.691Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:34:38.915Z",
+    "completedAt": "2026-11-05T02:36:47.690Z",
+    "durationMs": 128775
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000084/implementation-report.md",
+      "bytes": 3136,
+      "sha256": "sha256:ad010765781805fc5c7dabd9602f1498e8f7d09dadf6186d8e5c11e48db9ee3c",
+      "role": "implementation-report",
+      "purpose": "教师管理系统实现报告，记录变更范围、调用链、开发验证证据和遗留风险",
+      "title": "教师管理系统 — 实现报告"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "dev-server",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:5a717396e674642a9ae6a24e2d48c14b95c56338d3f17c916012a1581df2f2f5",
+        "path": ".expert-team/work-items/wi-t1000084/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

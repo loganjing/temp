@@ -1,2 +1,4 @@
-# BEGIN expert-team local state
-# END expert-team local state
+node_modules
+dist
+*.local
+.DS_Store
