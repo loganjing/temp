@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T08:36:29.194Z"
+  "updatedAt": "2026-11-05T08:37:45.037Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000008/requirements.md",
+      "sha256": "sha256:e43704bc7b6b3c1ef0ae3db2810efd847a684fdd215a516d77238e4c81e67456"
+    },
+    "reason": "批准的需求只描述单用户对教师记录的增删改查与字段校验，持久化口径明确为“保存后能通过清单读回”，验收证据类型为 runtime-render、interaction、session-persistence，无跨重启、跨设备或跨用户共享承诺；需求中未出现服务端权威数据、认证权限、后台任务或外部集成要求，因此按本地前端路线承载，使用浏览器本地存储。",
+    "evidence": {
+      "supporting": [
+        "核心行为为查看/新增/编辑/删除单一业务对象（教师记录），页面内完成闭环",
+        "未规定事项写明“部署形态与跨重启的数据保留要求：未规定；增删改查以保存后能通过清单读回为准”，指向会话内持久化",
+        "AC-02/03/04 证据类型为 interaction 与 session-persistence，AC-01 为 runtime-render，均可由单页面前端满足",
+        "校验与反馈（名称必填、手机/邮箱格式、字段级提示、已填内容保留）属于纯前端表单逻辑"
+      ],
+      "excluding": [
+        "无角色与权限边界要求（未规定事项已排除）",
+        "无服务端权威数据或跨用户/跨设备共享要求",
+        "无后台任务、定时作业或外部服务集成要求",
+        "无搜索筛选、分页、排序等服务端查询能力要求（未纳入本次范围）"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-05T08:37:28.077Z",
+    "sha256": "sha256:0ff39577f27614822f77666e4c4a9f94baf48ad02ffcfa002b4d0edc10f76c35"
+  }
 }

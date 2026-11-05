@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:6adcda76f663e7b41d9fb1342a4b900849938a334867d180f565107868ac013d",
+  "createdAt": "2026-11-05T08:37:45.037Z",
+  "timing": {
+    "startedAt": "2026-11-05T08:37:19.384Z",
+    "completedAt": "2026-11-05T08:37:45.037Z",
+    "durationMs": 25653
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000008/architecture-baseline.md",
+      "bytes": 3544,
+      "sha256": "sha256:9b165343bfd083deb6474d0961208a0c441686a0e9b10b63d450600523687c33",
+      "role": "primary",
+      "purpose": "教师管理系统架构基线：simple-frontend 路线下的技术形态、页面与交互范围、localStorage 数据边界、实现入口与验证承载",
+      "title": "教师管理系统架构基线（k01-teacher）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "route-classification-fixed",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-written-declared-path",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-scope-unchanged",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:0ff39577f27614822f77666e4c4a9f94baf48ad02ffcfa002b4d0edc10f76c35",
+        "path": ".expert-team/work-items/wi-t1000008/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
