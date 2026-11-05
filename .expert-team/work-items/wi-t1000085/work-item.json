@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "230-timlinge\n\n做一个日常记录专注时段的系统  \n单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23595304787906560\",\"code\":\"T1000085\",\"title\":\"230-timlinge\",\"description\":\"做一个日常记录专注时段的系统  \\n单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
   "request": "230-timlinge\n\n做一个日常记录专注时段的系统  \n单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23595304787906560\",\"code\":\"T1000085\",\"title\":\"230-timlinge\",\"description\":\"做一个日常记录专注时段的系统  \\n单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-05T02:39:35.888Z"
+  "revision": 1,
+  "createdAt": "2026-11-05T02:39:35.888Z",
+  "completedAt": "2026-11-05T06:04:05.330Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:29b02c151bb6d2aa1783936d0756588e6ea0df4df56e64a6690a141ac96258f0",
+    "completedAt": "2026-11-05T06:04:05.330Z"
+  },
+  "updatedAt": "2026-11-05T06:04:05.330Z"
 }
