@@ -1,0 +1,20 @@
+{
+  "mode": "design",
+  "decision": "ready",
+  "status": "completed",
+  "artifacts": [
+    { "path": "docs/wi-t1000087/architecture-baseline.md", "role": "primary", "purpose": "工单系统架构基线文档" },
+    { "path": "docs/wi-t1000087/technical-contract.md", "role": "supporting", "purpose": "工单系统 API 技术契约" }
+  ],
+  "internalArtifacts": ["workspace-bootstrap.json"],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planDigest": "sha256:19ac042b6f9efd0a7cb47a831316748da6f67a6dad9b7f6d86b382795f42240a",
+      "scaffoldDigest": "sha256:b501cbac19f784a8ef9e6ec9a00ccee8b3a8b0822832b51c35877df5bbe0df7c",
+      "planSha256": "sha256:f8d976ea0ad19a8c3c64093faea1cde91ed46336ff5fafae9d2bb176d9aeffb5",
+      "packageRoot": "app/ticket-system"
+    }
+  ]
+}

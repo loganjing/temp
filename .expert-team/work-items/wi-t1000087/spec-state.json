@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T07:07:26.032Z"
+  "updatedAt": "2026-11-05T07:17:58.751Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000087/requirements.md",
+      "sha256": "sha256:95175238fde5236da6f53e4a4c2624f67c66f32395d56b5dfc79ecee88c77b14"
+    },
+    "reason": "工单系统要求多用户协作（提交人、处理人、管理员）与跨用户数据共享，需服务端权威数据实现公司隔离；工单完成后需发送邮件通知（外部集成）；业务组管理、分类自动分配规则、历史工单查询、统计分析仪表盘等均依赖服务端持久化与跨设备共享，无法用浏览器 localStorage 实现。",
+    "evidence": {
+      "supporting": [
+        "需求明确多用户角色：提交人创建工单、处理人处理工单、管理员配置业务组——需跨用户共享数据",
+        "工单按公司隔离，不同公司间不可见对方工单——需服务端权威访问控制",
+        "工单完成后向提交人邮箱发送完成通知邮件——需服务端外部集成能力",
+        "分类自动分配规则、业务组成员管理——需服务端持久化配置",
+        "处理人可查看提交人历史工单列表——需跨工单服务端查询",
+        "统计分析仪表盘展示工单量、平均响应时间、满意度等——需服务端聚合计算",
+        "工单转派涉及多处理人协作——需服务端状态同步"
+      ],
+      "excluding": [
+        "无证据表明仅需单用户本地存储：数据必须在多用户、多公司、多设备间共享",
+        "无证据表明可省略服务端：邮件通知、公司隔离、自动分配规则均需服务端处理",
+        "无证据表明无需认证：不同角色（提交人/处理人/管理员）需权限区分"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-05T07:09:09.750Z",
+    "sha256": "sha256:bfc81d879f03d57b3c39f7804eba52007268fd0489206eff3bdedaf9dd186264"
+  }
 }
