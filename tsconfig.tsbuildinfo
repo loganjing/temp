@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/storage.ts","./src/types.ts","./src/components/heatmap.tsx","./src/components/pomodorotimer.tsx","./src/components/recordlist.tsx","./src/components/statsheader.tsx","./src/hooks/usepomodorotimer.ts","./src/utils/time.ts"],"version":"5.9.3"}

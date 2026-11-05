@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:b23514eadef95f82d88c53e0135766bf89e5807ac4b3cb9bacb61dc4674c0842",
+  "createdAt": "2026-11-05T02:46:40.688Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:43:29.235Z",
+    "completedAt": "2026-11-05T02:46:40.688Z",
+    "durationMs": 191453
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000085/implementation-report.md",
+      "bytes": 4370,
+      "sha256": "sha256:f4773f027457fe7073473f1d68bc59704153e9fc57e5df87aa5012e39cf9be29",
+      "role": "implementation-report",
+      "purpose": "实现阶段产物报告",
+      "title": "实现报告：日常专注时段记录系统"
+    }
+  ],
+  "url": "http://localhost:5174/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "dev-server",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:b7377e7b917c7f4bc4c20d67d33478c5d8edced6ca80224ecf15eb61768f76c4",
+        "path": ".expert-team/work-items/wi-t1000085/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
