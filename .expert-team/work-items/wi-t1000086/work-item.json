@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000086",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "231-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23595485101035520\",\"code\":\"T1000086\",\"title\":\"231-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
+  "request": "231-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23595485101035520\",\"code\":\"T1000086\",\"title\":\"231-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-11-05T02:40:15.625Z"
+}

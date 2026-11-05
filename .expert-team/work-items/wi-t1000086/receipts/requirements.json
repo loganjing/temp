@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:b0ec594f4a61feaa0fcfb6467e58e3ded2b2087084b899963fc2128ba9453be2",
+  "createdAt": "2026-11-05T02:40:26.388Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:40:15.729Z",
+    "completedAt": "2026-11-05T02:40:26.388Z",
+    "durationMs": 10659
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000086/requirements.md",
+      "bytes": 1207,
+      "sha256": "sha256:1090e7cc0ffa4d37a10f4aeb6eff266fe7d426f2c89dc1042f31703ce9882390",
+      "role": "requirements",
+      "purpose": "231-clock 需求基线文档",
+      "title": "231-clock 需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements:completion",
+      "status": "passed"
+    }
+  ]
+}
