@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:5b1c01bd2790f4de10ee16a86c3b1db4755399c59d826d8cb06da960e83e34bd",
+  "createdAt": "2026-11-05T08:36:29.194Z",
+  "timing": {
+    "startedAt": "2026-11-05T08:35:31.638Z",
+    "completedAt": "2026-11-05T08:36:29.194Z",
+    "durationMs": 57556
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000008/requirements.md",
+      "bytes": 5622,
+      "sha256": "sha256:e43704bc7b6b3c1ef0ae3db2810efd847a684fdd215a516d77238e4c81e67456",
+      "role": "requirements",
+      "purpose": "k01-teacher 教师管理系统需求基线（字段口径、核心行为、验收场景）",
+      "title": "教师管理系统需求（k01-teacher）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "ac-structure",
+      "status": "passed"
+    },
+    {
+      "checkId": "field-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "source-attribution",
+      "status": "passed"
+    }
+  ]
+}
