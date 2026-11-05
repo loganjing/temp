@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:acf539be338f92fdc9385f3ade05dcfb3fe62dab2f320377a4a9802f610e2d6b",
+  "createdAt": "2026-11-05T02:31:43.313Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:31:13.393Z",
+    "completedAt": "2026-11-05T02:31:43.313Z",
+    "durationMs": 29920
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000084/requirements.md",
+      "bytes": 3044,
+      "sha256": "sha256:69d002d255b26d9d52beb02ddccc9a6dbb4b02e0ade68835e66f348ae960928d",
+      "role": "requirements",
+      "purpose": "教师管理系统需求基线文档，定义 CRUD 核心目标、字段规则、未规定事项与验收场景",
+      "title": "教师管理系统需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "core-goal-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable",
+      "status": "passed"
+    }
+  ]
+}
