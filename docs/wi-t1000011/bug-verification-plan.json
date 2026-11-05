@@ -1,0 +1,140 @@
+{
+  "workItemId": "wi-t1000011",
+  "originalRequest": "k01-teacher-issue\n\n/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23688125633007616\",\"code\":\"T1000011\",\"title\":\"k01-teacher-issue\",\"description\":\"/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlgteacher\"}",
+  "source": {
+    "handoffWorkItemId": "wi-t1000011"
+  },
+  "stageExecution": {
+    "workItemId": "wi-t1000011",
+    "actionId": "implementation",
+    "receiptId": "implementation:1"
+  },
+  "acceptanceCriteria": [
+    {
+      "id": "AC-01",
+      "source": "original-request",
+      "statement": "编辑保存后抽屉收起过程中标题与表单保持当前记录，不再闪现新增态空壳；完全关闭后打开新增时表单为空。",
+      "surface": "user-interface",
+      "action": "打开\"QA 张明\"记录的编辑抽屉并点保存，在收起动画期间读取抽屉标题与名称/手机输入值；抽屉关闭后点\"新增教师\"，读取名称、手机、邮箱与课程/年级行数。",
+      "expected": "收起期间标题为\"编辑教师\"且表单仍为被编辑记录内容；再次打开新增时名称/手机/邮箱为空、课程与年级行数为 0。",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render"
+      ]
+    },
+    {
+      "id": "AC-02",
+      "source": "original-request",
+      "statement": "表单中含课程/年级条目时不产生 React key 展开的运行期报错，行增删稳定。",
+      "surface": "user-interface",
+      "action": "刷新页面后打开含 2 门课程、2 个年级的编辑表单，读取浏览器控制台；再删除第 1 行并新增一行，读取剩余行值与移除按钮标签。",
+      "expected": "控制台无\"key\"展开相关警告或错误；删除中间行后剩余行值正确、序号与移除按钮 aria-label 连续。",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render",
+        "other"
+      ]
+    },
+    {
+      "id": "AC-03",
+      "source": "original-request",
+      "statement": "手机输入不被静默截断，超长或非法号码保留原值并被校验阻止保存。",
+      "surface": "user-interface",
+      "action": "在新增表单手机输入框输入 12 位号码 138001380001，读取输入框值后点击保存，再读取校验提示与 localStorage 记录数。",
+      "expected": "输入框保留 138001380001；提交显示\"请输入 11 位有效手机号，例如 13800138000\"；抽屉保持打开且未写入新记录。",
+      "evidenceKinds": [
+        "interaction",
+        "error-feedback",
+        "session-persistence"
+      ]
+    },
+    {
+      "id": "AC-04",
+      "source": "original-request",
+      "statement": "新增教师后清单展示本次提交的名称、课程、年级、手机、邮箱。",
+      "surface": "user-interface",
+      "action": "新增\"QA 王老师\"：课程\"语文\"、年级\"高二\"、手机 13900139000、邮箱 qa@example.com，读取清单行与 localStorage。",
+      "expected": "清单出现该记录且各字段与提交一致，列表计数加一。",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render",
+        "session-persistence"
+      ]
+    },
+    {
+      "id": "AC-05",
+      "source": "original-request",
+      "statement": "编辑保存后清单与存储更新为目标值，且不产生重复记录。",
+      "surface": "user-interface",
+      "action": "编辑\"QA 王老师\"，名称改为\"QA 王老师改\"、手机改为 13900139001 后保存，读取清单行、记录总数与 localStorage。",
+      "expected": "清单与存储均为新名称与新手机，记录总数不变。",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render",
+        "session-persistence"
+      ]
+    },
+    {
+      "id": "AC-06",
+      "source": "original-request",
+      "statement": "删除需要二次确认，取消不删除，确认后移除目标记录。",
+      "surface": "user-interface",
+      "action": "对\"QA 王老师改\"点删除，在确认框点取消并读取清单；再次点删除、确认删除后读取清单与存储。",
+      "expected": "取消后记录仍在；确认后该记录消失、计数减一，其他记录保留。",
+      "evidenceKinds": [
+        "interaction",
+        "runtime-render",
+        "session-persistence"
+      ]
+    },
+    {
+      "id": "AC-07",
+      "source": "original-request",
+      "statement": "名称必填，空白名称不能保存。",
+      "surface": "user-interface",
+      "action": "新增表单只填手机 13900139002，名称留空（含仅空格）后点击保存。",
+      "expected": "显示\"请输入教师名称\"，抽屉保持打开，无新记录写入。",
+      "evidenceKinds": [
+        "interaction",
+        "error-feedback"
+      ]
+    },
+    {
+      "id": "AC-08",
+      "source": "original-request",
+      "statement": "邮箱格式非法时阻止保存，留空允许保存。",
+      "surface": "user-interface",
+      "action": "新增表单填写名称与手机，邮箱输入 abc@def 后保存；再清空邮箱后保存。",
+      "expected": "非法邮箱显示格式提示且不落库；留空邮箱可保存，清单该列显示\"未填写\"。",
+      "evidenceKinds": [
+        "interaction",
+        "error-feedback"
+      ]
+    },
+    {
+      "id": "AC-09",
+      "source": "original-request",
+      "statement": "课程/年级中的空条目保存时被忽略。",
+      "surface": "user-interface",
+      "action": "新增教师时在课程添加两行（\"物理\"与空行）、年级添加一行空行，保存后读取清单与 localStorage。",
+      "expected": "该记录课程仅含\"物理\"，年级为未填写（或空数组），不存在空字符串条目。",
+      "evidenceKinds": [
+        "interaction",
+        "session-persistence"
+      ]
+    },
+    {
+      "id": "AC-10",
+      "source": "original-request",
+      "statement": "刷新后数据保持，无数据时展示空状态与新增入口。",
+      "surface": "user-interface",
+      "action": "刷新页面读取清单行数；再删除全部记录，读取空状态文案与新增按钮。",
+      "expected": "刷新后记录与删除前一致；清空后显示\"暂无教师记录，先添加第一位教师\"且保留\"新增教师\"入口。",
+      "evidenceKinds": [
+        "interaction",
+        "session-persistence",
+        "runtime-render"
+      ]
+    }
+  ]
+}

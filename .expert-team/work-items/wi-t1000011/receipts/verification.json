@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "verification:2",
+  "receiptType": "verification-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 2,
+  "actionId": "verification",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:9d817c259423396cbd2b5960ffdf228afa65527924ff2b9058d01e5f7dcf88a9",
+  "createdAt": "2026-11-05T09:06:53.748Z",
+  "timing": {
+    "startedAt": "2026-11-05T09:01:57.151Z",
+    "completedAt": "2026-11-05T09:06:53.748Z",
+    "durationMs": 296597
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000011/verification.md",
+      "bytes": 39035,
+      "sha256": "sha256:92fc16bf9966c543deb5964a5d7a264acf8ba3da7b83d00a43d5e3c83a0216d4",
+      "title": "验证报告"
+    }
+  ],
+  "internalArtifacts": [
+    {
+      "path": "docs/wi-t1000011/verification.json",
+      "bytes": 37594,
+      "sha256": "sha256:c39355bd7784988cdcd2a54e84aacdbc2d3955fd2770582775a1e595cd799e23"
+    },
+    {
+      "path": "docs/wi-t1000011/bug-verification-plan.json",
+      "bytes": 6784,
+      "sha256": "sha256:ea9d1ef9bc59d63dac8d55376f5d86ddd56aee7ebcaf96e372e647feb03ded18"
+    }
+  ],
+  "url": "http://127.0.0.1:5191/",
+  "verification": [
+    {
+      "checkId": "verification:completion",
+      "status": "passed"
+    }
+  ]
+}

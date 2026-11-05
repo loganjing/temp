@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "k01-teacher-issue\n\n/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23688125633007616\",\"code\":\"T1000011\",\"title\":\"k01-teacher-issue\",\"description\":\"/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlgteacher\"}",
   "request": "k01-teacher-issue\n\n/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23688125633007616\",\"code\":\"T1000011\",\"title\":\"k01-teacher-issue\",\"description\":\"/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlgteacher\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-05T08:48:26.013Z"
+  "revision": 1,
+  "createdAt": "2026-11-05T08:48:26.013Z",
+  "completedAt": "2026-11-05T09:06:53.878Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:0806860f4b4a5a111a5ee15b4f56dbbd8e9dcf0a4e8073adbc628c365121f078",
+    "completedAt": "2026-11-05T09:06:53.878Z"
+  },
+  "updatedAt": "2026-11-05T09:06:53.878Z"
 }
