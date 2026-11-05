@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:9112caf5c9cb13244c3dd33dedacb31dad2e777d4a7ca89c5a4dd3453c817fbb",
+  "createdAt": "2026-11-05T02:59:35.948Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:41:46.219Z",
+    "completedAt": "2026-11-05T02:59:35.948Z",
+    "durationMs": 1069729
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000083/implementation-report.md",
+      "bytes": 6711,
+      "sha256": "sha256:93f1ed8b959986a71ad10bb58994f8d6fbfd875b8ffcc94333d92eea0037ddb4",
+      "role": "primary",
+      "purpose": "开发实现阶段报告，记录两个并行任务的交付产物、验证结果和验收覆盖",
+      "title": "实现报告"
+    },
+    {
+      "path": "app/ticket-system/src/server/",
+      "bytes": 57901,
+      "sha256": "sha256:3b11f55d2011bb5115c916055956314a0043799c132ef07dff542ff4ee85546f"
+    },
+    {
+      "path": "app/ticket-system/src/shared/",
+      "bytes": 3023,
+      "sha256": "sha256:aae0087e1393301917cb80050d756f3bd121669d53b7416a8cb5acfd94ab5294"
+    },
+    {
+      "path": "app/ticket-system/test/",
+      "bytes": 26962,
+      "sha256": "sha256:f2be17406384a5e745269c551640b322045b95305b180aeb059ef791dbc607b3"
+    },
+    {
+      "path": "app/ticket-system/src/client/",
+      "bytes": 71573,
+      "sha256": "sha256:9a6ecfb00e60185a7dd3b5ad82dfc84262dc3d8a55eb46aabdecbccba85baec4"
+    },
+    {
+      "path": "app/ticket-system/index.html",
+      "bytes": 310,
+      "sha256": "sha256:55080f156f235ba0cfe259a8896e89d7fd95312de34a2e7d2cb544d35f4c2b9d",
+      "title": "ticket-system"
+    },
+    {
+      "path": "app/ticket-system/vite.config.ts",
+      "bytes": 370,
+      "sha256": "sha256:01f0cb88a954bb4796239c0d385d9ab8fb3f9cfdf826e9e78e3452126ab7a32d"
+    },
+    {
+      "path": "app/ticket-system/tsconfig.client.json",
+      "bytes": 145,
+      "sha256": "sha256:96f33b4c47f662f4e8a085959860a9bba96c805592f63b98ec6dada1c61486f2"
+    },
+    {
+      "path": "app/ticket-system/package.json",
+      "bytes": 1543,
+      "sha256": "sha256:762f1e4a825e0687f2dab63cf0ba05ad8572f44fccc055775efab7537f293d70"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "npm-test",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:45181769fb46ecc878cab6ad36a782f5891c0f172b923185b52fb1af40ba14eb",
+        "path": ".expert-team/work-items/wi-t1000083/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

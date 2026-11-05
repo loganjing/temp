@@ -15,21 +15,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@commonapp/auditkit": "file:../../vendor/@commonapp/auditkit",
+    "@commonapp/authkit": "file:../../vendor/@commonapp/authkit",
+    "@commonapp/dbkit": "file:../../vendor/@commonapp/dbkit",
+    "@commonapp/emailkit": "file:../../vendor/@commonapp/emailkit",
+    "@commonapp/permissionkit": "file:../../vendor/@commonapp/permissionkit",
+    "@commonapp/userkit": "file:../../vendor/@commonapp/userkit",
     "@hono/node-server": "^1.13.0",
+    "antd": "^5.29.3",
+    "better-sqlite3": "^11.0.0 || ^12.0.0",
     "dotenv": "^16.4.0",
     "hono": "^4.6.0",
+    "nodemailer": "^9.0.5",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.30.3",
-    "tsx": "^4.19.0",
-    "@commonapp/dbkit": "file:../../vendor/@commonapp/dbkit",
-    "better-sqlite3": "^11.0.0 || ^12.0.0",
-    "@commonapp/authkit": "file:../../vendor/@commonapp/authkit",
-    "@commonapp/userkit": "file:../../vendor/@commonapp/userkit",
-    "@commonapp/permissionkit": "file:../../vendor/@commonapp/permissionkit",
-    "@commonapp/auditkit": "file:../../vendor/@commonapp/auditkit",
-    "@commonapp/emailkit": "file:../../vendor/@commonapp/emailkit",
-    "nodemailer": "^9.0.5"
+    "tsx": "^4.19.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

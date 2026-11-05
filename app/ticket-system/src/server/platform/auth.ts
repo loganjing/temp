@@ -2,10 +2,15 @@ import { createAuth } from '@commonapp/authkit'
 import type { MiddlewareHandler } from 'hono'
 import { createUserResolver, createUserStore } from '@commonapp/userkit'
 import type { DbClient } from '@commonapp/dbkit'
+import { createPermissionKit } from '@commonapp/permissionkit'
 
-export function createApplicationAuth(db: DbClient) {
+type PermissionKit = ReturnType<typeof createPermissionKit>
+
+export function createApplicationAuth(db: DbClient, permission?: PermissionKit) {
   const userStore = createUserStore(db)
-  const userResolver = createUserResolver(userStore)
+  // 通过 PermissionKit 解析用户角色，使 currentUser 携带公司维度角色，
+  // 后续路由按 currentUser.companyId 做数据隔离、按角色权限做操作鉴权。
+  const userResolver = createUserResolver(userStore, permission ? { getRoles: (userId) => permission.getRoles(userId) } : {})
   const auth = createAuth({ userResolver })
   const loginRoute = auth.createLoginRoute({
     loginField: 'email',

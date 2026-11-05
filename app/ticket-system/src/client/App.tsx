@@ -1,108 +1,252 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
+import { useEffect, useState } from 'react'
+import { NavLink, Route, Routes, useNavigate } from 'react-router-dom'
+import {
+  Avatar,
+  Button,
+  Card,
+  Form,
+  Input,
+  Layout,
+  Menu,
+  Space,
+  Spin,
+  Typography,
+  message,
+} from 'antd'
+import {
+  BarChartOutlined,
+  DashboardOutlined,
+  FilterOutlined,
+  FormOutlined,
+  LogoutOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
+import { authApi } from './api/ticket-client'
+import type { CurrentUser } from './api/types'
 import UsersPage from './admin/UsersPage'
+import WorkbenchPage from './pages/WorkbenchPage'
+import CreateTicketPage from './pages/CreateTicketPage'
+import TicketDetailPage from './pages/TicketDetailPage'
+import GroupsPage from './pages/GroupsPage'
+import CategoryRulesPage from './pages/CategoryRulesPage'
+import StatisticsPage from './pages/StatisticsPage'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
-type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+const { Sider, Header, Content } = Layout
+
+type AuthState = 'checking' | 'required' | 'login' | 'authenticated'
+
+const NAV_ITEMS = [
+  { key: '/', icon: <DashboardOutlined />, label: '工作台' },
+  { key: '/tickets/new', icon: <FormOutlined />, label: '创建工单' },
+  { key: '/groups', icon: <TeamOutlined />, label: '业务组管理' },
+  { key: '/category-rules', icon: <FilterOutlined />, label: '分类规则' },
+  { key: '/statistics', icon: <BarChartOutlined />, label: '统计仪表盘' },
+  { key: '/admin/users', icon: <UserOutlined />, label: '用户管理' },
+]
+
+function AuthCard({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
+  return (
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: '#f0f2f5' }}>
+      <Card style={{ width: 'min(440px, calc(100% - 2rem))' }}>
+        <Typography.Title level={3} style={{ marginTop: 0 }}>{title}</Typography.Title>
+        <Typography.Paragraph type="secondary">{subtitle}</Typography.Paragraph>
+        {children}
+      </Card>
+    </div>
+  )
+}
 
 export default function App() {
-  const [state, setState] = useState<BootstrapState>('checking')
+  const navigate = useNavigate()
+  const [state, setState] = useState<AuthState>('checking')
   const [user, setUser] = useState<CurrentUser | null>(null)
-  const [error, setError] = useState('')
+  const [pwdRequired, setPwdRequired] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [loginForm] = Form.useForm()
+  const [bootstrapForm] = Form.useForm()
+  const [pwdForm] = Form.useForm()
 
   const refresh = async () => {
-    const token = localStorage.getItem('platform-token')
-    if (token) {
-      try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
-        setState('authenticated')
-        return
-      } catch {
-        localStorage.removeItem('platform-token')
-      }
+    try {
+      const me = await authApi.me()
+      setUser(me)
+      setPwdRequired(me.passwordChangeRequired)
+      setState('authenticated')
+      return
+    } catch {
+      localStorage.removeItem('platform-token')
     }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
+    try {
+      const status = await authApi.bootstrapStatus()
+      setState(status.required ? 'required' : 'login')
+    } catch {
+      setState('login')
+    }
   }
 
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
+  useEffect(() => { void refresh().catch(() => setState('login')) }, [])
 
-  const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onLogin = async (values: { email: string; password: string }) => {
     setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
-      if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
-        setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
-      } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
-        localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
-        setState('authenticated')
-      }
+      const result = await authApi.login(values.email, values.password)
+      localStorage.setItem('platform-token', result.token)
+      setUser(result.user)
+      setPwdRequired(result.user.passwordChangeRequired)
+      setState('authenticated')
+      loginForm.resetFields()
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
+      message.error(cause instanceof Error ? cause.message : '登录失败')
     } finally {
       setBusy(false)
     }
   }
 
-  const changePassword = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onBootstrap = async (values: { name: string; email: string; password: string }) => {
     setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
     try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
+      await authApi.bootstrap(values.name, values.email, values.password)
+      bootstrapForm.resetFields()
+      message.success('账户已创建，请登录')
+      setState('login')
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
+      message.error(cause instanceof Error ? cause.message : '创建账户失败')
     } finally {
       setBusy(false)
     }
   }
 
-  if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
-  if (state === 'required' || state === 'login') return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>{state === 'required' ? '创建首个账户 / Set up the first account' : '登录 / Sign in'}</h1>
-        <p>{state === 'required' ? '仅在没有用户时可执行一次。/ Available once while no users exist.' : '使用本地账户登录。/ Sign in with your local account.'}</p>
-        <form onSubmit={(event) => void submitIdentity(event)} className="stack">
-          {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
-          <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-          <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建账户 / Create account' : '登录 / Sign in'}</button>
-        </form>
-      </section>
-    </main>
-  )
+  const onChangePassword = async (values: { password: string }) => {
+    setBusy(true)
+    try {
+      await authApi.changePassword(values.password)
+      setPwdRequired(false)
+      setUser((prev) => prev ? { ...prev, passwordChangeRequired: false } : prev)
+      pwdForm.resetFields()
+      message.success('密码已更新')
+    } catch (cause) {
+      message.error(cause instanceof Error ? cause.message : '更新密码失败')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const signOut = () => {
+    localStorage.removeItem('platform-token')
+    setUser(null)
+    setState('login')
+    navigate('/')
+  }
+
+  if (state === 'checking') {
+    return <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}><Spin size="large" tip="加载中…" /></div>
+  }
+
+  if (state === 'required') {
+    return (
+      <AuthCard title="创建首个账户" subtitle="仅在系统无用户时可执行一次。">
+        <Form form={bootstrapForm} layout="vertical" onFinish={(v) => void onBootstrap(v)}>
+          <Form.Item name="name" label="姓名" rules={[{ required: true, max: 200 }]}>
+            <Input autoComplete="name" maxLength={200} />
+          </Form.Item>
+          <Form.Item name="email" label="邮箱" rules={[{ required: true, type: 'email', max: 320 }]}>
+            <Input autoComplete="email" maxLength={320} />
+          </Form.Item>
+          <Form.Item name="password" label="密码" rules={[{ required: true, min: 12, message: '密码至少 12 位' }]}>
+            <Input.Password autoComplete="new-password" minLength={12} />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button type="primary" htmlType="submit" loading={busy} block>创建账户</Button>
+          </Form.Item>
+        </Form>
+      </AuthCard>
+    )
+  }
+
+  if (state === 'login') {
+    return (
+      <AuthCard title="登录" subtitle="使用本地账户登录工单系统。">
+        <Form form={loginForm} layout="vertical" onFinish={(v) => void onLogin(v)}>
+          <Form.Item name="email" label="邮箱" rules={[{ required: true, type: 'email' }]}>
+            <Input autoComplete="email" />
+          </Form.Item>
+          <Form.Item name="password" label="密码" rules={[{ required: true }]}>
+            <Input.Password autoComplete="current-password" />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button type="primary" htmlType="submit" loading={busy} block>登录</Button>
+          </Form.Item>
+        </Form>
+      </AuthCard>
+    )
+  }
+
   if (!user) return null
-  if (user.passwordChangeRequired) return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>更改临时密码 / Change temporary password</h1>
-        <p>继续使用前请设置新密码。/ Set a new password before continuing.</p>
-        <form onSubmit={(event) => void changePassword(event)} className="stack">
-          <label>新密码 / New password<input name="password" type="password" autoComplete="new-password" minLength={12} required /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>更新密码 / Update password</button>
-        </form>
-      </section>
-    </main>
-  )
+
+  if (pwdRequired) {
+    return (
+      <AuthCard title="更改临时密码" subtitle="继续使用前请设置新密码。">
+        <Form form={pwdForm} layout="vertical" onFinish={(v) => void onChangePassword(v)}>
+          <Form.Item name="password" label="新密码" rules={[{ required: true, min: 12, message: '密码至少 12 位' }]}>
+            <Input.Password autoComplete="new-password" minLength={12} />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button type="primary" htmlType="submit" loading={busy} block>更新密码</Button>
+          </Form.Item>
+        </Form>
+      </AuthCard>
+    )
+  }
+
+  const selectedKeys = () => {
+    const path = window.location.pathname
+    if (path.startsWith('/tickets/new')) return ['/tickets/new']
+    if (path.startsWith('/tickets/')) return ['/']
+    if (path.startsWith('/admin/users')) return ['/admin/users']
+    return [path]
+  }
+
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider width={220} theme="dark" breakpoint="lg" collapsedWidth={0}>
+        <div style={{ height: 56, display: 'grid', placeItems: 'center', color: '#fff', fontWeight: 600 }}>
+          工单系统
+        </div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={selectedKeys()}
+          items={NAV_ITEMS.map((item) => ({
+            key: item.key,
+            icon: item.icon,
+            label: <NavLink to={item.key}>{item.label}</NavLink>,
+          }))}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ background: '#fff', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography.Title level={4} style={{ margin: 0 }}>工单管理系统</Typography.Title>
+          <Space>
+            <Avatar size="small" icon={<UserOutlined />} />
+            <Typography.Text>{user.name}</Typography.Text>
+            <Typography.Text type="secondary" style={{ fontSize: 12 }}>{user.email}</Typography.Text>
+            <Button type="text" icon={<LogoutOutlined />} onClick={signOut}>退出</Button>
+          </Space>
+        </Header>
+        <Content style={{ padding: 20 }}>
+          <Routes>
+            <Route path="/" element={<WorkbenchPage />} />
+            <Route path="/tickets/new" element={<CreateTicketPage />} />
+            <Route path="/tickets/:id" element={<TicketDetailPage />} />
+            <Route path="/groups" element={<GroupsPage />} />
+            <Route path="/category-rules" element={<CategoryRulesPage />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/admin/users" element={<UsersPage />} />
+            <Route path="*" element={<WorkbenchPage />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout>
   )
 }
