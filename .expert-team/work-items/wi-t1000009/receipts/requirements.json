@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:9a0e5e806db60609c03196a0c2ebe8043563ecdf21366732c0fe8011310e4ed4",
+  "createdAt": "2026-11-05T08:38:40.847Z",
+  "timing": {
+    "startedAt": "2026-11-05T08:37:23.259Z",
+    "completedAt": "2026-11-05T08:38:40.846Z",
+    "durationMs": 77587
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000009/requirements.md",
+      "bytes": 20685,
+      "sha256": "sha256:0efb63d7039b8375aeefe56017e40a575a20db697c4c268e0f00c2ceb4ba8174",
+      "role": "requirements-baseline",
+      "purpose": "工单系统需求基线：角色、核心对象与状态模型、业务规则、核心旅程、统计口径与 15 条验收场景",
+      "title": "工单系统需求基线（k02-ticket）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-requirements-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-traceability-and-scope-hygiene",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-path-and-ac-fields",
+      "status": "passed"
+    }
+  ]
+}
