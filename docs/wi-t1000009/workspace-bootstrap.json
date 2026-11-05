@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "ticket",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "none",
+  "packageManager": "npm",
+  "modules": ["dbkit", "authkit", "userkit", "permissionkit", "emailkit"],
+  "identityMode": "local-password"
+}

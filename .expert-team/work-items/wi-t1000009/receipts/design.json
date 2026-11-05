@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:bfe8b54f3a4e60d684615a156051c85f2623ed88c2e478b82c1c6d8506b33207",
+  "createdAt": "2026-11-05T08:46:05.257Z",
+  "timing": {
+    "startedAt": "2026-11-05T08:40:29.766Z",
+    "completedAt": "2026-11-05T08:46:05.256Z",
+    "durationMs": 335490
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000009/architecture-baseline.md",
+      "bytes": 19882,
+      "sha256": "sha256:28b812ba33e4b1698478cffab8bd12973ca94db505055542026964eb1f059a0d",
+      "role": "primary",
+      "purpose": "系统设计基线：技术栈、CommonApp 模块选择、UI 基线、数据模型、外部集成与架构决策",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000009/technical-contract.md",
+      "bytes": 14757,
+      "sha256": "sha256:00be2a7004413f223d0ae8d4195f6e276df871e55d2b8cf98b2e8adb2e3a972e",
+      "role": "supporting",
+      "purpose": "字段级技术契约：ID 对照、枚举与状态机、权限矩阵、端点契约与错误码",
+      "title": "技术契约（k02-ticket）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "bootstrapPath": "docs/wi-t1000009/workspace-bootstrap.json",
+      "planSha256": "sha256:d350d1e448f4d0e83f5cd560754f332cc3dfb2521eb5aa069ecc3f54580d4143",
+      "planDigest": "sha256:f474d075ea2c08938be3a70fe1b1fc23bdb6790b27e15632e906f73da7491f05",
+      "scaffoldDigest": "sha256:6a4d6c3d30835da7d962b4a122104b15d3cf5e9cc20c27774c84975cfd3b3114",
+      "packageRoot": "app/ticket",
+      "modules": [
+        "dbkit",
+        "authkit",
+        "userkit",
+        "permissionkit",
+        "emailkit"
+      ]
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:fbea5dd448677ae262d4a63c98cdec6cc801b90b9ae893c448325cca2cbfb894",
+        "path": ".expert-team/work-items/wi-t1000009/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

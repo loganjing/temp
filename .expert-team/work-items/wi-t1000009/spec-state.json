@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T08:38:40.847Z"
+  "updatedAt": "2026-11-05T08:46:05.257Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000009/requirements.md",
+      "sha256": "sha256:0efb63d7039b8375aeefe56017e40a575a20db697c4c268e0f00c2ceb4ba8174"
+    },
+    "reason": "需求明确要求多公司数据隔离与按角色的可见范围、服务端权威工单数据跨用户共享、工单完成时对外发送邮件通知、公司级业务组与分配规则的共享配置，以及跨公司/部门的统计聚合，均无法由单浏览器前端承担。",
+    "evidence": {
+      "supporting": [
+        "R-01 公司隔离与 AC-04：不同公司用户不可见对方工单、业务组、工作台与统计，需要服务端鉴权与数据范围控制",
+        "角色区分提交人/处理人/公司管理员（需求第 2 节），同一工单在多用户之间流转，需要共享的服务端权威数据",
+        "R-07 与 AC-10：工单完成时向提交人邮箱发送通知并记录发送结果，属于外部服务集成",
+        "AC-05/AC-06：同一公司可维护多个业务组、成员及按分类的自动分配规则，属公司级共享配置",
+        "AC-13/AC-14：按公司、部门维度统计与仪表盘运营指标，需要服务端聚合查询",
+        "R-10 与 AC-15：工单、回复、评价与只读操作日志长期保留并可追溯"
+      ],
+      "excluding": [
+        "需求未声明数据仅在单一浏览器或设备内可用，也没有可退化为 localStorage 单用户 CRUD 的迹象",
+        "要求跨用户协作（转派、多轮回复）与公司隔离，与纯前端单用户模型冲突"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-05T08:40:37.734Z",
+    "sha256": "sha256:fbea5dd448677ae262d4a63c98cdec6cc801b90b9ae893c448325cca2cbfb894"
+  }
 }

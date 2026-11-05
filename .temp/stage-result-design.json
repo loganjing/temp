@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000009/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "系统设计基线：技术栈、CommonApp 模块选择、UI 基线、数据模型、外部集成与架构决策"
+    },
+    {
+      "path": "docs/wi-t1000009/technical-contract.md",
+      "role": "supporting",
+      "purpose": "字段级技术契约：ID 对照、枚举与状态机、权限矩阵、端点契约与错误码"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "bootstrapPath": "docs/wi-t1000009/workspace-bootstrap.json",
+      "planSha256": "sha256:d350d1e448f4d0e83f5cd560754f332cc3dfb2521eb5aa069ecc3f54580d4143",
+      "planDigest": "sha256:f474d075ea2c08938be3a70fe1b1fc23bdb6790b27e15632e906f73da7491f05",
+      "scaffoldDigest": "sha256:6a4d6c3d30835da7d962b4a122104b15d3cf5e9cc20c27774c84975cfd3b3114",
+      "packageRoot": "app/ticket",
+      "modules": ["dbkit", "authkit", "userkit", "permissionkit", "emailkit"]
+    }
+  ],
+  "evidence": [
+    "已按批准需求快照（sha256:0efb63d7039b8375aeefe56017e40a575a20db697c4c268e0f00c2ceb4ba8174）完成分类：fullstack-complex（多公司隔离、跨用户共享权威数据、邮件通知、聚合统计）。",
+    "catalog/manifests 核查全部目标模块为 ready，并记录 manifest SHA-256；未选 auditkit/attachment/i18n 的理由写入架构基线。",
+    "已执行一次批准的工作区初始化：decision=initialized，packageRoot=app/ticket，包含模块 dbkit、authkit、userkit、permissionkit、emailkit。",
+    "初始化自检通过：npm install、npm run build、npm run test 均在临时沙箱内执行成功，工作区合并后根 platform-baseline.json 可读、app/ticket/AGENTS.md 存在。"
+  ]
+}
