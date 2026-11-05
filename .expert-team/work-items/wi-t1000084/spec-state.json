@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T02:31:43.313Z"
+  "updatedAt": "2026-11-05T02:33:36.596Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000084/requirements.md",
+      "sha256": "sha256:69d002d255b26d9d52beb02ddccc9a6dbb4b02e0ade68835e66f348ae960928d"
+    },
+    "reason": "已批准需求基线为单用户教师信息 CRUD 应用，仅包含教师名称、教授课程、年级、手机、邮箱五个字段的增删改查。需求第3节明确未规定服务端权威数据、用户角色/权限/登录鉴权、后台任务、外部服务集成以及跨用户/跨设备数据共享等能力。AC-01 的证据类型为 interaction,session-persistence，仅需页面交互与浏览器本地会话持久化即可闭合验收。符合 simple-frontend 路由条件，使用浏览器 localStorage 即可满足全部验收场景。",
+    "evidence": {
+      "supporting": [
+        "需求第1节目标为教师信息的增删改查，属单用户 CRUD 应用",
+        "需求第3节明确未规定用户角色、权限与登录鉴权",
+        "需求第3节明确未规定数据存储技术、部署方式与持久化周期",
+        "需求第3节明确未规定外部服务集成",
+        "需求第3节明确未规定跨用户/跨设备数据共享",
+        "AC-01 证据类型为 interaction,session-persistence，仅需页面会话级持久化即可闭合验收"
+      ],
+      "excluding": [
+        "需求第3节明确未规定用户角色、权限与登录鉴权，排除认证能力",
+        "需求第3节明确未规定数据存储技术、部署方式与持久化周期，排除服务端权威数据库",
+        "需求第3节明确未规定外部服务集成，排除外部服务依赖",
+        "需求第3节明确未规定跨用户/跨设备数据共享，排除共享数据边界",
+        "需求无任何后台任务、定时任务或异步处理的描述，排除后台工作"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-05T02:33:07.099Z",
+    "sha256": "sha256:5a717396e674642a9ae6a24e2d48c14b95c56338d3f17c916012a1581df2f2f5"
+  }
 }

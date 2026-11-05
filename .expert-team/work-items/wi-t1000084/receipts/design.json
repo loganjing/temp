@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:804d9a725b6751ec158ac7ae41bd68b9ef35a16e0730c314f617390f53dd0a9d",
+  "createdAt": "2026-11-05T02:33:36.596Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:32:55.022Z",
+    "completedAt": "2026-11-05T02:33:36.595Z",
+    "durationMs": 41573
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000084/architecture-baseline.md",
+      "bytes": 4030,
+      "sha256": "sha256:32a2eccf04b70f5f46bf9004e737e95cc20156217bcc10a46d989f7291786d5f",
+      "role": "primary",
+      "purpose": "教师管理系统纯前端架构基线，确定 React+Vite SPA、Ant Design、localStorage 数据边界与页面交互范围",
+      "title": "教师管理系统架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:5a717396e674642a9ae6a24e2d48c14b95c56338d3f17c916012a1581df2f2f5",
+        "path": ".expert-team/work-items/wi-t1000084/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
