@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:39327c1823982d30a808a5176e4e4b1114e29ea1503200b302c172b4a5718372",
+  "createdAt": "2026-11-05T02:40:41.278Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:39:36.000Z",
+    "completedAt": "2026-11-05T02:40:41.278Z",
+    "durationMs": 65278
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000085/requirements.md",
+      "bytes": 5615,
+      "sha256": "sha256:33363d8e398cd8f3624d554b761e28e8a41f17318341d3cd39a02e7d77e31c0c",
+      "role": "requirements",
+      "purpose": "日常专注时段记录系统的需求基线文档，包含目标、核心行为规则、推荐基线、未规定事项和验收场景",
+      "title": "需求文档：日常专注时段记录系统"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-requirements-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-and-evidence",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-fabricated-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "recommended-baseline-minimal",
+      "status": "passed"
+    }
+  ]
+}
