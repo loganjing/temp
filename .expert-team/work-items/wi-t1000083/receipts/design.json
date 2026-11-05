@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:9541e7f58a9bc65adb3f11de288932dac64dde76ea9aec45b84dada151e9d0fc",
+  "createdAt": "2026-11-05T02:38:01.432Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:33:01.495Z",
+    "completedAt": "2026-11-05T02:38:01.431Z",
+    "durationMs": 299936
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000083/architecture-baseline.md",
+      "bytes": 15471,
+      "sha256": "sha256:f6b6aff1079ab58bf0db6d8c7600bbe6b5481d5ea38d977a1965e02963b1449c",
+      "role": "primary",
+      "purpose": "架构基线：技术栈、CommonApp 模块选型、数据模型、UI 基线、模块边界与接口摘要",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000083/technical-contract.md",
+      "bytes": 13692,
+      "sha256": "sha256:ce649e35e83259f7c5cd39e68620fd33403c36310e5101fc21e201d1e960fee0",
+      "role": "supporting",
+      "purpose": "技术契约：API 接口定义、ID 类型对照表、前端路由与页面",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "bootstrap-plan-sha256",
+      "status": "sha256:c8a9fc0a6bd5b1d9912c72d5949b5ff0c0631239c0d91de9a7c11f0c2d224f4e"
+    },
+    {
+      "checkId": "bootstrap-plan-digest",
+      "status": "sha256:19ac042b6f9efd0a7cb47a831316748da6f67a6dad9b7f6d86b382795f42240a"
+    },
+    {
+      "checkId": "bootstrap-scaffold-digest",
+      "status": "sha256:b501cbac19f784a8ef9e6ec9a00ccee8b3a8b0822832b51c35877df5bbe0df7c"
+    },
+    {
+      "checkId": "bootstrap-package-root",
+      "status": "app/ticket-system"
+    },
+    {
+      "checkId": "bootstrap-app-agents-md",
+      "status": "present"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:45181769fb46ecc878cab6ad36a782f5891c0f172b923185b52fb1af40ba14eb",
+        "path": ".expert-team/work-items/wi-t1000083/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

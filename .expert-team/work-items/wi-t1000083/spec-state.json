@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T02:30:14.301Z"
+  "updatedAt": "2026-11-05T02:38:01.432Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000083/requirements.md",
+      "sha256": "sha256:1a019942bc6d46b21b49d0011063f71f14e7041060a53dc5cdfc9634b1ab7e79"
+    },
+    "reason": "工单系统需要服务端权威数据库存储工单、公司、业务组等核心业务数据；工单提交人和处理人是不同用户，数据需跨用户共享；邮件通知需后台任务和外部服务集成；公司隔离需要服务端权限控制；统计分析仪表盘需聚合计算。以上均明确超出纯前端 localStorage 能力范围。",
+    "evidence": {
+      "supporting": [
+        "工单按公司隔离，用户只能访问所属公司数据——需要服务端权限控制",
+        "工单支持多轮回复，提交人和处理人均可回复——跨用户共享数据",
+        "工单完成时发送邮件通知——需要后台任务和外部邮件服务集成",
+        "工单分配按分类自动分配到业务组——需要服务端规则引擎",
+        "统计分析仪表盘需聚合工单量、平均响应时间、满意度等指标——需要服务端聚合计算",
+        "操作日志持久记录——需要服务端持久化存储"
+      ],
+      "excluding": [
+        "无任何证据表明可仅用浏览器 localStorage 满足——多用户跨设备数据共享不可能在前端实现",
+        "无证据表明不需要后端——邮件通知、公司隔离权限、自动分配规则均为服务端能力"
+      ],
+      "unresolved": [
+        "认证/权限层级（管理员 vs 处理人 vs 提交人）的具体实现方案待设计",
+        "邮件服务的具体集成方式（SMTP/第三方服务）待设计"
+      ]
+    },
+    "decidedAt": "2026-11-05T02:33:15.950Z",
+    "sha256": "sha256:45181769fb46ecc878cab6ad36a782f5891c0f172b923185b52fb1af40ba14eb"
+  }
 }

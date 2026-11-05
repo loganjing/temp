@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000083/architecture-baseline.md",
+      "role": "primary",
+      "purpose": "Architecture baseline with tech stack, CommonApp modules, data model, UI baseline, and module boundaries"
+    },
+    {
+      "path": "docs/wi-t1000083/technical-contract.md",
+      "role": "supporting",
+      "purpose": "API contract with endpoint definitions, ID type mappings, and frontend routes"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    }
+  ]
+}
