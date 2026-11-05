@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:7522eb2c73b23b8d5fef46e5d3038669e005e8705c1314e2cbbb449a39eebe5e",
+  "createdAt": "2026-11-05T07:07:26.032Z",
+  "timing": {
+    "startedAt": "2026-11-05T07:04:40.781Z",
+    "completedAt": "2026-11-05T07:07:26.031Z",
+    "durationMs": 165250
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000087/requirements.md",
+      "bytes": 14692,
+      "sha256": "sha256:95175238fde5236da6f53e4a4c2624f67c66f32395d56b5dfc79ecee88c77b14",
+      "role": "requirements-baseline",
+      "purpose": "工单系统需求基线文档，包含目标范围、角色、核心实体与规则、生命周期、用户旅程、模块需求和11条验收场景",
+      "title": "工单系统需求基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "user-requirements-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-coverage",
+      "status": "passed"
+    }
+  ]
+}
