@@ -1,0 +1,518 @@
+{
+  "decision": "pass-with-risk",
+  "summary": {
+    "objective": "独立复核 T1000013 报告的三处缺陷修复（工作台优先级排序方向、演示日志完成/通知时序、详情页日志加载态）并执行关联回归。",
+    "changedBehavior": "优先级排序方向与「P0 最高」一致（desc 由高到低）、演示工单日志按 创建→回复→完成→通知→评价 排列、详情页日志区加载中显示骨架屏而非空状态。",
+    "nonGoals": [
+      "SLA 告警、附件、导出等本期范围外能力不在本次缺陷验证范围。",
+      "真实邮件投递、鉴权协议与运维部署不在本轮验证范围。"
+    ],
+    "riskLabels": [
+      "邮件投递未实测",
+      "加载态在人为延迟下验证"
+    ]
+  },
+  "environment": {
+    "name": "本地工作区 wi-t1000013（app/ticket，Vite + Hono + SQLite）",
+    "version": "工作区 HEAD（含本次修复）；Node v22.23.4；后端 127.0.0.1:3213、前端 localhost:5293",
+    "dataProfile": "临时 SQLite 种子库 /tmp/t1000013-qa/probe.db：2 公司、9 用户、3 业务组、5 分类、8 条工单；演示口令 TicketDemo#2026；日志接口经 QA 延迟代理延迟 20 秒",
+    "configuration": "DB_PATH=/tmp/t1000013-qa/probe.db；未配置 SMTP（完成通知记为 skipped）；QA_API_BASE_URL=http://127.0.0.1:3293"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-01",
+          "action": "以公司管理员身份请求 GET /api/tickets?scope=workbench&status=all&sort=priority&order=desc，读取返回顺序。",
+          "expected": "返回顺序按优先级由高到低，P1 在首位、P3 在末位。"
+        }
+      ],
+      "evidence": "独立复跑 GET http://127.0.0.1:3213/api/tickets?scope=workbench&status=all&sort=priority&order=desc（admin.acme 登录令牌）返回 TK-900002:P1 | TK-900001:P2 | TK-900004:P2 | TK-900005:P2 | TK-900003:P3，最高优先级在首位。",
+      "results": [
+        {
+          "requirementId": "BV-AC-01",
+          "action": "以公司管理员身份请求 GET /api/tickets?scope=workbench&status=all&sort=priority&order=desc，读取返回顺序。",
+          "expected": "返回顺序按优先级由高到低，P1 在首位、P3 在末位。",
+          "actual": "返回顺序 TK-900002:P1 → TK-900001:P2 → TK-900004:P2 → TK-900005:P2 → TK-900003:P3",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-02",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-02",
+          "action": "请求 GET /api/tickets?scope=workbench&status=all&sort=priority（不传 order）。",
+          "expected": "首位为最高优先级 P1，顺序与 order=desc 相同。"
+        }
+      ],
+      "evidence": "省略 order 的请求返回与降序完全相同的顺序，首条为 TK-900002:P1。",
+      "results": [
+        {
+          "requirementId": "BV-AC-02",
+          "action": "请求 GET /api/tickets?scope=workbench&status=all&sort=priority（不传 order）。",
+          "expected": "首位为最高优先级 P1，顺序与 order=desc 相同。",
+          "actual": "GET ...&sort=priority 返回 TK-900002:P1 | TK-900001:P2 | TK-900004:P2 | TK-900005:P2 | TK-900003:P3",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-03",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-03",
+          "action": "请求 GET /api/tickets?scope=workbench&status=all&sort=priority&order=asc。",
+          "expected": "首位为最低优先级 P3，末位为 P1。"
+        }
+      ],
+      "evidence": "order=asc 返回与降序相反的序列，首条 TK-900003:P3、末条 TK-900002:P1。",
+      "results": [
+        {
+          "requirementId": "BV-AC-03",
+          "action": "请求 GET /api/tickets?scope=workbench&status=all&sort=priority&order=asc。",
+          "expected": "首位为最低优先级 P3，末位为 P1。",
+          "actual": "GET ...&sort=priority&order=asc 返回 TK-900003:P3 | TK-900001:P2 | TK-900004:P2 | TK-900005:P2 | TK-900002:P1",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-04",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-04",
+          "kind": "interaction",
+          "action": "在工作台把排序字段切换为「按优先级」，分别保持「降序」与切换「升序」，读取表格行的编号与优先级列。",
+          "expected": "降序时 P1 行在首、P3 行在末；升序时 P3 行在首、P1 行在末。"
+        },
+        {
+          "requirementId": "BV-AC-04",
+          "kind": "runtime-render",
+          "action": "在工作台把排序字段切换为「按优先级」，分别保持「降序」与切换「升序」，读取表格行的编号与优先级列。",
+          "expected": "降序时 P1 行在首、P3 行在末；升序时 P3 行在首、P1 行在末。"
+        }
+      ],
+      "evidence": "工作台把排序切换为「按优先级」后，表格行实际顺序随方向即时变化；读取 lite 前端 http://localhost:5293/workbench 的 tbody 行（编号|主题|分类|优先级）。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser: workbench 页面选择「按优先级」后 eval 读取 tbody tr 优先级列（降序、升序各一次）"
+      },
+      "assertions": [
+        {
+          "requirementId": "BV-AC-04",
+          "kind": "interaction",
+          "action": "在工作台把排序字段切换为「按优先级」，分别保持「降序」与切换「升序」，读取表格行的编号与优先级列。",
+          "expected": "降序时 P1 行在首、P3 行在末；升序时 P3 行在首、P1 行在末。",
+          "actual": "降序行顺序 TK-900002(P1) → TK-900001(P2) → TK-900004(P2) → TK-900005(P2) → TK-900003(P3)",
+          "status": "passed"
+        },
+        {
+          "requirementId": "BV-AC-04",
+          "kind": "runtime-render",
+          "action": "在工作台把排序字段切换为「按优先级」，分别保持「降序」与切换「升序」，读取表格行的编号与优先级列。",
+          "expected": "降序时 P1 行在首、P3 行在末；升序时 P3 行在首、P1 行在末。",
+          "actual": "切换升序后行顺序 TK-900003(P3) → TK-900001(P2) → TK-900004(P2) → TK-900005(P2) → TK-900002(P1)",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-05",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-05",
+          "action": "请求 GET /api/tickets/seed-ticket-acme-5/logs 与 seed-ticket-acme-2 的日志，读取 action 与时间戳。",
+          "expected": "日志按时间正序包含 created → replied → completed → notified → rated，completed 时间戳早于 notified。"
+        }
+      ],
+      "evidence": "seed-ticket-acme-5 日志按时间正序为 created 08:17 → replied 09:17 → completed 10:17 → notified 10:22 → rated 11:17；seed-ticket-acme-2 同样为 completed 10:17 早于 notified 10:22。",
+      "results": [
+        {
+          "requirementId": "BV-AC-05",
+          "action": "请求 GET /api/tickets/seed-ticket-acme-5/logs 与 seed-ticket-acme-2 的日志，读取 action 与时间戳。",
+          "expected": "日志按时间正序包含 created → replied → completed → notified → rated，completed 时间戳早于 notified。",
+          "actual": "acme-5: created@2026-11-03T08:17, replied@09:17, completed@10:17, notified@10:22, rated@11:17；acme-2: completed@2026-11-04T10:17, notified@10:22",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-06",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-06",
+          "kind": "runtime-render",
+          "action": "在日志接口被人为延迟 20 秒的条件下打开 /tickets/seed-ticket-acme-5，请求进行中读取日志卡片内的骨架屏与文案；返回后再次读取。",
+          "expected": "加载中日志卡片内有骨架屏、无「暂无操作日志」文案；返回后骨架屏消失并显示真实日志条目。"
+        }
+      ],
+      "evidence": "将日志接口人为延迟 20 秒后打开 /tickets/seed-ticket-acme-5：请求进行中日志卡片内有 1 个骨架屏、0 条时间线条目、无「暂无操作日志」；延迟结束返回后骨架屏为 0、显示 5 条真实日志。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser: 打开 http://localhost:5293/tickets/seed-ticket-acme-5（QA 延迟代理 20s）后立即与加载完成后各读取一次日志卡片"
+      },
+      "assertions": [
+        {
+          "requirementId": "BV-AC-06",
+          "kind": "runtime-render",
+          "action": "在日志接口被人为延迟 20 秒的条件下打开 /tickets/seed-ticket-acme-5，请求进行中读取日志卡片内的骨架屏与文案；返回后再次读取。",
+          "expected": "加载中日志卡片内有骨架屏、无「暂无操作日志」文案；返回后骨架屏消失并显示真实日志条目。",
+          "actual": "加载中：cardTitle=操作日志（只读）, skeletonInCard=1, timelineItems=0, cardText 无「暂无操作日志」；加载完成：skeleton=0, timelineItems=5",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-07",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-07",
+          "kind": "runtime-render",
+          "action": "日志加载完成后读取详情页日志时间线各条目的标题与顺序。",
+          "expected": "时间线依次为 创建工单 → 回复工单 → 完成工单 → 发送完成通知 → 满意度评价。"
+        }
+      ],
+      "evidence": "详情页日志时间线顺序与接口一致，完成工单 18:17 排在发送完成通知 18:22 之前。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser: 日志加载完成后 eval 读取 .log-timeline 各条目文本"
+      },
+      "assertions": [
+        {
+          "requirementId": "BV-AC-07",
+          "kind": "runtime-render",
+          "action": "日志加载完成后读取详情页日志时间线各条目的标题与顺序。",
+          "expected": "时间线依次为 创建工单 → 回复工单 → 完成工单 → 发送完成通知 → 满意度评价。",
+          "actual": "时间线：创建工单(刘洋 16:17) → 回复工单(李强 17:17) → 完成工单(李强 18:17) → 发送完成通知(李强 18:22, status: failed) → 满意度评价(刘洋 19:17, 4 分)",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-08",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-08",
+          "action": "请求 sort=updatedAt&order=desc、sort=priority 与 status/priority 筛选组合，以及 order=sideways 非法值。",
+          "expected": "updatedAt 降序按最近更新从新到旧；priority 筛选只返回该优先级；非法 order 返回 422。"
+        }
+      ],
+      "evidence": "updatedAt 降序按最近更新从新到旧（TK-900003/TK-900001/TK-900004）；status=completed&sort=priority 返回 TK-900002:P1、TK-900005:P2；priority=P3 仅返回 TK-900003；order=sideways 返回 422。",
+      "results": [
+        {
+          "requirementId": "BV-AC-08",
+          "action": "请求 sort=updatedAt&order=desc、sort=priority 与 status/priority 筛选组合，以及 order=sideways 非法值。",
+          "expected": "updatedAt 降序按最近更新从新到旧；priority 筛选只返回该优先级；非法 order 返回 422。",
+          "actual": "updatedAt desc: TK-900003@2026-11-05T07:17 → TK-900001@04:47 → TK-900004@03:17；completed+priority: TK-900002:P1 | TK-900005:P2；priority=P3: TK-900003；order=sideways: HTTP 422",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-09",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-09",
+          "kind": "runtime-render",
+          "action": "打开工作台，状态选择「全部状态」，保持默认「按创建时间/降序」，读取创建时间列顺序。",
+          "expected": "创建时间从新到旧排列。"
+        }
+      ],
+      "evidence": "工作台默认「按创建时间/降序」下表格按创建时间从新到旧排列。",
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "agent_browser: workbench 状态切「全部状态」后 eval 读取编号与创建时间列"
+      },
+      "assertions": [
+        {
+          "requirementId": "BV-AC-09",
+          "kind": "runtime-render",
+          "action": "打开工作台，状态选择「全部状态」，保持默认「按创建时间/降序」，读取创建时间列顺序。",
+          "expected": "创建时间从新到旧排列。",
+          "actual": "TK-900003@2026/11/05 15:17 → TK-900001@12:17 → TK-900004@10:17 → TK-900002@2026/11/04 16:17 → TK-900005@2026/11/03 16:17",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-10",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-10",
+          "action": "以 admin.globex 登录后请求工作台列表（含按优先级排序）。",
+          "expected": "仅返回环宇贸易有限公司的 3 条工单，不出现云启科技工单。"
+        }
+      ],
+      "evidence": "admin.globex 登录后工作台（含 priority desc）仅返回环宇贸易有限公司的 TK-900006/TK-900008/TK-900007，不含任何云启科技工单。",
+      "results": [
+        {
+          "requirementId": "BV-AC-10",
+          "action": "以 admin.globex 登录后请求工作台列表（含按优先级排序）。",
+          "expected": "仅返回环宇贸易有限公司的 3 条工单，不出现云启科技工单。",
+          "actual": "返回 TK-900006:P2 | TK-900008:P2 | TK-900007:P3，companyName 均为「环宇贸易有限公司」",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-11",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-11",
+          "action": "对 seed-ticket-acme-5 的失败通知调用 POST /api/tickets/:id/notifications/:notificationId/retry，并复查日志。",
+          "expected": "返回 200，产生 attempt=2 的新记录，日志追加 notification_retried 动作。"
+        }
+      ],
+      "evidence": "对失败通知重试返回 200，生成 attempt=2 的新记录（status=skipped，未配置 SMTP），日志追加 notification_retried。",
+      "results": [
+        {
+          "requirementId": "BV-AC-11",
+          "action": "对 seed-ticket-acme-5 的失败通知调用 POST /api/tickets/:id/notifications/:notificationId/retry，并复查日志。",
+          "expected": "返回 200，产生 attempt=2 的新记录，日志追加 notification_retried 动作。",
+          "actual": "POST /api/tickets/seed-ticket-acme-5/notifications/seed-notification-acme-5/retry → 200 {attempt:2, status:'skipped'}；日志新增 notification_retried@2026-11-05T10:20:12.443Z",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-12",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-12",
+          "action": "以 admin.acme 身份请求 seed-ticket-globex-1 的日志接口。",
+          "expected": "返回 403，不泄露他司工单日志。"
+        }
+      ],
+      "evidence": "admin.acme 请求他司工单日志被拒绝，返回 403。",
+      "results": [
+        {
+          "requirementId": "BV-AC-12",
+          "action": "以 admin.acme 身份请求 seed-ticket-globex-1 的日志接口。",
+          "expected": "返回 403，不泄露他司工单日志。",
+          "actual": "GET /api/tickets/seed-ticket-globex-1/logs → HTTP 403",
+          "expectedStatus": 403,
+          "actualStatus": 403,
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "checkId": "QA-13",
+      "type": "E2E/API",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "BV-AC-13",
+          "action": "在 app/ticket 执行 npm test 与 npm run build。",
+          "expected": "测试无失败（既有条件跳过除外），服务端/客户端类型检查通过且 vite 构建成功。"
+        }
+      ],
+      "evidence": "npm test：12 个测试、pass 11、fail 0、skip 1（platform.test.mjs 条件跳过）；npm run build：tsc server/client 通过，vite build ✓ built in 2.55s（仅 chunk 体积提示）。",
+      "exitCode": 0,
+      "results": [
+        {
+          "requirementId": "BV-AC-13",
+          "action": "在 app/ticket 执行 npm test 与 npm run build。",
+          "expected": "测试无失败（既有条件跳过除外），服务端/客户端类型检查通过且 vite 构建成功。",
+          "actual": "npm test 输出 # tests 12 / # pass 11 / # fail 0 / # skipped 1；npm run build 输出 tsc 无错误、vite build ✓ built in 2.55s",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "BV-AC-01: 工单工作台按优先级降序（默认方向）排序时，最高优先级 P0/P1 排在最前，而不是最低优先级置顶。; BV-AC-02: 按优先级排序省略 order 参数时，方向与默认降序一致。; BV-AC-03: 按优先级升序排序时顺序与降序相反，用于核对方向映射无副作用。; BV-AC-04: 工作台界面切换「按优先级」排序后，表格行的实际优先级顺序与业务约定一致，且切换升/降序即时生效。; BV-AC-05: 演示数据的已完成工单操作日志中，「完成工单」早于「发送完成通知」，时序符合真实业务动作。; BV-AC-06: 工单详情首次打开、操作日志请求尚未返回时，日志卡片显示加载占位，不显示「暂无操作日志」。; BV-AC-07: 工单详情页面展示的操作日志顺序与接口一致：完成工单在发送完成通知之前。; BV-AC-08: 排序方向改动未影响其他排序字段、筛选组合与参数校验。; BV-AC-09: 工作台默认排序（按创建时间降序）在改动后仍为最新创建的工单在前。; BV-AC-10: 公司数据隔离未因排序改动而失效：另一个公司的管理员只能看到本公司工单。; BV-AC-11: 完成通知重试能力未受影响：失败记录可重试并生成新尝试与审计日志。; BV-AC-12: 跨公司读取他人公司工单日志仍被拒绝，权限边界未被排序改动破坏。; BV-AC-13: 工程仍可构建并稳定通过既有测试，修复未破坏类型检查与构建产物。",
+    "mandatoryAcceptance": [
+      {
+        "id": "BV-AC-01",
+        "source": "bug-verification-plan.json#BV-AC-01",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidence": "QA-01 独立接口复跑：desc 返回 P1 在首、P3 在末。"
+      },
+      {
+        "id": "BV-AC-02",
+        "source": "bug-verification-plan.json#BV-AC-02",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidence": "QA-02：省略 order 时顺序与降序一致。"
+      },
+      {
+        "id": "BV-AC-03",
+        "source": "bug-verification-plan.json#BV-AC-03",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-03"
+        ],
+        "evidence": "QA-03：asc 返回 P3 在首、P1 在末。"
+      },
+      {
+        "id": "BV-AC-04",
+        "source": "bug-verification-plan.json#BV-AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-04"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render"
+        ],
+        "evidence": "QA-04 浏览器实测：工作台切换「按优先级」后行顺序随升/降序即时变化，降序 P1 在首。"
+      },
+      {
+        "id": "BV-AC-05",
+        "source": "bug-verification-plan.json#BV-AC-05",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-05"
+        ],
+        "evidence": "QA-05：acme-5 与 acme-2 的 completed 时间戳均早于 notified。"
+      },
+      {
+        "id": "BV-AC-06",
+        "source": "bug-verification-plan.json#BV-AC-06",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-06"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-06 浏览器实测：20s 延迟下日志卡片显示骨架屏、无「暂无操作日志」。"
+      },
+      {
+        "id": "BV-AC-07",
+        "source": "bug-verification-plan.json#BV-AC-07",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-07"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-07 浏览器实测：时间线顺序 完成工单 → 发送完成通知。"
+      },
+      {
+        "id": "BV-AC-08",
+        "source": "bug-verification-plan.json#BV-AC-08",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-08"
+        ],
+        "evidence": "QA-08：其他排序、筛选组合与非法参数校验均符合预期。"
+      },
+      {
+        "id": "BV-AC-09",
+        "source": "bug-verification-plan.json#BV-AC-09",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-09"
+        ],
+        "evidenceKinds": [
+          "runtime-render"
+        ],
+        "evidence": "QA-09 浏览器实测：默认按创建时间降序仍为新→旧。"
+      },
+      {
+        "id": "BV-AC-10",
+        "source": "bug-verification-plan.json#BV-AC-10",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-10"
+        ],
+        "evidence": "QA-10：环宇贸易管理员仅见本公司 3 条工单。"
+      },
+      {
+        "id": "BV-AC-11",
+        "source": "bug-verification-plan.json#BV-AC-11",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-11"
+        ],
+        "evidence": "QA-11：重试返回 200，attempt=2 并追加审计日志。"
+      },
+      {
+        "id": "BV-AC-12",
+        "source": "bug-verification-plan.json#BV-AC-12",
+        "surface": "api",
+        "status": "met",
+        "checkIds": [
+          "QA-12"
+        ],
+        "evidence": "QA-12：跨公司读取日志返回 403。"
+      },
+      {
+        "id": "BV-AC-13",
+        "source": "bug-verification-plan.json#BV-AC-13",
+        "surface": "internal",
+        "status": "met",
+        "checkIds": [
+          "QA-13"
+        ],
+        "evidence": "QA-13：npm test 无失败，类型检查与前端构建成功。"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "E2E/API",
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [
+    "QA-13 内 platform.test.mjs 因平台鉴权边界已配置而按条件跳过（不属于本次缺陷相关路径）"
+  ],
+  "residualRisks": [
+    "环境未配置 SMTP，完成通知仅验证到 skipped 状态、重试记录与审计日志，真实邮件投递成功路径未在本轮验证。",
+    "日志加载态通过人为 20 秒延迟观察，真实慢网络下的占位时长与体验未量化。",
+    "开发自测报告称 seed-ticket-acme-5 有 6 条操作日志，实际接口与页面均为 5 条（created/replied/completed/notified/rated）；属报告计数口径偏差，不影响修复结论。",
+    "按优先级升序当前返回 P3→P1，符合「P0 最高」语义下升序的定义，但与部分使用者「升序=优先级从高到低」的直觉相反，存在理解成本。"
+  ],
+  "baselineUpdates": []
+}

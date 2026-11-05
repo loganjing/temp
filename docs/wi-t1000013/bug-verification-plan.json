@@ -1,0 +1,131 @@
+{
+  "workItemId": "wi-t1000013",
+  "originalRequest": "k02-ticket-issue1\n\n/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgticket/.lingee-task-worktrees/wi-t1000009 修复下这个项目的 bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23707725204553728\",\"code\":\"T1000013\",\"title\":\"k02-ticket-issue1\",\"description\":\"/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgticket/.lingee-task-worktrees/wi-t1000009 修复下这个项目的 bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlgticket\"}",
+  "source": {
+    "handoffWorkItemId": "wi-t1000013"
+  },
+  "stageExecution": {
+    "workItemId": "wi-t1000013",
+    "actionId": "implementation",
+    "receiptId": "implementation:1"
+  },
+  "acceptanceCriteria": [
+    {
+      "id": "BV-AC-01",
+      "source": "original-request",
+      "statement": "工单工作台按优先级降序（默认方向）排序时，最高优先级 P0/P1 排在最前，而不是最低优先级置顶。",
+      "surface": "api",
+      "action": "以公司管理员身份请求 GET /api/tickets?scope=workbench&status=all&sort=priority&order=desc，读取返回顺序。",
+      "expected": "返回顺序按优先级由高到低，P1 在首位、P3 在末位。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-02",
+      "source": "original-request",
+      "statement": "按优先级排序省略 order 参数时，方向与默认降序一致。",
+      "surface": "api",
+      "action": "请求 GET /api/tickets?scope=workbench&status=all&sort=priority（不传 order）。",
+      "expected": "首位为最高优先级 P1，顺序与 order=desc 相同。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-03",
+      "source": "original-request",
+      "statement": "按优先级升序排序时顺序与降序相反，用于核对方向映射无副作用。",
+      "surface": "api",
+      "action": "请求 GET /api/tickets?scope=workbench&status=all&sort=priority&order=asc。",
+      "expected": "首位为最低优先级 P3，末位为 P1。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-04",
+      "source": "original-request",
+      "statement": "工作台界面切换「按优先级」排序后，表格行的实际优先级顺序与业务约定一致，且切换升/降序即时生效。",
+      "surface": "user-interface",
+      "action": "在工作台把排序字段切换为「按优先级」，分别保持「降序」与切换「升序」，读取表格行的编号与优先级列。",
+      "expected": "降序时 P1 行在首、P3 行在末；升序时 P3 行在首、P1 行在末。",
+      "evidenceKinds": ["interaction", "runtime-render"]
+    },
+    {
+      "id": "BV-AC-05",
+      "source": "original-request",
+      "statement": "演示数据的已完成工单操作日志中，「完成工单」早于「发送完成通知」，时序符合真实业务动作。",
+      "surface": "api",
+      "action": "请求 GET /api/tickets/seed-ticket-acme-5/logs 与 seed-ticket-acme-2 的日志，读取 action 与时间戳。",
+      "expected": "日志按时间正序包含 created → replied → completed → notified → rated，completed 时间戳早于 notified。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-06",
+      "source": "original-request",
+      "statement": "工单详情首次打开、操作日志请求尚未返回时，日志卡片显示加载占位，不显示「暂无操作日志」。",
+      "surface": "user-interface",
+      "action": "在日志接口被人为延迟 20 秒的条件下打开 /tickets/seed-ticket-acme-5，请求进行中读取日志卡片内的骨架屏与文案；返回后再次读取。",
+      "expected": "加载中日志卡片内有骨架屏、无「暂无操作日志」文案；返回后骨架屏消失并显示真实日志条目。",
+      "evidenceKinds": ["runtime-render"]
+    },
+    {
+      "id": "BV-AC-07",
+      "source": "original-request",
+      "statement": "工单详情页面展示的操作日志顺序与接口一致：完成工单在发送完成通知之前。",
+      "surface": "user-interface",
+      "action": "日志加载完成后读取详情页日志时间线各条目的标题与顺序。",
+      "expected": "时间线依次为 创建工单 → 回复工单 → 完成工单 → 发送完成通知 → 满意度评价。",
+      "evidenceKinds": ["runtime-render"]
+    },
+    {
+      "id": "BV-AC-08",
+      "source": "original-request",
+      "statement": "排序方向改动未影响其他排序字段、筛选组合与参数校验。",
+      "surface": "api",
+      "action": "请求 sort=updatedAt&order=desc、sort=priority 与 status/priority 筛选组合，以及 order=sideways 非法值。",
+      "expected": "updatedAt 降序按最近更新从新到旧；priority 筛选只返回该优先级；非法 order 返回 422。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-09",
+      "source": "original-request",
+      "statement": "工作台默认排序（按创建时间降序）在改动后仍为最新创建的工单在前。",
+      "surface": "user-interface",
+      "action": "打开工作台，状态选择「全部状态」，保持默认「按创建时间/降序」，读取创建时间列顺序。",
+      "expected": "创建时间从新到旧排列。",
+      "evidenceKinds": ["runtime-render"]
+    },
+    {
+      "id": "BV-AC-10",
+      "source": "original-request",
+      "statement": "公司数据隔离未因排序改动而失效：另一个公司的管理员只能看到本公司工单。",
+      "surface": "api",
+      "action": "以 admin.globex 登录后请求工作台列表（含按优先级排序）。",
+      "expected": "仅返回环宇贸易有限公司的 3 条工单，不出现云启科技工单。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-11",
+      "source": "original-request",
+      "statement": "完成通知重试能力未受影响：失败记录可重试并生成新尝试与审计日志。",
+      "surface": "api",
+      "action": "对 seed-ticket-acme-5 的失败通知调用 POST /api/tickets/:id/notifications/:notificationId/retry，并复查日志。",
+      "expected": "返回 200，产生 attempt=2 的新记录，日志追加 notification_retried 动作。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-12",
+      "source": "original-request",
+      "statement": "跨公司读取他人公司工单日志仍被拒绝，权限边界未被排序改动破坏。",
+      "surface": "api",
+      "action": "以 admin.acme 身份请求 seed-ticket-globex-1 的日志接口。",
+      "expected": "返回 403，不泄露他司工单日志。",
+      "evidenceKinds": ["other"]
+    },
+    {
+      "id": "BV-AC-13",
+      "source": "original-request",
+      "statement": "工程仍可构建并稳定通过既有测试，修复未破坏类型检查与构建产物。",
+      "surface": "internal",
+      "action": "在 app/ticket 执行 npm test 与 npm run build。",
+      "expected": "测试无失败（既有条件跳过除外），服务端/客户端类型检查通过且 vite 构建成功。",
+      "evidenceKinds": ["other"]
+    }
+  ]
+}
