@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:2eb34695fd6d1c2e050b3d2ec69766942185bc440da39450fd7af3de85a04bf6",
+  "createdAt": "2026-11-05T08:42:03.799Z",
+  "timing": {
+    "startedAt": "2026-11-05T08:38:47.650Z",
+    "completedAt": "2026-11-05T08:42:03.799Z",
+    "durationMs": 196149
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000008/implementation-report.md",
+      "bytes": 5922,
+      "sha256": "sha256:f0379e5132bf31b9ef50acb9dc37b671e4f4b06fa6993ce0bb3794520cd5e510",
+      "role": "implementation-report",
+      "purpose": "教师管理系统实现说明：交付行为、调用链、实现范围、AC 覆盖、开发验证证据与 QA 交接",
+      "title": "教师管理系统实现报告（k01-teacher）"
+    }
+  ],
+  "url": "http://127.0.0.1:5173/",
+  "verification": [
+    {
+      "checkId": "unit-tests",
+      "status": "passed",
+      "detail": "npm run test 退出码 0：2 个测试文件、15 个用例全部通过（数据模块 9、校验规则 6）"
+    },
+    {
+      "checkId": "production-build",
+      "status": "passed",
+      "detail": "npm run build 退出码 0：Vite 构建成功，产出 dist/index.html 与静态资源"
+    },
+    {
+      "checkId": "dev-server",
+      "status": "passed",
+      "detail": "npm run dev 后台作业运行中，http://127.0.0.1:5173/ 就绪"
+    },
+    {
+      "checkId": "browser-interaction-acceptance",
+      "status": "not-run",
+      "detail": "浏览器交互、刷新读回与视觉验收由 QA 阶段执行，实现阶段未执行"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:0ff39577f27614822f77666e4c4a9f94baf48ad02ffcfa002b4d0edc10f76c35",
+        "path": ".expert-team/work-items/wi-t1000008/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
