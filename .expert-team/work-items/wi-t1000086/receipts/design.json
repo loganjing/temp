@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:eb2a72c5cd62b6f32908c64129f5bd3bdc6cb4837584a94a19800d779f81e349",
+  "createdAt": "2026-11-05T02:42:07.400Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:41:31.501Z",
+    "completedAt": "2026-11-05T02:42:07.400Z",
+    "durationMs": 35899
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000086/architecture-baseline.md",
+      "bytes": 2849,
+      "sha256": "sha256:ee4b3cf70345cb7bad46faade31c5f59fa3cd156e13e0be166206f18ca5ee6f7",
+      "role": "primary",
+      "purpose": "精简前端架构基线：页面与交互范围、数据归属、React/Vite 实现入口与运行方式、验证边界",
+      "title": "231-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-path-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-sha-verified",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:5919f101a295f7fc5a98f8619418ae721e3c8c5fa152c8489950c3d4057fc2ad",
+        "path": ".expert-team/work-items/wi-t1000086/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

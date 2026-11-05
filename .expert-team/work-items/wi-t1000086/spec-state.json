@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T02:40:26.388Z"
+  "updatedAt": "2026-11-05T02:42:07.400Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000086/requirements.md",
+      "sha256": "sha256:1090e7cc0ffa4d37a10f4aeb6eff266fe7d426f2c89dc1042f31703ce9882390"
+    },
+    "reason": "需求只要求一个页面实时显示当前时分秒（HH:MM:SS），全部行为由浏览器端时间 API 与定时器即可完成：Date 获取时间、setInterval 每秒驱动更新、DOM 渲染。需求未要求任何服务端权威数据、认证/权限、后台任务、外部集成或跨用户/设备共享，因此采用精简前端路线。",
+    "evidence": {
+      "supporting": [
+        "需求目标：做一个页面，实时显示当前的时、分、秒",
+        "AC-01：页面打开后显示当前 HH:MM:SS 并随系统时间持续更新，证据类型为 runtime-render",
+        "需求明确时间格式为 24 小时制、两位补零，纯前端可计算与渲染",
+        "未规定事项：技术栈、框架、部署方式均未指定，可用最简前端实现"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据存储或持久化",
+        "需求未要求用户认证或权限控制",
+        "需求未要求后台任务、定时任务调度或消息队列",
+        "需求未要求外部服务集成或第三方 API",
+        "需求未要求跨用户、跨设备或跨浏览器数据共享"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-05T02:41:41.385Z",
+    "sha256": "sha256:5919f101a295f7fc5a98f8619418ae721e3c8c5fa152c8489950c3d4057fc2ad"
+  }
 }
