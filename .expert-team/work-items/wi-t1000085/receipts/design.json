@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:2349fabc265f6a26fc2aa585144b7e2e9ae2bb49879659b927a79b9a748a44fd",
+  "createdAt": "2026-11-05T02:42:26.482Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:41:33.616Z",
+    "completedAt": "2026-11-05T02:42:26.481Z",
+    "durationMs": 52865
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000085/architecture-baseline.md",
+      "bytes": 4808,
+      "sha256": "sha256:6951bd7c023eb5f1a354bf3172ecac4057509b8a83bc5cf96934afecc24b93ba",
+      "role": "primary",
+      "purpose": "简单前端架构基线：单页面 React/Vite SPA，localStorage 持久化当日专注记录，番茄钟状态机与热力图派生模型，及受定时器影响验收的测试控制入口说明",
+      "title": "架构基线：日常专注时段记录系统"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:b7377e7b917c7f4bc4c20d67d33478c5d8edced6ca80224ecf15eb61768f76c4",
+        "path": ".expert-team/work-items/wi-t1000085/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-05T02:40:41.278Z"
+  "updatedAt": "2026-11-05T02:42:26.482Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000085/requirements.md",
+      "sha256": "sha256:33363d8e398cd8f3624d554b761e28e8a41f17318341d3cd39a02e7d77e31c0c"
+    },
+    "reason": "需求明确为单页面应用，番茄钟倒计时、当日记录、累计时长与热力图全部为浏览器内渲染与本地状态；未要求服务端权威数据、认证、后台任务、外部服务或跨用户/设备共享，符合 simple-frontend 路由标准",
+    "evidence": {
+      "supporting": [
+        "R1 单页面约束：所有功能集中同一页面，无需多页面跳转",
+        "R2-R5 番茄钟倒计时、自动记录、累计时长、热力图均为前端渲染与本地状态",
+        "需求第5节未规定事项：数据存储方式、用户账户、多设备同步均未规定",
+        "RB3 推荐基线：当日记录在当前浏览器会话内保持即可"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据：RB3 仅要求当前浏览器会话内保持，未规定跨设备/跨用户同步",
+        "需求未要求认证/权限：未规定用户账户（需求第5节）",
+        "需求未要求后台任务：番茄钟倒计时为前端运行时行为",
+        "需求未要求外部服务集成：无第三方接口调用",
+        "需求未要求共享数据：数据仅限当前浏览器会话"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-05T02:41:46.126Z",
+    "sha256": "sha256:b7377e7b917c7f4bc4c20d67d33478c5d8edced6ca80224ecf15eb61768f76c4"
+  }
 }
