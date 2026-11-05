@@ -1,108 +1,84 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { apiRequest } from './platform/api-client'
+import { Button, Result, Spin } from 'antd'
+import type { ReactNode } from 'react'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import UsersPage from './admin/UsersPage'
+import AppShell from './components/AppShell'
+import CategoriesRulesPage from './pages/config/CategoriesRulesPage'
+import GroupsPage from './pages/config/GroupsPage'
+import LoginPage from './pages/LoginPage'
+import MyTicketsPage from './pages/MyTicketsPage'
+import StatsPage from './pages/StatsPage'
+import TicketDetailPage from './pages/TicketDetailPage'
+import WorkbenchPage from './pages/WorkbenchPage'
+import { defaultPathFor, useSession } from './platform/session'
+import type { UserProfile } from './platform/types'
 
-type CurrentUser = { id: string; name: string; email: string; passwordChangeRequired?: boolean }
-type BootstrapState = 'checking' | 'required' | 'login' | 'authenticated'
+function Landing() {
+  const { user } = useSession()
+  return user ? <Navigate to={defaultPathFor(user)} replace /> : null
+}
+
+function RequireSession() {
+  const { status, user } = useSession()
+  const location = useLocation()
+  if (status === 'loading') {
+    return (
+      <div className="app-loading">
+        <Spin size="large" />
+      </div>
+    )
+  }
+  if (!user) return <Navigate to="/login" replace state={{ from: `${location.pathname}${location.search}` }} />
+  return <AppShell />
+}
+
+function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {
+  const { user } = useSession()
+  const navigate = useNavigate()
+  if (!user) return null
+  if (!roles.some((role) => user.roles.includes(role))) {
+    return (
+      <Result
+        status="403"
+        title="无权限访问"
+        subTitle="该页面仅对公司管理员开放，如需权限请联系管理员。"
+        extra={<Button type="primary" onClick={() => navigate(defaultPathFor(user as UserProfile), { replace: true })}>返回可用页面</Button>}
+      />
+    )
+  }
+  return <>{children}</>
+}
+
+function NotFound() {
+  const { user } = useSession()
+  const navigate = useNavigate()
+  return (
+    <div className="app-loading">
+      <Result
+        status="404"
+        title="页面不存在"
+        subTitle="请检查访问地址，或返回首页继续使用。"
+        extra={<Button type="primary" onClick={() => navigate(user ? defaultPathFor(user) : '/login', { replace: true })}>返回首页</Button>}
+      />
+    </div>
+  )
+}
 
 export default function App() {
-  const [state, setState] = useState<BootstrapState>('checking')
-  const [user, setUser] = useState<CurrentUser | null>(null)
-  const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
-
-  const refresh = async () => {
-    const token = localStorage.getItem('platform-token')
-    if (token) {
-      try {
-        setUser(await apiRequest<CurrentUser>('/api/auth/me'))
-        setState('authenticated')
-        return
-      } catch {
-        localStorage.removeItem('platform-token')
-      }
-    }
-    const status = await apiRequest<{ required: boolean }>('/api/auth/bootstrap-status')
-    setState(status.required ? 'required' : 'login')
-  }
-
-  useEffect(() => { void refresh().catch(() => setError('无法连接服务 / Cannot connect to server')) }, [])
-
-  const submitIdentity = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      if (state === 'required') {
-        await apiRequest('/api/auth/bootstrap', { method: 'POST', body: JSON.stringify(body) })
-        setState('login')
-        setError('账户已创建，请登录 / Account created. Please sign in.')
-      } else {
-        const result = await apiRequest<{ token: string; user: CurrentUser }>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) })
-        localStorage.setItem('platform-token', result.token)
-        setUser(result.user)
-        setState('authenticated')
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '操作失败 / Request failed')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  const changePassword = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setBusy(true)
-    setError('')
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries())
-    try {
-      await apiRequest('/api/auth/password', { method: 'POST', body: JSON.stringify(body) })
-      setUser(user ? { ...user, passwordChangeRequired: false } : user)
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '更新密码失败 / Password update failed')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  if (state === 'checking') return <main className="shell"><p>加载中 / Loading…</p></main>
-  if (state === 'required' || state === 'login') return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>{state === 'required' ? '创建首个账户 / Set up the first account' : '登录 / Sign in'}</h1>
-        <p>{state === 'required' ? '仅在没有用户时可执行一次。/ Available once while no users exist.' : '使用本地账户登录。/ Sign in with your local account.'}</p>
-        <form onSubmit={(event) => void submitIdentity(event)} className="stack">
-          {state === 'required' && <label>姓名 / Name<input name="name" autoComplete="name" required maxLength={200} /></label>}
-          <label>邮箱 / Email<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-          <label>密码 / Password<input name="password" type="password" autoComplete={state === 'required' ? 'new-password' : 'current-password'} required minLength={state === 'required' ? 12 : 1} /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>{busy ? '处理中 / Working…' : state === 'required' ? '创建账户 / Create account' : '登录 / Sign in'}</button>
-        </form>
-      </section>
-    </main>
-  )
-  if (!user) return null
-  if (user.passwordChangeRequired) return (
-    <main className="shell auth-shell">
-      <section className="card auth-card">
-        <h1>更改临时密码 / Change temporary password</h1>
-        <p>继续使用前请设置新密码。/ Set a new password before continuing.</p>
-        <form onSubmit={(event) => void changePassword(event)} className="stack">
-          <label>新密码 / New password<input name="password" type="password" autoComplete="new-password" minLength={12} required /></label>
-          {error && <p role="alert" className="error">{error}</p>}
-          <button disabled={busy}>更新密码 / Update password</button>
-        </form>
-      </section>
-    </main>
-  )
   return (
-    <main className="shell">
-      <header className="topbar">
-        <div><h1>用户管理 / User management</h1><p title={user.email}>{user.name} · {user.email}</p></div>
-        <button className="secondary" onClick={() => { localStorage.removeItem('platform-token'); setUser(null); setState('login') }}>退出 / Sign out</button>
-      </header>
-      <UsersPage />
-    </main>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<RequireSession />}>
+        <Route index element={<Landing />} />
+        <Route path="my-tickets" element={<MyTicketsPage />} />
+        <Route path="workbench" element={<WorkbenchPage />} />
+        <Route path="tickets/:id" element={<TicketDetailPage />} />
+        <Route path="settings/groups" element={<RequireRole roles={['company_admin']}><GroupsPage /></RequireRole>} />
+        <Route path="settings/categories" element={<RequireRole roles={['company_admin']}><CategoriesRulesPage /></RequireRole>} />
+        <Route path="settings/users" element={<RequireRole roles={['company_admin']}><UsersPage /></RequireRole>} />
+        <Route path="stats" element={<RequireRole roles={['company_admin', 'platform_stats']}><StatsPage /></RequireRole>} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }
