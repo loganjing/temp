@@ -1,0 +1,46 @@
+# 验证报告
+
+## 验证结论
+
+pass
+
+## 摘要
+
+验证教师管理系统 CRUD 闭环：教师名称、教授课程、年级、手机、邮箱五个字段的增删改查。
+
+变更行为：新建教师管理 SPA，支持新增、查看、编辑、删除教师记录，数据通过 localStorage 持久化。
+
+非目标：
+- —
+
+## 验证环境
+
+React + Vite + TypeScript + Ant Design Vite 5.4.21, React 18, antd 5；浏览器 localStorage，键 teacher-management/teachers，QA 轮次使用测试数据无残留
+
+## 验证检查
+
+| 检查项 | 类型 | 状态 | 证据 |
+|---|---|---|---|
+| QA-01 | browser-ui | passed | 在 http://127.0.0.1:5173/ 执行完整 CRUD 闭环：1) 创建教师（名称=张伟,课程=数学,年级=高三,手机=13800138000,邮箱=zhangwei@example.com），提交后表格出现该记录且五个字段值完整匹配；2) 查看列表中该记录，五个字段均正确显示；3) 点击编辑打开预填表单，将教授课程从数学改为物理并保存，表格中该字段更新为物理，其余字段不变；4) 点击删除并确认，表格恢复为空状态。数据通过 localStorage 持久化，在模态框关闭/重新打开的会话过程中均保持可读。<br>AC-01: 创建后表格行显示张伟/数学/高三/13800138000/zhangwei@example.com五个字段；编辑后教授课程更新为物理；删除后表格为空。全部交互步骤按预期执行。 (passed)<br>AC-01: 教师记录通过 localStorage 持久化，创建后刷新列表可读回完整记录，编辑保存后再次查看显示更新后的值，删除后记录不再出现。会话级持久化符合预期。 (passed) |
+
+## 验收覆盖
+
+| 验收项 | 结果 | 证据 |
+|---|---|---|
+| AC-01 | met | QA-01 |
+
+## 缺陷
+
+- —
+
+## 未执行项
+
+- —
+
+## 剩余风险
+
+- —
+
+<!-- structured-report:v1
+{"decision":"pass","summary":{"objective":"验证教师管理系统 CRUD 闭环：教师名称、教授课程、年级、手机、邮箱五个字段的增删改查。","changedBehavior":"新建教师管理 SPA，支持新增、查看、编辑、删除教师记录，数据通过 localStorage 持久化。","nonGoals":[],"riskLabels":[]},"environment":{"name":"React + Vite + TypeScript + Ant Design","version":"Vite 5.4.21, React 18, antd 5","dataProfile":"浏览器 localStorage，键 teacher-management/teachers，QA 轮次使用测试数据无残留"},"verification":[{"checkId":"QA-01","type":"browser-ui","status":"passed","plan":[{"requirementId":"AC-01","kind":"interaction","action":"在教师管理界面中，填写教师名称、教授课程、年级、手机、邮箱并创建一条教师记录；随后在列表中查看该记录；修改其中任一字段并保存；最后删除该记录。","expected":"- 创建后，教师列表中出现包含所填各字段值的记录；\n- 查看时显示该记录完整的五个字段；\n- 修改保存后，再次查看该记录对应字段显示为更新后的值；\n- 删除后，该记录不再出现在教师列表中。"},{"requirementId":"AC-01","kind":"session-persistence","action":"在教师管理界面中，填写教师名称、教授课程、年级、手机、邮箱并创建一条教师记录；随后在列表中查看该记录；修改其中任一字段并保存；最后删除该记录。","expected":"- 创建后，教师列表中出现包含所填各字段值的记录；\n- 查看时显示该记录完整的五个字段；\n- 修改保存后，再次查看该记录对应字段显示为更新后的值；\n- 删除后，该记录不再出现在教师列表中。"}],"evidence":"在 http://127.0.0.1:5173/ 执行完整 CRUD 闭环：1) 创建教师（名称=张伟,课程=数学,年级=高三,手机=13800138000,邮箱=zhangwei@example.com），提交后表格出现该记录且五个字段值完整匹配；2) 查看列表中该记录，五个字段均正确显示；3) 点击编辑打开预填表单，将教授课程从数学改为物理并保存，表格中该字段更新为物理，其余字段不变；4) 点击删除并确认，表格恢复为空状态。数据通过 localStorage 持久化，在模态框关闭/重新打开的会话过程中均保持可读。","testStrategy":{"traits":[],"mode":"direct","maxAttempts":2},"observation":{"method":"browser","actor":"expert","reference":"QA session at http://127.0.0.1:5173/, Vite dev server job dbf1e253"},"assertions":[{"requirementId":"AC-01","kind":"interaction","action":"在教师管理界面中，填写教师名称、教授课程、年级、手机、邮箱并创建一条教师记录；随后在列表中查看该记录；修改其中任一字段并保存；最后删除该记录。","expected":"- 创建后，教师列表中出现包含所填各字段值的记录；\n- 查看时显示该记录完整的五个字段；\n- 修改保存后，再次查看该记录对应字段显示为更新后的值；\n- 删除后，该记录不再出现在教师列表中。","actual":"创建后表格行显示张伟/数学/高三/13800138000/zhangwei@example.com五个字段；编辑后教授课程更新为物理；删除后表格为空。全部交互步骤按预期执行。","status":"passed"},{"requirementId":"AC-01","kind":"session-persistence","action":"在教师管理界面中，填写教师名称、教授课程、年级、手机、邮箱并创建一条教师记录；随后在列表中查看该记录；修改其中任一字段并保存；最后删除该记录。","expected":"- 创建后，教师列表中出现包含所填各字段值的记录；\n- 查看时显示该记录完整的五个字段；\n- 修改保存后，再次查看该记录对应字段显示为更新后的值；\n- 删除后，该记录不再出现在教师列表中。","actual":"教师记录通过 localStorage 持久化，创建后刷新列表可读回完整记录，编辑保存后再次查看显示更新后的值，删除后记录不再出现。会话级持久化符合预期。","status":"passed"}]}],"coverage":{"acceptance":"AC-01: 用户能够创建、查看、修改、删除一条教师记录，且每一步操作的结果可在后续查询中被观察到。","mandatoryAcceptance":[{"id":"AC-01","source":"requirements.md#AC-01","surface":"user-interface","status":"met","checkIds":["QA-01"],"evidenceKinds":["interaction","session-persistence"],"evidence":"QA-01 浏览器验收通过：创建-查看-修改-删除完整闭环在单页面内可观察、可读回，五字段均正确持久化。"}],"riskLabels":[],"verificationTypes":["browser-ui"]},"defects":[],"skippedChecks":[],"residualRisks":[],"baselineUpdates":[],"testStrategyVersion":1}
+-->

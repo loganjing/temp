@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "229-ticker\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23593208596402176\",\"code\":\"T1000084\",\"title\":\"229-ticker\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
   "request": "229-ticker\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23593208596402176\",\"code\":\"T1000084\",\"title\":\"229-ticker\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"JLGSpace-88\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-05T02:31:13.283Z"
+  "revision": 1,
+  "createdAt": "2026-11-05T02:31:13.283Z",
+  "completedAt": "2026-11-05T02:40:10.126Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:768ecd27b98c9938033c957c0c009e1fc0fb6cf236db761edd973e785cee56a8",
+    "completedAt": "2026-11-05T02:40:10.126Z"
+  },
+  "updatedAt": "2026-11-05T02:40:10.126Z"
 }
