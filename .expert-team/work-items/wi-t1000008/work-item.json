@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "k01-teacher\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23684810622902272\",\"code\":\"T1000008\",\"title\":\"k01-teacher\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgteacher\"}",
   "request": "k01-teacher\n\n做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23684810622902272\",\"code\":\"T1000008\",\"title\":\"k01-teacher\",\"description\":\"做一个教师管理系统，包括教师的增删改查，包括教师名称，教授课程，年级，手机，邮箱字段。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgteacher\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-05T08:35:31.517Z"
+  "revision": 1,
+  "createdAt": "2026-11-05T08:35:31.517Z",
+  "completedAt": "2026-11-05T08:46:17.538Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:b10ac28c74b9995d68acb2a8570d6eac3778fef7c81139abb2927a09483639f8",
+    "completedAt": "2026-11-05T08:46:17.538Z"
+  },
+  "updatedAt": "2026-11-05T08:46:17.538Z"
 }
