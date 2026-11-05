@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "workItemId": "wi-t1000011",
+  "source": {
+    "request": "k01-teacher-issue\n\n/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"23688125633007616\",\"code\":\"T1000011\",\"title\":\"k01-teacher-issue\",\"description\":\"/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000008 这个项目修复下 bug\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"bug\",\"acceptanceCriteria\":[],\"projectName\":\"jlgteacher\"}"
+  },
+  "status": "fixed",
+  "investigation": {
+    "observations": [
+      "原始任务只给出项目路径，没有描述具体现象；目标项目自带的验证记录（docs/wi-t1000008/verification.md）结论为 pass-with-risk 且未登记缺陷，因此按“先实际运行复现，再定位修复”推进。",
+      "当前工作项分支（kteam/23684738304708608/T1000011，提交 a04f4ceb）的基线里没有应用源码，只有 docs/ 与 .gitignore；被引用的项目在同一仓库的 wi-t1000008 工作树（提交 8dcb294e）。为了在本次授权的写范围内交付，把该项目的 src、tests、index.html、package.json、package-lock.json、vite.config.js、README.md 原样带入当前工作项作为修复基线，带入时未修改其内容。",
+      "基线单元测试 15 项通过；启动开发服务器后在页面实测新增、编辑、删除、刷新持久化以及名称/手机/邮箱校验，均能按需求工作，没有复现出既有验证记录之外的业务流程阻断。",
+      "页面实测发现三处缺陷：抽屉保存后收起动画期间标题和引导文案已经变成“新增教师”，表单里却仍是刚保存那位教师的数据；打开含有课程/年级条目的表单时控制台出现 React 报错（key 通过对象展开传进 JSX）；手机输入框输入 12 位号码会被静默截断成 11 位，并按截断后的号码保存。",
+      "三处缺陷的共同点是“界面显示与真实数据不一致”：一处把上一条记录当成新表单内容展示，一处污染运行期控制台并妨碍表单行增删的稳定渲染，一处让用户输入的值在没有提示的情况下被改写。"
+    ],
+    "reproduction": [
+      "在项目根目录执行 npm run dev（本次实测用 npx vite --port 5191 --strictPort）并打开 http://127.0.0.1:5191/。",
+      "新增一条教师（名称“张明”、课程“高等数学”、年级“高一/高三”、手机“13700137000”、邮箱“zhangming@example.com”），确认清单可读回。",
+      "点击该行“编辑”，在抽屉里再点“保存”；在抽屉收起的动画过程中读取 .ant-drawer-title，修复前显示“新增教师”，同时输入框仍是“张明 / 13700137000”。",
+      "打开任意含课程或年级条目的表单，浏览器控制台出现 “Warning: A props object containing a \"key\" prop is being spread into JSX”，调用栈指向 TeacherFormDrawer.jsx 的 Form.List 行渲染。",
+      "在新增或编辑表单的手机输入框输入 12 位号码 138001380001，输入框只剩 13800138000，提交后保存的也是 13800138000，没有出现任何格式提示。"
+    ]
+  },
+  "expectedBasis": [
+    {
+      "kind": "document",
+      "reference": "docs/wi-t1000008/requirements.md#AC-02、AC-03",
+      "expected": "新增或编辑保存后，清单以及再次打开的表单展示的就是本次提交的值；不应把上一条记录的数据当作新表单内容，也不应因此产生重复或错位记录。"
+    },
+    {
+      "kind": "document",
+      "reference": "docs/wi-t1000008/requirements.md#AC-05",
+      "expected": "手机等字段格式不合法时应阻止保存并在字段旁给出可见提示，而不是先把用户输入截断成另一个合法值再保存。"
+    },
+    {
+      "kind": "user-request",
+      "reference": "原始任务描述：对 k01-teacher 项目修复缺陷（来自 IssueTask T1000011，kind=bug）",
+      "expected": "应用在浏览器中运行时不产生 React 运行期报错，表单行的增加、删除与取值保持与清单一致。"
+    }
+  ],
+  "fix": {
+    "summary": "修复三处界面与数据不一致的缺陷：抽屉关闭时保留当前模式与记录，收起过程不再闪成“新增教师”空壳；Form.List 行改为显式传 key、不再把 key 展开进 Form.Item；手机输入去掉硬截断，改由既有校验规则拦截超长号码。同时补充手机 12 位用例与表单取值往返的单元测试。",
+    "rootCause": "1) src/App.jsx 的 closeDrawer 把抽屉状态重置为模块常量 CLOSED_DRAWER（mode 固定为 'create'），而 TeacherFormDrawer 只在 open 变为 true 时重置表单，于是收起动画期间面板已切到“新增教师”文案，字段却仍渲染上一条记录的 store 值。2) src/components/TeacherFormDrawer.jsx 的 Form.List 行把整个 {...field} 展开到 <Form.Item>，field 中含 key，React 会报“key 通过对象展开传入 JSX”，并使行 meta 与 JSX 属性来源混杂。3) 手机 Input 上的 maxLength={11} 让浏览器在输入或粘贴时静默截断，校验器随后校验的是被截断后的值，于是保存了用户从未输入的号码。",
+    "files": [
+      "src/App.jsx",
+      "src/components/TeacherFormDrawer.jsx",
+      "tests/teacherValidation.test.js",
+      "tests/teacherFormValues.test.js"
+    ]
+  },
+  "verification": [
+    {
+      "id": "ST-01",
+      "action": "在项目根目录执行 npx vitest run。",
+      "expected": "全部单元测试通过，包含新增的手机 12 位号码用例与表单取值往返用例。",
+      "actual": "3 个测试文件、19 项测试全部通过（teacherValidation 6、teacherStore 9、teacherFormValues 4）。",
+      "status": "passed",
+      "evidence": "命令输出：Test Files 3 passed (3) / Tests 19 passed (19)。"
+    },
+    {
+      "id": "ST-02",
+      "action": "执行 npx vite build 检查生产构建。",
+      "expected": "构建成功，无编译或类型错误。",
+      "actual": "构建成功，3035 modules transformed，产物 952.37 kB（仅有 chunk 体积提示，非错误）；验证后已清理 dist，未纳入交付。",
+      "status": "passed",
+      "evidence": "命令输出：✓ 3035 modules transformed. ✓ built in 2.83s；仅有 “Some chunks are larger than 500 kB” 提示。缺口说明：本次页面验证全部基于开发服务器，未用生产构建产物启动 vite preview 做二次页面复验。"
+    },
+    {
+      "id": "ST-03",
+      "action": "编辑“张明”后点击保存，在抽屉收起过程中读取标题与关闭状态。",
+      "expected": "收起过程中标题保持“编辑教师”，不再出现创建态空壳；动画结束后抽屉关闭。",
+      "actual": "保存后立即读取 .ant-drawer-title 为“编辑教师”；900ms 后 .ant-drawer-open 计数为 0；清单手机号保持 13700137000。",
+      "status": "passed",
+      "evidence": "修复前同一操作读到标题“新增教师”且表单仍是张明数据；修复后读到“编辑教师”，抽屉正常关闭。"
+    },
+    {
+      "id": "ST-04",
+      "action": "刷新页面后打开含 1 门课程、2 个年级的编辑表单，读取浏览器控制台。",
+      "expected": "不再出现 “A props object containing a \\\"key\\\" prop is being spread into JSX” 报错。",
+      "actual": "本次加载后控制台只有 Vite 连接、React DevTools 与 Electron 环境提示，没有再出现该 React 报错（控制台中残留的是修复前的历史消息）。",
+      "status": "passed",
+      "evidence": "修复前打开任意含课程/年级的表单即产生该 error 级日志，调用栈指向 Form.List；修复后用同一操作复测，最后一段日志中无该报错。"
+    },
+    {
+      "id": "ST-05",
+      "action": "在编辑表单的手机输入框输入 12 位号码 138001380001 并保存。",
+      "expected": "输入保留原值，提交被阻止并显示手机格式提示，记录不被改写。",
+      "actual": "输入框读回 138001380001；提交后显示“请输入 11 位有效手机号，例如 13800138000”，抽屉保持打开，清单该记录未被修改。",
+      "status": "passed",
+      "evidence": "修复前同样输入只留下 13800138000 并可直接保存；修复后原值保留并被校验拦截。"
+    },
+    {
+      "id": "ST-06",
+      "action": "回归主流程：新增“王老师”（课程“语文”、手机 13900139000）、编辑该记录、取消后打开新增、删除“李华”并确认、刷新页面。",
+      "expected": "新增后清单出现该记录；编辑表单正确回填；取消后新增表单为空；删除经二次确认后仅移除目标记录；刷新后数据保持。",
+      "actual": "新增后清单第 3 行为“王老师 / 语文 / 未填写 / 13900139000 / 未填写”；编辑回填“王老师、语文、13900139000”；取消后打开新增，名称与手机为空、课程年级行为 0；删除“李华”确认后仅剩张明与王老师；刷新后仍为 2 条且内容不变。",
+      "status": "passed",
+      "evidence": "同一轮页面会话中的实际读取结果（清单文本、表单回填值、行数计数）。"
+    },
+    {
+      "id": "ST-07",
+      "action": "把清单内记录全部删除后查看空状态。",
+      "expected": "显示“暂无教师记录，先添加第一位教师”并保留新增入口。",
+      "actual": "空状态文案与“新增教师”按钮均正常显示，列表计数归零。",
+      "status": "passed",
+      "evidence": "页面读取到的空状态单元格文本与页头新增按钮。"
+    }
+  ],
+  "entry": {
+    "workingDirectory": "/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgteacher/.lingee-task-worktrees/wi-t1000011",
+    "version": "k01-teacher 1.0.0；React 18.3.1、antd 5.21.6、Vite 5.4.21、Vitest 2.1.9（Node 环境）",
+    "startup": "npm install 后执行 npm run dev，默认 http://127.0.0.1:5173；本次实测用 npx vite --port 5191 --strictPort 启动；npm test 运行单元测试。",
+    "testData": "数据保存在浏览器 localStorage 键 k01-teacher:teachers:v1。实测记录：张明（高等数学；高一/高三；13700137000；zhangming@example.com）、李华（仅手机 13800138000）、王老师（语文；13900139000）。验证结束时已全部删除，页面回到空状态；仓库本身不预置演示数据。",
+    "identity": "无登录、无账号体系，验证不需要任何凭据或密钥；数据只存在当前浏览器的 localStorage，不跨设备同步。"
+  },
+  "regressionSuggestions": [
+    "抽屉状态回归：编辑保存后收起动画期间标题应为“编辑教师”；完全关闭后再点“新增教师”，名称、手机、邮箱应为空且课程与年级行数为 0。",
+    "手机校验回归：输入 12 位号码或含空格、连字符的号码应保留原样并被拦截提示，不得被截断后保存。",
+    "表单行回归：课程与年级增删后浏览器控制台不应出现 React key 相关报错；删除中间一行后其余行的值与序号、移除按钮 aria-label 保持一致。",
+    "主流程回归（AC-01 至 AC-05）：新增、编辑、删除二次确认、刷新持久化、名称/手机/邮箱错误提示，以及无数据时的空状态与新增入口。"
+  ]
+}
