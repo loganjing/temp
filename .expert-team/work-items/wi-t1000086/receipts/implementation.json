@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:a06f0977dc658039652856992e8c94ef88480652f4aa7dad908f66f0443e809d",
+  "createdAt": "2026-11-05T05:55:41.373Z",
+  "timing": {
+    "startedAt": "2026-11-05T02:43:29.798Z",
+    "completedAt": "2026-11-05T05:55:41.373Z",
+    "durationMs": 11531575
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000086/implementation-report.md",
+      "bytes": 2356,
+      "sha256": "sha256:a33b5e6c104632702dc25e51af54d6ce32e71e14332d543410279b292128f6cf",
+      "role": "implementation-report",
+      "purpose": "实现报告：变更行为、调用链、实现范围、开发验证证据与遗留风险",
+      "title": "231-clock 实现报告"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:5919f101a295f7fc5a98f8619418ae721e3c8c5fa152c8489950c3d4057fc2ad",
+        "path": ".expert-team/work-items/wi-t1000086/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
