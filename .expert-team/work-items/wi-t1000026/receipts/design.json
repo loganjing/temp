@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:dca4d6864e97bafb22c7cdf65b04e086c8c4bb69c379f6398648e941c107fcc9",
+  "createdAt": "2026-11-06T05:56:15.777Z",
+  "timing": {
+    "startedAt": "2026-11-06T05:51:30.880Z",
+    "completedAt": "2026-11-06T05:56:15.776Z",
+    "durationMs": 284896
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000026/architecture-baseline.md",
+      "bytes": 8112,
+      "sha256": "sha256:96e3db101795cfbb87b004f23285085ce74a87ab18a54071d9ee02d0a6fffe6e",
+      "role": "primary",
+      "purpose": "访客系统整体架构、技术栈、UI基线、数据模型与运行约定",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000026/technical-contract.md",
+      "bytes": 4469,
+      "sha256": "sha256:941e752203898fe4fc96e9da0efca432df0b5bc3c435809f744ab32d5dbb58df",
+      "role": "supporting",
+      "purpose": "API契约、实体ID对照与状态流转规则",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planDigest": "sha256:4128179c6c85cf2c82d0ed1b7c8737f6e3bff7aa909ea0f29621c9b7e564fc84",
+      "planSha256": "sha256:bd95d03c72ef74c4dfddb9f53a5b93cfd593f1f5df521f6ee59fa4ea82ffc44f",
+      "scaffoldDigest": "sha256:e4251ef8318f9e3741ab7997d9550a7629f0bee8ca73fac6cd214a026bab033b",
+      "packageRoot": "app/jlgguest",
+      "modules": [
+        "dbkit"
+      ]
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed",
+      "design": "docs/wi-t1000026/architecture-baseline.md",
+      "deliverables": [
+        "docs/wi-t1000026/architecture-baseline.md",
+        "docs/wi-t1000026/technical-contract.md"
+      ]
+    },
+    {
+      "checkId": "platform-baseline-readable",
+      "status": "passed",
+      "packageRoot": "app/jlgguest"
+    },
+    {
+      "checkId": "app-agents-md-exists",
+      "status": "passed",
+      "path": "app/jlgguest/AGENTS.md"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:520930d53d865758250081cf0712bd8adc1866adecd191b7edb3fa8a3c1284f8",
+        "path": ".expert-team/work-items/wi-t1000026/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

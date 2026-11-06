@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000026/architecture-baseline.md",
+      "role": "primary"
+    },
+    {
+      "path": "docs/wi-t1000026/technical-contract.md",
+      "role": "supporting"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    }
+  ]
+}

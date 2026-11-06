@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-06T05:50:42.133Z"
+  "updatedAt": "2026-11-06T05:56:15.777Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000026/requirements.md",
+      "sha256": "sha256:835de988ae20c1ec47bfdc676afbd1badcbc80fd22f9f3a9761cd9129ae6ca65"
+    },
+    "reason": "用户明确要求移动程序本身要有后端和数据库去记录访客人员，并需要一个审批后端系统审核来访人员。需求基线中 AC-03 要求访客登记记录持久化保存至数据库且审批后端系统可读取该记录，AC-04 要求审批人在审批后端系统执行通过/拒绝操作并更新状态。这涉及服务端权威数据库、跨用户共享数据（访客提交 vs 审批人读取）、以及独立的审批后端系统，无法用 simple-frontend 的浏览器 localStorage 实现。",
+    "evidence": {
+      "supporting": [
+        "需求第1节目标：开发一个移动端访客管理系统，包含移动端访客登记界面、后端服务和数据库",
+        "需求第3.2节：审批后端系统提供待审核访客登记列表，审批人可查看并执行通过或拒绝操作",
+        "需求 AC-03：访客提交登记后，记录持久化保存至数据库；审批后端系统可读取到该条记录的完整信息",
+        "需求 AC-04：审批人可在审批后端系统中对待审核的访客记录执行通过或拒绝操作，操作后记录状态更新",
+        "用户原始需求：移动程序本身要有后端和数据库去记录访客人员；需要有一个审批后端系统，可以审核到来的人员"
+      ],
+      "excluding": [
+        "无任何证据表明仅需浏览器本地存储即可满足需求",
+        "无证据表明访客与审批人可以是同一用户或同一设备"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-06T05:51:55.685Z",
+    "sha256": "sha256:520930d53d865758250081cf0712bd8adc1866adecd191b7edb3fa8a3c1284f8"
+  }
 }

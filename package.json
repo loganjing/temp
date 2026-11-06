@@ -1,0 +1,14 @@
+{
+  "name": "jlgguest-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "dev": "node ./scripts/dev.mjs",
+    "build": "npm run build -w jlgguest",
+    "start": "npm run start -w jlgguest",
+    "test": "npm run test -w jlgguest --if-present"
+  }
+}
