@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:fcad8a409ec3fe798b685be6812151f255d89133ef805a28ee5582fda61b6285",
+  "createdAt": "2026-11-06T05:50:42.133Z",
+  "timing": {
+    "startedAt": "2026-11-06T05:49:23.014Z",
+    "completedAt": "2026-11-06T05:50:42.132Z",
+    "durationMs": 79118
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000026/requirements.md",
+      "bytes": 5517,
+      "sha256": "sha256:835de988ae20c1ec47bfdc676afbd1badcbc80fd22f9f3a9761cd9129ae6ca65",
+      "role": "requirements",
+      "purpose": "访客系统需求基线文档，覆盖移动端访客登记、后端持久化、审批后端系统三大核心目标",
+      "title": "访客系统需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goal-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "source-distinction",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-fabricated-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-proportionate-to-complexity",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-and-actionable",
+      "status": "passed"
+    }
+  ]
+}
