@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:acdd82473e78d309aff5c78b60fab063ed364229d5ca1f9cec81f342682cc18c",
+  "createdAt": "2026-11-06T06:16:02.433Z",
+  "timing": {
+    "startedAt": "2026-11-06T05:59:41.732Z",
+    "completedAt": "2026-11-06T06:16:02.433Z",
+    "durationMs": 980701
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000026/implementation-report.md",
+      "bytes": 4197,
+      "sha256": "sha256:5a474500bc727bed4fc871222fc7ffffeefdba2d862506ed978a6613d7e27439",
+      "role": "primary",
+      "purpose": "实现阶段结算报告，记录两个并行任务的产物、验证结果与验收准则覆盖",
+      "title": "实现报告"
+    }
+  ],
+  "url": "http://localhost:3000",
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "npm-test",
+      "status": "passed"
+    },
+    {
+      "checkId": "migration-clean-db-smoke",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:520930d53d865758250081cf0712bd8adc1866adecd191b7edb3fa8a3c1284f8",
+        "path": ".expert-team/work-items/wi-t1000026/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
