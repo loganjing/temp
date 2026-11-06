@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:6af55ac827aff1f1a4193bef4038ea03d306174dcca6aa78bc9de92006e24625",
+  "createdAt": "2026-11-06T07:44:09.537Z",
+  "timing": {
+    "startedAt": "2026-11-06T07:41:59.068Z",
+    "completedAt": "2026-11-06T07:44:09.537Z",
+    "durationMs": 130469
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000031/requirements.md",
+      "bytes": 5435,
+      "sha256": "sha256:b2223e61794441457ace2683ebabbbfec1c06508cf2ce23a1c3eea1eb7d9cfac",
+      "role": "requirements",
+      "purpose": "设备管理平台需求文档，覆盖设备状态监测、故障诊断、远程升级、维修工单、设备履历五个功能模块及数据库存储约束，含五条验收场景",
+      "title": "k06-robot 设备管理平台需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "scope-match",
+      "status": "passed"
+    }
+  ]
+}
