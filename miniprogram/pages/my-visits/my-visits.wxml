@@ -1,0 +1,37 @@
+<!-- 我的登记页 -->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+
+  <view wx:elif="{{list.length === 0}}" class="empty-state">
+    <view class="empty-icon">📋</view>
+    <view class="empty-text">暂无登记记录</view>
+    <view class="empty-hint">提交登记后可在此查看审核状态</view>
+  </view>
+
+  <view wx:else class="visit-list">
+    <view wx:for="{{list}}" wx:key="id" class="visit-card">
+      <view class="visit-header">
+        <text class="visit-name">{{item.name}}</text>
+        <text class="status-tag status-{{item.status}}">{{item.statusText}}</text>
+      </view>
+      <view class="visit-row">
+        <text class="visit-label">公司</text>
+        <text class="visit-value">{{item.company}}</text>
+      </view>
+      <view class="visit-row">
+        <text class="visit-label">访问事由</text>
+        <text class="visit-value">{{item.visit_reason}}</text>
+      </view>
+      <view wx:if="{{item.host_name}}" class="visit-row">
+        <text class="visit-label">被访人</text>
+        <text class="visit-value">{{item.host_name}}</text>
+      </view>
+      <view class="visit-row">
+        <text class="visit-label">提交时间</text>
+        <text class="visit-value">{{item.created_at_display}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{errorMsg}}" class="error-text">{{errorMsg}}</view>
+</view>

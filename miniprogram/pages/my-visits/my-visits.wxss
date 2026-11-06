@@ -1,0 +1,90 @@
+.loading-text {
+  text-align: center;
+  color: #999999;
+  padding: 80rpx 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #666666;
+  margin-bottom: 12rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.visit-list {
+  padding-bottom: 24rpx;
+}
+
+.visit-card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.visit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.visit-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.status-tag {
+  font-size: 24rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.status-pending {
+  color: #fa8c16;
+  background-color: #fff7e6;
+}
+
+.status-approved {
+  color: #52c41a;
+  background-color: #f6ffed;
+}
+
+.status-rejected {
+  color: #ff4d4f;
+  background-color: #fff1f0;
+}
+
+.visit-row {
+  display: flex;
+  padding: 8rpx 0;
+}
+
+.visit-label {
+  width: 140rpx;
+  color: #999999;
+  font-size: 26rpx;
+}
+
+.visit-value {
+  flex: 1;
+  color: #333333;
+  font-size: 26rpx;
+}

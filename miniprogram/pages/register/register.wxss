@@ -1,0 +1,39 @@
+.phone-btn {
+  background-color: #07c160;
+  color: #ffffff;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.phone-btn::after {
+  border: none;
+}
+
+.phone-locked {
+  font-size: 30rpx;
+  color: #333333;
+  padding: 8rpx 0;
+}
+
+.phone-reset {
+  font-size: 24rpx;
+  color: #1890ff;
+  margin-top: 8rpx;
+}
+
+.textarea {
+  height: 120rpx;
+}
+
+.datetime-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.picker-value {
+  font-size: 30rpx;
+  color: #333333;
+  padding: 8rpx 0;
+}

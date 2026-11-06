@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/register/register",
+    "pages/my-visits/my-visits"
+  ],
+  "window": {
+    "navigationBarTitleText": "访客登记",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1890ff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/register/register",
+        "text": "登记"
+      },
+      {
+        "pagePath": "pages/my-visits/my-visits",
+        "text": "我的登记"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

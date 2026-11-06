@@ -1,0 +1,60 @@
+<!-- 访客登记页 -->
+<view class="container">
+  <view class="form-card">
+    <!-- 手机号 -->
+    <view class="form-item">
+      <view class="form-label">手机号<text class="required-mark">*</text></view>
+      <button wx:if="{{!phoneLocked}}" class="phone-btn" open-type="getPhoneNumber" bindgetphonenumber="onGetPhoneNumber">使用微信手机号</button>
+      <input wx:if="{{!phoneLocked}}" class="form-input" type="number" maxlength="11" placeholder="或手工填写手机号" value="{{phone}}" bindinput="onPhoneInput" />
+      <view wx:else class="phone-locked">{{phone}}</view>
+      <view wx:if="{{phoneLocked}}" class="phone-reset" bindtap="resetPhone">重新获取</view>
+    </view>
+
+    <!-- 姓名 -->
+    <view class="form-item">
+      <view class="form-label">姓名<text class="required-mark">*</text></view>
+      <input class="form-input" placeholder="请输入访客姓名" value="{{name}}" bindinput="onInput" data-field="name" maxlength="50" />
+    </view>
+
+    <!-- 身份证号 -->
+    <view class="form-item">
+      <view class="form-label">身份证号<text class="required-mark">*</text></view>
+      <input class="form-input" placeholder="请输入身份证号" value="{{id_card}}" bindinput="onInput" data-field="id_card" maxlength="18" />
+    </view>
+
+    <!-- 公司信息 -->
+    <view class="form-item">
+      <view class="form-label">公司信息<text class="required-mark">*</text></view>
+      <input class="form-input" placeholder="请输入所在公司" value="{{company}}" bindinput="onInput" data-field="company" maxlength="200" />
+    </view>
+
+    <!-- 访问事由 -->
+    <view class="form-item">
+      <view class="form-label">访问事由<text class="required-mark">*</text></view>
+      <textarea class="form-input textarea" placeholder="请输入访问事由" value="{{visit_reason}}" bindinput="onInput" data-field="visit_reason" maxlength="500" />
+    </view>
+
+    <!-- 被访人（选填） -->
+    <view class="form-item">
+      <view class="form-label">被访人（选填）</view>
+      <input class="form-input" placeholder="请输入被访人姓名" value="{{host_name}}" bindinput="onInput" data-field="host_name" maxlength="50" />
+    </view>
+
+    <!-- 预计到访时间（选填） -->
+    <view class="form-item">
+      <view class="form-label">预计到访时间（选填）</view>
+      <view class="datetime-row">
+        <picker mode="date" value="{{arrivalDate}}" bindchange="onDateChange">
+          <view class="picker-value">{{arrivalDate || '选择日期'}}</view>
+        </picker>
+        <picker mode="time" value="{{arrivalTime}}" bindchange="onTimeChange">
+          <view class="picker-value">{{arrivalTime || '选择时间'}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{errorMsg}}" class="error-text">{{errorMsg}}</view>
+
+  <button class="btn-primary" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">提交登记</button>
+</view>
