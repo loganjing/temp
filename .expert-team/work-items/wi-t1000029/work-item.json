@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000029",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "k05-园区安防\n\n开发巡逻路线配置、视频事件识别、实时告警、人工处置和事件留痕功能, 需要存储数据到数据库。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"24032846700089344\",\"code\":\"T1000029\",\"title\":\"k05-园区安防\",\"description\":\"开发巡逻路线配置、视频事件识别、实时告警、人工处置和事件留痕功能, 需要存储数据到数据库。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlggarden\"}",
+  "request": "k05-园区安防\n\n开发巡逻路线配置、视频事件识别、实时告警、人工处置和事件留痕功能, 需要存储数据到数据库。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"24032846700089344\",\"code\":\"T1000029\",\"title\":\"k05-园区安防\",\"description\":\"开发巡逻路线配置、视频事件识别、实时告警、人工处置和事件留痕功能, 需要存储数据到数据库。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlggarden\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-11-06T07:38:27.512Z"
+}

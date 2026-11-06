@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:e6b3680e12130a7d94304b1773d31637f16acd651f37d8c40ae2ea3edc932aec",
+  "createdAt": "2026-11-06T07:39:46.797Z",
+  "timing": {
+    "startedAt": "2026-11-06T07:38:27.623Z",
+    "completedAt": "2026-11-06T07:39:46.797Z",
+    "durationMs": 79174
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000029/requirements.md",
+      "bytes": 6710,
+      "sha256": "sha256:ece2ff8403aaa68bb05c4abbe4f845d8b847e6759d02f3bca3dffa621c8b5bce",
+      "role": "requirements",
+      "purpose": "园区安防系统需求文档，覆盖巡逻路线配置、视频事件识别、实时告警、人工处置、事件留痕五个模块及数据持久化要求，含 5 条验收场景",
+      "title": "园区安防系统需求文档（k05-园区安防）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goal-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "source-distinction",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "complexity-proportionate",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable",
+      "status": "passed"
+    },
+    {
+      "checkId": "persistence-constraint",
+      "status": "passed"
+    }
+  ]
+}
