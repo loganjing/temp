@@ -2,14 +2,37 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-06T07:39:46.797Z"
+  "updatedAt": "2026-11-06T07:52:40.488Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000029/requirements.md",
+      "sha256": "sha256:ece2ff8403aaa68bb05c4abbe4f845d8b847e6759d02f3bca3dffa621c8b5bce"
+    },
+    "reason": "批准需求明确要求服务端权威数据库持久化（所有业务数据存储到数据库）、后台视频事件识别任务（AC-02 入口类型为后台任务）、系统主动生成实时告警供处置人员查看处置（跨用户/角色共享工作流），以及告警状态权威流转和事件留痕审计。这些均属于 fullstack-complex 路线所要求的服务端权威数据、后台任务和跨用户共享能力，不满足 simple-frontend 的限定条件（simple-frontend 仅适用于单用户 CRUD 且数据仅当前浏览器可用）。",
+    "evidence": {
+      "supporting": [
+        "需求第1节明确要求'所有业务数据需持久化存储到数据库'，要求服务端权威数据库，非浏览器 localStorage",
+        "AC-02 视频事件识别的入口类型为'后台任务'，系统主动对视频画面执行识别，属于服务端后台任务能力",
+        "AC-03 系统识别到事件时生成实时告警并由用户查看，AC-04 处置人员查看并处置告警，构成系统生成、人员处置的跨用户/跨角色共享工作流",
+        "需求 3.3 实时告警要求告警状态流转（待处置→处置中→已处置），需服务端维护权威状态",
+        "需求 3.5 事件留痕要求对事件产生、告警生成、告警处置等节点留痕，需服务端审计持久化"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-06T07:41:02.350Z",
+    "sha256": "sha256:4d527687a462610bd573d834beb83b80acef06865b2915a60af0f2a8ac58b5fe"
+  }
 }

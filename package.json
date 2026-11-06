@@ -1,0 +1,14 @@
+{
+  "name": "park-security-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "dev": "node ./scripts/dev.mjs",
+    "build": "npm run build -w park-security",
+    "start": "npm run start -w park-security",
+    "test": "npm run test -w park-security --if-present"
+  }
+}
