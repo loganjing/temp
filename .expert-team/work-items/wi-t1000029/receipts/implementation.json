@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:5f126f8c54b668dd43e1d94cd46a35ec239628c70f26135d5242a7a95b7fa979",
+  "createdAt": "2026-11-06T08:08:30.259Z",
+  "timing": {
+    "startedAt": "2026-11-06T07:54:08.320Z",
+    "completedAt": "2026-11-06T08:08:30.259Z",
+    "durationMs": 861939
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000029/implementation-report.md",
+      "bytes": 6999,
+      "sha256": "sha256:28c481abc874c135918ca7c65f6aed594a2d0a4ba06d75dae8bf17eeb06fefad",
+      "role": "primary",
+      "purpose": "开发实现报告，包含任务结果、验证证据和 AC 覆盖",
+      "title": "实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:aggregate",
+      "status": "passed",
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "checkId": "test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:4d527687a462610bd573d834beb83b80acef06865b2915a60af0f2a8ac58b5fe",
+        "path": ".expert-team/work-items/wi-t1000029/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
