@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "stages": {
+    "verification": [
+      {
+        "sourceReceiptId": "verification:4",
+        "sourceArtifactSha256": "sha256:7df3b193e09a0e165fe8d689f10f9f4809343e43e1c90fd9e232387b989e4eb6",
+        "code": "QA_TEST_PLAN_UNEXECUTABLE",
+        "reopenedAt": "2026-11-06T07:54:10.812Z"
+      },
+      {
+        "sourceReceiptId": "verification:6",
+        "sourceArtifactSha256": "sha256:23a9ac18ad7c44eb615d5433aeed24147b5764b98cd6dac2d06177339888b413",
+        "code": "QA_TEST_PLAN_UNEXECUTABLE",
+        "reopenedAt": "2026-11-06T07:59:37.568Z"
+      }
+    ]
+  }
+}

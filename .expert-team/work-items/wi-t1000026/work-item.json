@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "k04-guest\n\n请帮我开发一个移动程序，要求如下：\n1、要开发的是一个访客系统，然后需要记录到数据库中，移动程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\n需要有一个审批后端系统，可以审核到来的人员\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"24005434184577024\",\"code\":\"T1000026\",\"title\":\"k04-guest\",\"description\":\"请帮我开发一个移动程序，要求如下：\\n1、要开发的是一个访客系统，然后需要记录到数据库中，移动程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\\\\n需要有一个审批后端系统，可以审核到来的人员\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgguest\"}",
   "request": "k04-guest\n\n请帮我开发一个移动程序，要求如下：\n1、要开发的是一个访客系统，然后需要记录到数据库中，移动程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\n需要有一个审批后端系统，可以审核到来的人员\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"24005434184577024\",\"code\":\"T1000026\",\"title\":\"k04-guest\",\"description\":\"请帮我开发一个移动程序，要求如下：\\n1、要开发的是一个访客系统，然后需要记录到数据库中，移动程序本身要有后端和数据库去记录访客人员。访客信息需要录入信息：手机号码，可以手工填写，需要有身份证号，公司信息，人名，访问事由，其他的你可以发挥。\\\\n需要有一个审批后端系统，可以审核到来的人员\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgguest\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-06T05:49:22.908Z"
+  "revision": 1,
+  "createdAt": "2026-11-06T05:49:22.908Z",
+  "completedAt": "2026-11-06T08:11:40.884Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:0bfbb37a53b0de26c8e64e799d393fac75ac0eaf97de1a0f96a8b1c1c70326da",
+    "completedAt": "2026-11-06T08:11:40.884Z"
+  },
+  "updatedAt": "2026-11-06T08:11:40.884Z"
 }
