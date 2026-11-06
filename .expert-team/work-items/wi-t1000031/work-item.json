@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "k06-robot\n\n开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"24033740023930880\",\"code\":\"T1000031\",\"title\":\"k06-robot\",\"description\":\"开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgrobot\"}",
   "request": "k06-robot\n\n开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"24033740023930880\",\"code\":\"T1000031\",\"title\":\"k06-robot\",\"description\":\"开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgrobot\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-06T07:41:58.962Z"
+  "revision": 1,
+  "createdAt": "2026-11-06T07:41:58.962Z",
+  "completedAt": "2026-11-06T08:39:05.814Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:cf621e1fded04bcd5a9322d0b5c0028af59af42ed41c1eede0f9c898fa295593",
+    "completedAt": "2026-11-06T08:39:05.814Z"
+  },
+  "updatedAt": "2026-11-06T08:39:05.814Z"
 }
