@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-06T07:44:09.537Z"
+  "updatedAt": "2026-11-06T07:55:05.410Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000031/requirements.md",
+      "sha256": "sha256:b2223e61794441457ace2683ebabbbfec1c06508cf2ce23a1c3eea1eb7d9cfac"
+    },
+    "reason": "用户在需求基线中明确提出'需要数据库存储'约束，且所有验收场景（AC-01~AC-05）均要求'系统重启后数据仍可读回'的持久化语义，这明确要求服务端权威数据存储而非浏览器 localStorage。设备履历模块需聚合多模块（状态、故障、升级、工单）的共享数据，进一步要求服务端统一数据权威边界。因此路由到 fullstack-complex 完整全栈设计路线。",
+    "evidence": {
+      "supporting": [
+        "需求第3节：用户明确提出需要数据库存储，所有设备状态、故障诊断、升级记录、维修工单和设备履历数据须写入数据库",
+        "AC-01~AC-05：所有验收场景均要求'重启系统后数据仍可读回'的 session-persistence 证据类型，暗示服务端持久化",
+        "AC-05 设备履历：需汇总状态变更、故障诊断、升级记录和维修工单，涉及跨模块共享数据",
+        "需求第2.1节：状态数据须持久化存储，系统重启后可读取"
+      ],
+      "excluding": [
+        "无任何证据表明可使用浏览器 localStorage 满足'系统重启后可读回'要求",
+        "无证据表明数据仅需单用户/单浏览器可用",
+        "simple-frontend 路线默认 localStorage，无法满足明确的数据库存储约束"
+      ],
+      "unresolved": [
+        "具体数据库技术选型未指定（需求第3节明确'未规定'）",
+        "状态更新方式（自动上报或人工录入）未明确",
+        "升级失败回滚策略未明确",
+        "工单状态流转规则未明确"
+      ]
+    },
+    "decidedAt": "2026-11-06T07:49:18.989Z",
+    "sha256": "sha256:9c5bbc3f151d1eaa580b87b83c2e1eb20bcdb6857baa70686e69cfee2b39fd45"
+  }
 }

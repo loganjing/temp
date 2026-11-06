@@ -1,0 +1,12 @@
+# Keep vendor distribution files; do not send secrets or runtime data to Docker.
+**/.env*
+**/.git
+**/data
+**/uploads
+**/node_modules
+**/*.db
+**/*.sqlite*
+**/*.pem
+**/*.key
+**/.npmrc
+app/jlgrobot/dist
