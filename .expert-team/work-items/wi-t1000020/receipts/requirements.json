@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:03a627a82088e34e55bd86b8d8a6c715c813302a694f3e2953650185300eea8f",
+  "createdAt": "2026-11-06T02:20:52.947Z",
+  "timing": {
+    "startedAt": "2026-11-06T02:19:33.700Z",
+    "completedAt": "2026-11-06T02:20:52.946Z",
+    "durationMs": 79246
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000020/requirements.md",
+      "bytes": 7044,
+      "sha256": "sha256:8e026cc2a7a636c93f65dd2c8d20b79a9290fac6afd95e115b7a66704a95327e",
+      "role": "requirements",
+      "purpose": "访客系统需求基线：目标、角色入口、核心流程、访客字段、移动端审批适配、数据持久化、验收场景",
+      "title": "访客系统（k03-guest）需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "user-goals-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-and-traceable",
+      "status": "passed"
+    }
+  ]
+}
