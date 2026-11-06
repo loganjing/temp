@@ -2,18 +2,30 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "implementation_ready",
-  "revision": 3,
+  "state": "completed",
+  "revision": 5,
   "completedActions": [
     "requirements",
     "design",
-    "implementation"
+    "implementation",
+    "verification"
   ],
-  "blockers": [],
+  "blockers": [
+    {
+      "blockerId": "semantic:verification:5",
+      "code": "QA_ENVIRONMENT_BLOCKED",
+      "category": "semantic",
+      "message": "AC-01 和 AC-02 的交付端为微信小程序，需微信开发者工具或真机环境运行。当前 QA 环境仅有浏览器，无法加载或操作小程序页面（miniprogram/pages/register、miniprogram/pages/my-visits）。后端 API 已验证登记持久化功能正常，但 Web 浏览器观察不能证明小程序端验收。需要微信开发者工具环境才能完成该项验收。",
+      "nextAction": "Restore the unavailable environment, then formally reopen QA. 恢复环境后正式重开 QA。",
+      "retryable": false,
+      "sourceReceiptId": "verification:4",
+      "sourceArtifactSha256": "sha256:3a29cd43038b5675a2add3d0e2f4cbfd57eac7d29d5ba8c49673cac84bec6be5"
+    }
+  ],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-06T02:43:47.929Z",
+  "updatedAt": "2026-11-06T02:57:20.352Z",
   "applicationProfile": {
     "schemaVersion": 1,
     "applicationType": "fullstack-complex",

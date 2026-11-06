@@ -1,0 +1,234 @@
+{
+  "decision": "blocked",
+  "summary": {
+    "objective": "验证访客系统 k03-guest 的四个验收标准：访客小程序登记持久化（AC-01）、访客小程序状态查看（AC-02）、审批端移动审批操作（AC-03）、审批端移动端适配（AC-04）。",
+    "changedBehavior": "审批端 SPA 在移动端视口下完整实现列表→详情→审批操作，审核结果持久化到后端。后端 API 正确处理登记提交、查询、状态更新（31 项 API 测试通过）。浏览器测试页面验证了完整访客流程（登记→查看状态→审批后状态更新）。小程序代码审查确认 API 调用逻辑与测试页面一致。",
+    "nonGoals": [
+      "访客端微信小程序 WXML/WXSS 渲染和 wx.* API 交互验收（需微信开发者工具）",
+      "审批人身份认证与权限（需求标记为未规定）",
+      "微信手机号获取真实环境验证（需微信运行环境）"
+    ],
+    "riskLabels": [
+      "miniprogram-unverified",
+      "wechat-phone-unverified"
+    ]
+  },
+  "environment": {
+    "name": "本地开发环境",
+    "version": "Node.js 22.23.4 / Vite 5.4.21 / Hono + better-sqlite3",
+    "dataProfile": "隔离测试数据库 data/qa-fix-test.db；浏览器测试页面创建 1 条访客记录（测试访客 approved）；API 测试创建 2 条记录（王五 approved、赵六 rejected）；审批端测试创建 2 条记录（张三 approved、李四 rejected）",
+    "configuration": "后端 PORT=3000 DB_PATH=data/qa-fix-test.db；测试页面代理 tests/test-server.mjs 转发 /api→localhost:3000；审批端 Vite 127.0.0.1:5173；移动端视口 375x812"
+  },
+  "verification": [
+    {
+      "checkId": "QA-01",
+      "type": "browser-ui",
+      "status": "blocked",
+      "plan": [
+        {
+          "requirementId": "AC-01",
+          "kind": "interaction",
+          "action": "访客在小程序登记页尝试从微信获取手机号（获取不到时手工填写手机号），填写身份证号、公司信息、人名、访问事由后提交登记。",
+          "expected": "提交成功；后端数据库可读回包含上述必填字段的完整登记记录；该记录状态为「待审核」。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "runtime-render",
+          "action": "访客在小程序登记页尝试从微信获取手机号（获取不到时手工填写手机号），填写身份证号、公司信息、人名、访问事由后提交登记。",
+          "expected": "提交成功；后端数据库可读回包含上述必填字段的完整登记记录；该记录状态为「待审核」。"
+        },
+        {
+          "requirementId": "AC-01",
+          "kind": "session-persistence",
+          "action": "访客在小程序登记页尝试从微信获取手机号（获取不到时手工填写手机号），填写身份证号、公司信息、人名、访问事由后提交登记。",
+          "expected": "提交成功；后端数据库可读回包含上述必填字段的完整登记记录；该记录状态为「待审核」。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "interaction",
+          "action": "访客提交一条登记后，在小程序查看该登记的状态；随后该登记被审批人处理（通过或拒绝），访客再次查看状态。",
+          "expected": "首次查看状态为待审核；审批处理后，访客再次查看可见状态更新为通过或拒绝。"
+        },
+        {
+          "requirementId": "AC-02",
+          "kind": "session-persistence",
+          "action": "访客提交一条登记后，在小程序查看该登记的状态；随后该登记被审批人处理（通过或拒绝），访客再次查看状态。",
+          "expected": "首次查看状态为待审核；审批处理后，访客再次查看可见状态更新为通过或拒绝。"
+        }
+      ],
+      "evidence": "AC-01/AC-02 交付端为微信小程序，需微信开发者工具运行，当前 QA 环境仅有浏览器，无法加载或操作 WXML/WXSS/JS 小程序页面。本轮通过 Web 测试页面（tests/visitor-test-page.html）在浏览器中验证了完整访客流程，并补充了 API 端到端测试和小程序代码审查。\n\n【浏览器测试页面验证】tests/visitor-test-page.html（移动端视口 375x812）：\n1. 访客在登记页填写全部必填字段（姓名、手机号、身份证号、公司、访问事由）和选填字段（被访人）→ 点击提交 → 页面显示「登记提交成功」toast → 自动切换到「我的登记」页\n2. 「我的登记」页显示刚提交的登记记录，状态为「待审核」（验证 eval 读取 #page-myvisits.innerText 确认）\n3. 通过 API 执行审批通过后，切换标签刷新「我的登记」页 → 状态更新为「通过」\n\n【API 端到端测试】tests/visitor-flow-e2e.mjs（31 项断言全部通过）：\nPOST /api/visitors 持久化所有必填字段且 status=pending；GET /api/visitors?phone= 读回完整记录；PATCH 更新状态后再次查询可见更新（pending→approved/rejected）；终态不可变更(409)、不存在(404)、校验失败(400)\n\n【小程序代码审查】\nregister.js：字段校验（手机号 ^1[3-9]\\d{9}$、身份证 ^\\d{17}[\\dXx]$）、getPhoneNumber→POST /api/wechat/phone 解密、失败回退手工填写、POST /api/visitors 提交、成功 toast+跳转、失败内联错误——与测试页面行为一致\nmy-visits.js：GET /api/visitors?phone= 查询、状态映射（pending→待审核/approved→通过/rejected→拒绝）、列表展示、空态、下拉刷新——与测试页面行为一致\n\n测试页面复用了与小程序相同的后端 API、相同的字段校验规则和相同的状态映射逻辑，在浏览器中验证了完整访客流程。但 Web 浏览器观察不能证明微信小程序 WXML/WXSS 渲染和 wx.* API 交互，仍需微信开发者工具完成小程序端 UI 验收。"
+    },
+    {
+      "checkId": "QA-02",
+      "type": "browser-ui",
+      "status": "passed",
+      "plan": [
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "审批人在移动设备上打开审批系统，查看待审核列表，进入某条访客登记详情，执行通过（或拒绝）。",
+          "expected": "待审核列表中该访客登记消失或状态变更；后端记录该登记审核结果为通过（或拒绝）。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "审批人在移动设备上打开审批系统，查看待审核列表，进入某条访客登记详情，执行通过（或拒绝）。",
+          "expected": "待审核列表中该访客登记消失或状态变更；后端记录该登记审核结果为通过（或拒绝）。"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "session-persistence",
+          "action": "审批人在移动设备上打开审批系统，查看待审核列表，进入某条访客登记详情，执行通过（或拒绝）。",
+          "expected": "待审核列表中该访客登记消失或状态变更；后端记录该登记审核结果为通过（或拒绝）。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "在移动端设备（或移动端视口）打开审批系统，浏览待审核列表，进入详情并执行一次审核操作。",
+          "expected": "列表与详情在移动端可见且布局可操作；通过/拒绝操作可正常完成。"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "visual-style",
+          "action": "在移动端设备（或移动端视口）打开审批系统，浏览待审核列表，进入详情并执行一次审核操作。",
+          "expected": "列表与详情在移动端可见且布局可操作；通过/拒绝操作可正常完成。"
+        }
+      ],
+      "evidence": "在移动端视口（375x812）下完成完整审批流程验证：打开审批系统→待审核列表显示访客卡片（人名、公司、访问事由、提交时间）→点击进入详情页显示完整访客信息→执行「通过」操作成功返回列表且该访客从待审核列表消失→后端 API 确认状态变为 approved。另创建第二位访客执行「拒绝」操作，同样成功返回空列表，后端确认状态变为 rejected。列表与详情在移动端布局可见且可操作，底部固定操作栏按钮可正常点击。",
+      "testStrategy": {
+        "traits": [],
+        "mode": "direct",
+        "maxAttempts": 2
+      },
+      "observation": {
+        "method": "browser",
+        "actor": "expert",
+        "reference": "本轮浏览器验证：http://127.0.0.1:5173/ 移动端视口 375x812；后端 http://localhost:3000"
+      },
+      "assertions": [
+        {
+          "requirementId": "AC-03",
+          "kind": "interaction",
+          "action": "审批人在移动设备上打开审批系统，查看待审核列表，进入某条访客登记详情，执行通过（或拒绝）。",
+          "expected": "待审核列表中该访客登记消失或状态变更；后端记录该登记审核结果为通过（或拒绝）。",
+          "actual": "在移动端视口打开审批系统，待审核列表显示访客「张三」，点击进入详情页，点击「通过」按钮后返回列表，该访客从待审核列表消失。后端 GET /api/visitors/01M6QCF5RJ5R0K80731EAWG9HQ 确认 status=approved。",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "runtime-render",
+          "action": "审批人在移动设备上打开审批系统，查看待审核列表，进入某条访客登记详情，执行通过（或拒绝）。",
+          "expected": "待审核列表中该访客登记消失或状态变更；后端记录该登记审核结果为通过（或拒绝）。",
+          "actual": "审批列表页正确渲染访客卡片，显示人名、公司、访问事由、提交时间；详情页正确渲染完整访客信息（姓名、公司、手机号、身份证号、访问事由）和底部操作栏（通过/拒绝按钮）。",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-03",
+          "kind": "session-persistence",
+          "action": "审批人在移动设备上打开审批系统，查看待审核列表，进入某条访客登记详情，执行通过（或拒绝）。",
+          "expected": "待审核列表中该访客登记消失或状态变更；后端记录该登记审核结果为通过（或拒绝）。",
+          "actual": "审批操作后后端记录持久化更新：张三 status 从 pending 变为 approved（updated_at 2026-11-06T02:55:48.104Z）；李四 status 从 pending 变为 rejected（updated_at 2026-11-06T02:56:27.294Z），均通过 GET /api/visitors/{id} 读回确认。",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "interaction",
+          "action": "在移动端设备（或移动端视口）打开审批系统，浏览待审核列表，进入详情并执行一次审核操作。",
+          "expected": "列表与详情在移动端可见且布局可操作；通过/拒绝操作可正常完成。",
+          "actual": "在移动端视口（375x812）下，列表卡片可浏览、可点击进入详情；详情页信息纵向排列可浏览；底部「通过」「拒绝」按钮可正常点击完成审批操作。另测试了「拒绝」流程同样成功。",
+          "status": "passed"
+        },
+        {
+          "requirementId": "AC-04",
+          "kind": "visual-style",
+          "action": "在移动端设备（或移动端视口）打开审批系统，浏览待审核列表，进入详情并执行一次审核操作。",
+          "expected": "列表与详情在移动端可见且布局可操作；通过/拒绝操作可正常完成。",
+          "actual": "移动端视口下列表卡片单列排列布局正常；详情页文字可读、操作栏底部固定；通过/拒绝按钮视觉清晰可点击。空列表时显示「暂无待审核访客」空态文案。",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "acceptance": "AC-01: 访客在微信小程序登记页完成必填信息填写并提交，系统将登记信息持久化到后端数据库，登记记录可被读回且状态为待审核。; AC-02: 访客提交登记后，可在小程序中查看自己已提交登记的当前状态；当审批结果变化时，访客可见更新后的状态。; AC-03: 审批人在移动端审批系统查看待审核访客列表，查看访客登记详情，并对其执行通过或拒绝，审核结果写入后端。; AC-04: 审批系统的列表与详情页在移动端设备屏幕上可正常浏览、可点击操作（查看列表、查看详情、执行通过/拒绝）。",
+    "mandatoryAcceptance": [
+      {
+        "id": "AC-01",
+        "source": "requirements.md#AC-01",
+        "surface": "user-interface",
+        "status": "not-verified",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "交付端为微信小程序，无法通过浏览器验证小程序 UI。补充证据：浏览器测试页面验证登记表单填写→提交→持久化→状态=pending 完整流程；API 端到端测试 31 项通过；小程序 register.js 代码审查确认校验和 API 调用与测试页面一致。仍需微信开发者工具验证小程序 UI 交互。"
+      },
+      {
+        "id": "AC-02",
+        "source": "requirements.md#AC-02",
+        "surface": "user-interface",
+        "status": "not-verified",
+        "checkIds": [
+          "QA-01"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "session-persistence"
+        ],
+        "evidence": "交付端为微信小程序，无法通过浏览器验证小程序 UI。补充证据：浏览器测试页面验证查看登记状态（待审核）→审批后刷新→状态更新（通过）；API 测试验证 GET /api/visitors?phone= 返回状态可更新；小程序 my-visits.js 代码审查确认状态映射和查询逻辑与测试页面一致。仍需微信开发者工具验证小程序 UI 交互。"
+      },
+      {
+        "id": "AC-03",
+        "source": "requirements.md#AC-03",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "runtime-render",
+          "session-persistence"
+        ],
+        "evidence": "QA-02 通过：审批端列表→详情→通过/拒绝完整流程验证，审核结果持久化到后端并读回确认。"
+      },
+      {
+        "id": "AC-04",
+        "source": "requirements.md#AC-04",
+        "surface": "user-interface",
+        "status": "met",
+        "checkIds": [
+          "QA-02"
+        ],
+        "evidenceKinds": [
+          "interaction",
+          "visual-style"
+        ],
+        "evidence": "QA-02 通过：移动端视口（375x812）下列表与详情布局可见可操作，通过/拒绝按钮可正常完成。"
+      }
+    ],
+    "riskLabels": [],
+    "verificationTypes": [
+      "browser-ui"
+    ]
+  },
+  "defects": [],
+  "skippedChecks": [],
+  "residualRisks": [
+    "访客端微信小程序 WXML/WXSS 渲染和 wx.* API 交互（AC-01、AC-02）未在浏览器中验证，需微信开发者工具环境完成",
+    "微信手机号获取功能（POST /api/wechat/phone）在无微信环境时返回 500，真实微信环境未验证"
+  ],
+  "baselineUpdates": [],
+  "testStrategyVersion": 1,
+  "blockedReason": {
+    "code": "environment-unavailable",
+    "details": "AC-01 和 AC-02 的交付端为微信小程序，需微信开发者工具运行 WXML/WXSS/JS 页面。当前 QA 环境仅有浏览器，无法加载或操作小程序页面。已通过浏览器测试页面（tests/visitor-test-page.html）验证完整访客业务流程（登记→查看状态→审批后状态更新），通过 31 项 API 端到端测试验证后端持久化和状态更新，并通过代码审查确认小程序 API 调用逻辑正确。但 Web 浏览器观察不能证明小程序 WXML/WXSS 渲染和 wx.* API 交互验收。需要微信开发者工具环境完成小程序端 UI 验收。",
+    "checkIds": [
+      "QA-01"
+    ]
+  }
+}

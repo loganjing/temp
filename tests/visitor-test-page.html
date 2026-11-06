@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>访客登记（测试模拟页）</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+    .page { max-width: 414px; margin: 0 auto; min-height: 100vh; background: #fff; }
+    .header { background: #07c160; color: #fff; padding: 16px; text-align: center; font-size: 17px; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+    .tab-bar { display: flex; border-bottom: 1px solid #eaeaea; position: sticky; top: 49px; background: #fff; z-index: 9; }
+    .tab { flex: 1; text-align: center; padding: 12px; font-size: 14px; color: #999; border-bottom: 2px solid transparent; cursor: pointer; }
+    .tab.active { color: #07c160; border-bottom-color: #07c160; }
+    .content { padding: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 14px; color: #666; margin-bottom: 6px; }
+    .form-label .required { color: #e64340; }
+    .form-input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; outline: none; }
+    .form-input:focus { border-color: #07c160; }
+    .phone-row { display: flex; gap: 8px; }
+    .phone-row .form-input { flex: 1; }
+    .btn-wechat { padding: 10px 14px; background: #07c160; color: #fff; border: none; border-radius: 6px; font-size: 13px; white-space: nowrap; cursor: pointer; }
+    .btn-wechat:hover { background: #06ad56; }
+    .btn-submit { width: 100%; padding: 12px; background: #07c160; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 8px; }
+    .btn-submit:disabled { background: #ccc; }
+    .error-msg { color: #e64340; font-size: 13px; margin-top: 8px; padding: 8px 12px; background: #fef0f0; border-radius: 6px; display: none; }
+    .error-msg.show { display: block; }
+    .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #fff; padding: 12px 24px; border-radius: 8px; font-size: 14px; z-index: 100; display: none; }
+    .toast.show { display: block; }
+    .visitor-card { background: #fff; border: 1px solid #eaeaea; border-radius: 8px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
+    .visitor-card:active { background: #f9f9f9; }
+    .card-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .card-info { font-size: 13px; color: #999; margin-bottom: 2px; }
+    .status-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .status-pending { background: #fff7e6; color: #fa8c16; }
+    .status-approved { background: #f6ffed; color: #52c41a; }
+    .status-rejected { background: #fff1f0; color: #f5222d; }
+    .empty-state { text-align: center; padding: 60px 20px; color: #999; font-size: 14px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">访客登记系统</div>
+    <div class="tab-bar">
+      <div class="tab active" id="tab-register" onclick="switchTab('register')">访客登记</div>
+      <div class="tab" id="tab-myvisits" onclick="switchTab('myvisits')">我的登记</div>
+    </div>
+
+    <!-- 登记页 -->
+    <div id="page-register" class="content">
+      <div class="form-group">
+        <label class="form-label"><span class="required">*</span> 姓名</label>
+        <input class="form-input" id="f-name" placeholder="请输入姓名" maxlength="50">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="required">*</span> 手机号</label>
+        <div class="phone-row">
+          <input class="form-input" id="f-phone" placeholder="请输入手机号" maxlength="11">
+          <button class="btn-wechat" onclick="tryGetPhone()">微信获取</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="required">*</span> 身份证号</label>
+        <input class="form-input" id="f-idcard" placeholder="请输入身份证号" maxlength="18">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="required">*</span> 公司信息</label>
+        <input class="form-input" id="f-company" placeholder="请输入公司名称" maxlength="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="required">*</span> 访问事由</label>
+        <input class="form-input" id="f-reason" placeholder="请输入访问事由" maxlength="500">
+      </div>
+      <div class="form-group">
+        <label class="form-label">被访人（选填）</label>
+        <input class="form-input" id="f-host" placeholder="请输入被访人姓名" maxlength="50">
+      </div>
+      <div class="error-msg" id="error-msg"></div>
+      <button class="btn-submit" id="btn-submit" onclick="submitForm()">提交登记</button>
+    </div>
+
+    <!-- 我的登记页 -->
+    <div id="page-myvisits" class="content hidden">
+      <div id="visits-list"></div>
+      <div class="empty-state hidden" id="empty-state">暂无登记记录</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API_BASE = ''; // 使用相对路径，由代理服务器转发到后端
+    let phoneSource = 'manual';
+
+    function showToast(msg, duration = 2000) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), duration);
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.classList.add('show');
+    }
+
+    function clearError() {
+      document.getElementById('error-msg').classList.remove('show');
+    }
+
+    function switchTab(tab) {
+      if (tab === 'register') {
+        document.getElementById('page-register').classList.remove('hidden');
+        document.getElementById('page-myvisits').classList.add('hidden');
+        document.getElementById('tab-register').classList.add('active');
+        document.getElementById('tab-myvisits').classList.remove('active');
+      } else {
+        document.getElementById('page-register').classList.add('hidden');
+        document.getElementById('page-myvisits').classList.remove('hidden');
+        document.getElementById('tab-register').classList.remove('active');
+        document.getElementById('tab-myvisits').classList.add('active');
+        loadMyVisits();
+      }
+    }
+
+    // 模拟微信获取手机号（浏览器环境无法真正获取，回退手工填写）
+    function tryGetPhone() {
+      showToast('当前为浏览器测试环境，微信手机号获取不可用，请手工填写');
+      phoneSource = 'manual';
+    }
+
+    function validate() {
+      const name = document.getElementById('f-name').value.trim();
+      const phone = document.getElementById('f-phone').value.trim();
+      const idCard = document.getElementById('f-idcard').value.trim();
+      const company = document.getElementById('f-company').value.trim();
+      const reason = document.getElementById('f-reason').value.trim();
+
+      if (!name || name.length > 50) return '请填写姓名（1-50 字符）';
+      if (!/^1[3-9]\d{9}$/.test(phone)) return '请填写正确的手机号（11 位数字）';
+      if (!/^\d{17}[\dXx]$/.test(idCard)) return '请填写正确的身份证号（18 位）';
+      if (!company || company.length > 200) return '请填写公司信息（1-200 字符）';
+      if (!reason || reason.length > 500) return '请填写访问事由（1-500 字符）';
+      return null;
+    }
+
+    async function submitForm() {
+      clearError();
+      const error = validate();
+      if (error) { showError(error); return; }
+
+      const payload = {
+        name: document.getElementById('f-name').value.trim(),
+        phone: document.getElementById('f-phone').value.trim(),
+        id_card: document.getElementById('f-idcard').value.trim(),
+        company: document.getElementById('f-company').value.trim(),
+        visit_reason: document.getElementById('f-reason').value.trim(),
+        host_name: document.getElementById('f-host').value.trim() || null,
+        phone_source: phoneSource
+      };
+
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = '提交中...';
+
+      try {
+        const res = await fetch(API_BASE + '/api/visitors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.status === 201 && data.id) {
+          localStorage.setItem('visitorPhone', payload.phone);
+          showToast('登记提交成功');
+          setTimeout(() => switchTab('myvisits'), 1000);
+        } else {
+          const err = data.error || {};
+          const msg = (err.fields ? Object.values(err.fields)[0] : err.message) || '提交失败';
+          showError(msg);
+        }
+      } catch (e) {
+        showError('网络错误，请检查后端服务');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '提交登记';
+      }
+    }
+
+    async function loadMyVisits() {
+      const phone = localStorage.getItem('visitorPhone');
+      const listEl = document.getElementById('visits-list');
+      const emptyEl = document.getElementById('empty-state');
+
+      if (!phone) {
+        listEl.innerHTML = '';
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE + '/api/visitors?phone=' + encodeURIComponent(phone));
+        const data = await res.json();
+        if (res.status === 200 && Array.isArray(data.data)) {
+          if (data.data.length === 0) {
+            listEl.innerHTML = '';
+            emptyEl.classList.remove('hidden');
+            return;
+          }
+          emptyEl.classList.add('hidden');
+          const statusMap = { pending: '待审核', approved: '通过', rejected: '拒绝' };
+          const statusClass = { pending: 'status-pending', approved: 'status-approved', rejected: 'status-rejected' };
+          listEl.innerHTML = data.data.map(item => `
+            <div class="visitor-card">
+              <div class="card-name">${item.name} <span class="status-tag ${statusClass[item.status] || ''}">${statusMap[item.status] || item.status}</span></div>
+              <div class="card-info">公司：${item.company}</div>
+              <div class="card-info">事由：${item.visit_reason}</div>
+              <div class="card-info">提交时间：${new Date(item.created_at).toLocaleString('zh-CN')}</div>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        listEl.innerHTML = '<div class="empty-state">查询失败，请稍后重试</div>';
+      }
+    }
+  </script>
+</body>
+</html>
