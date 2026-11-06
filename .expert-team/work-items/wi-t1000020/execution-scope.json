@@ -6,6 +6,12 @@
       "executionStageIds": [
         "requirements"
       ]
+    },
+    "ses_e515608f1ffewF1jR6IOCj6lXO": {
+      "sessionId": "ses_e515608f1ffewF1jR6IOCj6lXO",
+      "executionStageIds": [
+        "design"
+      ]
     }
   }
 }

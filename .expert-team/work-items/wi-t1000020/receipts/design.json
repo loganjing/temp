@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:f2869620fea7e8e04a415a3a517a5c6b76fd2b5555a05592bba3801e2e453df2",
+  "createdAt": "2026-11-06T02:24:37.447Z",
+  "timing": {
+    "startedAt": "2026-11-06T02:22:22.996Z",
+    "completedAt": "2026-11-06T02:24:37.446Z",
+    "durationMs": 134450
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000020/architecture-baseline.md",
+      "bytes": 9709,
+      "sha256": "sha256:5b4bbcf4e5c3cf4d9bb9649067f7c151aeb13975ead41ad5eadfbd44ede89a19",
+      "role": "primary",
+      "purpose": "访客系统架构基线：技术栈、模块边界、接口摘要、数据模型、外部集成、UI基线、运行与校验",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000020/technical-contract.md",
+      "bytes": 7318,
+      "sha256": "sha256:d015ddfbaa6f623794b83fa00471f9b2b32d7c9300270fc8b908c52a07493fc1",
+      "role": "supporting",
+      "purpose": "API技术契约：实体ID对照、5个端点完整定义、状态机、校验规则、错误格式、目录结构",
+      "title": "技术契约"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "ensure-markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-paths-match-declared",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:0a9cc9eaeae0eec50e15d8d486cb8a7580ff699ccf47bd25d2d8500827ff1687",
+        "path": ".expert-team/work-items/wi-t1000020/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

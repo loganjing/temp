@@ -2,14 +2,45 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-06T02:20:52.947Z"
+  "updatedAt": "2026-11-06T02:24:37.447Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000020/requirements.md",
+      "sha256": "sha256:8e026cc2a7a636c93f65dd2c8d20b79a9290fac6afd95e115b7a66704a95327e"
+    },
+    "reason": "需求明确要求后端权威数据库持久化访客登记信息、跨用户/跨角色共享数据（访客提交登记，审批人审核）、微信平台外部集成（小程序与手机号获取API）以及审批人认证与权限，均属于服务端能力需求，不能用纯前端 localStorage 满足。",
+    "evidence": {
+      "supporting": [
+        "需求第6节明确要求：访客登记信息与审核结果由后端写入数据库持久化记录，提交成功后可被读回",
+        "需求第3.1节：系统将登记信息写入后端数据库，登记记录进入待审核状态",
+        "需求第3.2节：审批人在移动端审批系统审核访客，审核结果写回后端——跨用户共享同一数据",
+        "需求第2节定义两个角色（访客、审批人）分别从不同入口访问同一后端数据",
+        "需求第3.1节第2步：系统尝试从微信获取访客手机号——需要微信平台外部集成",
+        "需求第7节列出审批人身份认定、登录方式与权限分配为未规定但需要处理的事项"
+      ],
+      "excluding": [
+        "无任何证据表明仅需浏览器本地存储即可满足——用户明确要求后端数据库",
+        "无证据排除跨用户数据共享——访客与审批人为不同角色操作同一记录"
+      ],
+      "unresolved": [
+        "审批人具体载体（独立小程序/Web后台）未规定，但不影响 fullstack 分类",
+        "数据库技术选型与部署环境未规定，设计阶段需做技术选型决策",
+        "审批人登录与权限方案未规定，设计阶段需给出方案"
+      ]
+    },
+    "decidedAt": "2026-11-06T02:22:39.248Z",
+    "sha256": "sha256:0a9cc9eaeae0eec50e15d8d486cb8a7580ff699ccf47bd25d2d8500827ff1687"
+  }
 }
