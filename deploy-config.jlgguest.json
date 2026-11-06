@@ -1,0 +1,31 @@
+{
+  "app": "jlgguest",
+  "serverId": "5291fe05-ecdb-45ca-8afd-8269bec79308",
+  "appPath": "app/jlgguest",
+  "version": "1.0.0-2ea35e8ea9c9",
+  "architecture": "amd64",
+  "root": "/opt/lingee-apps",
+  "envFile": "/opt/lingee-apps/jlgguest/.env",
+  "mounts": [
+    {
+      "host": "/opt/lingee-apps/jlgguest/data",
+      "container": "/app/app/jlgguest/data"
+    }
+  ],
+  "hostPort": 8080,
+  "containerPort": 3000,
+  "healthPath": "/api/health",
+  "requiredEnv": [],
+  "context": ".",
+  "dockerfile": "deploy/Dockerfile",
+  "expectedCurrent": null,
+  "backupMode": "sqlite",
+  "migrationReviewed": true,
+  "imageId": "sha256:1a927a0b21d56de960a94491214f9fd3aab7b9cc2d1be17026ec9bb6c49a8ea0",
+  "imageSha256": null,
+  "sshConfirmed": true,
+  "testServerConfirmed": true,
+  "composeFile": "deploy/docker-compose.prod.yml",
+  "composeService": "app",
+  "nginxDomain": "jlgguest.zxdemo.cloud"
+}
