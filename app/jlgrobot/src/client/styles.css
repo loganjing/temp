@@ -1,0 +1,14 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+/* 深色侧栏内设备列表选中行高亮 */
+.device-row-selected > td {
+  background-color: rgba(24, 144, 255, 0.25) !important;
+}
+.device-row-selected:hover > td {
+  background-color: rgba(24, 144, 255, 0.35) !important;
+}

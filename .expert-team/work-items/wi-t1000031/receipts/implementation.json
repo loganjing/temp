@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:9b883e1315c6a6d7aff273156af5bd7a002e894398e070a9eff504d5c731ca0b",
+  "createdAt": "2026-11-06T08:10:23.782Z",
+  "timing": {
+    "startedAt": "2026-11-06T07:58:25.007Z",
+    "completedAt": "2026-11-06T08:10:23.782Z",
+    "durationMs": 718775
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000031/implementation-report.md",
+      "bytes": 5264,
+      "sha256": "sha256:cc8302c48191fe79bef6e0b0bdad684a30adbc43b575c026505a86818d409365",
+      "role": "primary",
+      "purpose": "开发实现阶段结算报告，记录两个并行任务的执行结果、验证证据和验收场景覆盖",
+      "title": "实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed",
+      "command": "npm run typecheck:server",
+      "exitCode": 0
+    },
+    {
+      "checkId": "test",
+      "status": "passed",
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed",
+      "command": "npm run typecheck:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed",
+      "command": "npm run build:client",
+      "exitCode": 0
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:9c5bbc3f151d1eaa580b87b83c2e1eb20bcdb6857baa70686e69cfee2b39fd45",
+        "path": ".expert-team/work-items/wi-t1000031/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

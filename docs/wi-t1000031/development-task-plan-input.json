@@ -1,0 +1,56 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "实现 Hono 后端 API、SQLite 数据库迁移与五个业务模块",
+      "objective": "## 目标\n\n基于已批准的技术契约，实现设备管理平台的完整后端。\n\n### 数据库层\n\n- 在 `src/server/platform/bootstrap.ts` 中初始化 SQLite 数据库实例（dbkit），创建 DB_PATH 父目录，执行版本化迁移\n- 在 `src/server/migrations/sqlite/001_initial_schema.sql` 创建 `devices`、`fault_diagnoses`、`upgrade_records`、`repair_orders` 四张表，列定义与约束严格遵循架构基线第 3 节数据模型，启用 `PRAGMA foreign_keys = ON`\n\n### 共享类型\n\n- 在 `src/shared/types.ts` 定义所有实体和 API 的 TypeScript 类型：Device、FaultDiagnosis、UpgradeRecord、RepairOrder、HistoryEvent、HistoryResponse 及各 API 请求/响应类型\n\n### API 路由\n\n在 `src/server/routes.ts` 注册以下路由，每条路由的请求参数、响应体和错误码严格遵循技术契约第 2 节：\n\n- **设备管理**：GET /api/devices、POST /api/devices、GET /api/devices/:id、PATCH /api/devices/:id/status\n- **故障诊断**：GET /api/devices/:deviceId/faults、POST /api/devices/:deviceId/faults\n- **远程升级**：GET /api/devices/:deviceId/upgrades、POST /api/devices/:deviceId/upgrades\n- **维修工单**：GET /api/devices/:deviceId/work-orders、POST /api/devices/:deviceId/work-orders\n- **设备履历**：GET /api/devices/:deviceId/history（跨表聚合 fault_diagnoses、upgrade_records、repair_orders 及 devices 状态变更，按 timestamp 降序返回统一格式事件列表）\n\n### 服务组装\n\n- `src/server/app.ts`：全局中间件、API 错误处理（返回 `{error:{code,message}}`）、生产环境 SPA fallback\n- `src/server/index.ts`：初始化资源、组装 Hono app、启动 HTTP（PORT 默认 3000）\n\n### 依赖管理\n\n- 在 `package.json` 中添加 `antd` 和 `@ant-design/icons` 到 dependencies（供前端任务使用）\n\n## 验证\n\n- `npm run typecheck:server` 通过\n- `npm test` 通过（含 dbkit 启动、迁移执行和 API 行为验证）\n\n## 写入范围\n\n- 独占：`app/jlgrobot/src/server/**`、`app/jlgrobot/src/shared/**`、`app/jlgrobot/test/**`\n- 独占配置文件：`app/jlgrobot/package.json`、`app/jlgrobot/tsconfig.json`、`app/jlgrobot/tsconfig.server.json`\n\n## AC 贡献\n\n- AC-01：设备列表/详情 API + 状态持久化到 SQLite\n- AC-02：故障诊断 CRUD API + 持久化\n- AC-03：远程升级 API + 升级记录持久化\n- AC-04：维修工单 CRUD API + 持久化\n- AC-05：设备履历聚合查询 API",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000031/requirements.md" },
+        { "path": "docs/wi-t1000031/architecture-baseline.md" },
+        { "path": "docs/wi-t1000031/technical-contract.md" }
+      ],
+      "artifactPaths": [],
+      "additionalWritePaths": [
+        "app/jlgrobot/package.json",
+        "app/jlgrobot/tsconfig.json",
+        "app/jlgrobot/tsconfig.server.json"
+      ],
+      "additionalWriteScopes": [
+        "app/jlgrobot/test/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    },
+    {
+      "taskId": "T02",
+      "summary": "实现 React/Vite + Ant Design 前端 SPA 及五个功能模块界面",
+      "objective": "## 目标\n\n基于已批准的技术契约，实现设备管理平台的完整前端 SPA。\n\n### 应用布局\n\n- 在 `src/client/App.tsx` 实现 split-master-detail 布局：左侧设备列表（含搜索/创建），右侧选中设备的详情面板，详情面板内按 Tab 切换五个功能模块\n- UI 风格：Modern SaaS——深色侧栏、浅色工作区、顶部上下文栏、Ant Design 组件（Layout/Table/Tabs/Form/Tag/Modal 等）\n\n### API 客户端\n\n- 在 `src/client/platform/api-client.ts` 实现浏览器请求边界，统一 fetch 封装、响应规范化和 API 错误解码（`{error:{code,message}}`）\n\n### 类型定义\n\n- 在 `src/client/` 内基于技术契约定义前端使用的 TypeScript 类型，不依赖 src/shared/，不发明 API 行为\n\n### 五个功能模块 Tab\n\n每个 Tab 的交互严格对应技术契约定义的 API：\n\n- **设备状态监测**：设备列表 Table、创建设备 Modal/Form、状态更新操作；Tag 显示设备当前状态（online/offline/running/standby/fault/unknown 对应不同颜色）\n- **故障诊断**：故障记录列表 Table、创建故障诊断 Form（fault_description + diagnosis_result）\n- **远程升级**：升级记录列表 Table（含 status Tag）、发起升级 Form（target_version）\n- **维修工单**：工单列表 Table（含 status Tag）、创建工单 Form（content + result）\n- **设备履历**：聚合展示该设备的状态、故障、升级和工单历史事件时间线（按 timestamp 降序）\n\n### 全局状态\n\n- 加载中（Skeleton/Table loading）、空数据（Empty）、错误（message.error）、成功（message.success）\n\n## 验证\n\n- `npm run typecheck:client` 通过\n- `npm run build:client` 通过\n\n## 写入范围\n\n- 独占：`app/jlgrobot/src/client/**`\n- 独占配置文件：`app/jlgrobot/index.html`、`app/jlgrobot/vite.config.ts`、`app/jlgrobot/tsconfig.client.json`\n\n## AC 贡献\n\n- AC-01：设备状态监测界面（列表 + 状态展示 + 状态更新）\n- AC-02：故障诊断记录界面（列表 + 创建）\n- AC-03：远程升级界面（记录列表 + 发起升级）\n- AC-04：维修工单界面（列表 + 创建）\n- AC-05：设备履历界面（聚合时间线展示）",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000031/requirements.md" },
+        { "path": "docs/wi-t1000031/architecture-baseline.md" },
+        { "path": "docs/wi-t1000031/technical-contract.md" }
+      ],
+      "artifactPaths": [],
+      "additionalWritePaths": [
+        "app/jlgrobot/index.html",
+        "app/jlgrobot/vite.config.ts",
+        "app/jlgrobot/tsconfig.client.json"
+      ],
+      "additionalWriteScopes": [],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    }
+  ]
+}
