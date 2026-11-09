@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-09T08:42:39.484Z"
+  "updatedAt": "2026-11-09T08:45:25.143Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000041/requirements.md",
+      "sha256": "sha256:45973b19ff65c47ffc1f00148e82ad1e4fcb9263ce6bfffebacece90728e2a3d"
+    },
+    "reason": "该系统为单用户日常专注记录工具，所有功能（番茄钟倒计时、当日列表、累计时长、热力图）均在浏览器前端完成，数据持久性采用 localStorage，无服务端权威数据、认证、后台任务、外部服务或跨用户/设备共享等需求，符合 simple-frontend 路由条件。",
+    "evidence": {
+      "supporting": [
+        "需求明确为单页面应用，所有交互在浏览器内完成",
+        "数据持久性采用浏览器本地存储（localStorage），不依赖后端服务",
+        "核心功能为番茄钟倒计时、当日列表、累计时长、热力图，均为前端渲染与计算",
+        "无跨用户、跨设备或跨浏览器同步要求",
+        "验收场景全部以用户界面 runtime-render/interaction/session-persistence 为证据类型"
+      ],
+      "excluding": [
+        "无服务端权威数据需求：需求明确采用浏览器 localStorage，不依赖后端服务",
+        "无认证/权限需求：单用户日常记录，无用户体系",
+        "无后台任务需求：番茄钟倒计时为前端运行时逻辑，无服务端调度",
+        "无外部服务集成需求：不涉及第三方 API 或外部数据源",
+        "无跨用户/跨设备数据共享需求：数据只在当前浏览器/设备可用"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-09T08:44:37.405Z",
+    "sha256": "sha256:8eac928567ad806b3b686b746b97c01a0694b4023c804b7595962864d8ac0980"
+  }
 }
