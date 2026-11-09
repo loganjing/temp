@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000041",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "k07-timeling\n\n做一个日常记录专注时段的系统，单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25135920252456960\",\"code\":\"T1000041\",\"title\":\"k07-timeling\",\"description\":\"做一个日常记录专注时段的系统，单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-timeline\"}",
+  "request": "k07-timeling\n\n做一个日常记录专注时段的系统，单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25135920252456960\",\"code\":\"T1000041\",\"title\":\"k07-timeling\",\"description\":\"做一个日常记录专注时段的系统，单页面，内置番茄钟倒计时（25 分钟专注 + 5 分钟休息），每次完成一个番茄钟自动记录到当日列表，页面上方显示累计专注时长，下方展示当日各时段专注热力图。\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-timeline\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-11-09T08:41:37.172Z"
+}
