@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:fb54c9c37f6f1947ceb2d83ca89f18c4ce7152b9adca04dbe0030e5e5e424779",
+  "createdAt": "2026-11-10T06:42:35.077Z",
+  "timing": {
+    "startedAt": "2026-11-10T06:41:51.407Z",
+    "completedAt": "2026-11-10T06:42:35.076Z",
+    "durationMs": 43669
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000044/architecture-baseline.md",
+      "bytes": 2608,
+      "sha256": "sha256:02410481dd539bc0340b69304d347f717deff8c98557aeaa1433097cd02dbd7f",
+      "role": "primary",
+      "purpose": "k07-clock 精简架构基线：React/Vite SPA 实时时钟页面，浏览器 Date API 每秒更新，无后端/数据库/存储，纯 CSS 居中等宽显示",
+      "title": "k07-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-referenced",
+      "status": "passed"
+    },
+    {
+      "checkId": "classification-justified",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:cbc7519af107de6b13ded1d957eb4a607c04027bc7b4ac6b1f9b52775acf61ea",
+        "path": ".expert-team/work-items/wi-t1000044/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

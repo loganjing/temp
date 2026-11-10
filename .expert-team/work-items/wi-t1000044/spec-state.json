@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-10T05:36:51.266Z"
+  "updatedAt": "2026-11-10T06:42:35.077Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000044/requirements.md",
+      "sha256": "sha256:333a3d7e7feb8f624198941081a0152b1b58c2edf8aa34f11dd4379f3cabc0c2"
+    },
+    "reason": "需求仅要求在浏览器页面中实时显示当前时分秒，时间数据完全来自浏览器本地 Date API，不涉及服务端权威数据、数据库、认证、后台任务、外部服务或跨用户共享。所有核心行为可在单个前端页面中闭合实现。",
+    "evidence": {
+      "supporting": [
+        "需求目标仅提供一个页面实时显示当前时分秒，无任何数据持久化要求",
+        "时间数据来自浏览器本地系统时钟（new Date()），无需服务端权威数据源",
+        "无认证、权限、用户管理相关需求",
+        "无后台任务、消息队列或异步作业需求",
+        "无外部 API 或第三方服务集成需求",
+        "无跨设备、跨浏览器或跨用户数据共享需求"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据或数据库存储——时间来源于浏览器本地系统时钟",
+        "需求未要求认证/权限——任何用户打开页面即可查看时间",
+        "需求未要求后台任务——setInterval 在浏览器标签页内运行即可",
+        "需求未要求外部服务集成——仅使用浏览器原生 Date API",
+        "需求未要求跨用户/跨设备共享数据——显示的是本机当前时间"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-10T06:42:01.135Z",
+    "sha256": "sha256:cbc7519af107de6b13ded1d957eb4a607c04027bc7b4ac6b1f9b52775acf61ea"
+  }
 }
