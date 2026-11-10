@@ -1,0 +1,18 @@
+.clock-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background: #1a1a2e;
+}
+
+.clock-display {
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: clamp(3rem, 15vw, 12rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #e0e0e0;
+  text-shadow: 0 0 30px rgba(100, 149, 237, 0.4);
+  user-select: none;
+}
