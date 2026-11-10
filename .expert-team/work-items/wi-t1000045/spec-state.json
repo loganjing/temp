@@ -2,14 +2,43 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-10T07:22:18.271Z"
+  "updatedAt": "2026-11-10T07:25:37.984Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000045/requirements.md",
+      "sha256": "sha256:1ec2bd1ec21c2391b4610b411301c79e7ce2a1bab25f68c3edb36fba95040a9e"
+    },
+    "reason": "需求仅要求在页面中实时显示本地系统时间的 HH:MM:SS，时间取自用户本地系统时钟，每秒自动更新。整个行为完全在浏览器端完成：使用 JavaScript 获取本地时间并通过 setInterval 每秒刷新 DOM 即可实现。需求不涉及服务端权威数据、用户认证/权限、后台任务、外部服务集成或跨用户/跨设备数据共享，因此归类为 simple-frontend。",
+    "evidence": {
+      "supporting": [
+        "需求第 9 行：页面加载后立即显示当前时间，格式为 HH:MM:SS（24 小时制）",
+        "需求第 10 行：时间显示每秒自动更新，无需用户手动刷新",
+        "需求第 11 行：时分秒取自用户本地系统时间",
+        "AC-01 验收场景：打开页面观察时间显示，预期结果为 HH:MM:SS 且每秒自动变化，与用户本地系统时间一致",
+        "证据类型为 runtime-render，表明仅需前端渲染验证"
+      ],
+      "excluding": [
+        "无服务端权威数据要求——时间来源为用户本地系统时间，非服务端",
+        "无认证/权限要求——需求未提及任何用户登录或权限控制",
+        "无后台任务要求——仅需每秒前端定时刷新，无需服务端异步任务",
+        "无外部服务集成——不调用任何外部 API 或第三方服务",
+        "无跨用户/跨设备数据共享——时间显示为只读本地数据，无数据持久化或同步需求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-10T07:25:04.080Z",
+    "sha256": "sha256:75d65fd40d915dce16001cc1a966de177eb289495933d8c9fe0ed44e5c55232d"
+  }
 }

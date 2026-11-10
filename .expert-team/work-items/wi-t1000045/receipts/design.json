@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:8dd62d4c622975d486cb9256e6622fa08311ce7b2e2755ecce4c8c0fd2430046",
+  "createdAt": "2026-11-10T07:25:37.984Z",
+  "timing": {
+    "startedAt": "2026-11-10T07:24:52.275Z",
+    "completedAt": "2026-11-10T07:25:37.983Z",
+    "durationMs": 45708
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000045/architecture-baseline.md",
+      "bytes": 2822,
+      "sha256": "sha256:446400e26c738e6a2173b6b1a46495c63e5e3af4ba3e0bb61eff536a0351195a",
+      "role": "primary",
+      "purpose": "k08-clock 实时时钟页面的架构基线文档，定义 React+Vite SPA 精简前端路线、页面交互范围、数据归属、实现入口、UI 方向和验收验证方式",
+      "title": "k08-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "design:completion",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:75d65fd40d915dce16001cc1a966de177eb289495933d8c9fe0ed44e5c55232d",
+        "path": ".expert-team/work-items/wi-t1000045/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
