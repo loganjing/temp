@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:886e1e366841a1d62dd8d02949acdcee00f84edb7515e4abc935a9c2a4b0c463",
+  "createdAt": "2026-11-10T08:03:11.241Z",
+  "timing": {
+    "startedAt": "2026-11-10T08:00:56.990Z",
+    "completedAt": "2026-11-10T08:03:11.241Z",
+    "durationMs": 134251
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000048/requirements.md",
+      "bytes": 7224,
+      "sha256": "sha256:d0a69e6a95966a18d2358e8832c74c5f3277bdbac08b3efe827a8c1edd4abff6",
+      "role": "requirements",
+      "purpose": "k11-robot 设备管理平台需求文档，包含设备状态监测、故障诊断、远程升级、维修工单、设备履历五个模块的需求定义和6条验收标准",
+      "title": "k11-robot 设备管理平台需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-goals-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "baseline-separation",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-proportionality",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-actions",
+      "status": "passed"
+    }
+  ]
+}
