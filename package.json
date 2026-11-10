@@ -1,0 +1,14 @@
+{
+  "name": "k11-robot-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "dev": "node ./scripts/dev.mjs",
+    "build": "npm run build -w k11-robot",
+    "start": "npm run start -w k11-robot",
+    "test": "npm run test -w k11-robot --if-present"
+  }
+}

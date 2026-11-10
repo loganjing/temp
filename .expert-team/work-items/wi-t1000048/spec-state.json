@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-10T08:03:11.241Z"
+  "updatedAt": "2026-11-10T08:11:34.071Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000048/requirements.md",
+      "sha256": "sha256:d0a69e6a95966a18d2358e8832c74c5f3277bdbac08b3efe827a8c1edd4abff6"
+    },
+    "reason": "需求明确要求'数据库存储'作为持久化方式，五个功能模块（设备状态监测、故障诊断、远程升级、维修工单、设备履历）之间存在跨模块数据关联和自动汇聚需求，远程升级涉及设备端通信交互，远超浏览器 localStorage 的单用户 CRUD 场景，需要服务端权威数据和后端业务逻辑支撑。",
+    "evidence": {
+      "supporting": [
+        "需求明确要求'数据库存储'，所有模块的业务数据通过数据库持久化存储，写入后可读回（AC-06）",
+        "设备履历需自动汇聚多模块写入的事件（登记、状态变更、故障、升级、维修），属于后台数据聚合逻辑",
+        "五个功能模块（设备管理、状态监测、故障诊断、远程升级、维修工单）之间存在跨模块数据关联和状态流转",
+        "远程升级需向设备推送升级内容并跟踪进度，涉及设备端通信交互",
+        "设备删除后关联履历数据需保留可追溯，要求服务端持久化保证数据一致性"
+      ],
+      "excluding": [
+        "用户角色、权限体系和服务对象未规定，但不影响后端架构判断",
+        "技术栈和部署平台未规定，选型由设计阶段确定"
+      ],
+      "unresolved": [
+        "设备通信协议和升级推送方式未规定，设计中需做技术假设"
+      ]
+    },
+    "decidedAt": "2026-11-10T08:07:17.904Z",
+    "sha256": "sha256:4a027fc5cdc3f8762981cb3a6c2d3484fd8856921db974363285be4737a200e4"
+  }
 }

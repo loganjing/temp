@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "projectType": "new",
+  "appName": "k11-robot",
+  "framework": "hono",
+  "frontendFramework": "react-vite",
+  "uiFramework": "none",
+  "packageManager": "npm",
+  "modules": ["dbkit"]
+}

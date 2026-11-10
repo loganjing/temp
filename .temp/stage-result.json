@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000048/architecture-baseline.md",
+      "sha256": "sha256:a33df6ec1227d95e842e921f0dab043cf856a651a9b50e3875c779055269f3a8",
+      "role": "primary"
+    },
+    {
+      "path": "docs/wi-t1000048/technical-contract.md",
+      "sha256": "sha256:80a2a1fa386ccaf1730596a72cc434df000162f08cbb4db1be948f1aa7c29e3e",
+      "role": "supporting"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "architecture-baseline:markers",
+      "status": "passed"
+    }
+  ]
+}

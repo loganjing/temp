@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:9badbc9010b7015cec5c127f65220ee39226852865024eec7211992b19b120d2",
+  "createdAt": "2026-11-10T08:11:34.071Z",
+  "timing": {
+    "startedAt": "2026-11-10T08:06:45.065Z",
+    "completedAt": "2026-11-10T08:11:34.071Z",
+    "durationMs": 289006
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000048/architecture-baseline.md",
+      "bytes": 10728,
+      "sha256": "sha256:a33df6ec1227d95e842e921f0dab043cf856a651a9b50e3875c779055269f3a8",
+      "role": "primary",
+      "purpose": "整体架构、技术栈、模块边界、UI 基线、数据模型与运行校验",
+      "title": "系统设计"
+    },
+    {
+      "path": "docs/wi-t1000048/technical-contract.md",
+      "bytes": 7509,
+      "sha256": "sha256:80a2a1fa386ccaf1730596a72cc434df000162f08cbb4db1be948f1aa7c29e3e",
+      "role": "supporting",
+      "purpose": "API 字段级契约、实体 ID 对照、数据类型定义与状态机",
+      "title": "技术契约 — k11-robot"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "architecture-baseline:markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:4a027fc5cdc3f8762981cb3a6c2d3484fd8856921db974363285be4737a200e4",
+        "path": ".expert-team/work-items/wi-t1000048/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
