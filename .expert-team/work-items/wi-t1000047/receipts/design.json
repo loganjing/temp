@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:41a112b800921149c84cf9ecf51abb79368c3299c89b16f386c81340e4fb21ec",
+  "createdAt": "2026-11-10T08:01:52.615Z",
+  "timing": {
+    "startedAt": "2026-11-10T08:01:06.701Z",
+    "completedAt": "2026-11-10T08:01:52.615Z",
+    "durationMs": 45914
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000047/architecture-baseline.md",
+      "bytes": 1720,
+      "sha256": "sha256:132d2c9989d50a44d56e10cda847c968cabb3e927e1354c5779e1f6c55010c0a",
+      "role": "primary",
+      "purpose": "实时时钟页面的架构基线文档，描述技术路线、页面交互范围、实现入口、UI方向和验证方式",
+      "title": "架构基线：实时时钟页面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "scope-matches-requirements",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:939e52db01e29d418ab7e21060bc09c579d9f1c79061c7d1ef697f29a6cfbf1b",
+        "path": ".expert-team/work-items/wi-t1000047/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

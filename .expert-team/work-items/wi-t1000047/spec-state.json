@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-10T07:59:30.235Z"
+  "updatedAt": "2026-11-10T08:01:52.615Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000047/requirements.md",
+      "sha256": "sha256:8477e079a3b8f6f112617f484328410313df3eb4c891aaf8985b6462c319cecd"
+    },
+    "reason": "需求仅要求在浏览器页面中实时显示本地系统时间的时分秒，每秒自动更新。不涉及服务端权威数据、认证权限、后台任务、外部服务集成或跨用户/设备数据共享。时间取自浏览器本地系统时间，属于纯前端展示场景，使用前端定时器即可实现。",
+    "evidence": {
+      "supporting": [
+        "需求目标明确为'做一个页面，实时显示当前的时、分、秒'（requirements.md 第5行）",
+        "时间取自用户设备（浏览器）的本地系统时间（requirements.md 第13行）",
+        "页面加载后立即显示，每秒自动更新，用户无需手动操作（requirements.md 第11-12行）",
+        "唯一验收场景AC-01仅验证页面实时显示时分秒，证据类型为runtime-render和interaction（requirements.md 第19-25行）"
+      ],
+      "excluding": [
+        "无服务端权威数据要求：时间直接取自浏览器本地系统时间（需求第13行）",
+        "无认证/权限要求：任何用户打开页面即可查看",
+        "无后台任务要求：仅需前端定时器每秒刷新",
+        "无外部服务集成：不调用任何API或外部服务",
+        "无跨用户/跨设备共享数据：时间显示是即时本地状态，不需要持久化或同步"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-10T08:01:23.463Z",
+    "sha256": "sha256:939e52db01e29d418ab7e21060bc09c579d9f1c79061c7d1ef697f29a6cfbf1b"
+  }
 }
