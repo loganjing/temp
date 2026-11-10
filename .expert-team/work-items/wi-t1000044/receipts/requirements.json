@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:b3fb9115ac78a52fe25fbdcd1720b70c167923f89708cc3304f27ad3d506acea",
+  "createdAt": "2026-11-10T05:36:51.266Z",
+  "timing": {
+    "startedAt": "2026-11-10T05:36:09.713Z",
+    "completedAt": "2026-11-10T05:36:51.266Z",
+    "durationMs": 41553
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000044/requirements.md",
+      "bytes": 1687,
+      "sha256": "sha256:333a3d7e7feb8f624198941081a0152b1b58c2edf8aa34f11dd4379f3cabc0c2",
+      "role": "requirements",
+      "purpose": "k07-clock 实时时钟页面的需求基线文档",
+      "title": "k07-clock 需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-coverage",
+      "status": "passed"
+    }
+  ]
+}
