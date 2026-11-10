@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:6624468ef63d4762db21c0f1e0770bcffc74e09db32aa1c7793886ae45b4b942",
+  "createdAt": "2026-11-10T07:59:30.235Z",
+  "timing": {
+    "startedAt": "2026-11-10T07:59:00.735Z",
+    "completedAt": "2026-11-10T07:59:30.234Z",
+    "durationMs": 29499
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000047/requirements.md",
+      "bytes": 839,
+      "sha256": "sha256:8477e079a3b8f6f112617f484328410313df3eb4c891aaf8985b6462c319cecd",
+      "role": "requirements",
+      "purpose": "实时时钟页面的需求基线，包含目标、核心行为规则和验收场景",
+      "title": "需求：实时时钟页面"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-goal-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-result",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    }
+  ]
+}
