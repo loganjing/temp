@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:08c41e123ffafda5b6e6ed8707c27fd0c3545a3fb27af4c19b20b0a6c00417df",
+  "createdAt": "2026-11-11T01:09:10.468Z",
+  "timing": {
+    "startedAt": "2026-11-11T01:06:21.292Z",
+    "completedAt": "2026-11-11T01:09:10.468Z",
+    "durationMs": 169176
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000049/requirements.md",
+      "bytes": 5241,
+      "sha256": "sha256:ee0604b7b66ac33d10b6c70cfb22e0c94192a81b7c999c8e62f710a1305e2c97",
+      "role": "requirements",
+      "purpose": "k12-robot 设备管理平台需求文档，覆盖设备状态监测、故障诊断、远程升级、维修工单和设备履历五个模块，含数据持久化约束和5条验收场景",
+      "title": "k12-robot 设备管理平台需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goal-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable-results",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "persistence-as-user-requirement",
+      "status": "passed"
+    }
+  ]
+}

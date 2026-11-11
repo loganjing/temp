@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000049",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "k12-robot\n\n开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25746126518882304\",\"code\":\"T1000049\",\"title\":\"k12-robot\",\"description\":\"开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgrobot\"}",
+  "request": "k12-robot\n\n开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25746126518882304\",\"code\":\"T1000049\",\"title\":\"k12-robot\",\"description\":\"开发设备状态监测、故障诊断、远程升级、维修工单和设备履历功能，需要数据库存储\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlgrobot\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-11-11T01:06:21.183Z"
+}
