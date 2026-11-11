@@ -2,14 +2,44 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:ce8fc413fc7ea9153cc328923fb3edc39feb25ff73a23d14db0a3bcecb8b5138",
-  "updatedAt": "2026-11-11T08:12:25.929Z"
+  "updatedAt": "2026-11-11T08:25:18.044Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000055/requirements.md",
+      "sha256": "sha256:e3d517d44fcaf18429afb333755f1e46dd94c9a744408e568ee0a5a3d259f59a"
+    },
+    "reason": "需求明确要求数据库存储（4.6节），所有模块业务数据需持久化并可通过读取行为读回，不是浏览器本地存储可满足的简单前端。五大模块（设备状态监测、故障诊断、远程升级、维修工单、设备履历）之间存在跨模块数据汇聚（设备履历来源于其他四个模块已持久化数据），需要服务端权威数据源。状态流转、故障诊断信息写入、升级结果记录、工单处理记录均要求写入后可读回，属于服务端数据权威边界。",
+    "evidence": {
+      "supporting": [
+        "需求4.6节：所有模块的业务数据均写入数据库，写入后可通过对应读取行为读回",
+        "需求4.5节：设备履历来源于状态、故障、升级、工单各模块已持久化数据，按时间顺序汇聚",
+        "需求4.2节：故障状态支持流转（已记录—诊断中—已诊断—已关闭），诊断信息写入并随故障事件读回",
+        "需求4.3节：升级状态流转（待执行—执行中—成功—失败），升级结果与失败原因写入并读回",
+        "需求4.4节：工单状态流转（待处理—处理中—已完成—已关闭），处理记录写入并读回",
+        "AC-06：业务数据持久化存储，写入后可通过对应读取行为读回"
+      ],
+      "excluding": [
+        "无证据表明服务端权威数据、认证权限、后台任务或跨用户共享是不必要的"
+      ],
+      "unresolved": [
+        "数据库产品与技术选型未指定（需求3节），由设计阶段决定",
+        "设备状态数据来源未规定（主动上报或平台采集均可），不改变fullstack分类",
+        "用户角色与权限未规定，以操作人员泛指，不影响fullstack分类"
+      ]
+    },
+    "decidedAt": "2026-11-11T08:13:41.322Z",
+    "sha256": "sha256:df0c0edbbf2188738a9b9b74af19116a487b8d76cfb623d5208b320bfcc91c50"
+  }
 }
