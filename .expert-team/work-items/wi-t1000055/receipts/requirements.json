@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:ee9da8bf942e53f82f3648d4fb27fdd06c8c9bd11177b543e5e52f2cf88914f3",
+  "createdAt": "2026-11-11T08:12:25.929Z",
+  "timing": {
+    "startedAt": "2026-11-11T08:11:39.261Z",
+    "completedAt": "2026-11-11T08:12:25.929Z",
+    "durationMs": 46668
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000055/requirements.md",
+      "bytes": 6667,
+      "sha256": "sha256:e3d517d44fcaf18429afb333755f1e46dd94c9a744408e568ee0a5a3d259f59a",
+      "role": "requirements",
+      "purpose": "设备管理平台需求基线，覆盖五大功能模块与数据持久化验收",
+      "title": "设备管理平台需求（k14-robot）"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goals-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable",
+      "status": "passed"
+    },
+    {
+      "checkId": "source-distinction",
+      "status": "passed"
+    }
+  ]
+}
