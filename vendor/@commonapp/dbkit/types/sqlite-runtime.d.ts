@@ -1,0 +1,11 @@
+import type { DbClient, DbConfig } from './types.js';
+export { createDbConfig } from './config.js';
+export { compilePlaceholders } from './placeholders.js';
+export { SqliteClient, createSqliteClient } from './sqlite.js';
+export { runMigrations, getMigrationStatus } from './migrations.js';
+export * from './errors.js';
+export type * from './types.js';
+export type { SqliteClientOptions } from './sqlite.js';
+export type { CompiledSql } from './placeholders.js';
+export declare function createDb(config: DbConfig): DbClient;
+export declare function createMemoryDb(): DbClient;
