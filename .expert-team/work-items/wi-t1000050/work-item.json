@@ -1,0 +1,11 @@
+{
+  "workItemId": "wi-t1000050",
+  "applicationId": "application",
+  "workItemType": "initial-build",
+  "title": "k12-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25746415103782912\",\"code\":\"T1000050\",\"title\":\"k12-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-clock\"}",
+  "request": "k12-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25746415103782912\",\"code\":\"T1000050\",\"title\":\"k12-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"requirement\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-clock\"}",
+  "status": "active",
+  "specId": "general-application-development-spec",
+  "revision": 0,
+  "createdAt": "2026-11-11T01:07:24.512Z"
+}

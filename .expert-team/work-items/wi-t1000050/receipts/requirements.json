@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:1781198e6b8f126ac46f6db7283fc78e9870bc66cb0ef36831f4e50caf511337",
+  "createdAt": "2026-11-11T01:07:51.467Z",
+  "timing": {
+    "startedAt": "2026-11-11T01:07:24.632Z",
+    "completedAt": "2026-11-11T01:07:51.467Z",
+    "durationMs": 26835
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000050/requirements.md",
+      "bytes": 1420,
+      "sha256": "sha256:2df7a31c204b3597b6b11f17d710c58124cd4a3dd974349e18f12e08375eed82",
+      "role": "requirements",
+      "purpose": "k12-clock 项目的需求基线文档，定义实时显示时分秒页面目标、核心行为与验收场景",
+      "title": "k12-clock 需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "core-goal-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "acceptance-criteria-defined",
+      "status": "passed"
+    }
+  ]
+}
