@@ -2,14 +2,41 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:ce8fc413fc7ea9153cc328923fb3edc39feb25ff73a23d14db0a3bcecb8b5138",
-  "updatedAt": "2026-11-11T08:06:55.642Z"
+  "updatedAt": "2026-11-11T08:08:39.800Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000054/requirements.md",
+      "sha256": "sha256:33f5c138565e68d5d62038c391f16d96a73b10f77ac0dc0fe8125386cf4de2df"
+    },
+    "reason": "需求仅要求页面实时显示当前时分秒并每秒自动更新，浏览器端 Date API + 定时器即可满足，无需服务端、权威数据、认证、后台任务、外部集成或跨用户/设备共享。AC-01 验证类型为 runtime-render，纯前端渲染即可验收。",
+    "evidence": {
+      "supporting": [
+        "需求核心行为：页面打开后立即显示当前时分秒，随系统时间自动更新，格式 HH:MM:SS",
+        "AC-01 验证动作为打开页面观察时间显示，预期每秒自动更新且与系统时间一致，证据类型 runtime-render",
+        "实现只需浏览器内置 Date 与定时器，无任何持久化或服务端依赖"
+      ],
+      "excluding": [
+        "无服务端权威数据要求（时间取自客户端系统时钟）",
+        "无认证/权限要求",
+        "无后台任务要求",
+        "无外部服务集成要求",
+        "无跨用户/跨设备数据共享要求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-11T08:08:06.029Z",
+    "sha256": "sha256:c413e6c9bf14ea3c7639cc74d098778296fccc811e23e95e4e601862ae8b6e14"
+  }
 }

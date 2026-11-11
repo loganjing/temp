@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:ed7787310aafa4f321cec710a1a799c2042d8c7df6a7a6465814921d6beedf59",
+  "createdAt": "2026-11-11T08:08:39.800Z",
+  "timing": {
+    "startedAt": "2026-11-11T08:07:54.811Z",
+    "completedAt": "2026-11-11T08:08:39.800Z",
+    "durationMs": 44989
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000054/architecture-baseline.md",
+      "bytes": 2230,
+      "sha256": "sha256:5761674fc621a23d647686f9e2d67e478d156e08464d0077429ea81f9e5d66a6",
+      "role": "primary",
+      "purpose": "实时时钟页面的精简架构基线，确定 React/Vite SPA 路线、浏览器系统时钟时间源、每秒 setInterval 更新机制、HH:MM:SS 显示格式、无持久化数据归属、自定义 CSS 视觉方向、开发与构建运行方式及 AC-01 定时路径验证方式。",
+      "title": "架构基线：k13-clock"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "requirements-baseline-sha256-match",
+      "status": "passed"
+    },
+    {
+      "checkId": "classification-simple-frontend-fixed",
+      "status": "passed"
+    },
+    {
+      "checkId": "frontend-deployment-initializer-initialized",
+      "status": "passed"
+    },
+    {
+      "checkId": "architecture-baseline-artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:c413e6c9bf14ea3c7639cc74d098778296fccc811e23e95e4e601862ae8b6e14",
+        "path": ".expert-team/work-items/wi-t1000054/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
