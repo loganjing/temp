@@ -1,0 +1,28 @@
+{
+  "app": "jlgrobot",
+  "serverId": "23ef33d1-efcc-4c7c-acd6-f5ce6aa856e3",
+  "appPath": "app/jlgrobot",
+  "version": "1.0.0",
+  "architecture": "amd64",
+  "root": "/opt/lingee-apps",
+  "envFile": "/opt/lingee-apps/jlgrobot/.env",
+  "mounts": [
+    {
+      "host": "/opt/lingee-apps/jlgrobot/data",
+      "container": "/app/app/jlgrobot/data"
+    }
+  ],
+  "hostPort": 3003,
+  "containerPort": 3000,
+  "healthPath": "/api/health",
+  "requiredEnv": [],
+  "context": ".",
+  "dockerfile": "deploy/Dockerfile",
+  "expectedCurrent": null,
+  "backupMode": "sqlite",
+  "migrationReviewed": false,
+  "sshConfirmed": true,
+  "testServerConfirmed": true,
+  "composeFile": "deploy/docker-compose.prod.yml",
+  "composeService": "app"
+}

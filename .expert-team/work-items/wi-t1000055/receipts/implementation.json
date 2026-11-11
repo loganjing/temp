@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:5deb038b948e7749541169fad1a733f1e590aba12f69718ff8a3540a66501793",
+  "createdAt": "2026-11-11T09:01:00.622Z",
+  "timing": {
+    "startedAt": "2026-11-11T08:27:54.949Z",
+    "completedAt": "2026-11-11T09:01:00.621Z",
+    "durationMs": 1985672
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000055/implementation-report.md",
+      "bytes": 6169,
+      "sha256": "sha256:6755452aa04533ef4d798b2b3fae306c6ec10ec88ed06d3fe1fcbd44eaad01dd",
+      "role": "primary",
+      "purpose": "开发实现阶段结算报告，记录两个并行任务的执行结果、验收覆盖与产物",
+      "title": "开发实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "T01:typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "T01:typecheck",
+      "status": "passed"
+    },
+    {
+      "checkId": "T01:test",
+      "status": "passed"
+    },
+    {
+      "checkId": "T01:build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "T02:typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "T02:build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:df0c0edbbf2188738a9b9b74af19116a487b8d76cfb623d5208b320bfcc91c50",
+        "path": ".expert-team/work-items/wi-t1000055/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

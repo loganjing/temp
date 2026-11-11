@@ -1,4 +1,4 @@
-import { randomBytes, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import { mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
@@ -8,7 +8,10 @@ const restore = (key, value) => {
   else process.env[key] = value
 }
 
-/** Run setup against a unique database and QA_RUN_ID, then remove all run data. */
+/**
+ * Run setup against a unique SQLite database and QA_RUN_ID, then remove all run data.
+ * Initialize the application platform inside its callback so it uses that database.
+ */
 export async function withQaEnvironment(run) {
   const directory = await mkdtemp(path.join(os.tmpdir(), 'app-qa-'))
   const databasePath = path.join(directory, 'application.sqlite')
@@ -27,27 +30,16 @@ export async function withQaEnvironment(run) {
   }
 }
 
-/** Create a fresh login identity for the current QA run and verify its resolved state. */
-export async function seedQaIdentity(platform, {
-  qaRunId,
-  companyId = `${qaRunId}-company`,
-  assignRoles,
-  verifyAuthorization,
-}) {
-  const email = `qa-${randomUUID()}@example.test`
-  const password = randomBytes(24).toString('base64url')
-  const created = await platform.auth.userStore.create({
-    name: `QA ${qaRunId}`,
-    email,
-    companyId,
-    passwordChangeRequired: false,
-  }, platform.auth.hashPassword(password))
-  await assignRoles?.(platform, { userId: created.id, companyId, qaRunId })
-  const identity = await platform.auth.userResolver.findById(created.id)
-
-  if (!identity || identity.status !== 'active' || identity.passwordChangeRequired || identity.companyId !== companyId)
-    throw new Error('QA identity fixture did not create an active, ready-to-login account')
-  await verifyAuthorization?.(platform, { identity, companyId, qaRunId })
-
-  return { id: created.id, email, password, companyId }
+/**
+ * Seed a base equipment row directly into the platform database for QA scenarios
+ * that need a pre-existing device before exercising API endpoints.
+ */
+export async function seedEquipment(platform, { identifier = `EQ-${randomUUID()}`, name = 'QA 设备' } = {}) {
+  const id = randomUUID()
+  const now = new Date().toISOString()
+  await platform.db.run({
+    text: 'INSERT INTO equipment (id, name, identifier, type, created_at) VALUES (?, ?, ?, ?, ?)',
+    params: [id, name, identifier, null, now],
+  })
+  return { id, name, identifier, type: null, created_at: now }
 }

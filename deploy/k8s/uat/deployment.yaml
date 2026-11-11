@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jlgrobot
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jlgrobot
+  template:
+    metadata:
+      labels:
+        app: jlgrobot
+    spec:
+      containers:
+        - name: jlgrobot
+          image: jlgrobot:1.0.0-amd64
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: jlgrobot-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          volumeMounts:
+            - name: data
+              mountPath: /app/app/jlgrobot/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: jlgrobot-data

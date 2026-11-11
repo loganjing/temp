@@ -1,0 +1,193 @@
+/* Modern SaaS 工作台样式：深色侧栏、浅色工作区、顶部上下文栏、细边界、少阴影、中等圆角 */
+
+:root {
+  --app-bg: #f5f6f8;
+  --app-primary: #1677ff;
+  --app-border: #e9ebf0;
+  --app-text: #1f2329;
+  --app-text-secondary: #646a73;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.app-shell {
+  height: 100vh;
+  display: flex;
+}
+
+.app-shell .app-sider {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #001529;
+}
+
+.app-shell .app-brand {
+  padding: 20px 20px 16px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.app-shell .app-brand-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #8a93a6;
+}
+
+.app-shell .app-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-shell .app-topbar {
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.app-shell .app-topbar h1 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.app-shell .app-topbar .topbar-desc {
+  margin-left: 12px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+}
+
+.app-shell .app-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+/* split-master-detail */
+.md-layout {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  align-items: stretch;
+}
+
+.md-master {
+  width: 320px;
+  flex: 0 0 320px;
+  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.md-master-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.md-master-list {
+  flex: 1;
+  overflow: auto;
+}
+
+.md-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--app-border);
+  cursor: pointer;
+}
+
+.md-item:hover {
+  background: #f0f5ff;
+}
+
+.md-item.active {
+  background: #e6f0ff;
+  border-left: 3px solid var(--app-primary);
+}
+
+.md-item-title {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--app-text);
+}
+
+.md-item-meta {
+  font-size: 12px;
+  color: var(--app-text-secondary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.md-detail {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  overflow: auto;
+  padding: 20px;
+}
+
+.md-detail .detail-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--app-text-secondary);
+}
+
+.md-detail .detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.md-detail .detail-title h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.md-detail .detail-section {
+  margin-top: 20px;
+}
+
+.md-detail .detail-section h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--app-text);
+}
+
+.demo-badge {
+  font-size: 12px;
+  color: #ad6800;
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 4px;
+  padding: 1px 8px;
+}

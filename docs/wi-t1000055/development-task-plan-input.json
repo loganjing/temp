@@ -1,0 +1,72 @@
+{
+  "tasks": [
+    {
+      "taskId": "T01",
+      "summary": "实现设备管理平台后端：Hono REST API、SQLite 版本化迁移、五大模块业务路由与设备履历聚合查询",
+      "objective": "## 目标\n\n在已初始化的 `app/jlgrobot/` 骨架上实现设备管理平台完整后端，覆盖设备管理、设备状态监测、故障诊断、远程升级、维修工单与设备履历聚合，所有业务数据通过 SQLite（via `@commonapp/dbkit`）持久化。\n\n## 实现范围\n\n严格遵循已批准的 `docs/wi-t1000055/technical-contract.md` 的端点、字段、状态流转与聚合规则，不发明契约外行为。\n\n### 数据层\n- 在 `src/server/migrations/sqlite/` 下编写版本化迁移 SQL，创建 `equipment`、`equipment_status`、`faults`、`fault_status_logs`、`upgrade_tasks`、`upgrade_status_logs`、`work_orders`、`work_order_status_logs`、`work_order_records` 表，列类型与约束按架构基线 §3.2。\n- `src/server/platform/bootstrap.ts` 初始化 dbkit：创建 `data/` 父目录、打开数据库、`runMigrations`，导出可被服务入口消费的数据库句柄；启动失败时 fail-closed。\n\n### 服务层与路由\n- `src/server/routes.ts` 注册全部业务路由：`/api/equipment`、`/api/equipment/:equipmentId/status`、`/api/faults`、`/api/upgrades`、`/api/work-orders`、`/api/equipment/:equipmentId/history`。\n- 在 `src/server/routes/` 下按模块实现路由（equipment、status、fault、upgrade、workorder），在 `src/server/services/` 下实现设备履历聚合查询（按各表时间字段倒序合并为统一 events 数组，规则见契约 §8.1）。\n- 状态推进（故障、升级、工单）在 dbkit `transaction` 中完成：更新主表 `status`/`updated_at`/`closed_at` 并插入状态流转日志；校验合法流转路径，非法路径返回 400。\n- ID 由 `crypto.randomUUID()` 生成；时间使用 ISO 8601；错误响应统一 `{error:{code,message}}`；状态码按契约 §1。\n- `src/server/app.ts` 组装全局中间件、API 错误处理与 SPA 回退（生产托管 `dist/`）；`src/server/index.ts` 初始化资源、启动 HTTP（`PORT` 默认 3000）、关闭资源。\n- `src/server/platform/auth.ts`、`locale.ts` 保持 no-op 默认实现（需求未规定权限/locale）。\n\n### 共享契约\n- 在 `src/shared/` 定义平台中立的 TypeScript 类型与常量（实体接口、状态枚举、状态流转规则表），供 server 使用；client 可读但本任务为唯一写入 owner。不得在 `src/shared/` 引入 Node/Hono/React/数据库依赖。\n\n### 包配置\n- 独占 `package.json`：按架构基线技术栈确认并补全依赖（含 `antd`、`@ant-design/icons` 等前端依赖，确保整包 build 可用）、保留现有脚本并按需补充；运行 `npm install` 使 node_modules 可用。\n- 独占 `tsconfig.json`、`tsconfig.server.json`。\n\n## 验证\n- `npm run typecheck:server` 通过。\n- `npm test`（`test/*.test.mjs`）通过：复用并按需扩展 `test/platform.test.mjs`（基线 HTTP/健康/SPA 回退）、`test/dbkit.test.mjs`（dbkit 启动/迁移/读写）、`test/with-http-server.mjs`、`test/fixtures/qa-environment.mjs`；通过 `DB_PATH` 指定隔离测试数据库。\n- 验证各模块写入后可读回、状态流转合法路径通过/非法路径被拒、履历聚合按时间倒序且内容完整。\n\n## 边界\n- 不实现前端 React 代码（src/client/ 由 T02 独占）。\n- 不发明契约外的端点、字段或状态。\n- 跨任务集成（整包 build、E2E）由后续 QA 负责。",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000055/requirements.md" },
+        { "path": "docs/wi-t1000055/architecture-baseline.md" },
+        { "path": "docs/wi-t1000055/technical-contract.md" }
+      ],
+      "artifactPaths": [],
+      "additionalWritePaths": [
+        "app/jlgrobot/package.json",
+        "app/jlgrobot/tsconfig.json",
+        "app/jlgrobot/tsconfig.server.json",
+        "app/jlgrobot/src/server/index.ts",
+        "app/jlgrobot/src/server/app.ts",
+        "app/jlgrobot/src/server/routes.ts",
+        "app/jlgrobot/src/server/platform/bootstrap.ts",
+        "app/jlgrobot/src/server/platform/auth.ts",
+        "app/jlgrobot/src/server/platform/locale.ts",
+        "app/jlgrobot/test/platform.test.mjs",
+        "app/jlgrobot/test/dbkit.test.mjs",
+        "app/jlgrobot/test/with-http-server.mjs",
+        "app/jlgrobot/test/fixtures/qa-environment.mjs",
+        "app/jlgrobot/test/fixtures/README.md"
+      ],
+      "additionalWriteScopes": [
+        "app/jlgrobot/src/server/routes/",
+        "app/jlgrobot/src/server/services/",
+        "app/jlgrobot/src/server/migrations/sqlite/",
+        "app/jlgrobot/src/shared/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    },
+    {
+      "taskId": "T02",
+      "summary": "实现设备管理平台前端：React + Ant Design 工作台，五大模块页面与设备履历按时间呈现",
+      "objective": "## 目标\n\n在已初始化的 `app/jlgrobot/` 骨架上实现设备管理平台完整前端（React + Vite + Ant Design SPA），覆盖设备状态监测、故障诊断、远程升级、维修工单与设备履历五大模块的用户界面。\n\n## 实现范围\n\n严格遵循已批准的 `docs/wi-t1000055/technical-contract.md` 的端点与字段定义，前端通过契约类型/mock 推进，不发明 API 行为。\n\n### 应用壳与导航\n- `src/client/main.tsx`：React 挂载与全局 Provider（Ant Design ConfigProvider、message、i18n Provider）。\n- `src/client/App.tsx`：顶层组合与导航；左侧深色导航栏（5 个模块入口）+ 顶部上下文栏 + 右侧主工作区，采用 `split-master-detail` 布局（左侧列表/队列带筛选，右侧选中记录详情）。\n- 视觉风格 Modern SaaS：柔和中性色、细边界、少阴影、中等圆角、一个主色与状态色。参考团包内 `experts/general-app-development-expert/skills/general-app-implementation/assets/antd-workbench/example.jsx` 和 `example.css`。\n\n### 平台层\n- `src/client/platform/api-client.ts`：单一浏览器请求边界，请求 `/api`，响应标准化与 API 错误解码（`{error:{code,message}}`）。\n- `src/client/platform/i18n.tsx`：默认客户端 locale Provider。\n\n### 五大模块页面（在 `src/client/pages/` 下）\n1. 设备状态：设备列表 → 选中设备 → 查看当前与历史状态记录（调用 `GET/POST /api/equipment/:equipmentId/status`、`GET /api/equipment`）。\n2. 故障诊断：故障列表 → 选中故障 → 填写诊断结论/处理建议 → 推进状态流转（`GET/POST /api/faults`、`GET/PATCH /api/faults/:id`、`POST /api/faults/:id/status`）。\n3. 远程升级：升级任务列表 → 发起升级 → 选中任务 → 查看状态与结果（`GET/POST /api/upgrades`、`GET /api/upgrades/:id`、`POST /api/upgrades/:id/status`）。\n4. 维修工单：工单列表 → 创建工单 → 选中工单 → 填写处理记录 → 推进状态（`GET/POST /api/work-orders`、`GET /api/work-orders/:id`、`POST /api/work-orders/:id/records`、`POST /api/work-orders/:id/status`）。\n5. 设备履历：选择设备 → 按时间倒序查看状态/故障/升级/工单历史（`GET /api/equipment/:equipmentId/history`）。\n\n### 全局状态\n- 加载：列表区骨架屏/Spin；空数据：Ant Design Empty 附引导文案；错误：message 提示 + 详情区错误状态；成功：message 反馈 + 列表自动刷新。\n\n### 包配置\n- 独占 `index.html`、`vite.config.ts`、`tsconfig.client.json`；`vite.config.ts` 配置 Vite 插件、开发端口与 `/api` 代理到后端。\n- 前端类型可引用 `src/shared/`（由 T01 独占写入，本任务只读）。\n\n## 验证\n- `npm run typecheck:client` 通过（基于契约类型，不依赖后端运行）。\n- `npm run build:client`（Vite 构建）通过，产出 `dist/`。\n- 不在后端运行的情况下，可基于契约类型/mock 验证页面与导航结构。\n\n## 边界\n- 不实现后端代码（src/server/、migrations、test/ 由 T01 独占）。\n- 不修改 `package.json`（由 T01 独占）；如发现前端依赖缺失，在产物中说明并交由 T01/后续 QA 解决，不自行改写。\n- 跨任务集成（整包 build、E2E）由后续 QA 负责。",
+      "requirementIds": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05"],
+      "capabilityId": "engineering.implementation",
+      "taskKind": "implement",
+      "executionMode": "spawn_task",
+      "dependsOn": [],
+      "inputArtifacts": [
+        { "path": "docs/wi-t1000055/requirements.md" },
+        { "path": "docs/wi-t1000055/architecture-baseline.md" },
+        { "path": "docs/wi-t1000055/technical-contract.md" }
+      ],
+      "artifactPaths": [],
+      "additionalWritePaths": [
+        "app/jlgrobot/index.html",
+        "app/jlgrobot/vite.config.ts",
+        "app/jlgrobot/tsconfig.client.json"
+      ],
+      "additionalWriteScopes": [
+        "app/jlgrobot/src/client/"
+      ],
+      "resourceKeys": [],
+      "failurePolicy": "block",
+      "blockerCodes": []
+    }
+  ]
+}
