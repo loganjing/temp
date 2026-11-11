@@ -4,8 +4,15 @@
   "workItemType": "initial-build",
   "title": "k13-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25851713952944128\",\"code\":\"T1000054\",\"title\":\"k13-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"feature\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-clock\"}",
   "request": "k13-clock\n\n做一个页面实时显示最近的时分秒\n\nOriginal task context (user-provided facts):\n\n{\"issueId\":\"25851713952944128\",\"code\":\"T1000054\",\"title\":\"k13-clock\",\"description\":\"做一个页面实时显示最近的时分秒\",\"priority\":\"normal\",\"labels\":[],\"kind\":\"feature\",\"acceptanceCriteria\":[],\"projectName\":\"jlg-clock\"}",
-  "status": "active",
+  "status": "completed",
   "specId": "general-application-development-spec",
-  "revision": 0,
-  "createdAt": "2026-11-11T08:06:43.696Z"
+  "revision": 1,
+  "createdAt": "2026-11-11T08:06:43.696Z",
+  "completedAt": "2026-11-11T08:19:55.486Z",
+  "completion": {
+    "applicationRevision": 1,
+    "snapshotHash": "sha256:6a7cc32bc8e0e932dd6f460e5176f1cc006c70da119298f07419fbc2f037ea7d",
+    "completedAt": "2026-11-11T08:19:55.486Z"
+  },
+  "updatedAt": "2026-11-11T08:19:55.486Z"
 }

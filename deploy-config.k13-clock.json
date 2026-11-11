@@ -1,0 +1,20 @@
+{
+  "app": "k13-clock",
+  "serverId": "23ef33d1-efcc-4c7c-acd6-f5ce6aa856e3",
+  "appPath": ".",
+  "stateless": true,
+  "version": "1.0.0",
+  "architecture": "amd64",
+  "root": "/opt/lingee-apps",
+  "envFile": "/opt/lingee-apps/k13-clock/.env",
+  "mounts": [],
+  "hostPort": 3100,
+  "containerPort": 80,
+  "healthPath": "/health",
+  "requiredEnv": [],
+  "context": ".",
+  "dockerfile": "deploy/Dockerfile",
+  "expectedCurrent": null,
+  "sshConfirmed": true,
+  "testServerConfirmed": true
+}
