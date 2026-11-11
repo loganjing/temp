@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:2c58e7c31d5aa131410a84e2daa9f4cb7f3e4ddf785bfbeaf8f8ecaf929aaf5b",
+  "createdAt": "2026-11-11T01:09:19.441Z",
+  "timing": {
+    "startedAt": "2026-11-11T01:08:34.327Z",
+    "completedAt": "2026-11-11T01:09:19.441Z",
+    "durationMs": 45114
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000050/architecture-baseline.md",
+      "bytes": 2705,
+      "sha256": "sha256:d759506f6f8cc1920c15afa1510b1b0de6241dde615547e9ef32c79e9672c409",
+      "role": "primary",
+      "purpose": "精简路线架构基线，记录页面与交互范围、数据归属、技术选型与实现入口、AC-01 验收映射和产物边界",
+      "title": "k12-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "artifact-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "route-compact",
+      "status": "passed"
+    },
+    {
+      "checkId": "requirements-sha-verified",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-boundary-respected",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:b695213896b5496515078f26b33e08d18b296b48b4f7e5d00fb09bcb65578899",
+        "path": ".expert-team/work-items/wi-t1000050/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

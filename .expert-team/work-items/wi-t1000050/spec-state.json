@@ -2,14 +2,42 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:b40de31b37ec562e0cfe1005812bb53b4e422b4279e23a6892ffdc945663ffb2",
-  "updatedAt": "2026-11-11T01:07:51.467Z"
+  "updatedAt": "2026-11-11T01:09:19.441Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000050/requirements.md",
+      "sha256": "sha256:2df7a31c204b3597b6b11f17d710c58124cd4a3dd974349e18f12e08375eed82"
+    },
+    "reason": "批准需求仅要求单个页面实时显示当前时分秒，时间来源是客户端系统时间，使用浏览器定时器每秒更新即可满足。需求基线未提及任何服务端权威数据、认证、后台任务、外部服务集成或跨设备/跨用户共享数据，验收场景 AC-01 也仅覆盖用户界面渲染与交互，因此采用 simple-frontend 精简路线。",
+    "evidence": {
+      "supporting": [
+        "需求基线仅要求一个页面展示当前时分秒（HH:MM:SS），来源为用户原话",
+        "唯一行为是每秒实时更新时间显示，使用浏览器定时器即可实现",
+        "验收场景 AC-01 仅验证用户界面渲染与交互（runtime-render, interaction），无服务端验收点",
+        "需求未规定事项明确：技术选型、部署方式、布局配色均未指定，无后端约束"
+      ],
+      "excluding": [
+        "需求未要求服务端权威数据：时间来源为客户端系统/设备时间，无需持久化或同步",
+        "需求未要求认证/权限：任意用户打开页面即可查看，无登录或角色控制",
+        "需求未要求后台任务：仅依赖浏览器定时器在页面打开期间更新，关闭即停止",
+        "需求未要求外部服务集成：不调用任何第三方 API 或后端服务",
+        "需求未要求跨用户/跨设备共享数据：时间显示为本地瞬时值，无共享状态"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-11T01:08:45.634Z",
+    "sha256": "sha256:b695213896b5496515078f26b33e08d18b296b48b4f7e5d00fb09bcb65578899"
+  }
 }
