@@ -1,3 +1,15 @@
+import type {
+  Device,
+  DeviceHistory,
+  Fault,
+  OnlineStatus,
+  RepairOrder,
+  RepairOrderStatus,
+  RunningStatus,
+  UpgradeStatus,
+  UpgradeTask,
+} from '../types'
+
 export class ApiRequestError extends Error {
   constructor(
     message: string,
@@ -9,6 +21,7 @@ export class ApiRequestError extends Error {
   }
 }
 
+// 服务端契约返回 camelCase 字段；此处对可能出现的 snake_case 做幂等归一化。
 function camelCaseResponse(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(camelCaseResponse)
   if (!value || typeof value !== 'object') return value
@@ -31,4 +44,58 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
     response.status,
     typeof detail?.code === 'string' ? detail.code : undefined,
   )
+}
+
+const JSON_HEADERS = { 'Content-Type': 'application/json' } as const
+
+function postJson<T>(path: string, body: unknown): Promise<T> {
+  return apiRequest<T>(path, { method: 'POST', headers: JSON_HEADERS, body: JSON.stringify(body) })
+}
+
+function patchJson<T>(path: string, body: unknown): Promise<T> {
+  return apiRequest<T>(path, { method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify(body) })
+}
+
+// 设备模块
+export const devicesApi = {
+  list: () => apiRequest<Device[]>('/api/devices'),
+  get: (id: string) => apiRequest<Device>(`/api/devices/${encodeURIComponent(id)}`),
+  register: (body: { name: string; model?: string }) =>
+    postJson<Device>('/api/devices', body),
+  updateStatus: (id: string, body: { onlineStatus: OnlineStatus; runningStatus: RunningStatus }) =>
+    patchJson<Device>(`/api/devices/${encodeURIComponent(id)}/status`, body),
+}
+
+// 故障模块
+export const faultsApi = {
+  list: (deviceId?: string) =>
+    apiRequest<Fault[]>(deviceId ? `/api/faults?deviceId=${encodeURIComponent(deviceId)}` : '/api/faults'),
+  record: (body: { deviceId: string; description: string; occurredAt: string }) =>
+    postJson<Fault>('/api/faults', body),
+}
+
+// 升级模块
+export const upgradesApi = {
+  list: (deviceId?: string) =>
+    apiRequest<UpgradeTask[]>(deviceId ? `/api/upgrades?deviceId=${encodeURIComponent(deviceId)}` : '/api/upgrades'),
+  create: (body: { deviceId: string }) =>
+    postJson<UpgradeTask>('/api/upgrades', body),
+  advance: (id: string, body: { status: UpgradeStatus; result?: string }) =>
+    patchJson<UpgradeTask>(`/api/upgrades/${encodeURIComponent(id)}/status`, body),
+}
+
+// 维修工单模块
+export const repairOrdersApi = {
+  list: (status?: RepairOrderStatus) =>
+    apiRequest<RepairOrder[]>(status ? `/api/repair-orders?status=${status}` : '/api/repair-orders'),
+  create: (body: { deviceId: string; faultId?: string; description: string; requirement?: string }) =>
+    postJson<RepairOrder>('/api/repair-orders', body),
+  advance: (id: string, body: { status: RepairOrderStatus; result?: string }) =>
+    patchJson<RepairOrder>(`/api/repair-orders/${encodeURIComponent(id)}/status`, body),
+}
+
+// 设备履历模块
+export const historyApi = {
+  get: (id: string) =>
+    apiRequest<DeviceHistory>(`/api/devices/${encodeURIComponent(id)}/history`),
 }

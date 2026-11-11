@@ -21,6 +21,9 @@
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.30.3",
+    "antd": "^5.22.0",
+    "@ant-design/icons": "^5.5.0",
+    "dayjs": "^1.11.13",
     "tsx": "^4.19.0",
     "@commonapp/dbkit": "file:../../vendor/@commonapp/dbkit",
     "better-sqlite3": "^11.0.0 || ^12.0.0"

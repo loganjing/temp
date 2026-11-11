@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_4f752633-374a-4736-9603-90e6c7005c86",
+  "workItemId": "wi-t1000049",
+  "workspaceRealpath": "/Users/kingdee/lingeebuild-beta/workspaces/eb41620db7b9de51a5ca0f87f8270006/jlgrobot/.lingee-task-worktrees/wi-t1000049",
+  "target": "workflow",
+  "operation": "compile",
+  "fixedArguments": {},
+  "requiredInputs": {},
+  "status": "pending",
+  "createdAt": "2026-11-11T01:18:06.226Z",
+  "consumedAt": null
+}

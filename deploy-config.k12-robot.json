@@ -1,0 +1,28 @@
+{
+  "app": "k12-robot",
+  "serverId": "f49d0639-22dc-448e-b379-8c1ec65dd058",
+  "appPath": "app/k12-robot",
+  "version": "1.0.0",
+  "architecture": "amd64",
+  "root": "/opt/lingee-apps",
+  "envFile": "/opt/lingee-apps/k12-robot/.env",
+  "mounts": [
+    {
+      "host": "/opt/lingee-apps/k12-robot/data",
+      "container": "/app/app/k12-robot/data"
+    }
+  ],
+  "hostPort": 3002,
+  "containerPort": 3000,
+  "healthPath": "/api/health",
+  "requiredEnv": [],
+  "context": ".",
+  "dockerfile": "deploy/Dockerfile",
+  "expectedCurrent": null,
+  "backupMode": "sqlite",
+  "migrationReviewed": true,
+  "sshConfirmed": true,
+  "testServerConfirmed": true,
+  "composeFile": "deploy/docker-compose.prod.yml",
+  "composeService": "app"
+}
