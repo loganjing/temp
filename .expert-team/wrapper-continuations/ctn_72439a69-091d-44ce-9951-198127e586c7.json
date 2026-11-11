@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_72439a69-091d-44ce-9951-198127e586c7",
+  "workItemId": "wi-t1000054",
+  "workspaceRealpath": "/Users/kingdee/work/lingeebuild/codingtesting/k13_clock/.lingee-task-worktrees/wi-t1000054",
+  "target": "workflow",
+  "operation": "complete",
+  "fixedArguments": {
+    "--workspace": "/Users/kingdee/work/lingeebuild/codingtesting/k13_clock/.lingee-task-worktrees/wi-t1000054",
+    "--work-item": "wi-t1000054",
+    "--action": "requirements",
+    "--expected-revision": 0
+  },
+  "requiredInputs": {
+    "--result-json": {
+      "source": "stageResult",
+      "description": "For an inline stage with only declared artifact files, submit {\"status\":\"completed\"}; the runtime discovers and hashes those files. Keep actual child results and supporting artifacts unchanged; optional hashes must use sha256:<64-hex>. Completion validates final artifacts, records the receipt and settles the stage without candidate-save or --finalize. Approval decisions apply only to pendingApproval. Update stale candidate hashes when artifacts changed.",
+      "schema": {
+        "status": "completed"
+      },
+      "encoding": "json",
+      "shellSafeAlternative": {
+        "flag": "--result-json-file",
+        "description": "Write the JSON to a UTF-8 file and pass --result-json-file <path> when the command must go through a shell; inline JSON loses its quotes on Windows PowerShell."
+      }
+    }
+  },
+  "status": "pending",
+  "createdAt": "2026-11-11T08:06:43.890Z",
+  "consumedAt": null
+}
