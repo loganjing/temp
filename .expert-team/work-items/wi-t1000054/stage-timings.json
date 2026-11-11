@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "stages": {
+    "requirements": {
+      "startedAt": "2026-11-11T08:06:43.802Z",
+      "completedAt": "2026-11-11T08:06:55.642Z",
+      "durationMs": 11840
+    }
+  }
+}
