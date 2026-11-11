@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:f0d868ea28976c20c99150dbe53a262728103be8ae387d3fd783a85ff77c22c9",
+  "createdAt": "2026-11-11T01:13:22.283Z",
+  "timing": {
+    "startedAt": "2026-11-11T01:11:06.602Z",
+    "completedAt": "2026-11-11T01:13:22.282Z",
+    "durationMs": 135680
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000050/implementation-report.md",
+      "bytes": 3870,
+      "sha256": "sha256:902be3d9c4edccefec6be37042985dfbd6fae3f9e7d47e8a6acb1f23d3c78417",
+      "role": "implementation-report",
+      "purpose": "实现报告：记录变更行为、实现范围、调用链、验证证据和遗留风险",
+      "title": "k12-clock 实现报告"
+    }
+  ],
+  "url": "http://localhost:5173/",
+  "verification": [
+    {
+      "checkId": "unit-test",
+      "status": "passed"
+    },
+    {
+      "checkId": "production-build",
+      "status": "passed"
+    },
+    {
+      "checkId": "dev-server-startup",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "inline",
+        "sha256": "sha256:b695213896b5496515078f26b33e08d18b296b48b4f7e5d00fb09bcb65578899",
+        "path": ".expert-team/work-items/wi-t1000050/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}
