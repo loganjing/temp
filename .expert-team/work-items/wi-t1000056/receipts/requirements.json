@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:3120f4f2e43a63594d37e837b216406dc5f73ebe7310c8816539998eb1c11bd6",
+  "createdAt": "2026-11-12T09:20:10.824Z",
+  "timing": {
+    "startedAt": "2026-11-12T09:19:53.475Z",
+    "completedAt": "2026-11-12T09:20:10.824Z",
+    "durationMs": 17349
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000056/requirements.md",
+      "bytes": 824,
+      "sha256": "sha256:de453559cf2619a50b461d4a180f3e5b2f624667a39266d96de19ec9e3545e98",
+      "title": "k16-clock 需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goal-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-observable",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    }
+  ]
+}
