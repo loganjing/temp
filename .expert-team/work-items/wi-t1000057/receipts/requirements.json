@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:a076489c50d74dd834f025dd7e7da962be367ccdab29e8f30671859f6628dc8a",
+  "createdAt": "2026-11-12T09:26:56.836Z",
+  "timing": {
+    "startedAt": "2026-11-12T09:25:42.699Z",
+    "completedAt": "2026-11-12T09:26:56.835Z",
+    "durationMs": 74136
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000057/requirements.md",
+      "bytes": 4670,
+      "sha256": "sha256:81f4299c9d81cae7b4b216ea5adafd4bdaecf5ad8d278df397202afafe673fad",
+      "title": "k17-robot 设备管理平台需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goals-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "source-attribution",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-fabricated-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-completeness",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-verifiability",
+      "status": "passed"
+    }
+  ]
+}
