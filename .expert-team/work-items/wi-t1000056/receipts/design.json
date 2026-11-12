@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:4b980d661c7af2fb016e7a3930e85a3e828a6aeaaaa1af18ce5c222183e75f88",
+  "createdAt": "2026-11-12T09:21:35.876Z",
+  "timing": {
+    "startedAt": "2026-11-12T09:20:59.742Z",
+    "completedAt": "2026-11-12T09:21:35.876Z",
+    "durationMs": 36134
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000056/architecture-baseline.md",
+      "bytes": 2964,
+      "sha256": "sha256:20f66387e403dc9de1342aca74183c110a6773e3aee9753ff2853fcc2bd3773d",
+      "title": "k16-clock 架构基线"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "approved-requirements-read",
+      "status": "passed"
+    },
+    {
+      "checkId": "classification-simple-frontend",
+      "status": "passed"
+    },
+    {
+      "checkId": "frontend-deployment-initializer",
+      "status": "passed"
+    },
+    {
+      "checkId": "architecture-baseline-written",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "simple-frontend",
+        "routeId": "compact",
+        "sha256": "sha256:69a69466112b305bcb408cfc26dd025ac550727c0208d6192e4d4fb8670ebf61",
+        "path": ".expert-team/work-items/wi-t1000056/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

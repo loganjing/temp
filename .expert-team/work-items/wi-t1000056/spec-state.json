@@ -2,14 +2,38 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:ce8fc413fc7ea9153cc328923fb3edc39feb25ff73a23d14db0a3bcecb8b5138",
-  "updatedAt": "2026-11-12T09:20:10.824Z"
+  "updatedAt": "2026-11-12T09:21:35.876Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "simple-frontend",
+    "source": {
+      "artifactPath": "docs/wi-t1000056/requirements.md",
+      "sha256": "sha256:de453559cf2619a50b461d4a180f3e5b2f624667a39266d96de19ec9e3545e98"
+    },
+    "reason": "已批准需求只要求一个页面以 HH:MM:SS 格式每秒自动显示当前时间，纯浏览器端展示与时钟更新，不涉及服务端权威数据、认证/权限、后台任务、外部服务或跨用户/跨设备共享数据，符合 simple-frontend 路线判定。",
+    "evidence": {
+      "supporting": [
+        "需求核心行为：页面展示当前时间 HH:MM:SS，每秒自动更新，无需手动刷新",
+        "AC-01 唯一验收场景为 runtime-render：打开页面观察时分秒与系统时间一致并逐秒递增",
+        "需求中无任何服务端接口、持久化、认证、后台任务、外部集成或共享数据要求"
+      ],
+      "excluding": [
+        "无服务端权威数据要求，时间直接取自客户端系统时钟",
+        "无认证/权限、跨用户/跨设备共享、后台任务、外部服务集成需求"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-12T09:21:07.408Z",
+    "sha256": "sha256:69a69466112b305bcb408cfc26dd025ac550727c0208d6192e4d4fb8670ebf61"
+  }
 }

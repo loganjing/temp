@@ -5,6 +5,11 @@
       "startedAt": "2026-11-12T09:19:53.475Z",
       "completedAt": "2026-11-12T09:20:10.824Z",
       "durationMs": 17349
+    },
+    "design": {
+      "startedAt": "2026-11-12T09:20:59.742Z",
+      "completedAt": "2026-11-12T09:21:35.876Z",
+      "durationMs": 36134
     }
   }
 }
