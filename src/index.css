@@ -1,0 +1,15 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+}

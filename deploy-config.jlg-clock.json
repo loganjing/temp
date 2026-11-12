@@ -1,0 +1,20 @@
+{
+  "app": "jlg-clock",
+  "serverId": "f49d0639-22dc-448e-b379-8c1ec65dd058",
+  "appPath": ".",
+  "stateless": true,
+  "version": "0.1.0",
+  "architecture": "amd64",
+  "root": "/opt/lingee-apps",
+  "envFile": "/opt/lingee-apps/jlg-clock/.env",
+  "mounts": [],
+  "hostPort": 3200,
+  "containerPort": 80,
+  "healthPath": "/health",
+  "requiredEnv": [],
+  "context": ".",
+  "dockerfile": "deploy/Dockerfile",
+  "expectedCurrent": null,
+  "sshConfirmed": true,
+  "testServerConfirmed": true
+}
