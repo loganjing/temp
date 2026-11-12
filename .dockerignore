@@ -1,0 +1,12 @@
+**/.env*
+**/.git
+**/data
+**/uploads
+**/node_modules
+**/dist
+**/.expert-team
+**/.lingee-task-worktrees
+**/deploy-config*.json
+**/.npmrc
+**/*.pem
+**/*.key
