@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:ae95f163e492b13da139399c001046b53e3e4e27d0892f1be22859b2f1831780",
+  "createdAt": "2026-11-13T01:24:09.054Z",
+  "timing": {
+    "startedAt": "2026-11-13T01:18:58.103Z",
+    "completedAt": "2026-11-13T01:24:09.054Z",
+    "durationMs": 310951
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000057/technical-contract.md",
+      "bytes": 6832,
+      "sha256": "sha256:19a066c9488b0205fa204e3786c91c52829c47605e9582f165d4157d313de0dd",
+      "title": "技术契约"
+    },
+    {
+      "path": "docs/wi-t1000057/architecture-baseline.md",
+      "bytes": 9102,
+      "sha256": "sha256:dc913dfa6e2139cb6a8a5040fc7e19fd86380b2413c6b5b9ecead25f6cc9fa9b",
+      "title": "系统设计"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "packageRoot": "app/jlgrobot",
+      "planDigest": "sha256:3566c4d572d92287806b231485a25c0d1433416afd284894bd944327b726018f",
+      "planSha256": "sha256:cc14c523283c17fe811944f984c9b4f8f9d9790eebb82cab9a7e1a8631fdf560",
+      "scaffoldDigest": "sha256:638928ed4a80ccb26363f6c8a84e08fcd08d33d7a001330420d0e40f1ad5a1e5"
+    },
+    {
+      "checkId": "system-design:artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design:ensure-markers",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:8c2423c5d2fc3f6269bc81679fc5519de040075f4720d1119ce423992bbce1a4",
+        "path": ".expert-team/work-items/wi-t1000057/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

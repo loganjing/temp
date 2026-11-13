@@ -2,14 +2,40 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:ce8fc413fc7ea9153cc328923fb3edc39feb25ff73a23d14db0a3bcecb8b5138",
-  "updatedAt": "2026-11-12T09:26:56.836Z"
+  "updatedAt": "2026-11-13T01:24:09.054Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000057/requirements.md",
+      "sha256": "sha256:81f4299c9d81cae7b4b216ea5adafd4bdaecf5ad8d278df397202afafe673fad"
+    },
+    "reason": "需求明确要求所有业务数据通过数据库持久化存储，不依赖内存或临时文件（AC-06）；设备履历模块需聚合状态变更、故障、升级、维修多模块数据；多个验收场景要求 session-persistence。这排除了 simple-frontend 路线（localStorage 无法满足数据库持久化要求），应走 fullstack-complex 完整系统设计路线。",
+    "evidence": {
+      "supporting": [
+        "需求第3节明确要求：所有模块的业务数据须通过数据库持久化存储",
+        "需求第3节明确：各模块写入的数据须可通过相应查询行为读回，不依赖内存或临时文件",
+        "AC-06 明确验证数据库持久化：所有写入的数据均可通过数据库查询读回，数据持久存储不丢失",
+        "五大功能模块（设备状态监测、故障诊断、远程升级、维修工单、设备履历）之间存在数据关联，设备履历需聚合其他模块数据",
+        "AC-02/AC-03/AC-04 验收类型为 interaction + session-persistence，要求跨操作会话持久化"
+      ],
+      "excluding": [
+        "需求未提及 localStorage 或浏览器本地存储即可满足的场景",
+        "无任何仅前端存储的约束线索"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-13T01:19:08.113Z",
+    "sha256": "sha256:8c2423c5d2fc3f6269bc81679fc5519de040075f4720d1119ce423992bbce1a4"
+  }
 }
