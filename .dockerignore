@@ -1,0 +1,16 @@
+node_modules
+**/node_modules
+app/jlgrobot/dist
+app/jlgrobot/data
+.git
+.gitignore
+.env
+**/.env
+*.md
+.expert-team
+docs
+test
+**/test
+.DS_Store
+.vscode
+.idea

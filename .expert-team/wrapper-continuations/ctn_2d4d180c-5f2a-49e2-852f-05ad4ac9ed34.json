@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_2d4d180c-5f2a-49e2-852f-05ad4ac9ed34",
+  "workItemId": "wi-t1000057",
+  "workspaceRealpath": "/Users/kingdee/work/lingeebuild/codingtesting/k14_robot/.lingee-task-worktrees/wi-t1000057",
+  "target": "task_operation",
+  "operation": "submit",
+  "fixedArguments": {
+    "--workspace": "/Users/kingdee/work/lingeebuild/codingtesting/k14_robot/.lingee-task-worktrees/wi-t1000057",
+    "--work-item": "wi-t1000057",
+    "--task": "T02",
+    "--actor-id": "expert-team-coordinator"
+  },
+  "requiredInputs": {
+    "--execution-id": {
+      "source": "spawn_task.executionId",
+      "description": "Use the exact execution ID returned for this prepared envelope.",
+      "encoding": "text"
+    }
+  },
+  "status": "pending",
+  "createdAt": "2026-11-13T01:52:32.110Z",
+  "consumedAt": null
+}

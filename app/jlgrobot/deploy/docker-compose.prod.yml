@@ -1,0 +1,10 @@
+services:
+  app:
+    image: jlgrobot
+    ports:
+      - "3000:3000"
+    volumes:
+      - /opt/lingee-apps/jlgrobot/data:/app/app/jlgrobot/data
+    environment:
+      - DB_PATH=/app/app/jlgrobot/data/application.db
+    restart: unless-stopped

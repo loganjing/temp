@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "continuationId": "ctn_e4e26955-98fe-4645-a803-5fcb0b44d65b",
+  "workItemId": "wi-t1000057",
+  "workspaceRealpath": "/Users/kingdee/work/lingeebuild/codingtesting/k14_robot/.lingee-task-worktrees/wi-t1000057",
+  "target": "workflow",
+  "operation": "status",
+  "fixedArguments": {},
+  "requiredInputs": {},
+  "status": "pending",
+  "createdAt": "2026-11-13T01:52:19.389Z",
+  "consumedAt": null
+}

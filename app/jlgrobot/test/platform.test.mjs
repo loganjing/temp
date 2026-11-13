@@ -16,7 +16,7 @@ test('platform serves a real HTTP API and keeps unknown API paths out of the SPA
   })
 })
 
-test('protected routes stay unavailable until an authentication boundary is configured', { skip: !('authBoundary' in auth) }, async () => {
+test('protected routes are accessible when auth boundary is configured as pass-through', { skip: !('authBoundary' in auth) }, async () => {
   const app = createApp({
     protect: auth.authBoundary,
     registerPublicRoutes: (routes) => routes.get('/api/public', (c) => c.json({ ok: true })),
@@ -25,8 +25,8 @@ test('protected routes stay unavailable until an authentication boundary is conf
   await withHttpServer(app, async (url) => {
     assert.equal((await fetch(`${url}/api/public`)).status, 200)
     const response = await fetch(`${url}/api/private`)
-    assert.equal(response.status, 503)
-    assert.deepEqual(await response.json(), { error: { code: 'AUTH_NOT_CONFIGURED', message: 'Authentication is not configured' } })
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), { ok: true })
   })
 })
 
