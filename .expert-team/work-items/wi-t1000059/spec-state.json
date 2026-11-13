@@ -2,14 +2,37 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:ce8fc413fc7ea9153cc328923fb3edc39feb25ff73a23d14db0a3bcecb8b5138",
-  "updatedAt": "2026-11-13T08:20:53.843Z"
+  "updatedAt": "2026-11-13T09:02:51.397Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000059/requirements.md",
+      "sha256": "sha256:92c53eaec6d1841cacc7866b9f4fd80f9652efc51169ed84f9c31007fc8cc030"
+    },
+    "reason": "需求明确要求数据库持久存储且应用重启后数据保留，构成服务端权威数据能力；设备履历需跨模块聚合多源数据，维修工单涉及状态流转，远程升级需进度跟踪，超出单用户浏览器应用范围。",
+    "evidence": {
+      "supporting": [
+        "需求第4节明确要求：用户明确提出所有业务数据需要数据库存储",
+        "AC-06 要求数据通过数据库持久存储，应用重启后数据仍然保留",
+        "设备履历模块需跨四个模块聚合状态变化、故障、升级和工单记录，存在跨模块数据依赖",
+        "维修工单有创建→处理→完成的状态流转",
+        "远程升级需跟踪进度和最终结果，涉及异步过程管理"
+      ],
+      "excluding": [],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-13T08:58:30.932Z",
+    "sha256": "sha256:6d0702d9e88c64d167e21f5a2bd7c706921ed9440d2c29fce3dd992b35c7ae1b"
+  }
 }
