@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:e77c523528dcaf5b165bef5bd206dade1ebd996804b0703f46d8f3a88a6a4b62",
+  "createdAt": "2026-11-13T08:20:53.843Z",
+  "timing": {
+    "startedAt": "2026-11-13T08:19:19.035Z",
+    "completedAt": "2026-11-13T08:20:53.842Z",
+    "durationMs": 94807
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000059/requirements.md",
+      "bytes": 4666,
+      "sha256": "sha256:92c53eaec6d1841cacc7866b9f4fd80f9652efc51169ed84f9c31007fc8cc030",
+      "title": "k18-robot 需求文档"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "core-goal-coverage",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-traceability",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "proportionate-complexity",
+      "status": "passed"
+    },
+    {
+      "checkId": "ac-action-feasibility",
+      "status": "passed"
+    }
+  ]
+}
