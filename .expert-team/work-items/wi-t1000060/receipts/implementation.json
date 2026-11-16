@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "implementation:3",
+  "receiptType": "implementation-report",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "implementation",
+  "inputRevision": 2,
+  "stateVersion": 3,
+  "outcome": "passed",
+  "contentHash": "sha256:95e5a6eb9a7275749f1a685fd34089619024d935af1cc925ce87db3d42e7f8bb",
+  "createdAt": "2026-11-16T06:01:21.835Z",
+  "timing": {
+    "startedAt": "2026-11-16T05:51:20.646Z",
+    "completedAt": "2026-11-16T06:01:21.834Z",
+    "durationMs": 601188
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000060/implementation-report.md",
+      "bytes": 4885,
+      "sha256": "sha256:67ee15067484824e5d7b33f230dff427864a7d331c4dc6d3d6014cbac6d37c33",
+      "title": "开发实现报告"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "typecheck:server",
+      "status": "passed"
+    },
+    {
+      "checkId": "typecheck:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "test",
+      "status": "passed"
+    },
+    {
+      "checkId": "build:client",
+      "status": "passed"
+    },
+    {
+      "checkId": "build",
+      "status": "passed"
+    },
+    {
+      "checkId": "implementation:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "plan",
+        "sha256": "sha256:4f4ae2ba9276fd023f205ed4e5a08a70fdd48ce5982b877ac214ddac0ac163df",
+        "path": ".expert-team/work-items/wi-t1000060/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

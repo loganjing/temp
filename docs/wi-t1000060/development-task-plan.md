@@ -1,0 +1,162 @@
+# 开发任务编排
+
+<!-- sourcePlanId: plan:f4b8ccbf-876b-4687-8fa5-9d403609e51e | rendererVersion: 4 -->
+
+## 任务
+
+| 任务 | 一句话目标 | 执行模式 | 依赖 | 能力 |
+| --- | --- | --- | --- | --- |
+| T01 | 实现设备管理全部后端 API、SQLite 迁移与业务逻辑（5 模块 + 履历汇聚） | spawn_task | - | engineering.implementation |
+| T02 | 实现设备管理五个模块的 React SPA 前端（Ant Design + master-detail 布局） | spawn_task | - | engineering.implementation |
+
+## 依赖执行图
+
+```mermaid
+flowchart LR
+  start(["开始"])
+  task0["T01<br/>实现设备管理全部后端 API、SQLite 迁移与业务逻辑（5 模块 + 履历汇聚）<br/>spawn_task"]
+  task1["T02<br/>实现设备管理五个模块的 React SPA 前端（Ant Design + master-detail 布局）<br/>spawn_task"]
+  finish(["完成"])
+  start --> task0
+  start --> task1
+  task0 --> finish
+  task1 --> finish
+```
+
+## 任务契约
+
+### T01
+
+**目标**
+
+## 后端实现
+
+实现设备管理系统五个模块的全部服务端逻辑，满足技术契约定义的 API 契约。
+
+### 范围
+
+- **数据库迁移**：在 `src/server/migrations/sqlite/` 创建首次迁移文件，建立 `devices`、`fault_diagnoses`、`upgrade_tasks`、`maintenance_orders`、`equipment_history` 五张表、外键约束和索引
+- **共享类型契约**：在 `src/shared/` 定义 API 请求/响应的 TypeScript 类型（camelCase 字段），供后端序列化和前端消费
+- **设备状态监测（M1）**：`GET /api/devices`、`GET /api/devices/:id`、`PATCH /api/devices/:id/status`
+- **故障诊断（M2）**：`POST /api/devices/:deviceId/fault-diagnoses`、`GET /api/devices/:deviceId/fault-diagnoses`
+- **远程升级（M3）**：`POST /api/devices/:deviceId/upgrade-tasks`、`GET /api/devices/:deviceId/upgrade-tasks`、`PATCH /api/upgrade-tasks/:id`
+- **维修工单（M4）**：`POST /api/maintenance-orders`、`GET /api/maintenance-orders`、`GET /api/maintenance-orders/:id`、`PATCH /api/maintenance-orders/:id`
+- **设备履历（M5）**：`GET /api/devices/:deviceId/history`
+- **履历汇聚**：设备状态变更、故障诊断创建、升级任务创建与状态变更、工单创建与状态变更均在同一事务中向 `equipment_history` 写入事件记录
+- **状态流转约束**：工单 pending→processing→completed（不可逆）；升级 pending→executing→success/failed（终态不可回退）
+- **Seed 数据**：提供初始设备数据 seed 脚本或迁移内置 seed，确保 AC-01 可验证
+- **package.json**：添加 `antd`、`@ant-design/icons` 前端依赖（供前端任务使用）
+
+### 写入 owner
+
+- `app/jlgrobot/src/server/`（路由、服务、仓库、平台绑定）
+- `app/jlgrobot/src/shared/`（API 类型契约）
+- `app/jlgrobot/src/server/migrations/sqlite/`（迁移文件）
+- `app/jlgrobot/package.json`、`app/jlgrobot/package-lock.json`（依赖管理）
+- `app/jlgrobot/test/`（后端集成测试）
+
+### 验证
+
+- `npm run typecheck:server` 通过
+- `npm run test` 通过（含 dbkit 迁移和 API 行为测试）
+- `npm run build` 整体构建通过
+
+**角色:** general-app-development-expert  \  **失败策略:** block
+
+**需求**
+
+- AC-01
+- AC-02
+- AC-03
+- AC-04
+- AC-05
+- AC-06
+
+**输入**
+
+- docs/wi-t1000060/requirements.md
+- docs/wi-t1000060/architecture-baseline.md
+- docs/wi-t1000060/technical-contract.md
+
+**产物**
+
+- app/jlgrobot/src/server/
+- app/jlgrobot/src/shared/
+- app/jlgrobot/src/server/migrations/sqlite/
+
+**可写范围**
+
+- app/jlgrobot/src/server/
+- app/jlgrobot/src/shared/
+- app/jlgrobot/src/server/migrations/sqlite/
+- app/jlgrobot/package.json
+- app/jlgrobot/package-lock.json
+
+**阻塞码**
+
+- （无）
+
+### T02
+
+**目标**
+
+## 前端实现
+
+实现设备管理系统五个模块的 React SPA 前端界面，基于技术契约定义的 API 和架构基线定义的 UI 布线。
+
+### 范围
+
+- **应用壳与导航**：左侧深色侧栏导航 + 顶部上下文栏 + 浅色主工作区，侧栏包含设备监测、故障诊断、远程升级、维修工单、设备履历五个导航项
+- **设备状态监测（M1）**：split-master-detail 布局，左侧设备列表表格（设备名称、标识、状态、状态更新时间），右侧选中设备详情（含状态、基本信息、状态变更操作入口）
+- **故障诊断（M2）**：按设备筛选的故障诊断列表 + 创建诊断表单（故障描述输入），展示诊断历史
+- **远程升级（M3）**：按设备筛选的升级任务列表 + 创建升级任务表单（升级包标识输入），展示任务状态（pending/executing/success/failed），支持更新状态操作
+- **维修工单（M4）**：工单列表（支持按设备筛选）+ 创建工单表单（关联设备、故障描述、维修人员）+ 工单详情与状态流转操作（待处理→处理中→已完成）
+- **设备履历（M5）**：按设备筛选的时间轴列表，按时间降序展示状态变更、故障诊断、远程升级、维修工单事件
+- **API 客户端**：基于 `src/client/platform/api-client.ts` 封装各模块 API 调用，使用 `src/shared/` 中的类型契约
+- **状态设计**：加载中 Spin、空数据 Empty、错误 message.error + 重试、成功 message.success；设备状态色 running(绿)/idle(灰)/fault(红)/offline(默认)
+- **UI 组件库**：使用 Ant Design（`antd` + `@ant-design/icons`），由 T01 在 package.json 中安装
+
+### 写入 owner
+
+- `app/jlgrobot/src/client/`（页面、组件、hooks、API 客户端封装、样式）
+- `app/jlgrobot/index.html`（Vite 文档壳）
+
+### 前端类型
+
+- 使用 `src/shared/` 中由 T01 定义的 API 类型契约，不自行发明 API 行为
+- 基于 technical-contract.md 的响应结构消费 API 数据
+
+### 验证
+
+- `npm run typecheck:client` 通过
+- `npm run build:client` Vite 构建通过
+- `npm run build` 整体构建通过
+
+**角色:** general-app-development-expert  \  **失败策略:** block
+
+**需求**
+
+- AC-01
+- AC-02
+- AC-03
+- AC-04
+- AC-05
+
+**输入**
+
+- docs/wi-t1000060/requirements.md
+- docs/wi-t1000060/architecture-baseline.md
+- docs/wi-t1000060/technical-contract.md
+
+**产物**
+
+- app/jlgrobot/src/client/
+
+**可写范围**
+
+- app/jlgrobot/src/client/
+- app/jlgrobot/index.html
+
+**阻塞码**
+
+- （无）

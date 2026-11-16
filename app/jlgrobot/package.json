@@ -5,6 +5,7 @@
   "scripts": {
     "dev:web": "vite",
     "dev:server": "tsx watch src/server/index.ts",
+    "migrate": "tsx src/server/migrate.ts",
     "typecheck": "npm run typecheck:server && npm run typecheck:client",
     "typecheck:client": "tsc -p tsconfig.client.json",
     "typecheck:server": "tsc -p tsconfig.server.json",
@@ -15,15 +16,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "@commonapp/dbkit": "file:../../vendor/@commonapp/dbkit",
     "@hono/node-server": "^1.13.0",
+    "antd": "^6.7.0",
+    "better-sqlite3": "^11.0.0 || ^12.0.0",
     "dotenv": "^16.4.0",
     "hono": "^4.6.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.30.3",
-    "tsx": "^4.19.0",
-    "@commonapp/dbkit": "file:../../vendor/@commonapp/dbkit",
-    "better-sqlite3": "^11.0.0 || ^12.0.0"
+    "tsx": "^4.19.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
