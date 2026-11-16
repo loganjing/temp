@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "requirements:1",
+  "receiptType": "requirements-baseline",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "requirements",
+  "inputRevision": 0,
+  "stateVersion": 1,
+  "outcome": "passed",
+  "contentHash": "sha256:50f37a05e893b4d461a9cf03f01ae5357490dd2c3c73f18a06bceb939629b82c",
+  "createdAt": "2026-11-16T05:42:23.312Z",
+  "timing": {
+    "startedAt": "2026-11-16T05:41:42.480Z",
+    "completedAt": "2026-11-16T05:42:23.311Z",
+    "durationMs": 40831
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000060/requirements.md",
+      "bytes": 5247,
+      "sha256": "sha256:ff5bbce862ecdea30e99093921f7993f78ccd5c0bf3788831096c7f6b1cadd73",
+      "title": "k19 设备管理功能需求"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "user-goals-covered",
+      "status": "passed"
+    },
+    {
+      "checkId": "acceptance-criteria-sufficient",
+      "status": "passed"
+    },
+    {
+      "checkId": "no-invented-scope",
+      "status": "passed"
+    },
+    {
+      "checkId": "artifact-format",
+      "status": "passed"
+    }
+  ]
+}
