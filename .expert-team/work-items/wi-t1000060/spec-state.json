@@ -2,14 +2,38 @@
   "schemaVersion": 2,
   "specId": "general-application-development-spec",
   "specRevision": 16,
-  "state": "requirements_ready",
-  "revision": 1,
+  "state": "design_ready",
+  "revision": 2,
   "completedActions": [
-    "requirements"
+    "requirements",
+    "design"
   ],
   "blockers": [],
   "scenarioId": "feature",
   "graphRevision": 5,
   "graphHash": "sha256:ce8fc413fc7ea9153cc328923fb3edc39feb25ff73a23d14db0a3bcecb8b5138",
-  "updatedAt": "2026-11-16T05:42:23.312Z"
+  "updatedAt": "2026-11-16T05:50:31.181Z",
+  "applicationProfile": {
+    "schemaVersion": 1,
+    "applicationType": "fullstack-complex",
+    "source": {
+      "artifactPath": "docs/wi-t1000060/requirements.md",
+      "sha256": "sha256:ff5bbce862ecdea30e99093921f7993f78ccd5c0bf3788831096c7f6b1cadd73"
+    },
+    "reason": "需求明确要求数据库存储，且数据需在服务重启后仍可读回（AC-06），设备履历需跨模块自动汇聚数据。这些要求需要服务端权威数据持久化，不属于纯前端 localStorage 能力范围，因此归类为 fullstack-complex。",
+    "evidence": {
+      "supporting": [
+        "需求第52-57行明确要求'需要数据库存储'，所有模块业务数据通过数据库持久化",
+        "AC-06 验收标准要求数据在'服务重启后仍可读回'，意味着服务端持久化",
+        "设备履历(M5)需自动汇聚其他四个模块的记录，构成跨模块共享数据",
+        "维修工单需状态流转(待处理→处理中→已完成)且不可逆，升级任务跟踪执行状态，属于服务端业务逻辑"
+      ],
+      "excluding": [
+        "需求未提及认证/权限体系，但数据库和服务端权威数据要求已足以排除 simple-frontend"
+      ],
+      "unresolved": []
+    },
+    "decidedAt": "2026-11-16T05:44:56.271Z",
+    "sha256": "sha256:4f4ae2ba9276fd023f205ed4e5a08a70fdd48ce5982b877ac214ddac0ac163df"
+  }
 }

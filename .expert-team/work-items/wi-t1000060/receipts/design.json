@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "design:2",
+  "receiptType": "architecture-plan",
+  "specId": "general-application-development-spec",
+  "graphRevision": 5,
+  "actionId": "design",
+  "inputRevision": 1,
+  "stateVersion": 2,
+  "outcome": "passed",
+  "contentHash": "sha256:6e0ba3ef99edcc9bf29dfe7fff9c8acbf1133654924d901a06be6173b8a3361d",
+  "createdAt": "2026-11-16T05:50:31.181Z",
+  "timing": {
+    "startedAt": "2026-11-16T05:44:44.920Z",
+    "completedAt": "2026-11-16T05:50:31.180Z",
+    "durationMs": 346260
+  },
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000060/technical-contract.md",
+      "bytes": 6526,
+      "sha256": "sha256:48e6d31b3ddfa6d014a4a4de7b51d45fc4cc0d4fc77a2e759316f9d36cd1d854",
+      "title": "技术契约"
+    },
+    {
+      "path": "docs/wi-t1000060/architecture-baseline.md",
+      "bytes": 9401,
+      "sha256": "sha256:5e7df7daf4d02f16d722b1df3c86aae4ed8ba8de9a71cf762cb97be3e2202b3e",
+      "title": "系统设计"
+    }
+  ],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed"
+    },
+    {
+      "checkId": "system-design-artifact-validator",
+      "status": "passed"
+    },
+    {
+      "checkId": "platform-baseline-readable",
+      "status": "passed"
+    },
+    {
+      "checkId": "app-agents-md-exists",
+      "status": "passed"
+    },
+    {
+      "checkId": "design:application-route",
+      "status": "passed",
+      "applicationProfile": {
+        "applicationType": "fullstack-complex",
+        "routeId": "full",
+        "sha256": "sha256:4f4ae2ba9276fd023f205ed4e5a08a70fdd48ce5982b877ac214ddac0ac163df",
+        "path": ".expert-team/work-items/wi-t1000060/spec-state.json#/applicationProfile"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "design",
+  "decision": "ready",
+  "status": "completed",
+  "artifacts": [
+    {
+      "path": "docs/wi-t1000060/architecture-baseline.md",
+      "purpose": "系统架构基线：技术栈、模块边界、数据模型、UI 基线与运行约定",
+      "role": "primary",
+      "sha256": "sha256:5e7df7daf4d02f16d722b1df3c86aae4ed8ba8de9a71cf762cb97be3e2202b3e"
+    },
+    {
+      "path": "docs/wi-t1000060/technical-contract.md",
+      "purpose": "API 技术契约：接口定义、请求响应格式、状态流转约束与 ID 类型对照",
+      "role": "supporting",
+      "sha256": "sha256:48e6d31b3ddfa6d014a4a4de7b51d45fc4cc0d4fc77a2e759316f9d36cd1d854"
+    }
+  ],
+  "internalArtifacts": ["workspace-bootstrap.json"],
+  "verification": [
+    {
+      "checkId": "workspace-init:approved",
+      "status": "passed",
+      "planDigest": "sha256:3566c4d572d92287806b231485a25c0d1433416afd284894bd944327b726018f",
+      "planSha256": "sha256:cc14c523283c17fe811944f984c9b4f8f9d9790eebb82cab9a7e1a8631fdf560",
+      "scaffoldDigest": "sha256:c4a786e56eb005d39b40c6acbfaf0544511a7df849cb355c648b81e540f2a875",
+      "packageRoot": "app/jlgrobot",
+      "modules": ["dbkit"],
+      "bootstrapPath": "docs/wi-t1000060/workspace-bootstrap.json"
+    }
+  ],
+  "openQuestions": [],
+  "blockers": [],
+  "residualRisks": []
+}
